@@ -1,0 +1,9 @@
+# Caches de Python: se regeneran solos
+__pycache__/
+*.pyc
+
+# Gestión del proyecto: se versiona en su propio repo local (pizarra-carreras-sueldos)
+pizarra/
+
+# Crudo SIES (39 MB): obtener.py lo vuelve a descargar; versionarlo solo engorda el historial
+src/Scrapers/Titulados/Entrada/titulados_2007_2025.xlsx

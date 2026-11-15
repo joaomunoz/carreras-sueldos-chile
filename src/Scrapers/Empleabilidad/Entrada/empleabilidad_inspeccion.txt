@@ -1,0 +1,60 @@
+============================================================
+📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
+📁 Archivo: empleabilidad_mifuturo.csv
+============================================================
+🔹 Dimensiones: 1690 filas | 30 columnas
+🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
+🔹 Registros Duplicados Absolutos: 0 (0.00%)
+🔹 Memoria Total Estimada: 1.33 MB
+
+🔬 MATRIZ DE CALIDAD POR COLUMNA:
+-------------------------------------------------------------------------------------------------------------------
+Columna                        | Tipo         | Nulos    | % Nulos  | Únicos   | Espacios Vacíos | Memoria   
+-------------------------------------------------------------------------------------------------------------------
+id_institucion                 | int64        | 0        | 0.00   % | 105      | 0               | 0.013    MB
+institucion                    | object       | 0        | 0.00   % | 105      | 0               | 0.122    MB
+acreditacion_institucion       | object       | 0        | 0.00   % | 6        | 0               | 0.125    MB
+acreditacion_anios             | float64      | 103      | 6.09   % | 6        | 0               | 0.013    MB
+carrera                        | object       | 0        | 0.00   % | 645      | 0               | 0.194    MB
+carrera_generica               | object       | 0        | 0.00   % | 190      | 0               | 0.184    MB
+pct_continuidad_estudios       | float64      | 0        | 0.00   % | 345      | 0               | 0.013    MB
+retencion_1er_anio             | float64      | 278      | 16.45  % | 418      | 0               | 0.013    MB
+duracion_real_semestres        | float64      | 394      | 23.31  % | 146      | 0               | 0.013    MB
+empleabilidad_1er_anio         | float64      | 0        | 0.00   % | 662      | 0               | 0.013    MB
+empleabilidad_2do_anio         | float64      | 178      | 10.53  % | 546      | 0               | 0.013    MB
+ingreso_prom_4to_anio          | object       | 0        | 0.00   % | 23       | 0               | 0.165    MB
+ingreso_prom_4to_anio_tramo    | int64        | 0        | 0.00   % | 20       | 0               | 0.013    MB
+tipo_institucion               | object       | 0        | 0.00   % | 3        | 0               | 0.110    MB
+regiones_sede                  | object       | 105      | 6.21   % | 38       | 0               | 0.137    MB
+ingreso_medio_1er_anio         | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+ingreso_medio_2do_anio         | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+ingreso_medio_3er_anio         | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+ingreso_medio_4to_anio         | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+ingreso_medio_5to_anio         | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_10_anio_1            | float64      | 58       | 3.43   % | 248      | 0               | 0.013    MB
+percentil_25_anio_1            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_50_anio_1            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_75_anio_1            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_90_anio_1            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_10_anio_5            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_25_anio_5            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_50_anio_5            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_75_anio_5            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+percentil_90_anio_5            | float64      | 58       | 3.43   % | 249      | 0               | 0.013    MB
+-------------------------------------------------------------------------------------------------------------------
+
+🧠 Clasificación Automática de Variables:
+   - Numéricas (23): ['id_institucion', 'acreditacion_anios', 'pct_continuidad_estudios', 'retencion_1er_anio', 'duracion_real_semestres', 'empleabilidad_1er_anio', 'empleabilidad_2do_anio', 'ingreso_prom_4to_anio_tramo', 'ingreso_medio_1er_anio', 'ingreso_medio_2do_anio', 'ingreso_medio_3er_anio', 'ingreso_medio_4to_anio', 'ingreso_medio_5to_anio', 'percentil_10_anio_1', 'percentil_25_anio_1', 'percentil_50_anio_1', 'percentil_75_anio_1', 'percentil_90_anio_1', 'percentil_10_anio_5', 'percentil_25_anio_5', 'percentil_50_anio_5', 'percentil_75_anio_5', 'percentil_90_anio_5']
+   - Categóricas/Texto (7): ['institucion', 'acreditacion_institucion', 'carrera', 'carrera_generica', 'ingreso_prom_4to_anio', 'tipo_institucion', 'regiones_sede']
+   - Fechas (0): []
+
+🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
+      id_institucion  ... percentil_90_anio_5
+989               70  ...           1733848.0
+1635              93  ...           1972366.0
+1346              84  ...           2140618.0
+1174              76  ...           1972366.0
+1502              89  ...           1677753.0
+
+[5 rows x 30 columns]
+============================================================

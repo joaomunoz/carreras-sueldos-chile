@@ -1,0 +1,60 @@
+============================================================
+📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
+📁 Archivo: titulados_procesado.csv
+============================================================
+🔹 Dimensiones: 94579 filas | 30 columnas
+🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
+🔹 Registros Duplicados Absolutos: 0 (0.00%)
+🔹 Memoria Total Estimada: 119.03 MB
+
+🔬 MATRIZ DE CALIDAD POR COLUMNA:
+-------------------------------------------------------------------------------------------------------------------
+Columna                        | Tipo         | Nulos    | % Nulos  | Únicos   | Espacios Vacíos | Memoria   
+-------------------------------------------------------------------------------------------------------------------
+anio                           | int64        | 0        | 0.00   % | 9        | 0               | 0.722    MB
+codigo_programa                | object       | 0        | 0.00   % | 22501    | 0               | 5.610    MB
+codigo_institucion             | int64        | 0        | 0.00   % | 164      | 0               | 0.722    MB
+institucion                    | object       | 0        | 0.00   % | 166      | 0               | 6.273    MB
+clave_institucion              | object       | 0        | 0.00   % | 166      | 0               | 6.239    MB
+tipo_institucion               | object       | 0        | 0.00   % | 3        | 0               | 4.951    MB
+subtipo_institucion            | object       | 0        | 0.00   % | 4        | 0               | 7.337    MB
+carrera                        | object       | 0        | 0.00   % | 3455     | 0               | 7.499    MB
+carrera_generica               | object       | 0        | 0.00   % | 272      | 0               | 11.133   MB
+clave_carrera_generica         | object       | 0        | 0.00   % | 272      | 0               | 7.066    MB
+cine13_area                    | object       | 0        | 0.00   % | 10       | 0               | 10.221   MB
+cine13_subarea                 | object       | 0        | 0.00   % | 28       | 0               | 9.487    MB
+nivel_carrera                  | object       | 0        | 0.00   % | 2        | 0               | 7.662    MB
+carrera_clasificacion_nivel_1  | object       | 0        | 0.00   % | 4        | 0               | 8.695    MB
+tipo_plan                      | object       | 0        | 0.00   % | 3        | 0               | 5.564    MB
+modalidad                      | object       | 0        | 0.00   % | 3        | 0               | 5.344    MB
+jornada                        | object       | 0        | 0.00   % | 5        | 0               | 5.128    MB
+duracion_semestres             | float64      | 0        | 0.00   % | 15       | 0               | 0.722    MB
+total_titulaciones             | int64        | 0        | 0.00   % | 370      | 0               | 0.722    MB
+titulaciones_mujeres           | int64        | 0        | 0.00   % | 268      | 0               | 0.722    MB
+titulaciones_hombres           | int64        | 0        | 0.00   % | 244      | 0               | 0.722    MB
+titulaciones_nb                | int64        | 0        | 0.00   % | 2        | 0               | 0.722    MB
+titulados_15_19                | int64        | 0        | 0.00   % | 24       | 0               | 0.722    MB
+titulados_20_24                | int64        | 0        | 0.00   % | 211      | 0               | 0.722    MB
+titulados_25_29                | int64        | 0        | 0.00   % | 172      | 0               | 0.722    MB
+titulados_30_34                | int64        | 0        | 0.00   % | 129      | 0               | 0.722    MB
+titulados_35_39                | int64        | 0        | 0.00   % | 108      | 0               | 0.722    MB
+titulados_mayores_40           | int64        | 0        | 0.00   % | 145      | 0               | 0.722    MB
+titulados_edad_sin_info        | int64        | 0        | 0.00   % | 4        | 0               | 0.722    MB
+edad_promedio                  | float64      | 1        | 0.00   % | 370      | 0               | 0.722    MB
+-------------------------------------------------------------------------------------------------------------------
+
+🧠 Clasificación Automática de Variables:
+   - Numéricas (15): ['anio', 'codigo_institucion', 'duracion_semestres', 'total_titulaciones', 'titulaciones_mujeres', 'titulaciones_hombres', 'titulaciones_nb', 'titulados_15_19', 'titulados_20_24', 'titulados_25_29', 'titulados_30_34', 'titulados_35_39', 'titulados_mayores_40', 'titulados_edad_sin_info', 'edad_promedio']
+   - Categóricas/Texto (15): ['codigo_programa', 'institucion', 'clave_institucion', 'tipo_institucion', 'subtipo_institucion', 'carrera', 'carrera_generica', 'clave_carrera_generica', 'cine13_area', 'cine13_subarea', 'nivel_carrera', 'carrera_clasificacion_nivel_1', 'tipo_plan', 'modalidad', 'jornada']
+   - Fechas (0): []
+
+🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
+       anio codigo_programa  ...  titulados_edad_sin_info edad_promedio
+51092  2021   I144S1C52J2V1  ...                        0          28.4
+60701  2020  I143S8C101J2V2  ...                        0          31.5
+73621  2018     I13S6C9J1V1  ...                        0          29.4
+37503  2022  I111S22C70J1V1  ...                        0          27.3
+79227  2018  I123S1C128J2V1  ...                        0          26.4
+
+[5 rows x 30 columns]
+============================================================

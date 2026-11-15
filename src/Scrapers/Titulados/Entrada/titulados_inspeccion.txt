@@ -1,0 +1,72 @@
+============================================================
+📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
+📁 Archivo: titulados_2007_2025.xlsx
+============================================================
+🔹 Dimensiones: 234074 filas | 42 columnas
+🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
+🔹 Registros Duplicados Absolutos: 0 (0.00%)
+🔹 Memoria Total Estimada: 438.77 MB
+
+🔬 MATRIZ DE CALIDAD POR COLUMNA:
+-------------------------------------------------------------------------------------------------------------------
+Columna                        | Tipo         | Nulos    | % Nulos  | Únicos   | Espacios Vacíos | Memoria   
+-------------------------------------------------------------------------------------------------------------------
+AÑO                            | object       | 0        | 0.00   % | 19       | 0               | 12.724   MB
+TOTAL TITULACIONES             | int64        | 0        | 0.00   % | 440      | 0               | 1.786    MB
+TITULACIONES MUJERES POR PROGRAMA | float64      | 43155    | 18.44  % | 317      | 0               | 1.786    MB
+TITULACIONES HOMBRES POR PROGRAMA | float64      | 37669    | 16.09  % | 279      | 0               | 1.786    MB
+TITULACIONES NB E INDEFINIDO POR PROGRAMA | float64      | 234056   | 99.99  % | 1        | 0               | 1.786    MB
+CLASIFICACIÓN INSTITUCIÓN NIVEL 1 | object       | 0        | 0.00   % | 3        | 0               | 16.653   MB
+CLASIFICACIÓN INSTITUCIÓN NIVEL 2 | object       | 0        | 0.00   % | 4        | 0               | 17.590   MB
+CLASIFICACIÓN INSTITUCIÓN NIVEL 3 | object       | 0        | 0.00   % | 6        | 0               | 18.821   MB
+CÓDIGO INSTITUCIÓN             | int64        | 0        | 0.00   % | 207      | 0               | 1.786    MB
+NOMBRE INSTITUCIÓN             | object       | 0        | 0.00   % | 210      | 0               | 16.091   MB
+COMUNA                         | object       | 0        | 0.00   % | 133      | 0               | 13.269   MB
+PROVINCIA                      | object       | 0        | 0.00   % | 50       | 0               | 12.772   MB
+REGIÓN                         | object       | 0        | 0.00   % | 16       | 0               | 15.346   MB
+NOMBRE SEDE                    | object       | 0        | 0.00   % | 289      | 0               | 15.309   MB
+NOMBRE CARRERA                 | object       | 0        | 0.00   % | 16001    | 0               | 19.458   MB
+ÁREA DEL CONOCIMIENTO          | object       | 0        | 0.00   % | 10       | 0               | 18.860   MB
+CINE-F_97 ÁREA                 | object       | 0        | 0.00   % | 8        | 0               | 24.496   MB
+CINE-F_97 SUBAREA              | object       | 0        | 0.00   % | 22       | 0               | 24.316   MB
+ÁREA CARRERA GENÉRICA          | object       | 0        | 0.00   % | 307      | 0               | 26.780   MB
+CINE-F_13 ÁREA                 | object       | 0        | 0.00   % | 10       | 0               | 25.038   MB
+CINE-F_13 SUBAREA              | object       | 0        | 0.00   % | 29       | 0               | 22.591   MB
+NIVEL GLOBAL                   | object       | 0        | 0.00   % | 3        | 0               | 13.425   MB
+CARRERA CLASIFICACIÓN NIVEL 1  | object       | 0        | 0.00   % | 9        | 0               | 20.365   MB
+CARRERA CLASIFICACIÓN NIVEL 2  | object       | 0        | 0.00   % | 5        | 0               | 18.212   MB
+MODALIDAD                      | object       | 26554    | 11.34  % | 3        | 0               | 12.546   MB
+JORNADA                        | object       | 0        | 0.00   % | 5        | 0               | 12.677   MB
+TIPO DE PLAN DE LA CARRERA     | object       | 0        | 0.00   % | 3        | 0               | 13.696   MB
+DURACIÓN ESTUDIO CARRERA       | float64      | 393      | 0.17   % | 16       | 0               | 1.786    MB
+DURACIÓN TOTAL DE LA CARRERA   | float64      | 393      | 0.17   % | 20       | 0               | 1.786    MB
+CÓDIGO PROGRAMA                | object       | 0        | 0.00   % | 59373    | 0               | 13.807   MB
+TOTAL RANGO EDAD               | int64        | 0        | 0.00   % | 440      | 0               | 1.786    MB
+RANGO DE EDAD 15 A 19 AÑOS     | float64      | 230303   | 98.39  % | 28       | 0               | 1.786    MB
+RANGO DE EDAD 20 A 24 AÑOS     | float64      | 91494    | 39.09  % | 237      | 0               | 1.786    MB
+RANGO DE EDAD 25 A 29 AÑOS     | float64      | 54555    | 23.31  % | 200      | 0               | 1.786    MB
+RANGO DE EDAD 30 A 34 AÑOS     | float64      | 86476    | 36.94  % | 146      | 0               | 1.786    MB
+RANGO DE EDAD 35 A 39 AÑOS     | float64      | 129129   | 55.17  % | 129      | 0               | 1.786    MB
+RANGO DE EDAD 40 Y MÁS AÑOS    | float64      | 134402   | 57.42  % | 195      | 0               | 1.786    MB
+RANGO DE EDAD SIN INFORMACIÓN  | float64      | 233462   | 99.74  % | 29       | 0               | 1.786    MB
+PROMEDIO EDAD PROGRAMA         | float64      | 152      | 0.06   % | 21553    | 0               | 1.786    MB
+PROMEDIO EDAD MUJER            | float64      | 43297    | 18.50  % | 13890    | 0               | 1.786    MB
+PROMEDIO EDAD HOMBRE           | float64      | 37817    | 16.16  % | 10944    | 0               | 1.786    MB
+PROMEDIO EDAD NB E INDEFINIDO  | float64      | 234056   | 99.99  % | 10       | 0               | 1.786    MB
+-------------------------------------------------------------------------------------------------------------------
+
+🧠 Clasificación Automática de Variables:
+   - Numéricas (19): ['TOTAL TITULACIONES', 'TITULACIONES MUJERES POR PROGRAMA', 'TITULACIONES HOMBRES POR PROGRAMA', 'TITULACIONES NB E INDEFINIDO POR PROGRAMA', 'CÓDIGO INSTITUCIÓN', 'DURACIÓN ESTUDIO CARRERA', 'DURACIÓN TOTAL DE LA CARRERA', 'TOTAL RANGO EDAD', 'RANGO DE EDAD 15 A 19 AÑOS', 'RANGO DE EDAD 20 A 24 AÑOS', 'RANGO DE EDAD 25 A 29 AÑOS', 'RANGO DE EDAD 30 A 34 AÑOS', 'RANGO DE EDAD 35 A 39 AÑOS', 'RANGO DE EDAD 40 Y MÁS AÑOS', 'RANGO DE EDAD SIN INFORMACIÓN', 'PROMEDIO EDAD PROGRAMA', 'PROMEDIO EDAD MUJER', 'PROMEDIO EDAD HOMBRE', 'PROMEDIO EDAD NB E INDEFINIDO']
+   - Categóricas/Texto (23): ['AÑO', 'CLASIFICACIÓN INSTITUCIÓN NIVEL 1', 'CLASIFICACIÓN INSTITUCIÓN NIVEL 2', 'CLASIFICACIÓN INSTITUCIÓN NIVEL 3', 'NOMBRE INSTITUCIÓN', 'COMUNA', 'PROVINCIA', 'REGIÓN', 'NOMBRE SEDE', 'NOMBRE CARRERA', 'ÁREA DEL CONOCIMIENTO', 'CINE-F_97 ÁREA', 'CINE-F_97 SUBAREA', 'ÁREA CARRERA GENÉRICA', 'CINE-F_13 ÁREA', 'CINE-F_13 SUBAREA', 'NIVEL GLOBAL', 'CARRERA CLASIFICACIÓN NIVEL 1', 'CARRERA CLASIFICACIÓN NIVEL 2', 'MODALIDAD', 'JORNADA', 'TIPO DE PLAN DE LA CARRERA', 'CÓDIGO PROGRAMA']
+   - Fechas (0): []
+
+🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
+             AÑO  ...  PROMEDIO EDAD NB E INDEFINIDO
+11310   TIT_2025  ...                            NaN
+47840   TIT_2022  ...                            NaN
+213599  TIT_2009  ...                            NaN
+19447   TIT_2024  ...                            NaN
+232546  TIT_2007  ...                            NaN
+
+[5 rows x 42 columns]
+============================================================
