@@ -1,0 +1,268 @@
+-- src/Analisis/sql/analytics/01_par.sql
+--
+-- A1 (Fase 2): el par (carrera genérica × tipo de institución) como tabla permanente, con las
+-- marcas que deciden en qué análisis entra. Es la lógica de la vista temporal de
+-- src/Analisis/sql/auditoria/06_cobertura_celdas.sql (T5, aprobada como gate), más el peso del
+-- par y la cobertura por segmento.
+--
+-- Corre dentro de la transacción única de src/BD/build.py, después de src/BD/04_qa.sql (necesita
+-- qa.control). Lee solo `modelo`. Recrea el esquema `analytics` completo: los archivos
+-- siguientes de esta carpeta (NN_*.sql, en orden) agregan sus tablas.
+
+DROP SCHEMA IF EXISTS analytics CASCADE;
+CREATE SCHEMA analytics;
+
+-- --------------------------------------------------------------------------
+-- Parámetros: todos los umbrales del análisis en un solo lugar (también los lee la web)
+-- --------------------------------------------------------------------------
+CREATE TABLE analytics.parametro (
+    nombre       text    PRIMARY KEY,
+    valor        numeric NOT NULL,
+    descripcion  text    NOT NULL,
+    origen       text    NOT NULL      -- decisión que lo fija (pizarra / logfile)
+);
+
+INSERT INTO analytics.parametro VALUES
+    ('min_inst_oferta',     3,    'Instituciones del tipo con titulaciones SIES en ambas ventanas para que el par sea representativo', 'T0 / D2: dos conteos de instituciones'),
+    ('min_pares_celda',     5,    'Pares representativos para que una celda área × tipo × nivel sea referencia',                     'D2'),
+    ('min_share_area',      0.80, 'Proporción de titulaciones del área dominante para asignar el área a la genérica',                'T0 / T4'),
+    ('min_inst_dispersion', 5,    'Instituciones publicadas con el dato para medir dispersión entre instituciones',                  'D1'),
+    ('max_cobertura_baja',  0.75, 'Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura',       'T5, decisión 2');
+
+-- Lectura de un parámetro que FALLA si el nombre no existe. Con un subselect simple, un nombre
+-- mal escrito daría NULL y toda comparación contra NULL sería falsa en silencio (p. ej. ningún
+-- par representativo, sin error).
+CREATE FUNCTION analytics.param(p_nombre text) RETURNS numeric
+LANGUAGE plpgsql STABLE AS $$
+DECLARE
+    v numeric;
+BEGIN
+    SELECT valor INTO v FROM analytics.parametro WHERE nombre = p_nombre;
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Parámetro inexistente: %', p_nombre;
+    END IF;
+    RETURN v;
+END $$;
+
+-- --------------------------------------------------------------------------
+-- Segmento tipo × nivel: cobertura de MiFuturo sobre el SIES (auditoría 02)
+-- --------------------------------------------------------------------------
+CREATE TABLE analytics.segmento (
+    tipo_institucion  text    NOT NULL,
+    nivel_carrera     text    NOT NULL,
+    tit_sies_1        integer NOT NULL,   -- titulaciones SIES, ventana del 1er año
+    tit_publicadas_1  integer NOT NULL,   -- de institución × genérica publicadas en MiFuturo
+    tit_sies_5        integer NOT NULL,   -- ídem, ventana del 5° año
+    tit_publicadas_5  integer NOT NULL,
+    cobertura_1       numeric NOT NULL,   -- proporción 0-1
+    cobertura_5       numeric NOT NULL,
+    baja_cobertura    boolean NOT NULL,
+    PRIMARY KEY (tipo_institucion, nivel_carrera)
+);
+COMMENT ON TABLE analytics.segmento IS
+    'Cobertura por titulaciones de los programas publicados por MiFuturo. Ventanas = cohortes de la media del 1er y 5° año (modelo.cohorte; Derecho +1).';
+
+INSERT INTO analytics.segmento
+WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
+     c5 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_5to_anio'),
+x AS (
+    SELECT i.tipo_institucion, g.nivel_carrera,
+           p.codigo_institucion IS NOT NULL AS publicado,
+           sum(t.total_titulaciones) FILTER (
+               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int
+                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int) AS tit_1,
+           sum(t.total_titulaciones) FILTER (
+               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int
+                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int) AS tit_5
+    FROM modelo.titulacion t
+    JOIN modelo.institucion i USING (codigo_institucion)
+    JOIN modelo.carrera_generica g USING (clave_carrera_generica)
+    LEFT JOIN modelo.mifuturo_programa p USING (codigo_institucion, clave_carrera_generica)
+    CROSS JOIN c1 CROSS JOIN c5
+    GROUP BY 1, 2, 3
+)
+SELECT tipo_institucion, nivel_carrera,
+       coalesce(sum(tit_1), 0), coalesce(sum(tit_1) FILTER (WHERE publicado), 0),
+       coalesce(sum(tit_5), 0), coalesce(sum(tit_5) FILTER (WHERE publicado), 0),
+       sum(tit_1) FILTER (WHERE publicado)::numeric / sum(tit_1),
+       sum(tit_5) FILTER (WHERE publicado)::numeric / sum(tit_5),
+       least(sum(tit_1) FILTER (WHERE publicado)::numeric / sum(tit_1),
+             sum(tit_5) FILTER (WHERE publicado)::numeric / sum(tit_5)) < analytics.param('max_cobertura_baja')
+FROM x
+GROUP BY 1, 2;
+
+-- --------------------------------------------------------------------------
+-- Par: una fila por par de la estadística nacional (252)
+-- --------------------------------------------------------------------------
+CREATE TABLE analytics.par (
+    clave_carrera_generica  text     NOT NULL,
+    tipo_institucion        text     NOT NULL,
+    nombre                  text     NOT NULL,
+    nivel_carrera           text     NOT NULL,
+    area_cine13             text     NOT NULL,   -- área dominante de la genérica
+    share_area              numeric  NOT NULL,   -- proporción 0-1 del área dominante
+    area_asignable          boolean  NOT NULL,
+    ingreso_completo        boolean  NOT NULL,   -- media 1°-5° y percentiles años 1 y 5
+    n_inst_oferta           integer  NOT NULL,   -- con titulaciones SIES en ambas ventanas
+    n_pub_emp1              integer  NOT NULL,   -- instituciones publicadas con el dato
+    n_pub_emp2              integer  NOT NULL,
+    n_pub_tramo             integer  NOT NULL,
+    tit_ventana_1           integer  NOT NULL,   -- titulaciones SIES del par (todas las instituciones)
+    tit_ventana_5           integer  NOT NULL,
+    peso                    integer  NOT NULL,   -- tit_ventana_1 + tit_ventana_5 (decisión aprobada)
+    representativo          boolean  NOT NULL,   -- entra en rankings, referencias y cuadrantes
+    celda_valida            boolean  NOT NULL,   -- su celda área × tipo × nivel es referencia
+    referencia              text     CHECK (referencia IN ('celda', 'segmento')),  -- NULL = no comparable
+    baja_cobertura          boolean  NOT NULL,   -- heredada del segmento
+    es_derecho              boolean  NOT NULL,   -- cohortes desplazadas +1 año
+    PRIMARY KEY (clave_carrera_generica, tipo_institucion),
+    FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES modelo.mifuturo_estadistica,
+    FOREIGN KEY (tipo_institucion, nivel_carrera) REFERENCES analytics.segmento
+);
+COMMENT ON COLUMN analytics.par.referencia IS
+    'celda = se compara con su celda área × tipo × nivel; segmento = con su tipo × nivel; NULL = no representativo: solo ficha por carrera, rotulado "1-2 instituciones: no comparable".';
+
+INSERT INTO analytics.par
+WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
+     c5 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_5to_anio'),
+-- Titulaciones por institución × genérica en cada ventana (Derecho corrido +1).
+inst AS (
+    SELECT i.tipo_institucion, t.clave_carrera_generica, t.codigo_institucion,
+           coalesce(sum(t.total_titulaciones) FILTER (
+               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int
+                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int), 0) AS tit_1,
+           coalesce(sum(t.total_titulaciones) FILTER (
+               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int
+                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int), 0) AS tit_5
+    FROM modelo.titulacion t
+    JOIN modelo.institucion i USING (codigo_institucion)
+    CROSS JOIN c1 CROSS JOIN c5
+    GROUP BY 1, 2, 3
+),
+oferta AS (
+    SELECT tipo_institucion, clave_carrera_generica,
+           count(*) FILTER (WHERE tit_1 > 0 AND tit_5 > 0) AS n_inst_oferta,
+           sum(tit_1) AS tit_1, sum(tit_5) AS tit_5
+    FROM inst GROUP BY 1, 2
+),
+-- Área dominante en todas las cohortes de los indicadores usados (sin series, D5).
+v AS (
+    SELECT min(cohorte_desde) AS desde, max(cohorte_hasta) AS hasta FROM modelo.cohorte
+    WHERE fuente IN ('Empleabilidad', 'Estadisticas') AND indicador NOT LIKE 'serie\_%'
+),
+por_area AS (
+    SELECT t.clave_carrera_generica, t.cine13_area, sum(t.total_titulaciones) AS tit
+    FROM modelo.titulacion t, v
+    WHERE t.anio BETWEEN v.desde AND v.hasta
+    GROUP BY 1, 2
+),
+area AS (
+    SELECT clave_carrera_generica,
+           (array_agg(cine13_area ORDER BY tit DESC, cine13_area))[1] AS area,
+           max(tit)::numeric / sum(tit) AS share
+    FROM por_area GROUP BY 1
+),
+publicadas AS (
+    SELECT clave_carrera_generica, tipo_institucion,
+           count(*) AS n_emp1, count(empleabilidad_2do_anio) AS n_emp2,
+           count(ingreso_4to_anio_tramo_min) AS n_tramo
+    FROM modelo.mifuturo_programa GROUP BY 1, 2
+),
+base AS (
+    SELECT e.clave_carrera_generica, e.tipo_institucion, g.nombre, g.nivel_carrera,
+           a.area, a.share, a.share >= analytics.param('min_share_area') AS area_asignable,
+           num_nonnulls(e.ingreso_medio_1er_anio, e.ingreso_medio_2do_anio, e.ingreso_medio_3er_anio,
+                        e.ingreso_medio_4to_anio, e.ingreso_medio_5to_anio,
+                        e.percentil_10_anio_1, e.percentil_25_anio_1, e.percentil_50_anio_1,
+                        e.percentil_75_anio_1, e.percentil_90_anio_1,
+                        e.percentil_10_anio_5, e.percentil_25_anio_5, e.percentil_50_anio_5,
+                        e.percentil_75_anio_5, e.percentil_90_anio_5) = 15 AS ingreso_completo,
+           coalesce(o.n_inst_oferta, 0) AS n_inst_oferta,
+           coalesce(pu.n_emp1, 0) AS n_emp1, coalesce(pu.n_emp2, 0) AS n_emp2, coalesce(pu.n_tramo, 0) AS n_tramo,
+           coalesce(o.tit_1, 0) AS tit_1, coalesce(o.tit_5, 0) AS tit_5,
+           s.baja_cobertura,
+           e.clave_carrera_generica = 'DERECHO' AS es_derecho
+    FROM modelo.mifuturo_estadistica e
+    JOIN modelo.carrera_generica g USING (clave_carrera_generica)
+    JOIN area a USING (clave_carrera_generica)
+    JOIN analytics.segmento s ON s.tipo_institucion = e.tipo_institucion AND s.nivel_carrera = g.nivel_carrera
+    LEFT JOIN oferta o
+           ON o.clave_carrera_generica = e.clave_carrera_generica AND o.tipo_institucion = e.tipo_institucion
+    LEFT JOIN publicadas pu
+           ON pu.clave_carrera_generica = e.clave_carrera_generica AND pu.tipo_institucion = e.tipo_institucion
+),
+marcado AS (
+    SELECT b.*,
+           b.ingreso_completo AND b.n_inst_oferta >= analytics.param('min_inst_oferta') AS representativo
+    FROM base b
+),
+celda AS (
+    -- Pares representativos con área asignable en la celda (los no asignables no forman celda).
+    SELECT m.*,
+           m.area_asignable
+           AND count(*) FILTER (WHERE m.representativo AND m.area_asignable)
+                   OVER (PARTITION BY m.area, m.tipo_institucion, m.nivel_carrera)
+               >= analytics.param('min_pares_celda') AS celda_valida
+    FROM marcado m
+)
+SELECT clave_carrera_generica, tipo_institucion, nombre, nivel_carrera,
+       area, share, area_asignable, ingreso_completo, n_inst_oferta,
+       n_emp1, n_emp2, n_tramo, tit_1, tit_5, tit_1 + tit_5,
+       representativo, celda_valida,
+       CASE WHEN NOT representativo THEN NULL
+            WHEN celda_valida THEN 'celda'
+            ELSE 'segmento' END,
+       baja_cobertura, es_derecho
+FROM celda;
+
+-- --------------------------------------------------------------------------
+-- Controles qa (mismo mecanismo que src/BD/04_qa.sql; build.py falla si alguno queda en FALLA)
+-- --------------------------------------------------------------------------
+-- Son invariantes que deben sobrevivir a cambios futuros del SQL de arriba. La igualdad con
+-- T5 (210 / 18 / 104-88-62) se verificó una vez al migrar (logfile), no se fija aquí: con
+-- datos nuevos de MiFuturo esos números cambian legítimamente.
+INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
+SELECT 'analytics_par', 'filas', CASE WHEN n_par = n_est THEN 'OK' ELSE 'FALLA' END,
+       n_par, 'una fila por par de modelo.mifuturo_estadistica',
+       format('%s pares en analytics.par; %s en modelo.mifuturo_estadistica', n_par, n_est)
+FROM (SELECT (SELECT count(*) FROM analytics.par) AS n_par,
+             (SELECT count(*) FROM modelo.mifuturo_estadistica) AS n_est) x
+UNION ALL
+SELECT 'analytics_par', 'representativo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'representativo ⇔ ingreso completo y n_inst_oferta ≥ min_inst_oferta',
+       format('%s pares incoherentes; %s representativos', n,
+              (SELECT count(*) FROM analytics.par WHERE representativo))
+FROM (SELECT count(*) AS n FROM analytics.par
+      WHERE representativo IS DISTINCT FROM
+            (ingreso_completo AND n_inst_oferta >= analytics.param('min_inst_oferta'))) x
+UNION ALL
+-- Recuento por GROUP BY, independiente de la función de ventana usada al poblar.
+SELECT 'analytics_par', 'celda_valida', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'celda válida ⇔ ≥ min_pares_celda pares representativos con área asignable',
+       format('%s pares incoherentes; %s celdas válidas', n,
+              (SELECT count(DISTINCT (area_cine13, tipo_institucion, nivel_carrera))
+               FROM analytics.par WHERE celda_valida))
+FROM (SELECT count(*) AS n
+      FROM analytics.par p
+      LEFT JOIN (SELECT area_cine13, tipo_institucion, nivel_carrera, count(*) AS n_repr
+                 FROM analytics.par WHERE representativo AND area_asignable
+                 GROUP BY 1, 2, 3) c USING (area_cine13, tipo_institucion, nivel_carrera)
+      WHERE p.celda_valida IS DISTINCT FROM
+            (p.area_asignable AND coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda'))) x
+UNION ALL
+SELECT 'analytics_par', 'referencia', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'referencia NULL ⇔ no representativo; celda ⇔ representativo y celda válida',
+       format('%s pares incoherentes; celda %s, segmento %s, sin referencia %s', n,
+              (SELECT count(*) FROM analytics.par WHERE referencia = 'celda'),
+              (SELECT count(*) FROM analytics.par WHERE referencia = 'segmento'),
+              (SELECT count(*) FROM analytics.par WHERE referencia IS NULL))
+FROM (SELECT count(*) AS n FROM analytics.par
+      WHERE (referencia IS NULL) <> (NOT representativo)
+         -- coalesce: con referencia NULL, (referencia = 'celda') es NULL y no "falso".
+         OR coalesce(referencia = 'celda', false) <> (representativo AND celda_valida)) x
+UNION ALL
+SELECT 'analytics_par', 'peso', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'todo par representativo tiene peso > 0 en ambas ventanas',
+       format('%s pares representativos sin titulaciones en alguna ventana', n)
+FROM (SELECT count(*) AS n FROM analytics.par
+      WHERE representativo AND (tit_ventana_1 = 0 OR tit_ventana_5 = 0)) x;

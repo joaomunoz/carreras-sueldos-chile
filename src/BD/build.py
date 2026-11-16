@@ -22,7 +22,12 @@ Pasos:
   5. src/BD/04_qa.sql           controles semánticos → tabla qa.control
   6. Contrato de esquemas       columnas de raw = los 3 esquema.py (nombre, orden, tipo)
                                 → qa.control
-  7. Verificación               conteos CSV = raw = modelo, y ningún control en FALLA
+  7. src/Analisis/sql/analytics/*.sql  esquema analytics (Fase 2), en orden de nombre;
+                                cada archivo registra sus controles en qa.control
+  8. Verificación               conteos CSV = raw = modelo, y ningún control en FALLA
+
+Por qué analytics va en este mismo build y transacción: con un build aparte, un cambio en
+modelo podría quedar publicado con un analytics calculado sobre los datos anteriores.
 """
 
 from __future__ import annotations
@@ -51,6 +56,7 @@ log = logging.getLogger(__name__)
 RAIZ = Path(__file__).resolve().parents[2]
 DIR_BD = RAIZ / "src" / "BD"
 DIR_SCRAPERS = RAIZ / "src" / "Scrapers"
+DIR_ANALYTICS = RAIZ / "src" / "Analisis" / "sql" / "analytics"
 
 SCRIPTS_ESTRUCTURA = ["01_raw.sql", "02_modelo.sql"]
 SCRIPT_POBLAR = "03_poblar_modelo.sql"
@@ -91,7 +97,8 @@ TIPOS_COMPATIBLES = {
     "boolean": {"boolean"},
 }
 
-TABLAS_INFORMATIVAS = ["modelo.institucion", "modelo.carrera_generica", "modelo.cohorte", "modelo.mifuturo_serie"]
+TABLAS_INFORMATIVAS = ["modelo.institucion", "modelo.carrera_generica", "modelo.cohorte", "modelo.mifuturo_serie",
+                       "analytics.segmento", "analytics.par"]
 
 TAMANO_BLOQUE = 1 << 20  # 1 MB por escritura al COPY
 
@@ -109,9 +116,9 @@ def _conectar() -> psycopg.Connection:
     return psycopg.connect("")
 
 
-def _ejecutar_sql(cur: psycopg.Cursor, nombre: str) -> None:
+def _ejecutar_sql(cur: psycopg.Cursor, nombre: str, directorio: Path = DIR_BD) -> None:
     """Ejecuta un archivo .sql completo (varias sentencias, sin parámetros)."""
-    ruta = DIR_BD / nombre
+    ruta = directorio / nombre
     t0 = time.perf_counter()
     cur.execute(ruta.read_text(encoding="utf-8"))
     log.info("%-24s OK (%.1f s)", nombre, time.perf_counter() - t0)
@@ -224,6 +231,9 @@ def build() -> None:
             _ejecutar_sql(cur, SCRIPT_POBLAR)
             _ejecutar_sql(cur, SCRIPT_QA)
             _controlar_esquemas(cur)
+            # Orden por nombre (01_, 02_, ...): cada archivo depende de los anteriores.
+            for ruta in sorted(DIR_ANALYTICS.glob("*.sql")):
+                _ejecutar_sql(cur, ruta.name, DIR_ANALYTICS)
             _verificar_conteos(cur)
             _verificar_qa(cur)
     log.info("Build OK en %.1f s (base %s)", time.perf_counter() - t0, os.environ["PGDATABASE"])
