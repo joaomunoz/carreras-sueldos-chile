@@ -12,6 +12,14 @@ Granularidad mixta, por diseño de la fuente (no corregible aquí):
     fila del par): ingreso medio 1°..5° año y percentiles 10/25/50/75/90 de año 1 y 5.
     Nunca se promedian sobre filas: se consolidan primero al par (aguas abajo, en SQL).
 
+Cohortes (Metodología Buscador Estadísticas por Carrera 2025-2026, líneas 89 y 97):
+  - Ingreso medio año k: 3 cohortes (2022-k .. 2024-k) con ingresos 2022-2024; >= 50 casos
+    por año de ingreso. Año 1 = cohortes 2021-2023; año 5 = cohortes 2017-2019.
+  - Percentiles: UNA sola cohorte, ingresos 2024; >= 11 casos. Año 1 = cohorte 2023;
+    año 5 = cohorte 2019. Media y percentiles NO describen la misma población: no se
+    combinan en una misma razón (p. ej. Media/P50 es inválida).
+  - Derecho: cohorte de titulación + 1 año en ambos casos.
+
 Unidades: porcentajes en escala 0-100 (float); ingresos en pesos de septiembre de 2025
 (enteros). Los ingresos solo consideran titulados con ingreso >= sueldo mínimo (metodología
 MiFuturo 2025-2026), así que los percentiles describen una distribución truncada abajo.
@@ -43,16 +51,19 @@ ESQUEMA_EMPLEABILIDAD = {
     "ingreso_4to_anio_tramo_min": "Int64", # cota inferior del tramo, en pesos
     "ingreso_4to_anio_tramo_max": "Int64", # cota superior; nula en el tramo abierto "Sobre ..."
     # --- Indicadores a nivel nacional x tipo x carrera genérica ---
-    "ingreso_medio_1er_anio": "Int64",     # Int64 nullable de pandas para tolerar nulos
+    # Ingreso medio: año k = cohortes (2022-k)..(2024-k), ingresos 2022-2024
+    "ingreso_medio_1er_anio": "Int64",     # cohortes 2021-2023; Int64 nullable para tolerar nulos
     "ingreso_medio_2do_anio": "Int64",
     "ingreso_medio_3er_anio": "Int64",
     "ingreso_medio_4to_anio": "Int64",
-    "ingreso_medio_5to_anio": "Int64",
+    "ingreso_medio_5to_anio": "Int64",     # cohortes 2017-2019
+    # Percentiles: una sola cohorte con ingresos 2024 (año 1 = cohorte 2023)
     "percentil_10_anio_1": "Int64",
     "percentil_25_anio_1": "Int64",
     "percentil_50_anio_1": "Int64",
     "percentil_75_anio_1": "Int64",
     "percentil_90_anio_1": "Int64",
+    # Año 5 = cohorte 2019 (ingresos 2024)
     "percentil_10_anio_5": "Int64",
     "percentil_25_anio_5": "Int64",
     "percentil_50_anio_5": "Int64",
