@@ -7,3 +7,6 @@ pizarra/
 
 # Crudo SIES (39 MB): obtener.py lo vuelve a descargar; versionarlo solo engorda el historial
 src/Scrapers/Titulados/Entrada/titulados_2007_2025.xlsx
+
+# Archivos de bloqueo de LibreOffice (aparecen al abrir un CSV)
+.~lock.*#

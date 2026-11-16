@@ -16,6 +16,12 @@ Transformaciones aplicadas:
   4. Tramo ingreso 4° año: se parsea la ETIQUETA a cotas en pesos. El campo numérico crudo
                           (data-order del HTML) NO es ordinal: agrupa "s/i" con los tramos
                           ≥ $2,5 millones bajo el mismo código y desordena el resto.
+                          La etiqueta no se publica: es biyectiva con (min, max) y sobra
+                          (el texto original queda en Entrada/). Se guarda como intervalo,
+                          nunca como punto medio: el tramo "Sobre ..." no tiene cota superior.
+                          Los "s/i" quedan NULL y NO se imputan: MiFuturo no publica bajo 11
+                          casos SII, y rellenar con el ingreso nacional del par copiaría el
+                          promedio del centro y achicaría la dispersión entre instituciones.
   5. Tipo institución:    canónico Universidad | IP | CFT (comun.normalizador).
   6. Claves de cruce:     `clave_institucion` y `clave_carrera_generica` normalizadas; los
                           nombres originales se conservan para visualización.
@@ -50,7 +56,9 @@ ARCHIVO_SALIDA = "empleabilidad_procesado.csv"
 SEPARADOR_CSV = ";"
 
 COLUMNAS_SALIDA = list(ESQUEMA_EMPLEABILIDAD)
-LLAVE = ["id_institucion", "carrera"]
+# PK del modelo en BD: MiFuturo publica una fila por institución × carrera genérica (T0).
+# El nombre de `carrera` no sirve de llave: es texto libre que cambia entre publicaciones.
+LLAVE = ["id_institucion", "clave_carrera_generica"]
 
 COLUMNAS_PORCENTAJE = [
     "pct_continuidad_estudios",
@@ -133,7 +141,6 @@ def transformar(df: pd.DataFrame) -> pd.DataFrame:
 
     etiquetas = df["ingreso_prom_4to_anio"].astype(str).str.strip()
     cotas = etiquetas.map(parsear_tramo)
-    out["ingreso_4to_anio_tramo"] = etiquetas.where(etiquetas != ETIQUETA_SIN_INFO)
     out["ingreso_4to_anio_tramo_min"] = pd.array([c[0] for c in cotas], dtype="Int64")
     out["ingreso_4to_anio_tramo_max"] = pd.array([c[1] for c in cotas], dtype="Int64")
 

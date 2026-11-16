@@ -39,7 +39,7 @@ ESQUEMA_EMPLEABILIDAD = {
     "duracion_real_semestres": "float64",  # titulados 2024
     "empleabilidad_1er_anio": "float64",   # cohortes 2021-2023
     "empleabilidad_2do_anio": "float64",   # cohortes 2020-2022
-    "ingreso_4to_anio_tramo": "object",    # etiqueta original del tramo (cohortes 2018-2020)
+    # Tramo de ingreso al 4° año (cohortes 2018-2020) como intervalo; NULL = no publicado (< 11 casos SII)
     "ingreso_4to_anio_tramo_min": "Int64", # cota inferior del tramo, en pesos
     "ingreso_4to_anio_tramo_max": "Int64", # cota superior; nula en el tramo abierto "Sobre ..."
     # --- Indicadores a nivel nacional x tipo x carrera genérica ---
