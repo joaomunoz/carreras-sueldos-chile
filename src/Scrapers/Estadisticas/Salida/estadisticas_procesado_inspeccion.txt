@@ -1,0 +1,73 @@
+[esquema] Seleccionado diccionario con 42/42 columnas coincidentes.
+============================================================
+📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
+📁 Archivo: estadisticas_procesado.csv
+============================================================
+🔹 Dimensiones: 252 filas | 42 columnas
+🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
+🔹 Registros Duplicados Absolutos: 0 (0.00%)
+🔹 Memoria Total Estimada: 0.16 MB
+
+🔬 MATRIZ DE CALIDAD POR COLUMNA:
+-------------------------------------------------------------------------------------------------------------------
+Columna                        | Tipo         | Nulos    | % Nulos  | Únicos   | Espacios Vacíos | Memoria   
+-------------------------------------------------------------------------------------------------------------------
+id_estadisticas                | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+tipo_institucion               | object       | 0        | 0.00   % | 3        | 0               | 0.013    MB
+carrera_generica               | object       | 0        | 0.00   % | 165      | 0               | 0.030    MB
+clave_carrera_generica         | object       | 0        | 0.00   % | 165      | 0               | 0.019    MB
+area_conocimiento_mineduc      | object       | 0        | 0.00   % | 10       | 0               | 0.020    MB
+ingreso_medio_1er_anio         | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+ingreso_medio_2do_anio         | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+ingreso_medio_3er_anio         | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+ingreso_medio_4to_anio         | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+ingreso_medio_5to_anio         | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_10_anio_1            | Int64        | 0        | 0.00   % | 251      | 0               | 0.002    MB
+percentil_25_anio_1            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_50_anio_1            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_75_anio_1            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_90_anio_1            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_10_anio_5            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_25_anio_5            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_50_anio_5            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_75_anio_5            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil_90_anio_5            | Int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+empleabilidad_1er_anio         | float64      | 0        | 0.00   % | 211      | 0               | 0.002    MB
+empleabilidad_2do_anio         | float64      | 0        | 0.00   % | 195      | 0               | 0.002    MB
+empleabilidad_1er_anio_cohorte_2019 | float64      | 16       | 6.35   % | 201      | 0               | 0.002    MB
+empleabilidad_1er_anio_cohorte_2020 | float64      | 16       | 6.35   % | 195      | 0               | 0.002    MB
+empleabilidad_1er_anio_cohorte_2021 | float64      | 16       | 6.35   % | 200      | 0               | 0.002    MB
+empleabilidad_1er_anio_cohorte_2022 | float64      | 16       | 6.35   % | 200      | 0               | 0.002    MB
+empleabilidad_1er_anio_cohorte_2023 | float64      | 16       | 6.35   % | 190      | 0               | 0.002    MB
+empleabilidad_2do_anio_cohorte_2018 | float64      | 16       | 6.35   % | 199      | 0               | 0.002    MB
+empleabilidad_2do_anio_cohorte_2019 | float64      | 16       | 6.35   % | 195      | 0               | 0.002    MB
+empleabilidad_2do_anio_cohorte_2020 | float64      | 16       | 6.35   % | 193      | 0               | 0.002    MB
+empleabilidad_2do_anio_cohorte_2021 | float64      | 16       | 6.35   % | 188      | 0               | 0.002    MB
+empleabilidad_2do_anio_cohorte_2022 | float64      | 16       | 6.35   % | 198      | 0               | 0.002    MB
+ingreso_medio_4to_anio_cohorte_2016 | Int64        | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingreso_medio_4to_anio_cohorte_2017 | Int64        | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingreso_medio_4to_anio_cohorte_2018 | Int64        | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingreso_medio_4to_anio_cohorte_2019 | Int64        | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingreso_medio_4to_anio_cohorte_2020 | Int64        | 35       | 13.89  % | 217      | 0               | 0.002    MB
+titulados_2024                 | Int64        | 0        | 0.00   % | 235      | 0               | 0.002    MB
+titulados_2024_mujeres         | Int64        | 0        | 0.00   % | 200      | 0               | 0.002    MB
+titulados_2024_hombres         | Int64        | 0        | 0.00   % | 202      | 0               | 0.002    MB
+duracion_formal_semestres      | float64      | 9        | 3.57   % | 49       | 0               | 0.002    MB
+duracion_real_semestres        | float64      | 9        | 3.57   % | 85       | 0               | 0.002    MB
+-------------------------------------------------------------------------------------------------------------------
+
+🧠 Clasificación Automática de Variables:
+   - Numéricas (38): ['id_estadisticas', 'ingreso_medio_1er_anio', 'ingreso_medio_2do_anio', 'ingreso_medio_3er_anio', 'ingreso_medio_4to_anio', 'ingreso_medio_5to_anio', 'percentil_10_anio_1', 'percentil_25_anio_1', 'percentil_50_anio_1', 'percentil_75_anio_1', 'percentil_90_anio_1', 'percentil_10_anio_5', 'percentil_25_anio_5', 'percentil_50_anio_5', 'percentil_75_anio_5', 'percentil_90_anio_5', 'empleabilidad_1er_anio', 'empleabilidad_2do_anio', 'empleabilidad_1er_anio_cohorte_2019', 'empleabilidad_1er_anio_cohorte_2020', 'empleabilidad_1er_anio_cohorte_2021', 'empleabilidad_1er_anio_cohorte_2022', 'empleabilidad_1er_anio_cohorte_2023', 'empleabilidad_2do_anio_cohorte_2018', 'empleabilidad_2do_anio_cohorte_2019', 'empleabilidad_2do_anio_cohorte_2020', 'empleabilidad_2do_anio_cohorte_2021', 'empleabilidad_2do_anio_cohorte_2022', 'ingreso_medio_4to_anio_cohorte_2016', 'ingreso_medio_4to_anio_cohorte_2017', 'ingreso_medio_4to_anio_cohorte_2018', 'ingreso_medio_4to_anio_cohorte_2019', 'ingreso_medio_4to_anio_cohorte_2020', 'titulados_2024', 'titulados_2024_mujeres', 'titulados_2024_hombres', 'duracion_formal_semestres', 'duracion_real_semestres']
+   - Categóricas/Texto (4): ['tipo_institucion', 'carrera_generica', 'clave_carrera_generica', 'area_conocimiento_mineduc']
+   - Fechas (0): []
+
+🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
+     id_estadisticas  ... duracion_real_semestres
+165              233  ...                     NaN
+6                137  ...                    11.3
+111              204  ...                    15.1
+172              235  ...                     6.0
+115              208  ...                    10.2
+
+[5 rows x 42 columns]
+============================================================

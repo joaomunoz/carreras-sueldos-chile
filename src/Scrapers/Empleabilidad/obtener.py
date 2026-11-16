@@ -17,10 +17,10 @@ Estrategia verificada (la tabla NO expone endpoint JSON propio, se extrae del HT
       regiones donde tiene sedes. Cobertura 88/105 instituciones; el resto son
       planteles sin oferta vigente en el filtro regional.
 
-  Nivel 3 - Ingresos y percentiles (opcional, defecto activo):
-      `detalleEstadisticas(id)` (252 llamadas) -> ingreso medio años 1..5 y
-      percentiles 10/25/50/75/90 de año 1 y año 5. Grain Nacional x Tipo de
-      Institución x Carrera (NO por institución). Cobertura ~96% de filas.
+  Ingresos y percentiles NACIONALES (carrera genérica x tipo) ya no se extraen aquí:
+      vienen del Buscador de Estadísticas por Carrera, con su propio scraper
+      (src/Scrapers/Estadisticas). Pegarlos a cada institución los repetía en 1.690 filas
+      y perdía los pares sin ninguna institución publicada en este buscador.
 
 Niveles descartados tras verificación empírica (no generan código):
   - `dcms_armado_tabla_empleabilidad(id)`: sus 4 campos están MAL ETIQUETADOS.
@@ -44,17 +44,11 @@ from __future__ import annotations
 
 import logging
 import re
-import sys
 import time
 from pathlib import Path
 
 import pandas as pd
 import requests
-
-# Cabecera estándar del proyecto: ruta del script y fecha de actualización.
-# Permite ejecutar el archivo desde cualquier directorio de trabajo.
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from comun.normalizador import normalizar_texto  # noqa: E402
 
 log = logging.getLogger(__name__)
 
@@ -69,16 +63,6 @@ NOMBRE_SALIDA = "empleabilidad_mifuturo.csv"
 
 SEPARADOR_CSV = ";"
 
-# Columnas que aporta el nivel 4 (detalleEstadisticas).
-COLUMNAS_INGRESOS = [
-    "ingreso_medio_1er_anio", "ingreso_medio_2do_anio", "ingreso_medio_3er_anio",
-    "ingreso_medio_4to_anio", "ingreso_medio_5to_anio",
-    "percentil_10_anio_1", "percentil_25_anio_1", "percentil_50_anio_1",
-    "percentil_75_anio_1", "percentil_90_anio_1",
-    "percentil_10_anio_5", "percentil_25_anio_5", "percentil_50_anio_5",
-    "percentil_75_anio_5", "percentil_90_anio_5",
-]
-
 TIPOS_INSTITUCION = {1: "Centro de Formación Técnica", 2: "Instituto Profesional", 3: "Universidad"}
 REGIONES = {
     15: "Arica y Parinacota", 1: "Tarapacá", 2: "Antofagasta", 3: "Atacama",
@@ -92,14 +76,6 @@ HEADERS = {
                   "(KHTML, like Gecko) Chrome/124.0 Safari/537.36",
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 }
-
-# Mapea la etiqueta corta del POST al nombre completo que usa el AJAX.
-_ALIAS_TIPO = {
-    "CENTRO DE FORMACIÓN TÉCNICA": "CENTRO DE FORMACIÓN TÉCNICA",
-    "INSTITUTO PROFESIONAL": "INSTITUTO PROFESIONAL",
-    "UNIVERSIDAD": "UNIVERSIDAD",
-}
-
 
 def _sesion() -> requests.Session:
     """Sesión HTTP con headers compartidos."""
@@ -212,116 +188,11 @@ def _mapa_regiones(s: requests.Session) -> dict[int, list[str]]:
 
 
 # --------------------------------------------------------------------------- #
-# Nivel 3 - Ingresos y percentiles (Nacional x Tipo x Carrera)
-# --------------------------------------------------------------------------- #
-def _catalogo_estadisticas(s: requests.Session) -> dict[tuple[str, str], str]:
-    """(tipo_institución, carrera) -> id de detalleEstadisticas."""
-    resp = s.post(
-        URL_BUSCADOR.replace("buscador-de-empleabilidad-e-ingresos", "buscador-de-estadisticas-por-carrera"),
-        data={
-            "nameTab": "estadisticas",
-            "areaConocimiento_est": "",
-            "tipo_institucion_est": "",
-            "institucionEst": "",
-            "carreraEst": "",
-        },
-        timeout=180,
-    )
-    resp.raise_for_status()
-    bloque = re.search(r'<table id="table_id".*?</table>', resp.text, re.S)
-    if not bloque:
-        raise RuntimeError("no se encontró la tabla de estadísticas por carrera")
-
-    cat: dict[tuple[str, str], str] = {}
-    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", bloque.group(0), re.S)[1:]:
-        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
-        m_id = re.search(r"verestadisticas\('(\d+)'\)", tr)
-        if len(tds) >= 2 and m_id:
-            # Se elimina el link "Ver estadísticas" COMPLETO (incluido su texto),
-            # luego el resto del HTML, y recién ahí se normaliza la clave.
-            def _limpiar(celda: str) -> str:
-                celda = re.sub(r"<a\b.*?</a>", "", celda, flags=re.S)
-                return normalizar_texto(_texto_celda(celda))
-
-            cat[(_limpiar(tds[0]), _limpiar(tds[1]))] = m_id.group(1)
-    log.info("catálogo estadísticas: %d combinaciones (tipo, carrera)", len(cat))
-    return cat
-
-
-def _ingresos_estadistica(s: requests.Session, id_est: str) -> dict:
-    """Ingreso medio años 1..5 + percentiles 10/25/50/75/90 de año 1 y 5."""
-    d: dict = {}
-    for intento in range(3):
-        try:
-            resp = s.post(URL_AJAX, data={"action": "detalleEstadisticas", "id": id_est}, timeout=60)
-            resp.raise_for_status()
-            d = resp.json()
-            break
-        except Exception as exc:  # noqa: BLE001 - el servidor corta conexiones al hacer rate-limit
-            espera = 2.0 * (intento + 1)
-            log.warning("detalleEstadisticas %s (intento %d/3) falló en %.1fs: %s",
-                        id_est, intento + 1, espera, exc)
-            time.sleep(espera)
-
-    if not d:
-        return {}
-    time.sleep(0.15)
-    return {
-        "ingreso_medio_1er_anio": d.get("primer_ano"),
-        "ingreso_medio_2do_anio": d.get("segundo_ano"),
-        "ingreso_medio_3er_anio": d.get("tercer_ano"),
-        "ingreso_medio_4to_anio": d.get("cuarto_ano"),
-        "ingreso_medio_5to_anio": d.get("quinto_ano"),
-        "percentil_10_anio_1": d.get("percentil10_a"),
-        "percentil_25_anio_1": d.get("percentil25_a"),
-        "percentil_50_anio_1": d.get("percentil50_a"),
-        "percentil_75_anio_1": d.get("percentil75_a"),
-        "percentil_90_anio_1": d.get("percentil90_a"),
-        "percentil_10_anio_5": d.get("percentil10_b"),
-        "percentil_25_anio_5": d.get("percentil25_b"),
-        "percentil_50_anio_5": d.get("percentil50_b"),
-        "percentil_75_anio_5": d.get("percentil75_b"),
-        "percentil_90_anio_5": d.get("percentil90_b"),
-    }
-
-
-def _enriquecer_ingresos(s: requests.Session, df: pd.DataFrame) -> pd.DataFrame:
-    """Adjunta ingresos/percentiles por (tipo_institución, carrera_genérica)."""
-    cat = _catalogo_estadisticas(s)
-    cache: dict[str, dict] = {}
-    columnas: list[dict] = []
-    usados = 0
-
-    for tipo, gen in zip(df["tipo_institucion"], df["carrera_generica"]):
-        clave_id = cat.get((normalizar_texto(tipo), normalizar_texto(gen)))
-        if clave_id is None:
-            columnas.append({})
-            continue
-        if clave_id not in cache:
-            cache[clave_id] = _ingresos_estadistica(s, clave_id)
-            usados += 1
-        columnas.append(cache[clave_id])
-
-    extra = pd.DataFrame(columnas)
-    # Garantiza la presencia de todas las columnas aunque no haya ninguna coincidencia.
-    for col in COLUMNAS_INGRESOS:
-        if col not in extra.columns:
-            extra[col] = pd.NA
-    out = pd.concat([df.reset_index(drop=True), extra[COLUMNAS_INGRESOS]], axis=1)
-    log.info("ingresos: %d/%d llamadas únicas, %d filas enriquecidas",
-             usados, len(cat), out["ingreso_medio_1er_anio"].notna().sum())
-    return out
-
-
-# --------------------------------------------------------------------------- #
 # Orquestador
 # --------------------------------------------------------------------------- #
-def obtener_empleabilidad(
-    con_region: bool = True,
-    con_ingresos: bool = True,
-) -> Path:
+def obtener_empleabilidad(con_region: bool = True) -> Path:
     """
-    Descarga y arma el CSV de empleabilidad e ingresos en Entrada/.
+    Descarga y arma el CSV de empleabilidad (institución x carrera) en Entrada/.
 
     Returns:
         Ruta del CSV generado.
@@ -340,9 +211,6 @@ def obtener_empleabilidad(
         )
         log.info("regiones asignadas: %d/%d filas",
                  df["regiones_sede"].notna().sum(), len(df))
-
-    if con_ingresos:
-        df = _enriquecer_ingresos(s, df)
 
     destino = DIR_ENTRADA / NOMBRE_SALIDA
     df.to_csv(destino, sep=SEPARADOR_CSV, index=False, encoding="utf-8")

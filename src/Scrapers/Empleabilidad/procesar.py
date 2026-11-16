@@ -8,8 +8,10 @@ Salida:   Salida/empleabilidad_procesado.csv   (columnas según esquema.py, 1.69
 
 Transformaciones aplicadas:
   1. Selección:           se descartan `regiones_sede` (el proyecto no es regional),
-                          `retencion_1er_anio` (mide matriculados 2024, no titulados) y
-                          `ingreso_prom_4to_anio_tramo` (ver punto 4).
+                          `retencion_1er_anio` (mide matriculados 2024, no titulados),
+                          `ingreso_prom_4to_anio_tramo` (ver punto 4) y los ingresos y
+                          percentiles nacionales que traen crudos antiguos (su tabla es
+                          src/Scrapers/Estadisticas).
   2. Porcentajes:         fracción 0-1 → escala 0-100 con 1 decimal.
   3. Acreditación:        años desde la etiqueta de texto ("5 años" → 5, "No" → 0).
                           El campo numérico crudo tiene 103 nulos donde la etiqueta dice "No".
@@ -66,7 +68,7 @@ COLUMNAS_PORCENTAJE = [
     "empleabilidad_2do_anio",
 ]
 
-COLUMNAS_INGRESOS = [c for c in COLUMNAS_SALIDA if c.startswith(("ingreso_medio_", "percentil_"))]
+COLUMNAS_TRAMO = ["ingreso_4to_anio_tramo_min", "ingreso_4to_anio_tramo_max"]
 
 ETIQUETA_SIN_INFO = "s/i"
 
@@ -144,9 +146,6 @@ def transformar(df: pd.DataFrame) -> pd.DataFrame:
     out["ingreso_4to_anio_tramo_min"] = pd.array([c[0] for c in cotas], dtype="Int64")
     out["ingreso_4to_anio_tramo_max"] = pd.array([c[1] for c in cotas], dtype="Int64")
 
-    for col in COLUMNAS_INGRESOS:
-        out[col] = pd.to_numeric(df[col], errors="coerce").round().astype("Int64")
-
     return out[COLUMNAS_SALIDA].astype(ESQUEMA_EMPLEABILIDAD)
 
 
@@ -168,7 +167,7 @@ def validar(df: pd.DataFrame, n_entrada: int) -> None:
         s = df[col].dropna()
         if ((s < 0) | (s > 100)).any():
             errores.append(f"{col} fuera de [0, 100]")
-    for col in COLUMNAS_INGRESOS + ["ingreso_4to_anio_tramo_min", "ingreso_4to_anio_tramo_max"]:
+    for col in COLUMNAS_TRAMO:
         if (df[col].dropna() <= 0).any():
             errores.append(f"{col} con valores <= 0")
     if (df["ingreso_4to_anio_tramo_max"] <= df["ingreso_4to_anio_tramo_min"]).fillna(False).any():

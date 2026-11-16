@@ -2,10 +2,10 @@
 📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
 📁 Archivo: empleabilidad_procesado.csv
 ============================================================
-🔹 Dimensiones: 1690 filas | 29 columnas
+🔹 Dimensiones: 1690 filas | 14 columnas
 🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
 🔹 Registros Duplicados Absolutos: 0 (0.00%)
-🔹 Memoria Total Estimada: 1.16 MB
+🔹 Memoria Total Estimada: 0.94 MB
 
 🔬 MATRIZ DE CALIDAD POR COLUMNA:
 -------------------------------------------------------------------------------------------------------------------
@@ -25,35 +25,20 @@ empleabilidad_1er_anio         | float64      | 0        | 0.00   % | 662      |
 empleabilidad_2do_anio         | float64      | 178      | 10.53  % | 546      | 0               | 0.013    MB
 ingreso_4to_anio_tramo_min     | Int64        | 555      | 32.84  % | 22       | 0               | 0.015    MB
 ingreso_4to_anio_tramo_max     | Int64        | 577      | 34.14  % | 21       | 0               | 0.015    MB
-ingreso_medio_1er_anio         | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-ingreso_medio_2do_anio         | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-ingreso_medio_3er_anio         | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-ingreso_medio_4to_anio         | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-ingreso_medio_5to_anio         | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_10_anio_1            | Int64        | 58       | 3.43   % | 248      | 0               | 0.015    MB
-percentil_25_anio_1            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_50_anio_1            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_75_anio_1            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_90_anio_1            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_10_anio_5            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_25_anio_5            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_50_anio_5            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_75_anio_5            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
-percentil_90_anio_5            | Int64        | 58       | 3.43   % | 249      | 0               | 0.015    MB
 -------------------------------------------------------------------------------------------------------------------
 
 🧠 Clasificación Automática de Variables:
-   - Numéricas (23): ['id_institucion', 'acreditacion_anios', 'pct_continuidad_estudios', 'duracion_real_semestres', 'empleabilidad_1er_anio', 'empleabilidad_2do_anio', 'ingreso_4to_anio_tramo_min', 'ingreso_4to_anio_tramo_max', 'ingreso_medio_1er_anio', 'ingreso_medio_2do_anio', 'ingreso_medio_3er_anio', 'ingreso_medio_4to_anio', 'ingreso_medio_5to_anio', 'percentil_10_anio_1', 'percentil_25_anio_1', 'percentil_50_anio_1', 'percentil_75_anio_1', 'percentil_90_anio_1', 'percentil_10_anio_5', 'percentil_25_anio_5', 'percentil_50_anio_5', 'percentil_75_anio_5', 'percentil_90_anio_5']
+   - Numéricas (8): ['id_institucion', 'acreditacion_anios', 'pct_continuidad_estudios', 'duracion_real_semestres', 'empleabilidad_1er_anio', 'empleabilidad_2do_anio', 'ingreso_4to_anio_tramo_min', 'ingreso_4to_anio_tramo_max']
    - Categóricas/Texto (6): ['institucion', 'clave_institucion', 'tipo_institucion', 'carrera', 'carrera_generica', 'clave_carrera_generica']
    - Fechas (0): []
 
 🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
-      id_institucion  ... percentil_90_anio_5
-989               70  ...             1733848
-1635              93  ...             1972366
-1346              84  ...             2140618
-1174              76  ...             1972366
-1502              89  ...             1677753
+      id_institucion  ... ingreso_4to_anio_tramo_max
+989               70  ...                    1300000
+1635              93  ...                       <NA>
+1346              84  ...                    1000000
+1174              76  ...                    1200000
+1502              89  ...                       <NA>
 
-[5 rows x 29 columns]
+[5 rows x 14 columns]
 ============================================================

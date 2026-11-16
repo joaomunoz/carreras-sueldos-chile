@@ -1,0 +1,107 @@
+[esquema] Seleccionado diccionario con 3/76 columnas coincidentes.
+============================================================
+📋 REPORTE DE INSPECCIÓN RIGUROSA DE DATOS
+📁 Archivo: estadisticas_mifuturo.csv
+============================================================
+🔹 Dimensiones: 252 filas | 76 columnas
+🔹 Tipo de Índice: <class 'pandas.core.indexes.range.RangeIndex'>
+🔹 Registros Duplicados Absolutos: 0 (0.00%)
+🔹 Memoria Total Estimada: 0.25 MB
+
+🔬 MATRIZ DE CALIDAD POR COLUMNA:
+-------------------------------------------------------------------------------------------------------------------
+Columna                        | Tipo         | Nulos    | % Nulos  | Únicos   | Espacios Vacíos | Memoria   
+-------------------------------------------------------------------------------------------------------------------
+id_catalogo                    | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+tipo_catalogo                  | object       | 0        | 0.00   % | 3        | 0               | 0.018    MB
+carrera_catalogo               | object       | 0        | 0.00   % | 165      | 0               | 0.030    MB
+id_estadisticas                | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+id_area_cineunesco             | int64        | 0        | 0.00   % | 10       | 0               | 0.002    MB
+id_tipo_institucion            | int64        | 0        | 0.00   % | 3        | 0               | 0.002    MB
+es_tecnico                     | bool         | 0        | 0.00   % | 2        | 0               | 0.000    MB
+area_cineunesco                | object       | 0        | 0.00   % | 10       | 0               | 0.020    MB
+tipo_institucion               | object       | 0        | 0.00   % | 3        | 0               | 0.018    MB
+primer_ano                     | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+segundo_ano                    | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+tercer_ano                     | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+cuarto_ano                     | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+quinto_ano                     | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil10_a                  | int64        | 0        | 0.00   % | 251      | 0               | 0.002    MB
+percentil25_a                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil50_a                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil75_a                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil90_a                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil10_b                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil25_b                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil50_b                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil75_b                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+percentil90_b                  | int64        | 0        | 0.00   % | 252      | 0               | 0.002    MB
+cohorte_2005_a                 | float64      | 0        | 0.00   % | 211      | 0               | 0.002    MB
+cohorte_2006_a                 | float64      | 0        | 0.00   % | 195      | 0               | 0.002    MB
+ingreso_ano_1                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_2                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_3                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_4                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_5                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_6                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_7                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_8                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_9                  | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+ingreso_ano_10                 | float64      | 252      | 100.00 % | 0        | 0               | 0.002    MB
+n_de_titulados_femenino_2010   | int64        | 0        | 0.00   % | 200      | 0               | 0.002    MB
+n_de_titulados_masculino_2010  | int64        | 0        | 0.00   % | 202      | 0               | 0.002    MB
+n_de_titulados_2010            | int64        | 0        | 0.00   % | 235      | 0               | 0.002    MB
+duracion_esperada_del_plan_de_estudios_semestres | float64      | 9        | 3.57   % | 49       | 0               | 0.002    MB
+duracion_real_de_la_carrera_semestres | float64      | 9        | 3.57   % | 85       | 0               | 0.002    MB
+matricula_femenina_1er_ano_2011 | int64        | 0        | 0.00   % | 216      | 0               | 0.002    MB
+matricula_masculina_1er_ano_2011 | int64        | 0        | 0.00   % | 205      | 0               | 0.002    MB
+matricula_de_1er_ano_2011      | int64        | 0        | 0.00   % | 232      | 0               | 0.002    MB
+matricula_femenina_2011        | int64        | 0        | 0.00   % | 241      | 0               | 0.002    MB
+matricula_masculina_2011       | int64        | 0        | 0.00   % | 237      | 0               | 0.002    MB
+matricula_total_2011           | int64        | 0        | 0.00   % | 250      | 0               | 0.002    MB
+tasa_de_retencion_1er_ano_cohorte_2009 | float64      | 9        | 3.57   % | 169      | 0               | 0.002    MB
+tasa_de_retencion_2do_ano_cohorte_2009 | float64      | 116      | 46.03  % | 115      | 0               | 0.002    MB
+menor_a_500000                 | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_500000_a_1000000       | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_1000000_a_1500000      | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_1500000_a_2000000      | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_2000000_a_2500000      | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_2500000_a_3000000      | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+mayor_a_3000000                | int64        | 0        | 0.00   % | 1        | 0               | 0.002    MB
+estudiantes_establecimientos_municipales_matricula_2011 | float64      | 1        | 0.40   % | 232      | 0               | 0.002    MB
+estudiantes_particular_subvencionado_matricula_2011 | float64      | 1        | 0.40   % | 245      | 0               | 0.002    MB
+estudiantes_particular_pagado_matricula_2011 | float64      | 1        | 0.40   % | 175      | 0               | 0.002    MB
+carrera_estandar               | object       | 0        | 0.00   % | 165      | 0               | 0.030    MB
+estudiantes_adm_delegada_matricula | float64      | 1        | 0.40   % | 163      | 0               | 0.002    MB
+emplea_1_2015                  | float64      | 16       | 6.35   % | 201      | 0               | 0.002    MB
+emplea_1_2016                  | float64      | 16       | 6.35   % | 195      | 0               | 0.002    MB
+emplea_1_2017                  | float64      | 16       | 6.35   % | 200      | 0               | 0.002    MB
+emplea_1_2018                  | float64      | 16       | 6.35   % | 200      | 0               | 0.002    MB
+emplea_1_2019                  | float64      | 16       | 6.35   % | 190      | 0               | 0.002    MB
+emplea_2_2015                  | float64      | 16       | 6.35   % | 199      | 0               | 0.002    MB
+emplea_2_2016                  | float64      | 16       | 6.35   % | 195      | 0               | 0.002    MB
+emplea_2_2017                  | float64      | 16       | 6.35   % | 193      | 0               | 0.002    MB
+emplea_2_2018                  | float64      | 16       | 6.35   % | 188      | 0               | 0.002    MB
+emplea_2_2019                  | float64      | 16       | 6.35   % | 198      | 0               | 0.002    MB
+ingresos_4_2015                | float64      | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingresos_4_2016                | float64      | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingresos_4_2017                | float64      | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingresos_4_2018                | float64      | 35       | 13.89  % | 217      | 0               | 0.002    MB
+ingresos_4_2019                | float64      | 35       | 13.89  % | 217      | 0               | 0.002    MB
+-------------------------------------------------------------------------------------------------------------------
+
+🧠 Clasificación Automática de Variables:
+   - Numéricas (70): ['id_catalogo', 'id_estadisticas', 'id_area_cineunesco', 'id_tipo_institucion', 'primer_ano', 'segundo_ano', 'tercer_ano', 'cuarto_ano', 'quinto_ano', 'percentil10_a', 'percentil25_a', 'percentil50_a', 'percentil75_a', 'percentil90_a', 'percentil10_b', 'percentil25_b', 'percentil50_b', 'percentil75_b', 'percentil90_b', 'cohorte_2005_a', 'cohorte_2006_a', 'ingreso_ano_1', 'ingreso_ano_2', 'ingreso_ano_3', 'ingreso_ano_4', 'ingreso_ano_5', 'ingreso_ano_6', 'ingreso_ano_7', 'ingreso_ano_8', 'ingreso_ano_9', 'ingreso_ano_10', 'n_de_titulados_femenino_2010', 'n_de_titulados_masculino_2010', 'n_de_titulados_2010', 'duracion_esperada_del_plan_de_estudios_semestres', 'duracion_real_de_la_carrera_semestres', 'matricula_femenina_1er_ano_2011', 'matricula_masculina_1er_ano_2011', 'matricula_de_1er_ano_2011', 'matricula_femenina_2011', 'matricula_masculina_2011', 'matricula_total_2011', 'tasa_de_retencion_1er_ano_cohorte_2009', 'tasa_de_retencion_2do_ano_cohorte_2009', 'menor_a_500000', 'mayor_a_500000_a_1000000', 'mayor_a_1000000_a_1500000', 'mayor_a_1500000_a_2000000', 'mayor_a_2000000_a_2500000', 'mayor_a_2500000_a_3000000', 'mayor_a_3000000', 'estudiantes_establecimientos_municipales_matricula_2011', 'estudiantes_particular_subvencionado_matricula_2011', 'estudiantes_particular_pagado_matricula_2011', 'estudiantes_adm_delegada_matricula', 'emplea_1_2015', 'emplea_1_2016', 'emplea_1_2017', 'emplea_1_2018', 'emplea_1_2019', 'emplea_2_2015', 'emplea_2_2016', 'emplea_2_2017', 'emplea_2_2018', 'emplea_2_2019', 'ingresos_4_2015', 'ingresos_4_2016', 'ingresos_4_2017', 'ingresos_4_2018', 'ingresos_4_2019']
+   - Categóricas/Texto (5): ['tipo_catalogo', 'carrera_catalogo', 'area_cineunesco', 'tipo_institucion', 'carrera_estandar']
+   - Fechas (0): []
+
+🎲 MUESTRA ALEATORIA DE 5 REGISTROS PARA CONTEXTO:
+     id_catalogo tipo_catalogo  ... ingresos_4_2018  ingresos_4_2019
+165          233   Universidad  ...             NaN              NaN
+6            137   Universidad  ...       1775465.0        1853783.0
+111          204   Universidad  ...       1729932.0        1884264.0
+172          235   Universidad  ...       1136335.0        1025370.0
+115          208   Universidad  ...       1061233.0        1058559.0
+
+[5 rows x 76 columns]
+============================================================
