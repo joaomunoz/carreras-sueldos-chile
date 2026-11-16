@@ -132,6 +132,8 @@ Cohorte y año de ingreso están confundidos en cada punto (cada cohorte se mide
 
 ## Relaciones
 
+Diagrama completo con columnas, PK, FK y linaje desde `raw`: [`diagrama_modelo.svg`](diagrama_modelo.svg), generado desde el catálogo de la base con `python3 src/BD/diagrama.py`.
+
 ```
 institucion ──< titulacion >── carrera_generica
      │                              │  │

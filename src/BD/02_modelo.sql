@@ -16,9 +16,10 @@
 --     carga, no colarse en un segmento que nadie definió.
 --
 -- Idempotente: recrea el esquema desde cero (borra solo `modelo`).
--- Ejecutar con: psql -v ON_ERROR_STOP=1 -f src/BD/02_modelo.sql
+-- Sin BEGIN/COMMIT propios: src/BD/build.py ejecuta todo el build en UNA transacción, para
+-- que un build fallido deje intacta la última base buena. A mano, usar --single-transaction:
+--   psql -1 -v ON_ERROR_STOP=1 -f src/BD/02_modelo.sql
 
-BEGIN;
 
 DROP SCHEMA IF EXISTS modelo CASCADE;
 CREATE SCHEMA modelo;
@@ -211,4 +212,3 @@ CREATE TABLE modelo.mifuturo_serie (
     CHECK (indicador = 'serie_ingreso_medio_4to_anio' OR valor <= 100)
 );
 
-COMMIT;

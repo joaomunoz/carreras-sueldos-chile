@@ -13,10 +13,11 @@
 -- Decimales como `numeric` sin precisión fija: numeric(4,1) redondearía en silencio un
 -- 6,15 a 6,2 al cargar, y `raw` no debe alterar el dato.
 --
--- Idempotente: recrea el esquema desde cero en cada ejecución (borra solo `raw`).
--- Ejecutar con: psql -v ON_ERROR_STOP=1 -f src/BD/01_raw.sql
+-- Idempotente: recrea el esquema desde cero (borra solo `raw`).
+-- Sin BEGIN/COMMIT propios: src/BD/build.py ejecuta todo el build en UNA transacción, para
+-- que un build fallido deje intacta la última base buena. A mano, usar --single-transaction:
+--   psql -1 -v ON_ERROR_STOP=1 -f src/BD/01_raw.sql
 
-BEGIN;
 
 DROP SCHEMA IF EXISTS raw CASCADE;
 CREATE SCHEMA raw;
@@ -145,4 +146,3 @@ CREATE TABLE raw.titulados (
          + titulados_35_39 + titulados_mayores_40 + titulados_edad_sin_info = total_titulaciones)
 );
 
-COMMIT;
