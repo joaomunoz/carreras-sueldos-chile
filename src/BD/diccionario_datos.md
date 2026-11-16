@@ -130,6 +130,28 @@ Cohorte y año de ingreso están confundidos en cada punto (cada cohorte se mide
 
 ---
 
+## Esquema `qa`
+
+### `qa.control` — resultado de los controles del último build
+**Grano:** un control × objeto evaluado. **Llave:** `(control, objeto)`. **Origen:** `src/BD/04_qa.sql` y `_controlar_esquemas()` de `src/BD/build.py`. Si algún control queda en `FALLA` el build se revierte, así que en la base solo hay resultados `OK` o `EXENTO`; las fallas se ven en el log del build.
+
+| Columna | Tipo | Nulo | Descripción |
+|---|---|---|---|
+| `control` | text | no | `contrato_esquema` \| `cohorte_en_sies` \| `origen_series` |
+| `objeto` | text | no | Tabla `raw`, indicador de `modelo.cohorte` o serie evaluada |
+| `estado` | text | no | `OK` \| `FALLA` \| `EXENTO` (no aplica, con el motivo en `detalle`) |
+| `metrica` | numeric | sí | Valor medido: n.º de problemas, años faltantes o mediana del error en % |
+| `umbral` | text | no | Criterio de aprobación, legible |
+| `detalle` | text | no | Evidencia (columnas, años faltantes, errores por desfase) |
+
+| Control | Aprueba si |
+|---|---|
+| `contrato_esquema` | Las columnas de la tabla `raw` coinciden con su `esquema.py` en nombre, orden y tipo compatible |
+| `cohorte_en_sies` | Cada año de cohorte del indicador tiene titulaciones en `modelo.titulacion`; las series quedan `EXENTO` (D5) |
+| `origen_series` | Mediana del \|error relativo\| entre el agregado publicado y el promedio de los 3 puntos de sus cohortes < 1 %, ≤ la mitad de la de las ventanas corridas −1/−2 años, con ≥ 100 pares |
+
+---
+
 ## Relaciones
 
 Diagrama completo con columnas, PK, FK y linaje desde `raw`: [`diagrama_modelo.md`](diagrama_modelo.md) (Mermaid), generado desde el catálogo de la base con `python3 src/BD/diagrama.py`.

@@ -19,7 +19,10 @@ Pasos:
   3. COPY de los 3 CSV a raw    HEADER MATCH: el encabezado del CSV debe coincidir, en
                                 nombre y orden, con las columnas de la tabla
   4. src/BD/03_poblar_modelo.sql  de raw a modelo
-  5. Verificación de conteos    filas de cada CSV = raw = hecho en modelo
+  5. src/BD/04_qa.sql           controles semánticos → tabla qa.control
+  6. Contrato de esquemas       columnas de raw = los 3 esquema.py (nombre, orden, tipo)
+                                → qa.control
+  7. Verificación               conteos CSV = raw = modelo, y ningún control en FALLA
 """
 
 from __future__ import annotations
@@ -33,6 +36,13 @@ from pathlib import Path
 
 import psycopg
 
+# Los esquema.py son la fuente de verdad de las columnas de raw; se importan igual que en
+# los procesar.py (Scrapers/ en el path, carpeta del scraper como paquete).
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "Scrapers"))
+from Empleabilidad.esquema import ESQUEMA_EMPLEABILIDAD  # noqa: E402
+from Estadisticas.esquema import ESQUEMA_ESTADISTICAS  # noqa: E402
+from Titulados.esquema import ESQUEMA_TITULADOS  # noqa: E402
+
 log = logging.getLogger(__name__)
 
 # --------------------------------------------------------------------------- #
@@ -44,6 +54,7 @@ DIR_SCRAPERS = RAIZ / "src" / "Scrapers"
 
 SCRIPTS_ESTRUCTURA = ["01_raw.sql", "02_modelo.sql"]
 SCRIPT_POBLAR = "03_poblar_modelo.sql"
+SCRIPT_QA = "04_qa.sql"
 
 SEPARADOR_CSV = ";"
 
@@ -59,6 +70,25 @@ HECHO_POR_RAW = {
     "raw.empleabilidad": "modelo.mifuturo_programa",
     "raw.estadisticas": "modelo.mifuturo_estadistica",
     "raw.titulados": "modelo.titulacion",
+}
+
+# tabla raw -> esquema.py que la define.
+ESQUEMAS = {
+    "raw.empleabilidad": ESQUEMA_EMPLEABILIDAD,
+    "raw.estadisticas": ESQUEMA_ESTADISTICAS,
+    "raw.titulados": ESQUEMA_TITULADOS,
+}
+
+# dtype de pandas -> tipos PostgreSQL aceptables. Un entero de pandas puede ser smallint o
+# integer (el DDL elige el ancho); lo que no puede pasar es, p. ej., un float64 en integer.
+TIPOS_COMPATIBLES = {
+    "object": {"text"},
+    "string": {"text"},
+    "int64": {"smallint", "integer", "bigint"},
+    "Int64": {"smallint", "integer", "bigint"},
+    "float64": {"numeric"},
+    "bool": {"boolean"},
+    "boolean": {"boolean"},
 }
 
 TABLAS_INFORMATIVAS = ["modelo.institucion", "modelo.carrera_generica", "modelo.cohorte", "modelo.mifuturo_serie"]
@@ -130,6 +160,54 @@ def _verificar_conteos(cur: psycopg.Cursor) -> None:
         raise RuntimeError("Conteos no cuadran:\n  - " + "\n  - ".join(errores))
 
 
+def _controlar_esquemas(cur: psycopg.Cursor) -> None:
+    """Columnas de cada tabla raw = su esquema.py, en nombre, orden y tipo compatible.
+
+    Por qué además de COPY ... HEADER MATCH: HEADER MATCH compara el CSV con la tabla. Si
+    alguien cambia un esquema.py y el DDL pero no vuelve a correr procesar.py (o al revés),
+    CSV y tabla pueden coincidir entre sí y estar desalineados con el esquema vigente.
+    """
+    for tabla, esquema in ESQUEMAS.items():
+        nombre_esquema, nombre_tabla = tabla.split(".")
+        cur.execute(
+            "SELECT column_name, data_type FROM information_schema.columns "
+            "WHERE table_schema = %s AND table_name = %s ORDER BY ordinal_position",
+            (nombre_esquema, nombre_tabla),
+        )
+        en_base = cur.fetchall()
+        en_esquema = list(esquema.items())
+        problemas = []
+        if [c for c, _ in en_base] != [c for c, _ in en_esquema]:
+            faltan = sorted(set(esquema) - {c for c, _ in en_base})
+            sobran = sorted({c for c, _ in en_base} - set(esquema))
+            problemas.append(f"nombres u orden distintos (faltan en raw: {faltan or '-'}; "
+                             f"sobran en raw: {sobran or '-'})")
+        else:
+            for (col, tipo_pg), (_, dtype) in zip(en_base, en_esquema):
+                if tipo_pg not in TIPOS_COMPATIBLES.get(dtype, set()):
+                    problemas.append(f"{col}: {dtype} en esquema.py vs {tipo_pg} en raw")
+        cur.execute(
+            "INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle) "
+            "VALUES ('contrato_esquema', %s, %s, %s, %s, %s)",
+            (tabla, "FALLA" if problemas else "OK", len(problemas),
+             "columnas de raw = esquema.py en nombre, orden y tipo",
+             "; ".join(problemas) or f"{len(en_base)} columnas coinciden"),
+        )
+
+
+def _verificar_qa(cur: psycopg.Cursor) -> None:
+    """Muestra todo qa.control y falla (revierte) si algún control quedó en FALLA."""
+    cur.execute("SELECT control, objeto, estado, detalle FROM qa.control ORDER BY control, objeto")
+    fallas = []
+    for control, objeto, estado, detalle in cur.fetchall():
+        nivel = logging.ERROR if estado == "FALLA" else logging.INFO
+        log.log(nivel, "qa %-17s %-36s %-6s %s", control, objeto, estado, detalle)
+        if estado == "FALLA":
+            fallas.append(f"{control} / {objeto}: {detalle}")
+    if fallas:
+        raise RuntimeError("Controles qa en FALLA:\n  - " + "\n  - ".join(fallas))
+
+
 # --------------------------------------------------------------------------- #
 # Orquestador
 # --------------------------------------------------------------------------- #
@@ -144,7 +222,10 @@ def build() -> None:
             for tabla, ruta in CARGAS.items():
                 _copiar(cur, tabla, ruta)
             _ejecutar_sql(cur, SCRIPT_POBLAR)
+            _ejecutar_sql(cur, SCRIPT_QA)
+            _controlar_esquemas(cur)
             _verificar_conteos(cur)
+            _verificar_qa(cur)
     log.info("Build OK en %.1f s (base %s)", time.perf_counter() - t0, os.environ["PGDATABASE"])
 
 

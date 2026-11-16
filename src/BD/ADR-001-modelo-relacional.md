@@ -25,7 +25,7 @@ La revisión relacional previa al DDL (T0) encontró:
 
 ## Decisión
 
-Dos esquemas, recreados desde cero en cada build:
+Tres esquemas, recreados desde cero en cada build:
 
 1. **`raw`**: copia fiel de los 3 CSV. Mismas columnas y orden que cada `esquema.py`, PK, `NOT NULL` donde la fuente siempre informa y `CHECK` de rango físico. Sin reglas de negocio.
 2. **`modelo`**: modelo relacional poblado desde `raw`:
@@ -36,13 +36,14 @@ Dos esquemas, recreados desde cero en cada build:
    - **FK compuesta** `mifuturo_programa (codigo_institucion, tipo_institucion) → institucion`: la base impide que un programa declare un tipo distinto al de su institución.
    - **Sin FK entre `mifuturo_programa` y `mifuturo_estadistica`**: 48 programas no tienen estadística publicada y 3 estadísticas no tienen institución publicada. La cobertura se mide en `qa`.
    - **Dominios cerrados** (`CHECK ... IN`) en las categorías: una categoría nueva en la fuente rompe la carga.
+3. **`qa`** (T3, `src/BD/04_qa.sql` + `src/BD/build.py`): tabla `qa.control` con el resultado de cada control semántico (`OK` | `FALLA` | `EXENTO`, métrica, umbral y detalle). El build registra todos los controles y falla al final si alguno quedó en `FALLA`, para mostrar todos los problemas juntos; un build sano deja la evidencia consultable. Controles: contrato `raw` ↔ `esquema.py` (nombre, orden y tipo), cohortes de cada indicador presentes en el SIES (series exentas por D5) y correspondencia `ORIGEN` de las series (agregado publicado vs. promedio de los 3 puntos de sus cohortes, contra las ventanas corridas 1 y 2 años).
 
 ## Consecuencias
 
 - La regla "nunca promediar ingresos sobre las 1.690 filas" queda impuesta por el diseño: los ingresos no existen a nivel institución.
 - Un cambio de cohortes de MiFuturo se corrige en una tabla (`cohorte`), no en cada consulta.
 - `raw` permite el control de contrato contra los `esquema.py` (T3) y aísla la carga de las transformaciones: si falla `modelo`, `raw` sigue siendo inspeccionable.
-- Cada build borra y recrea `raw` y `modelo`: no hay datos manuales que se pierdan, porque todo viene de `Salida/` y de `02_modelo.sql`.
+- Cada build borra y recrea `raw`, `modelo` y `qa`: no hay datos manuales que se pierdan, porque todo viene de `Salida/` y de `02_modelo.sql`.
 - Las consultas de análisis (`src/Analisis/sql/`) leen solo `modelo`.
 - Costo: más tablas y más joins que una tabla ancha; se acepta porque cada join expresa una granularidad real.
 
