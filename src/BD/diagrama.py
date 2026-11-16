@@ -64,6 +64,35 @@ WHERE n.nspname IN ('raw', 'modelo') AND k.contype IN ('p', 'f')
 ORDER BY k.conname, u.ord
 """
 
+# Paleta fija (tema `base`) en vez del tema del visor: MarkText, VS Code y GitHub eligen
+# 'default' o 'dark' según su propio criterio, y con un tema oscuro no mapeado las líneas
+# quedaban oscuras sobre fondo oscuro. Con colores explícitos el diagrama se ve igual en todos:
+#   - cajas y rótulos con fondo propio claro y texto oscuro → legibles sobre cualquier fondo;
+#   - líneas blancas y gruesas (2,5 px): elegidas para el visor de trabajo, MarkText con
+#     tema oscuro, donde el gris medio se notaba poco. Costo asumido: en un visor con fondo
+#     blanco (GitHub claro, VS Code claro) las líneas no se verán; para ese caso basta
+#     cambiar COLOR_LINEA (p. ej. "#7d8da3", legible en ambos fondos) y regenerar.
+# Descartado: tema 'dark' fijo (se vería mal en visores claros) y CSS propio (los visores
+# de Markdown no lo aplican dentro del SVG de Mermaid).
+COLOR_LINEA = "#ffffff"
+GROSOR_LINEA = "2.5px"
+TEMA_MERMAID = (
+    "%%{init: {'theme': 'base', 'themeVariables': {"
+    "'primaryColor': '#eef2f7', 'primaryTextColor': '#1f2937', 'primaryBorderColor': '#5b6b7f', "
+    f"'lineColor': '{COLOR_LINEA}', 'relationColor': '{COLOR_LINEA}', "
+    "'relationLabelBackground': '#eef2f7', 'relationLabelColor': '#1f2937', "
+    "'edgeLabelBackground': '#eef2f7', 'textColor': '#1f2937', "
+    "'attributeBackgroundColorOdd': '#ffffff', 'attributeBackgroundColorEven': '#f3f6fa', "
+    "'tertiaryColor': '#eef2f7'}, "
+    # Mermaid 11 pinta el fondo de los rótulos al 50 % de opacidad (fijo, no es variable):
+    # sobre fondo oscuro queda gris con texto gris. themeCSS va dentro del SVG y lo hace opaco.
+    "'themeCSS': '.labelBkg, .edgeLabel { background-color: #eef2f7 !important; } "
+    ".edgeLabel rect, .relationshipLabelBox, .relationshipLabelBox rect { opacity: 1 !important; fill: #eef2f7 !important; } "
+    # Mermaid dibuja las relaciones a 1 px (fijo en su CSS); se engrosan para verlas de lejos.
+    f".relationshipLine {{ stroke-width: {GROSOR_LINEA} !important; }}'"
+    "}}%%"
+)
+
 ABREVIATURA_TIPO = {"integer": "int", "smallint": "smallint", "text": "text",
                     "numeric": "numeric", "boolean": "bool"}
 
@@ -109,7 +138,7 @@ def _entidad_raw(tabla: str, cols, pk: list) -> list[str]:
 
 def generar_mermaid(cur: psycopg.Cursor) -> str:
     columnas, pk, fk_cols, fks = _leer_catalogo(cur)
-    cuerpo = ["erDiagram"]
+    cuerpo = [TEMA_MERMAID, "erDiagram"]
     for (esquema, tabla), cols in sorted(columnas.items()):
         if esquema == "modelo":
             cuerpo += _entidad_modelo(tabla, cols, pk[(esquema, tabla)], fk_cols[(esquema, tabla)])

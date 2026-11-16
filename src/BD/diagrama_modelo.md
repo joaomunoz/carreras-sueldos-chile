@@ -9,6 +9,7 @@ rotulada con sus columnas · línea punteada = la tabla `raw` desde la que se pu
 Detalle de cada columna en [`diccionario_datos.md`](diccionario_datos.md).
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#eef2f7', 'primaryTextColor': '#1f2937', 'primaryBorderColor': '#5b6b7f', 'lineColor': '#ffffff', 'relationColor': '#ffffff', 'relationLabelBackground': '#eef2f7', 'relationLabelColor': '#1f2937', 'edgeLabelBackground': '#eef2f7', 'textColor': '#1f2937', 'attributeBackgroundColorOdd': '#ffffff', 'attributeBackgroundColorEven': '#f3f6fa', 'tertiaryColor': '#eef2f7'}, 'themeCSS': '.labelBkg, .edgeLabel { background-color: #eef2f7 !important; } .edgeLabel rect, .relationshipLabelBox, .relationshipLabelBox rect { opacity: 1 !important; fill: #eef2f7 !important; } .relationshipLine { stroke-width: 2.5px !important; }'}}%%
 erDiagram
     carrera_generica {
         text clave_carrera_generica PK
