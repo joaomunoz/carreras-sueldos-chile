@@ -27,7 +27,8 @@ INSERT INTO analytics.parametro VALUES
     ('min_pares_celda',     5,    'Pares representativos para que una celda área × tipo × nivel sea referencia',                     'D2'),
     ('min_share_area',      0.80, 'Proporción de titulaciones del área dominante para asignar el área a la genérica',                'T0 / T4'),
     ('min_inst_dispersion', 5,    'Instituciones publicadas con el dato para medir dispersión entre instituciones',                  'D1'),
-    ('max_cobertura_baja',  0.75, 'Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura',       'T5, decisión 2');
+    ('max_cobertura_baja',  0.75, 'Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura',       'T5, decisión 2'),
+    ('max_peso_dominante',  0.50, 'Si una carrera supera esta proporción del peso de su celda, la celda deja de ser referencia',     'A3: celdas dominadas (aprobada por el usuario)');
 
 -- Lectura de un parámetro que FALLA si el nombre no existe. Con un subselect simple, un nombre
 -- mal escrito daría NULL y toda comparación contra NULL sería falsa en silencio (p. ej. ningún
@@ -198,12 +199,18 @@ marcado AS (
 ),
 celda AS (
     -- Pares representativos con área asignable en la celda (los no asignables no forman celda).
+    -- Una celda es referencia si tiene suficientes pares Y ninguna carrera domina su peso: con
+    -- más de la mitad del peso, la mediana ponderada ES el valor de esa carrera y el resto de la
+    -- celda se compararía con ella, no con su área (A3).
     SELECT m.*,
            m.area_asignable
-           AND count(*) FILTER (WHERE m.representativo AND m.area_asignable)
-                   OVER (PARTITION BY m.area, m.tipo_institucion, m.nivel_carrera)
-               >= analytics.param('min_pares_celda') AS celda_valida
-    FROM marcado m
+           AND count(*) FILTER (WHERE m.representativo AND m.area_asignable) OVER w
+               >= analytics.param('min_pares_celda')
+           AND max(m.peso) FILTER (WHERE m.representativo AND m.area_asignable) OVER w
+               <= analytics.param('max_peso_dominante')
+                  * sum(m.peso) FILTER (WHERE m.representativo AND m.area_asignable) OVER w AS celda_valida
+    FROM (SELECT b.*, (b.tit_1 + b.tit_5) AS peso FROM marcado b) m
+    WINDOW w AS (PARTITION BY m.area, m.tipo_institucion, m.nivel_carrera)
 )
 SELECT clave_carrera_generica, tipo_institucion, nombre, nivel_carrera,
        area, share, area_asignable, ingreso_completo, n_inst_oferta,
@@ -238,17 +245,19 @@ FROM (SELECT count(*) AS n FROM analytics.par
 UNION ALL
 -- Recuento por GROUP BY, independiente de la función de ventana usada al poblar.
 SELECT 'analytics_par', 'celda_valida', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
-       n, 'celda válida ⇔ ≥ min_pares_celda pares representativos con área asignable',
+       n, 'celda válida ⇔ ≥ min_pares_celda pares representativos con área asignable y ninguno con > max_peso_dominante del peso',
        format('%s pares incoherentes; %s celdas válidas', n,
               (SELECT count(DISTINCT (area_cine13, tipo_institucion, nivel_carrera))
                FROM analytics.par WHERE celda_valida))
 FROM (SELECT count(*) AS n
       FROM analytics.par p
-      LEFT JOIN (SELECT area_cine13, tipo_institucion, nivel_carrera, count(*) AS n_repr
+      LEFT JOIN (SELECT area_cine13, tipo_institucion, nivel_carrera, count(*) AS n_repr,
+                        max(peso)::numeric / sum(peso) AS share_max
                  FROM analytics.par WHERE representativo AND area_asignable
                  GROUP BY 1, 2, 3) c USING (area_cine13, tipo_institucion, nivel_carrera)
       WHERE p.celda_valida IS DISTINCT FROM
-            (p.area_asignable AND coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda'))) x
+            (p.area_asignable AND coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda')
+             AND coalesce(c.share_max, 1) <= analytics.param('max_peso_dominante'))) x
 UNION ALL
 SELECT 'analytics_par', 'referencia', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
        n, 'referencia NULL ⇔ no representativo; celda ⇔ representativo y celda válida',
