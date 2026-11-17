@@ -44,7 +44,7 @@
         <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
       </figcaption>
     </figure>
-    <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico y recórrelo con las flechas ← →.</p>
+    <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
   </section>
 
   <section class="bloque" aria-labelledby="t-hallazgos">
@@ -68,7 +68,7 @@
         <span class="leyenda-item"><span class="punto punto--anillo" aria-hidden="true"></span>Con advertencia (cohorte atípica o composición por edad)</span>
       </figcaption>
     </figure>
-    <p class="nota" id="cuadrantes-ayuda">Con el teclado: enfoca el gráfico y recorre las carreras con las flechas ← →, de izquierda a derecha.</p>
+    <p class="nota" id="cuadrantes-ayuda">Con el teclado: enfoca el gráfico, recorre las carreras con las flechas ← → (de izquierda a derecha) y abre su ficha con Enter.</p>
     <details class="leyenda">
       <summary>Ver las carreras que cambian de cuadrante</summary>
       <div class="tabla-desplazable">
@@ -220,6 +220,22 @@
       </table>
     </div>
     <p class="nota" id="nota-carreras"></p>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-ficha" id="ficha">
+    <h2 id="t-ficha" class="bloque__titulo">Ficha de carrera</h2>
+    <p class="bloque__texto">Todo lo que hay sobre una carrera en un tipo de institución. También se abre al hacer clic en una carrera de la tabla o de los gráficos.</p>
+    <form class="filtros ficha__buscar" id="ficha-form" role="search" aria-label="Buscar una carrera">
+      <label class="filtro filtro--busqueda">
+        <span class="filtro__rotulo">Buscar carrera</span>
+        <input type="search" id="ficha-texto" list="ficha-opciones" autocomplete="off" placeholder="Ej.: kinesiología">
+        <datalist id="ficha-opciones"></datalist>
+      </label>
+      <button type="submit" class="boton">Ver ficha</button>
+      <button type="button" class="boton boton--sutil" id="ficha-enlace">Copiar enlace a esta ficha</button>
+    </form>
+    <p class="filtros__conteo" id="ficha-estado" role="status" aria-live="polite"></p>
+    <article class="ficha" id="ficha-contenido" tabindex="-1" aria-labelledby="ficha-nombre"></article>
   </section>
 </main>
 

@@ -501,6 +501,108 @@ p { margin: 0; }
 .c-conteo { fill: var(--tinta); font: 0.8125rem var(--f-cifra); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; }
 .c-titulo-eje { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); }
 
+/* Ficha por carrera (W5): una liquidación de sueldo. Las cifras van en líneas con puntos guía
+   hasta el monto; es el único lugar de la página que usa ese recurso. */
+.boton {
+  font: inherit;
+  font-size: 0.9375rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 4px;
+  border: 1px solid var(--tinta);
+  background: var(--tinta);
+  color: var(--papel);
+  cursor: pointer;
+}
+.boton--sutil { background: transparent; color: var(--tinta); border-color: var(--regla); }
+.enlace-ficha {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--regla);
+  text-underline-offset: 3px;
+}
+.enlace-ficha:hover { text-decoration-color: currentColor; }
+
+.ficha {
+  margin-top: 1.5rem;
+  background: var(--papel-alto);
+  border: 1px solid var(--regla);
+  border-top: 3px solid var(--tinta);
+  border-radius: 4px;
+  padding: 1.5rem clamp(1rem, 3vw, 2.25rem) 2rem;
+  max-width: 60rem;
+}
+.ficha:focus { outline: none; }
+.ficha__nombre { font-size: var(--t-3); }
+.ficha__sub { margin-top: 0.35rem; color: var(--tinta-suave); }
+.ficha .timbres { margin-top: 0.6rem; }
+.ficha__avisos {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--timbre);
+  background: var(--papel);
+  font-size: 0.9375rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.ficha__bloque { margin-top: 1.75rem; }
+.ficha__titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--t-0);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  border-bottom: 1px solid var(--regla);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+.liq { margin: 0; }
+.liq__linea {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-block: 0.22rem;
+}
+.liq__linea dt { flex: 0 1 auto; }
+.liq__guia { flex: 1 1 1rem; border-bottom: 1px dotted var(--tinta-suave); opacity: 0.6; transform: translateY(-0.25em); min-width: 1rem; }
+.liq__linea dd {
+  margin: 0;
+  flex: 0 0 auto;
+  font-family: var(--f-cifra);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.liq__linea dd.liq__texto { font-family: var(--f-texto); flex: 0 1 auto; min-width: 0; }
+.ficha__nota { margin-top: 0.4rem; font-size: var(--t-0); color: var(--tinta-suave); }
+.ficha__grafico { margin-top: 0.75rem; }
+.ficha__grafico svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
+.ficha__grafico--media svg { height: 6rem; }
+.ficha__grafico--franja svg { height: 2.5rem; }
+.ficha .tabla-desplazable { margin-top: 0.75rem; }
+.ficha .tabla { font-size: 0.875rem; }
+.f-media-linea { stroke: var(--tinta-suave); stroke-width: 1.5; fill: none; }
+.f-media-punto { fill: var(--anio5); }
+.f-media-punto--extremo { fill: var(--anio1); }
+.f-media-texto { fill: var(--tinta); font: 0.75rem var(--f-cifra); font-variant-numeric: tabular-nums; }
+.f-media-pct { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); }
+.f-inst { fill: var(--anio1); fill-opacity: 0.75; }
+.f-tipica { stroke: var(--tinta); stroke-width: 2; }
+/* Los nombres del SIES vienen en mayúsculas y son largos: un ancho mínimo evita cortes de 3–4 líneas. */
+.ficha .tabla th, .ficha .tabla td { padding: 0.55rem 0.6rem; }
+.ficha .tabla td.td--titulo { min-width: 12rem; font-size: 0.8125rem; letter-spacing: 0.01em; }
+@media (max-width: 40rem) {
+  .liq__linea { flex-wrap: wrap; }
+  .liq__guia { display: none; }
+  .liq__linea dt { flex-basis: 100%; color: var(--tinta-suave); font-size: var(--t-0); }
+  .liq__linea dd { text-align: left; flex: 1 1 100%; min-width: 0; }   /* en celular el valor puede ocupar varias líneas */
+}
+
 /* Mancuerna: filas de 2 líneas (1er año / 5° año) con eje común en pesos. */
 .mancuerna__eje { margin-left: var(--rotulos); height: 1.5rem; position: relative; }
 .mancuerna__eje svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }

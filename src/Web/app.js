@@ -385,7 +385,10 @@
     lista.forEach(function (p) {
       var tr = el("tr");
       var nombre = el("div");
-      nombre.appendChild(el("span", "carrera__nombre", p.nombre));
+      var boton = el("button", "carrera__nombre enlace-ficha", p.nombre);
+      boton.type = "button";
+      boton.addEventListener("click", function () { abrirFicha(p, true); });
+      nombre.appendChild(boton);
       var timbres = el("div", "timbres");
       TIMBRES.forEach(function (def) { if (def.aplica(p)) timbres.appendChild(timbre(def)); });
       if (timbres.childNodes.length) nombre.appendChild(timbres);
@@ -567,11 +570,14 @@
     svg.addEventListener("pointermove", desdePuntero);
     svg.addEventListener("pointerdown", desdePuntero);   // un toque en pantallas táctiles
     svg.addEventListener("pointerleave", function () { mostrar(-1); });
+    svg.addEventListener("click", function () { if (peine.activo >= 0) abrirFicha(lista[peine.activo], true); });
+    svg.style.cursor = "pointer";
     lienzo.onkeydown = function (e) {
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         e.preventDefault();
         var i = peine.activo < 0 ? 0 : peine.activo + (e.key === "ArrowRight" ? 1 : -1);
         mostrar(Math.max(0, Math.min(n - 1, i)));
+      } else if (e.key === "Enter" && peine.activo >= 0) { abrirFicha(lista[peine.activo], true);
       } else if (e.key === "Escape") { mostrar(-1); }
     };
     lienzo.onblur = function () { mostrar(-1); };
@@ -761,6 +767,8 @@
       mostrar(mejor);
     };
     svg.onpointerleave = function () { mostrar(-1); };
+    svg.onclick = function () { if (cuad.activo >= 0) abrirFicha(puntos[cuad.activo].p, true); };
+    svg.style.cursor = "pointer";
     lienzo.tabIndex = 0;
     lienzo.setAttribute("aria-describedby", "cuadrantes-ayuda");
     lienzo.onkeydown = function (e) {
@@ -768,6 +776,7 @@
         e.preventDefault();
         var i = cuad.activo < 0 ? 0 : cuad.activo + (e.key === "ArrowRight" ? 1 : -1);
         mostrar(Math.max(0, Math.min(puntos.length - 1, i)));
+      } else if (e.key === "Enter" && cuad.activo >= 0) { abrirFicha(puntos[cuad.activo].p, true);
       } else if (e.key === "Escape") { mostrar(-1); }
     };
     lienzo.onblur = function () { mostrar(-1); };
@@ -791,6 +800,25 @@
     form.addEventListener("change", pintarMancuerna);
     form.addEventListener("submit", function (e) { e.preventDefault(); });
     alCambiarAncho(document.getElementById("mancuerna"), pintarMancuerna);
+  }
+
+  // Dos filas (1er año / 5° año) de P10–P90, P25–P75 y P50 sobre un eje de lo a hi pesos.
+  // La usan la sección "Sueldo típico y dispersión" y la ficha por carrera.
+  function svgMancuerna(p, lo, hi, ancho) {
+    var mIzq = 20, mDer = 8;
+    function x(v) { return mIzq + (v - lo) / (hi - lo) * (ancho - mIzq - mDer); }
+    var svg = svgEl("svg", { viewBox: "0 0 " + ancho + " 36", preserveAspectRatio: "none", "aria-hidden": "true" });
+    marcasPesos(lo, hi).forEach(function (v) {
+      svgEl("line", { x1: x(v), x2: x(v), y1: 0, y2: 36 }, "g-grilla", svg);
+    });
+    [["anio1", p.percentiles.anio_1, 11, "1°"], ["anio5", p.percentiles.anio_5, 26, "5°"]].forEach(function (a) {
+      var q = a[1], yy = a[2];
+      var e = svgEl("text", { x: 2, y: yy + 4 }, "m-etiqueta", svg); e.textContent = a[3];
+      svgEl("line", { x1: x(q.p10), x2: x(q.p90), y1: yy, y2: yy }, "m-rango m-rango--" + a[0], svg);
+      svgEl("line", { x1: x(q.p25), x2: x(q.p75), y1: yy, y2: yy }, "m-caja m-caja--" + a[0], svg);
+      svgEl("circle", { cx: x(q.p50), cy: yy, r: 5 }, "g-" + a[0] + " g-anillo", svg);
+    });
+    return svg;
   }
 
   function pintarMancuerna() {
@@ -852,18 +880,7 @@
       li.appendChild(rot);
 
       var cont = el("div", "mancuerna__svg");
-      var svg = svgEl("svg", { viewBox: "0 0 " + anchoBarra + " 36", preserveAspectRatio: "none", "aria-hidden": "true" });
-      marcasPesos(lo, hi).forEach(function (v) {
-        svgEl("line", { x1: x(v), x2: x(v), y1: 0, y2: 36 }, "g-grilla", svg);
-      });
-      [["anio1", p.percentiles.anio_1, 11, "1°"], ["anio5", p.percentiles.anio_5, 26, "5°"]].forEach(function (a) {
-        var q = a[1], yy = a[2];
-        var e = svgEl("text", { x: 2, y: yy + 4 }, "m-etiqueta", svg); e.textContent = a[3];
-        svgEl("line", { x1: x(q.p10), x2: x(q.p90), y1: yy, y2: yy }, "m-rango m-rango--" + a[0], svg);
-        svgEl("line", { x1: x(q.p25), x2: x(q.p75), y1: yy, y2: yy }, "m-caja m-caja--" + a[0], svg);
-        svgEl("circle", { cx: x(q.p50), cy: yy, r: 5 }, "g-" + a[0] + " g-anillo", svg);
-      });
-      cont.appendChild(svg);
+      cont.appendChild(svgMancuerna(p, lo, hi, anchoBarra));
       li.appendChild(cont);
 
       var lineas = [
@@ -878,6 +895,9 @@
         ubicarTooltip(caja, figura, rs.left - rf.left + rs.width * (x(p.percentiles.anio_5.p50) / anchoBarra), rs.top - rf.top);
       }
       li.addEventListener("pointerenter", mostrar);
+      li.addEventListener("click", function () { abrirFicha(p, true); });
+      li.addEventListener("keydown", function (e) { if (e.key === "Enter") abrirFicha(p, true); });
+      li.style.cursor = "pointer";
       li.addEventListener("focus", mostrar);
       li.addEventListener("pointerleave", function () { caja.hidden = true; });
       li.addEventListener("blur", function () { caja.hidden = true; });
@@ -892,6 +912,286 @@
         cuerpoTabla.appendChild(tr);
       });
     });
+  }
+
+  // ------------------------------------------------------------- ficha por carrera (W5)
+  // Una "liquidación" por carrera. Cada bloque aparece solo si hay datos para él: la ficha
+  // tiene que funcionar en las 252 (también sin dispersión, sin posición o no comparables).
+  function claveDe(p) { return p.clave + "|" + p.tipo; }
+  var parPorClave = {};
+  pares.forEach(function (p) { parPorClave[claveDe(p)] = p; });
+  var programasPor = {};
+  datos.programas.forEach(function (g) {
+    var k = g.clave + "|" + g.tipo;
+    (programasPor[k] = programasPor[k] || []).push(g);
+  });
+  function etiquetaPar(p) { return p.nombre + " · " + p.tipo; }
+
+  function liq(dl, rotulo, valor, esTexto) {
+    var fila = el("div", "liq__linea");
+    fila.appendChild(el("dt", null, rotulo));
+    fila.appendChild(el("span", "liq__guia"));
+    fila.appendChild(el("dd", esTexto ? "liq__texto" : null, valor));
+    dl.appendChild(fila);
+  }
+
+  function bloque(cont, titulo) {
+    var b = el("section", "ficha__bloque");
+    b.appendChild(el("h4", "ficha__titulo", titulo));
+    cont.appendChild(b);
+    return b;
+  }
+
+  // Tramo compacto con una sola unidad: "$2,5–3 M", "$800–900 mil", "sobre $3,5 M".
+  function tramoTexto(t) {
+    if (!t) return "—";
+    if (t[1] == null) return "sobre " + pesosCorto(t[0]);
+    var enM = t[0] >= 1e6;
+    function n(v) { return enM ? fmtUno.format(v / 1e6).replace(",0", "") : fmtEntero.format(v / 1e3); }
+    return "$" + n(t[0]) + "–" + n(t[1]) + (enM ? " M" : " mil");
+  }
+
+  var CUARTO = ["el cuarto más bajo", "el segundo cuarto", "el tercer cuarto", "el cuarto más alto"];
+
+  function avisosDe(p) {
+    var frases = [];
+    TIMBRES.forEach(function (def) { if (def.aplica(p)) frases.push(def.explica()); });
+    if (p.marcas.cohorte_atipica && p.estabilidad) {
+      frases.push("En esta carrera: la empleabilidad al primer año de la cohorte " + p.estabilidad.cohorte + " fue " +
+        pct(p.estabilidad.empleabilidad) + ", frente a " + pct(p.estabilidad.media_previas) + " en promedio en las cohortes anteriores.");
+    }
+    if (p.marcas.composicion_edad) {
+      frases.push("En esta carrera: quienes tienen 30 años o más pasan de " + pct(p.contexto.mayores30_cohorte_p5[1]) +
+        " (titulados hace cinco años) a " + pct(p.contexto.mayores30_cohorte_p1[1]) + " (titulados recientes), en la cota alta del rango.");
+    }
+    return frases;
+  }
+
+  function graficoMedia(cont, p) {
+    var caja = el("div", "ficha__grafico ficha__grafico--media");
+    cont.appendChild(caja);
+    var W = Math.max(280, caja.clientWidth || 600), H = 96, mx = 46, arriba = 22, abajo = 22;
+    var v = p.media.anio, lo = Math.min.apply(null, v), hi = Math.max.apply(null, v);
+    var pad = (hi - lo) * 0.15 || hi * 0.05; lo -= pad; hi += pad;
+    function x(i) { return mx + i * (W - 2 * mx) / 4; }
+    function y(val) { return arriba + (1 - (val - lo) / (hi - lo)) * (H - arriba - abajo); }
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
+      "aria-label": "Ingreso promedio del año 1 al 5: " + v.map(pesos).join(", ") + "." });
+    svgEl("polyline", { points: v.map(function (val, i) { return x(i) + "," + y(val); }).join(" ") }, "f-media-linea", svg);
+    var anomalos = {};
+    datos.hitos.forEach(function (h) { anomalos[h.anio] = h.incluye_caida || h.incluye_rebote; });
+    v.forEach(function (val, i) {
+      svgEl("circle", { cx: x(i), cy: y(val), r: 4.5 }, "f-media-punto" + (i === 0 || i === 4 ? " f-media-punto--extremo" : "") + " g-anillo", svg);
+      var et = svgEl("text", { x: x(i), y: H - 4, "text-anchor": "middle" }, "f-media-pct", svg);
+      et.textContent = (i + 1) + "°" + (anomalos[i + 1] ? "*" : "");
+      if (i === 0 || i === 4) {
+        var t = svgEl("text", { x: x(i) + (i === 0 ? -8 : 8), y: y(val) + 4, "text-anchor": i === 0 ? "end" : "start" }, "f-media-texto", svg);
+        t.textContent = pesosCorto(val);
+      }
+      if (i < 4) {
+        var h = svgEl("text", { x: (x(i) + x(i + 1)) / 2, y: Math.min(y(val), y(v[i + 1])) - 8, "text-anchor": "middle" }, "f-media-pct", svg);
+        h.textContent = pctSigno(p.media.pct_hitos[i]);
+      }
+    });
+    caja.appendChild(svg);
+    var conAnomalia = datos.hitos.filter(function (h) { return h.incluye_caida || h.incluye_rebote; })
+      .map(function (h) { return h.anio + "°"; });
+    var nota = "Cada año junta tres cohortes de titulados, todas medidas con los ingresos 2022–2024 (no son las mismas personas)." +
+      (conAnomalia.length ? " * Incluye titulados de " + parametro("anio_caida_titulacion") + " o " + parametro("anio_rebote_titulacion") +
+        ", años de titulación anómalos por la pandemia." : "") +
+      (p.marcas.es_derecho ? " En Derecho las cohortes van corridas un año." : "");
+    cont.appendChild(el("p", "ficha__nota", nota));
+  }
+
+  function graficoInstituciones(cont, progs, d, nacional) {
+    var caja = el("div", "ficha__grafico ficha__grafico--franja");
+    cont.appendChild(caja);
+    var W = Math.max(280, caja.clientWidth || 600), H = 40, m = 10;
+    var vals = progs.map(function (g) { return g.emp1; }).concat([nacional]);
+    var lo = Math.min.apply(null, vals) - 2, hi = Math.max.apply(null, vals) + 2;
+    function x(v) { return m + (v - lo) / (hi - lo) * (W - 2 * m); }
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
+      "aria-label": "Empleabilidad al primer año de " + progs.length + " instituciones: de " + pct(d.min) + " a " + pct(d.max) +
+        "; institución típica " + pct(d.mediana) + "; cifra nacional " + pct(nacional) + "." });
+    svgEl("line", { x1: x(d.mediana), x2: x(d.mediana), y1: 0, y2: 28 }, "f-tipica", svg);
+    progs.forEach(function (g, i) {
+      svgEl("circle", { cx: x(g.emp1), cy: 8 + (i % 3) * 6, r: 3.5 }, "f-inst g-anillo", svg);
+    });
+    svgEl("path", { d: "M" + x(nacional) + " 29 l-5 8 h10 z" }, "franja__nacional", svg);
+    caja.appendChild(svg);
+    cont.appendChild(el("p", "franja__leyenda", "Cada punto es una institución · línea: la institución típica (" + pct(d.mediana) + ") · ▲ cifra nacional (" + pct(nacional) + ")"));
+  }
+
+  function pintarFicha(p) {
+    var art = document.getElementById("ficha-contenido");
+    art.replaceChildren();
+
+    // Encabezado
+    art.appendChild(el("h3", "ficha__nombre", p.nombre)).id = "ficha-nombre";
+    art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · " + p.area.cine13 +
+      " (" + fmtEntero.format(p.area.pct_dominante) + " % de sus titulados)"));
+    var t = el("div", "timbres");
+    TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });
+    if (t.childNodes.length) art.appendChild(t);
+    var avisos = avisosDe(p);
+    if (avisos.length) {
+      var caja = el("div", "ficha__avisos");
+      avisos.forEach(function (f) { caja.appendChild(el("p", null, f)); });
+      art.appendChild(caja);
+    }
+
+    // Sueldo típico
+    var b1 = bloque(art, "Sueldo típico (P50), ingresos 2024");
+    var dl = el("dl", "liq");
+    var c1 = datos.cohortes.filter(function (c) { return c.indicador === "percentiles_anio_1"; })[0].cohortes[0];
+    var c5 = datos.cohortes.filter(function (c) { return c.indicador === "percentiles_anio_5"; })[0].cohortes[0];
+    var corr = p.marcas.es_derecho ? 1 : 0;
+    liq(dl, "Al 1er año (titulados " + (c1 + corr) + ")", pesos(p.percentiles.anio_1.p50));
+    liq(dl, "Al 5° año (titulados " + (c5 + corr) + ")", pesos(p.percentiles.anio_5.p50));
+    liq(dl, "Crecimiento", pctSigno(p.percentiles.p50_pct_1_5) + " · " + pesosSigno(p.percentiles.p50_delta_1_5));
+    if (p.posicion) {
+      liq(dl, "Se compara con", nombreGrupo(p), true);
+      liq(dl, "Sueldo de entrada en su grupo", CUARTO[p.posicion.cuartil_p50_anio_1 - 1], true);
+      liq(dl, "Crecimiento en su grupo (%)", CUARTO[p.posicion.cuartil_p50_pct_1_5 - 1], true);
+      liq(dl, "Cuadrante (en % / en pesos)", p.posicion.cuadrante_pct +
+        (p.posicion.cambia_cuadrante ? " / " + p.posicion.cuadrante_pesos : " (igual en pesos)"), true);
+    }
+    b1.appendChild(dl);
+    var lo = Math.floor(Math.min(p.percentiles.anio_1.p10, p.percentiles.anio_5.p10) / 250000) * 250000;
+    var hi = Math.ceil(Math.max(p.percentiles.anio_1.p90, p.percentiles.anio_5.p90) / 250000) * 250000;
+    var gm = el("div", "ficha__grafico");
+    b1.appendChild(gm);
+    gm.appendChild(svgMancuerna(p, lo, hi, Math.max(280, gm.clientWidth || 600)));
+    b1.appendChild(el("p", "ficha__nota", "Punto: P50 · barra: mitad central (P25–P75) · línea: P10–P90 (" +
+      pesosCorto(p.percentiles.anio_5.p10) + "–" + pesosCorto(p.percentiles.anio_5.p90) + " al 5° año). El P10 está truncado en el sueldo mínimo."));
+
+    // Promedio por año
+    graficoMedia(bloque(art, "Ingreso promedio por año desde la titulación"), p);
+
+    // Empleabilidad
+    var b3 = bloque(art, "Empleabilidad");
+    b3.appendChild(el("p", "ficha__nota", datos.meta.rotulo_empleabilidad.replace(">=", "≥") + "."));
+    var dl3 = el("dl", "liq");
+    liq(dl3, "Nacional, 1er año", pct(p.empleabilidad_nacional[0]));
+    liq(dl3, "Nacional, 2° año", pct(p.empleabilidad_nacional[1]));
+    var d1 = p.dispersion.emp1;
+    if (d1) liq(dl3, "Institución típica, 1er año (mediana de " + d1.n_inst + ")", pct(d1.mediana));
+    b3.appendChild(dl3);
+    if (d1) {
+      // La explicación (población más amplia que las instituciones publicadas, A4) solo vale
+      // cuando la cifra nacional queda sobre la institución típica; si no, se dice sin explicar.
+      var dif = d1.nacional_menos_mediana;
+      var frase = Math.abs(dif) < 1
+        ? "La cifra nacional y la institución típica casi coinciden (" + fmtUno.format(Math.abs(dif)) + " puntos de diferencia)."
+        : dif > 0
+          ? "La cifra nacional queda " + fmtUno.format(dif) + " puntos sobre la institución típica: incluye titulados que no aparecen en ninguna institución publicada."
+          : "La cifra nacional queda " + fmtUno.format(-dif) + " puntos bajo la institución típica: las instituciones más grandes de esta carrera tienen menor empleabilidad.";
+      b3.appendChild(el("p", "ficha__nota", frase));
+    }
+
+    // Instituciones
+    var progs = (programasPor[claveDe(p)] || []).slice().sort(function (a, b) { return b.emp1 - a.emp1 || colador.compare(a.institucion, b.institucion); });
+    var b4 = bloque(art, "Instituciones que la ofrecen (" + progs.length + " publicadas en MiFuturo)");
+    if (!progs.length) {
+      b4.appendChild(el("p", "ficha__nota", "MiFuturo no publica esta carrera por institución."));
+    } else {
+      if (d1) graficoInstituciones(b4, progs, d1, p.empleabilidad_nacional[0]);
+      else b4.appendChild(el("p", "ficha__nota", "Con menos de " + parametro("min_inst_dispersion") +
+        " instituciones con el dato, no se comparan entre sí: se listan sin comparación."));
+      var conTramo = !!p.dispersion.tramo;
+      var tabla = el("table", "tabla tabla--tarjetas");
+      tabla.appendChild(el("caption", "solo-lectores", "Instituciones que ofrecen " + p.nombre));
+      var thead = el("thead"), trh = el("tr");
+      var cols = ["Institución", "Empleab. 1er año"].concat(d1 ? ["vs. típica"] : [])
+        .concat(["2° año", "Continuidad", conTramo ? "Tramo 4° año (vs. típica)" : "Tramo 4° año", "Acreditación"]);
+      cols.forEach(function (c, i) { var th = el("th", i ? "num" : null, c); th.scope = "col"; trh.appendChild(th); });
+      thead.appendChild(trh); tabla.appendChild(thead);
+      var tb = el("tbody");
+      progs.forEach(function (g) {
+        var tr = el("tr");
+        var celdas = [["Institución", g.institucion, "td--titulo"], ["Empleab. 1er año", pct(g.emp1), "num"]];
+        if (d1) celdas.push(["vs. típica", g.desvio_emp1 == null ? "—" : (g.desvio_emp1 > 0 ? "+" : g.desvio_emp1 < 0 ? "−" : "") + fmtUno.format(Math.abs(g.desvio_emp1)) + " pts", "num"]);
+        // Tramo y su comparación en una sola celda: con columnas separadas la tabla no cabía.
+        celdas.push(["2° año", pct(g.emp2), "num"], ["Continuidad", pct(g.continuidad), "num"],
+                    ["Tramo 4° año", tramoTexto(g.tramo) + (conTramo && g.tramo_vs_par ? " (" + g.tramo_vs_par + ")" : ""), "num"]);
+        celdas.push(["Acreditación", g.acreditacion_anios ? g.acreditacion_anios + " años" : "no acreditada", "num"]);
+        celdas.forEach(function (c) { var td = el("td", c[2], c[1]); td.setAttribute("data-rotulo", c[0]); tr.appendChild(td); });
+        tb.appendChild(tr);
+      });
+      tabla.appendChild(tb);
+      var envol = el("div", "tabla-desplazable");
+      envol.appendChild(tabla);
+      b4.appendChild(envol);
+      b4.appendChild(el("p", "ficha__nota", "Continuidad: titulados que al año siguiente siguen estudiando; baja la empleabilidad, por eso van juntas. Tramo: ingreso promedio al 4° año de la institución" +
+        (conTramo ? ", comparado con el tramo de la institución típica." : ".")));
+    }
+
+    // Quiénes se titulan
+    var b5 = bloque(art, "Quiénes se titulan");
+    var dl5 = el("dl", "liq");
+    var tt = p.titulados_2024;
+    if (tt.total) liq(dl5, "Titulados 2024", fmtEntero.format(tt.total) + (tt.mujeres != null ? " (" + fmtEntero.format(100 * tt.mujeres / tt.total) + " % mujeres)" : ""));
+    var f30 = p.contexto.fuera30_rango;
+    if (f30[0] != null) liq(dl5, "Con 30 años o más al titularse (recientes)", "entre " + pct(f30[0]) + " y " + pct(f30[1]));
+    if (p.contexto.var_oferta_joven_pct != null) liq(dl5, "Titulados menores de 30, hace cinco años → recientes", pctSigno(p.contexto.var_oferta_joven_pct));
+    if (p.duracion.formal != null) liq(dl5, "Duración formal / real (semestres)", fmtUno.format(p.duracion.formal) + " / " + (p.duracion.real != null ? fmtUno.format(p.duracion.real) : "—"));
+    b5.appendChild(dl5);
+    b5.appendChild(el("p", "ficha__nota", "Fuente: titulaciones SIES de todas las instituciones de este tipo. El rango de edad existe porque el SIES agrupa de 30 a 34 años."));
+  }
+
+  function abrirFicha(p, desplazar) {
+    pintarFicha(p);
+    document.getElementById("ficha-texto").value = etiquetaPar(p);
+    document.getElementById("ficha-estado").textContent = "Mostrando la ficha de " + etiquetaPar(p) + ".";
+    // La carrera queda en la dirección para compartirla; replaceState no agrega historial ni salta.
+    try { history.replaceState(null, "", "#carrera=" + encodeURIComponent(claveDe(p))); } catch (e) { /* file:// sin historial */ }
+    if (desplazar) {
+      document.getElementById("ficha").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      document.getElementById("ficha-contenido").focus({ preventScroll: true });
+    }
+  }
+
+  function buscarPar(texto) {
+    var exacto = pares.filter(function (p) { return etiquetaPar(p) === texto; })[0];
+    if (exacto) return exacto;
+    var n = normalizar(texto.trim());
+    if (!n) return null;
+    // Sin tildes; ante varias coincidencias, la comparable con más titulados.
+    var candidatos = pares.filter(function (p) { return normalizar(etiquetaPar(p)).indexOf(n) >= 0; });
+    return maximoPor(candidatos, function (p) { return (p.marcas.representativo ? 1e9 : 0) + p.conteos.peso; });
+  }
+
+  function desdeDireccion() {
+    var m = /#carrera=([^&]+)/.exec(location.hash);
+    return m ? parPorClave[decodeURIComponent(m[1])] : null;
+  }
+
+  function prepararFicha() {
+    var lista = document.getElementById("ficha-opciones");
+    pares.slice().sort(function (a, b) { return colador.compare(etiquetaPar(a), etiquetaPar(b)); })
+      .forEach(function (p) { var op = el("option"); op.value = etiquetaPar(p); lista.appendChild(op); });
+    document.getElementById("ficha-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var p = buscarPar(document.getElementById("ficha-texto").value);
+      if (p) abrirFicha(p, false);
+      else document.getElementById("ficha-estado").textContent = "No hay una carrera con ese nombre. Prueba con una parte del nombre, por ejemplo «enfermería».";
+    });
+    document.getElementById("ficha-enlace").addEventListener("click", function () {
+      var estado = document.getElementById("ficha-estado");
+      var url = location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { estado.textContent = "Enlace copiado."; },
+          function () { estado.textContent = "Copia este enlace: " + url; });
+      } else {
+        estado.textContent = "Copia este enlace: " + url;
+      }
+    });
+    window.addEventListener("hashchange", function () { var p = desdeDireccion(); if (p) abrirFicha(p, true); });
+    // Ficha inicial: la de la dirección, o por regla la comparable con más titulados.
+    var inicial = desdeDireccion() || maximoPor(comparables, function (p) { return p.conteos.peso; });
+    pintarFicha(inicial);
+    document.getElementById("ficha-texto").value = etiquetaPar(inicial);
+    if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
   }
 
   // ------------------------------------------------------------- notas y pie
@@ -946,5 +1246,6 @@
   pintarLeyenda();
   prepararFiltros();
   pintarCarreras();
+  prepararFicha();
   pintarNotas();
 })();
