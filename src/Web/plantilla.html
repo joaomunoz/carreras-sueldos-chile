@@ -27,6 +27,21 @@
     <h1 class="portada__titulo">Del primer al quinto año</h1>
     <p class="portada__bajada">Cuánto progresa el ingreso de cada carrera, comparando a quienes se titularon hace poco con quienes se titularon hace cinco años, y dónde el promedio esconde más de lo que muestra.</p>
     <dl class="cifras" id="cifras" aria-live="polite"></dl>
+    <nav class="indice" aria-label="En esta página">
+      <p class="indice__rotulo">En esta página</p>
+      <ul>
+        <li><a href="#t-peine">Cada carrera</a></li>
+        <li><a href="#t-hallazgos">Lecturas corregidas</a></li>
+        <li><a href="#t-cuadrantes">Entrada y progreso</a></li>
+        <li><a href="#t-mancuerna">Dispersión</a></li>
+        <li><a href="#t-segmentos">Cobertura</a></li>
+        <li><a href="#t-carreras">Todas las carreras</a></li>
+        <li><a href="#t-ficha">Ficha de carrera</a></li>
+        <li><a href="#t-limites">Qué no dice</a></li>
+        <li><a href="#t-metodo">Cómo se hizo</a></li>
+        <li><a href="#t-qa">Controles de calidad</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
@@ -236,6 +251,72 @@
     </form>
     <p class="filtros__conteo" id="ficha-estado" role="status" aria-live="polite"></p>
     <article class="ficha" id="ficha-contenido" tabindex="-1" aria-labelledby="ficha-nombre"></article>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-limites">
+    <h2 id="t-limites" class="bloque__titulo">Qué no dice este análisis</h2>
+    <p class="bloque__texto">Los límites de los datos, con sus cifras. Leer cualquier resultado de esta página sin ellos lleva a conclusiones que los datos no sostienen.</p>
+    <ul class="limites" id="limites"></ul>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-metodo">
+    <h2 id="t-metodo" class="bloque__titulo">Cómo se hizo</h2>
+    <div class="metodo" id="metodo"></div>
+    <details class="leyenda">
+      <summary>Qué titulados entran en cada cifra</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla tabla--tarjetas" id="tabla-cohortes">
+          <caption class="solo-lectores">Cohortes de titulación y años de ingreso de cada indicador</caption>
+          <thead>
+            <tr>
+              <th scope="col">Cifra</th>
+              <th scope="col">Titulados en</th>
+              <th scope="col">Ingresos de</th>
+              <th scope="col" class="num">Mínimo de casos</th>
+              <th scope="col">Fuente</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+    <details class="leyenda">
+      <summary>Reglas de decisión del análisis</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla tabla--tarjetas" id="tabla-parametros">
+          <caption class="solo-lectores">Umbrales del análisis</caption>
+          <thead>
+            <tr>
+              <th scope="col">Regla</th>
+              <th scope="col" class="num">Valor</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-qa">
+    <h2 id="t-qa" class="bloque__titulo">Controles de calidad</h2>
+    <p class="bloque__texto">Cada vez que se construyen los datos, la base verifica estos controles. Si alguno falla, los datos no se exportan y esta página no se puede volver a generar.</p>
+    <p class="qa-resumen" id="qa-resumen"></p>
+    <details class="leyenda">
+      <summary>Ver los controles uno por uno</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla tabla--tarjetas" id="tabla-qa">
+          <caption class="solo-lectores">Controles de calidad del último build</caption>
+          <thead>
+            <tr>
+              <th scope="col">Control</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Resultado</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
   </section>
 </main>
 

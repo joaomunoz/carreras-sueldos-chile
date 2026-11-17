@@ -1194,6 +1194,136 @@
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
   }
 
+  // ------------------------------------------------------------- qué no dice, método y controles (W6)
+  // Cifras desde datos.que_no_dice (armado en SQL) y desde los pares; ninguna escrita a mano.
+  function textoConCifras(li, titulo, partes) {
+    li.appendChild(el("strong", null, titulo));
+    partes.forEach(function (parte, i) {
+      li.appendChild(i % 2 ? el("span", "cifra", parte) : document.createTextNode(parte));
+    });
+  }
+
+  // El detalle del control qa trae las cifras en texto con punto decimal: "empleabilidad 1er
+  // año 1.65 pp; tramo 4° año (punto medio) 6.2 %". Se buscan por su contexto (un regex de
+  // "cualquier número" tomaría el 1 de "1er" y el 4 de "4°").
+  function brechaDe(texto) {
+    var e = /([-\d.]+) pp/.exec(texto), t = /\(punto medio\) ([-\d.]+) %/.exec(texto);
+    return e && t ? [Number(e[1]), Number(t[1])] : [];
+  }
+
+  function pintarLimites() {
+    var q = datos.que_no_dice, ul = document.getElementById("limites");
+    function item(titulo, partes) { var li = el("li"); textoConCifras(li, titulo, partes); ul.appendChild(li); }
+    var anomalos = q.hitos_con_anomalia.map(function (a) { return a + "°"; });
+    var atipSalud = pares.filter(function (p) { return p.marcas.cohorte_atipica && p.area.cine13 === "Salud y Bienestar"; }).length;
+    var brecha = brechaDe(q.brecha_nacional_instituciones);
+
+    item("No dice por qué.", ["Describe cuánto ganan los titulados de cada carrera; no prueba que estudiar esa carrera cause ese sueldo. Pueden influir quién entra a estudiarla, en qué institución y dónde trabaja después."]);
+    item("No sigue a las mismas personas.", ["El primer y el quinto año son grupos distintos de titulados medidos con los mismos ingresos de 2024: es una foto, no una trayectoria."]);
+    item("No ve a todos.", ["Los programas que publica MiFuturo reúnen el ", pct(q.cobertura_titulaciones[0]),
+      " de los titulados recientes y el ", pct(q.cobertura_titulaciones[1]),
+      " de los de hace cinco años. Faltan programas chicos y los que cerraron; con baja cobertura: " +
+      q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return x[0] + " (" + x[1].replace("Carreras ", "").toLowerCase() + ")"; }).join(", ") + "."]);
+    item("No compara lo que no se puede comparar.", ["", fmtEntero.format(q.pares_no_representativos), " de " + fmtEntero.format(q.pares_total) +
+      " carreras tienen menos de " + parametro("min_inst_oferta") + " instituciones y quedan fuera de rankings y gráficos de comparación; solo ",
+      fmtEntero.format(q.celdas_validas), " grupos de área tienen carreras suficientes para servir de referencia."]);
+    item("No limpia los años raros.", ["Los años ", anomalos.join(", "), " del ingreso promedio incluyen titulados de " +
+      parametro("anio_caida_titulacion") + " o " + parametro("anio_rebote_titulacion") + ". En ", fmtEntero.format(q.cohortes_atipicas),
+      " carreras la cohorte del sueldo al primer año tuvo una empleabilidad atípica (" + fmtEntero.format(atipSalud) +
+      " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " los titulados recientes son mucho mayores que los de hace cinco años."]);
+    item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el P10 está truncado. No hay datos por sexo, edad ni región."]);
+    if (brecha.length >= 2) {
+      item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha[0]) + " puntos",
+        " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha[1]) + " %",
+        " sobre ellas en el tramo de ingreso del cuarto año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución típica de su carrera."]);
+    }
+    item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),
+      " de las titulaciones recientes; entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);
+    item("No tiene márgenes de error.", ["Son registros administrativos completos, no una muestra: las diferencias chicas entre carreras pueden ser reales y aun así poco relevantes."]);
+  }
+
+  var NOMBRE_COHORTE = {
+    ingreso_medio_1er_anio: "Ingreso promedio, 1er año", ingreso_medio_2do_anio: "Ingreso promedio, 2° año",
+    ingreso_medio_3er_anio: "Ingreso promedio, 3er año", ingreso_medio_4to_anio: "Ingreso promedio, 4° año",
+    ingreso_medio_5to_anio: "Ingreso promedio, 5° año",
+    percentiles_anio_1: "Percentiles (P10–P90), 1er año", percentiles_anio_5: "Percentiles (P10–P90), 5° año",
+    empleabilidad_1er_anio_nacional: "Empleabilidad nacional, 1er año", empleabilidad_2do_anio_nacional: "Empleabilidad nacional, 2° año",
+    empleabilidad_1er_anio_institucion: "Empleabilidad por institución, 1er año", empleabilidad_2do_anio_institucion: "Empleabilidad por institución, 2° año",
+    tramo_ingreso_4to_anio_institucion: "Tramo de ingreso por institución, 4° año",
+    continuidad_estudios_institucion: "Continuidad de estudios", duracion_real_institucion: "Duración real por institución",
+    titulados_y_duracion: "Titulados y duración", titulados_sies: "Titulaciones SIES"
+  };
+
+  function pintarMetodo() {
+    var div = document.getElementById("metodo");
+    div.appendChild(el("p", null, "Fuentes: " + datos.meta.fuentes.join("; ") + ". Montos en " + datos.meta.unidad_ingresos.replace(">=", "≥") + "."));
+    div.appendChild(el("p", null, "Una carrera es una carrera genérica de MiFuturo dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel."));
+    div.appendChild(el("p", null, "Cómo se construye, de los archivos públicos a esta página (se reproduce con un solo comando, make todo):"));
+    div.appendChild(el("p", "metodo__flujo", "CSV de MiFuturo y SIES → base PostgreSQL (raw → modelo → analytics) → " +
+      fmtEntero.format(datos.qa.controles.length) + " controles de calidad → datos.json → esta página, un solo archivo sin dependencias"));
+
+    var cuerpo = document.querySelector("#tabla-cohortes tbody");
+    var FUENTE = { Estadisticas: "MiFuturo, Estadísticas por Carrera", Empleabilidad: "MiFuturo, Empleabilidad e Ingresos", Titulados: "SIES" };
+    var ordenCohorte = Object.keys(NOMBRE_COHORTE);
+    function posicionCohorte(c) { var i = ordenCohorte.indexOf(c.indicador); return i < 0 ? 999 : i; }
+    datos.cohortes.filter(function (c) { return c.indicador.indexOf("serie_") !== 0; })
+      .sort(function (a, b) { return posicionCohorte(a) - posicionCohorte(b); }).forEach(function (c) {
+      var tr = el("tr");
+      var rango = function (a) { return a[0] == null ? "—" : a[0] === a[1] ? String(a[0]) : a[0] + "–" + a[1]; };
+      [["Cifra", NOMBRE_COHORTE[c.indicador] || c.indicador, "td--titulo"],
+       ["Titulados en", rango(c.cohortes), ""],
+       ["Ingresos de", rango(c.anios_ingreso), ""],
+       ["Mínimo de casos", c.min_casos == null ? "—" : fmtEntero.format(c.min_casos), "num"],
+       ["Fuente", FUENTE[c.fuente] || c.fuente, ""]].forEach(function (x) {
+        var td = el("td", x[2] || null, x[1]); td.setAttribute("data-rotulo", x[0]); tr.appendChild(td);
+      });
+      cuerpo.appendChild(tr);
+    });
+    var nota = el("p", "nota", "Derecho usa en todas las cifras las cohortes corridas un año.");
+    document.getElementById("tabla-cohortes").parentNode.parentNode.appendChild(nota);
+
+    var cp = document.querySelector("#tabla-parametros tbody");
+    datos.parametros.forEach(function (prm) {
+      var tr = el("tr");
+      // Proporciones (0–1) se muestran como %; años y conteos, tal cual.
+      var valor = prm.valor > 0 && prm.valor < 1 ? fmtEntero.format(prm.valor * 100) + " %" : prm.valor > 1900 ? String(prm.valor) : fmtEntero.format(prm.valor);
+      [["Regla", prm.descripcion, "td--titulo"], ["Valor", valor, "num"]].forEach(function (x) {
+        var td = el("td", x[2], x[1]); td.setAttribute("data-rotulo", x[0]); tr.appendChild(td);
+      });
+      cp.appendChild(tr);
+    });
+  }
+
+  var ESTADO = {
+    OK: { clase: "estado--ok", icono: "✓", texto: "aprobado", plural: "aprobados" },
+    EXENTO: { clase: "estado--exento", icono: "–", texto: "no aplica", plural: "no aplican" },
+    FALLA: { clase: "estado--falla", icono: "✕", texto: "falla", plural: "fallas" }
+  };
+
+  function estadoNodo(estado, cantidad) {
+    var e = ESTADO[estado], s = el("span", "estado " + e.clase);
+    s.appendChild(el("span", "estado__icono", e.icono)).setAttribute("aria-hidden", "true");
+    s.appendChild(el("span", "estado__texto", (cantidad != null ? fmtEntero.format(cantidad) + " " : "") +
+      (cantidad != null && cantidad !== 1 ? e.plural : e.texto)));
+    return s;
+  }
+
+  function pintarControles() {
+    var r = datos.qa.resumen, p = document.getElementById("qa-resumen");
+    ["OK", "EXENTO", "FALLA"].forEach(function (k) { p.appendChild(estadoNodo(k, r[k] || 0)); });
+    var cuerpo = document.querySelector("#tabla-qa tbody");
+    datos.qa.controles.forEach(function (c) {
+      var tr = el("tr");
+      var t1 = el("td", "td--titulo", c.control.replace(/_/g, " ") + " · " + c.objeto.replace(/_/g, " "));
+      t1.setAttribute("data-rotulo", "Control");
+      var t2 = el("td"); t2.setAttribute("data-rotulo", "Estado"); t2.appendChild(estadoNodo(c.estado));
+      var t3 = el("td", null, c.detalle); t3.setAttribute("data-rotulo", "Resultado");
+      t3.title = "Criterio: " + c.umbral;
+      tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
+      cuerpo.appendChild(tr);
+    });
+  }
+
   // ------------------------------------------------------------- notas y pie
   function pintarNotas() {
     document.getElementById("nota-carreras").textContent =
@@ -1247,5 +1377,8 @@
   prepararFiltros();
   pintarCarreras();
   prepararFicha();
+  pintarLimites();
+  pintarMetodo();
+  pintarControles();
   pintarNotas();
 })();

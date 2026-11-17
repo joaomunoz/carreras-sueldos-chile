@@ -170,6 +170,7 @@ p { margin: 0; }
   cursor: pointer;
 }
 .boton-tema:hover { border-color: var(--tinta-suave); }
+.boton-tema { white-space: nowrap; flex: 0 0 auto; }   /* a 320 px se partía en dos líneas */
 
 /* Cifras de cabecera: rótulo arriba, monto abajo, como las líneas de una liquidación. */
 .cifras {
@@ -633,6 +634,55 @@ p { margin: 0; }
   .mancuerna__fila { grid-template-columns: 1fr; }
   .mancuerna__rotulo { padding: 0.2rem 0 0.1rem; }
 }
+
+/* ---------------------------------------------------------------- índice y bloques finales (W6) */
+.indice { margin-top: 2rem; }
+.indice__rotulo {
+  font-family: var(--f-titulo);
+  font-size: var(--t-0);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.indice ul { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem; }
+.indice a, .pie a { color: var(--tinta); text-decoration-color: var(--regla); text-underline-offset: 3px; }
+.indice a:hover { text-decoration-color: currentColor; }
+
+/* Qué no dice: las salvedades llevan el borde violeta, como las advertencias de la ficha. */
+.limites { list-style: none; margin: 1.5rem 0 0; padding: 0; border-left: 3px solid var(--timbre); max-width: 64rem; }
+.limites li { padding: 0.65rem 0 0.65rem 1.1rem; border-bottom: 1px solid var(--regla); }
+.limites li:last-child { border-bottom: 0; }
+.limites strong { font-family: var(--f-titulo); font-weight: 600; font-size: 1.0625rem; margin-right: 0.35rem; }
+.limites .cifra { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.metodo { margin-top: 1.25rem; display: grid; gap: 0.75rem; max-width: 64ch; }
+.metodo__flujo {
+  font-family: var(--f-cifra);
+  font-size: 0.875rem;
+  background: var(--papel-alto);
+  border: 1px solid var(--regla);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  overflow-wrap: anywhere;
+}
+.metodo code { font-family: var(--f-cifra); font-size: 0.875em; }
+
+/* Estado de controles: ícono + texto, nunca solo color (regla de estados de dataviz). */
+.qa-resumen { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.0625rem; }
+.estado { display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
+.estado__icono {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem; height: 1.25rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1.5px solid currentColor;
+}
+.estado--ok { color: var(--anio5); }
+.estado--exento { color: var(--tinta-suave); }
+.estado--falla { color: var(--timbre); }
+.estado__texto { color: var(--tinta); }
 
 /* ---------------------------------------------------------------- pie */
 .pie {
