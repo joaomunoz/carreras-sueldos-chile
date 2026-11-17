@@ -38,8 +38,11 @@
   <div class="envoltorio">
     <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
     <h1 class="portada__titulo">Del primer al quinto año</h1>
-    <p class="portada__bajada">Cuánto progresa el ingreso de cada carrera, comparando a quienes se titularon hace poco con quienes se titularon hace cinco años, y dónde el promedio esconde más de lo que muestra.</p>
-    <dl class="cifras" id="cifras" aria-live="polite"></dl>
+    <!-- N2: portada mínima. Tesis, línea técnica y límites se redactan en app.js desde datos.json
+         (cifras calculadas en SQL); el detalle de cada hallazgo vive en la grilla de la Parte I. -->
+    <p class="portada__bajada" id="portada-tesis"></p>
+    <p class="portada__tecnica" id="portada-tecnica"></p>
+    <p class="portada__limites">Compara a quienes se titularon hace uno y hace cinco años, no a las mismas personas en el tiempo, y no explica causas. <a href="#t-limites">Qué no dice →</a></p>
   </div>
 </header>
 
@@ -50,6 +53,14 @@
       <h2 id="t-parte-hallazgos" class="parte__titulo">Lo que encontré</h2>
       <p class="parte__bajada">Tres lecturas que parecen obvias sobre los sueldos de los titulados, y lo que los datos dicen en cada caso.</p>
     </header>
+
+    <!-- La grilla abre la Parte I: las tres ideas se leen de un vistazo y cada tarjeta lleva al
+         gráfico o a la ficha que la respalda. El título queda solo para lectores de pantalla (la
+         cabecera de la parte ya lo dice) y también da el rótulo de «Volver» desde la ficha. -->
+    <section class="bloque bloque--hallazgos" aria-labelledby="t-hallazgos">
+      <h3 id="t-hallazgos" class="bloque__titulo solo-lectores">Tres lecturas que los datos corrigen</h3>
+      <ul class="hallazgos" id="hallazgos"></ul>
+    </section>
 
     <section class="bloque peine" aria-labelledby="t-peine">
       <h3 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h3>
@@ -65,11 +76,6 @@
         </figcaption>
       </figure>
       <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
-    </section>
-
-    <section class="bloque" aria-labelledby="t-hallazgos">
-      <h3 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h3>
-      <ul class="hallazgos" id="hallazgos"></ul>
     </section>
 
     <section class="bloque" aria-labelledby="t-cuadrantes">

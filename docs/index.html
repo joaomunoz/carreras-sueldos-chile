@@ -276,23 +276,24 @@ p { margin: 0; }
 /* Regreso desde la ficha: arriba de todo, porque es lo primero que se ve después del salto. */
 .ficha__volver { margin-top: 0.75rem; }
 
-/* Cifras de cabecera: rótulo arriba, monto abajo, como las líneas de una liquidación. */
-.cifras {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));   /* de a dos en un celular de 390 px */
-  gap: 1.25rem 1.5rem;
-  margin: 2.25rem 0 0;
+/* Portada mínima (N2): la línea técnica es el "membrete" del análisis; los límites, su letra chica. */
+.portada__tecnica {
+  margin-top: 1.75rem;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--tinta);
+  max-width: 64ch;
+  font-size: var(--t-0);
+  color: var(--tinta-suave);
 }
-.cifras div { border-top: 2px solid var(--tinta); padding-top: 0.5rem; }
-.cifras dt { font-size: var(--t-0); color: var(--tinta-suave); }
-.cifras dd {
-  margin: 0.15rem 0 0;
+.portada__tecnica strong {
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
-  font-size: var(--t-2);
+  font-weight: 600;
+  color: var(--tinta);
 }
-/* Un valor que no es cifra (p. ej. la unidad) va en la fuente de texto: la monoespaciada es solo para números. */
-.cifras dd.cifras__texto { font-family: var(--f-texto); font-size: var(--t-1); padding-top: 0.2rem; }
+.portada__limites { margin-top: 0.4rem; max-width: 64ch; font-size: var(--t-0); color: var(--tinta-suave); }
+.portada__limites a { color: var(--tinta); white-space: nowrap; }
+.portada__bajada strong { color: var(--tinta); font-weight: 600; white-space: nowrap; }
 
 /* ---------------------------------------------------------------- bloques */
 .bloque { padding-block: 3rem 1rem; }
@@ -363,18 +364,27 @@ p { margin: 0; }
 /* ---------------------------------------------------------------- hallazgos */
 /* "Parece que… / Pero…": cada hallazgo corrige una lectura ingenua. La columna izquierda
    va apagada (es la lectura que se descarta); la derecha lleva el peso. */
+/* Grilla de hallazgos (N2): tres columnas que se comparan de un vistazo; una sola en celular.
+   Sin cajas: cada tarjeta es una columna de papel con su regla superior, como la cabecera. */
+.bloque--hallazgos { padding-top: 1.75rem; }
 .hallazgos {
   list-style: none;
-  margin: 1.75rem 0 0;
+  margin: 0;
   padding: 0;
-  border-top: 2px solid var(--tinta);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem 2rem;
 }
+/* subgrid: las seis filas de cada tarjeta (rótulo, lectura, rótulo, cifra, texto, enlace) se
+   alinean entre columnas, así los «Pero» y las cifras quedan a la misma altura. */
 .hallazgo {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-  gap: 0.75rem 2.5rem;
-  padding-block: 1.5rem;
-  border-bottom: 1px solid var(--regla);
+  grid-row: span 6;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-content: start;
+  border-top: 2px solid var(--tinta);
+  padding-top: 0.75rem;
 }
 .hallazgo__rotulo {
   font-family: var(--f-titulo);
@@ -382,25 +392,47 @@ p { margin: 0; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tinta-suave);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
-/* :not(): sin él, esta regla (más específica) le ganaba a .hallazgo__rotulo y agrandaba el rótulo. */
-.hallazgo__parece p:not(.hallazgo__rotulo) {
+/* El tachado es la seña de la grilla: va en tinta (no en --timbre, reservado a advertencias). */
+.hallazgo__parece {
   font-family: var(--f-titulo);
   font-size: var(--t-2);
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--tinta-suave);
+  margin-bottom: 1.1rem;
 }
-.hallazgo__pero p { max-width: 60ch; }
-.hallazgo__pero p + p { margin-top: 0.5rem; }
-.hallazgo strong {
+.hallazgo__parece s {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--tinta);
+}
+.hallazgo__cifra { margin-bottom: 0.75rem; }
+.hallazgo__cifra strong {
+  display: block;
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+  font-size: var(--t-3);
+  line-height: 1.1;
+}
+.hallazgo__cifra span { display: block; margin-top: 0.2rem; font-weight: 600; line-height: 1.35; }
+.hallazgo__pero { color: var(--tinta-suave); }
+.hallazgo__pero p + p { margin-top: 0.5rem; }
+.hallazgo__pero strong {
+  font-family: var(--f-cifra);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--tinta);
   white-space: nowrap;
 }
-@media (max-width: 40rem) {
-  .hallazgo { grid-template-columns: 1fr; }
+/* align-self end: los enlaces quedan alineados al pie de las tres columnas. */
+.hallazgo__accion { padding-top: 1rem; align-self: end; justify-self: start; }
+a.hallazgo__accion { color: var(--tinta); }
+@media (max-width: 60rem) {
+  .hallazgos { grid-template-columns: 1fr; }
+  .hallazgo { grid-row: auto; grid-template-rows: none; }
+  .hallazgo__parece, .hallazgo__pero, .hallazgo__cifra { max-width: 60ch; }
 }
 
 /* Mini franja del hallazgo (c): rango, mitad central y cifra nacional de una carrera. */
@@ -819,8 +851,11 @@ p { margin: 0; }
   <div class="envoltorio">
     <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
     <h1 class="portada__titulo">Del primer al quinto año</h1>
-    <p class="portada__bajada">Cuánto progresa el ingreso de cada carrera, comparando a quienes se titularon hace poco con quienes se titularon hace cinco años, y dónde el promedio esconde más de lo que muestra.</p>
-    <dl class="cifras" id="cifras" aria-live="polite"></dl>
+    <!-- N2: portada mínima. Tesis, línea técnica y límites se redactan en app.js desde datos.json
+         (cifras calculadas en SQL); el detalle de cada hallazgo vive en la grilla de la Parte I. -->
+    <p class="portada__bajada" id="portada-tesis"></p>
+    <p class="portada__tecnica" id="portada-tecnica"></p>
+    <p class="portada__limites">Compara a quienes se titularon hace uno y hace cinco años, no a las mismas personas en el tiempo, y no explica causas. <a href="#t-limites">Qué no dice →</a></p>
   </div>
 </header>
 
@@ -831,6 +866,14 @@ p { margin: 0; }
       <h2 id="t-parte-hallazgos" class="parte__titulo">Lo que encontré</h2>
       <p class="parte__bajada">Tres lecturas que parecen obvias sobre los sueldos de los titulados, y lo que los datos dicen en cada caso.</p>
     </header>
+
+    <!-- La grilla abre la Parte I: las tres ideas se leen de un vistazo y cada tarjeta lleva al
+         gráfico o a la ficha que la respalda. El título queda solo para lectores de pantalla (la
+         cabecera de la parte ya lo dice) y también da el rótulo de «Volver» desde la ficha. -->
+    <section class="bloque bloque--hallazgos" aria-labelledby="t-hallazgos">
+      <h3 id="t-hallazgos" class="bloque__titulo solo-lectores">Tres lecturas que los datos corrigen</h3>
+      <ul class="hallazgos" id="hallazgos"></ul>
+    </section>
 
     <section class="bloque peine" aria-labelledby="t-peine">
       <h3 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h3>
@@ -846,11 +889,6 @@ p { margin: 0; }
         </figcaption>
       </figure>
       <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
-    </section>
-
-    <section class="bloque" aria-labelledby="t-hallazgos">
-      <h3 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h3>
-      <ul class="hallazgos" id="hallazgos"></ul>
     </section>
 
     <section class="bloque" aria-labelledby="t-cuadrantes">
@@ -1239,47 +1277,68 @@ p { margin: 0; }
     });
   }
 
-  // ------------------------------------------------------------- cifras de portada
-  function pintarCifras() {
-    var qa = datos.qa.resumen;
-    var aprobados = qa.OK || 0;
-    var exentos = qa.EXENTO || 0;
-    var qnd = datos.que_no_dice;
-    var filas = [
-      ["Carreras por tipo de institución", fmtEntero.format(qnd.pares_total)],
-      ["Comparables entre sí", fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos)],
-      ["Controles de calidad aprobados" + (exentos ? " (" + exentos + " no aplican)" : ""), fmtEntero.format(aprobados)],
-      ["Ingresos en", "pesos de septiembre de 2025", true]
-    ];
-    var dl = document.getElementById("cifras");
-    filas.forEach(function (f) {
-      var bloque = el("div");
-      bloque.appendChild(el("dt", null, f[0]));
-      bloque.appendChild(el("dd", f[2] ? "cifras__texto" : null, f[1]));
-      dl.appendChild(bloque);
-    });
+  // ------------------------------------------------------------- portada (N2)
+  // Tesis y línea técnica, redactadas desde datos.json: la tesis usa las medianas por nivel de
+  // analytics.hallazgo_edad (nunca una mediana que mezcle técnicas y profesionales).
+  function nivelEdad(nombre) {
+    return datos.hallazgos.edad.filter(function (x) { return x.nivel === nombre; })[0];
+  }
+
+  function pintarPortada() {
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    var tesis = document.getElementById("portada-tesis");
+    if (tec && pro) {
+      // "más" / "menos" según el signo: con datos nuevos una mediana podría quedar bajo cero.
+      var dif = function (v) { return [pct(Math.abs(v)), v < 0 ? " menos" : " más"]; };
+      var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
+      parrafoEn(tesis, ["En la carrera técnica típica, quienes se titularon hace cinco años ganan ",
+        dt[0], dt[1] + " que los recién titulados; en la profesional típica, ",
+        dp[0], dp[1] + ". Tres lecturas comunes de esas cifras fallan."]);
+    }
+    var qa = datos.qa.resumen, qnd = datos.que_no_dice;
+    var total = (qa.OK || 0) + (qa.EXENTO || 0);
+    parrafoEn(document.getElementById("portada-tecnica"), [
+      "", fmtEntero.format(qnd.pares_total), " carreras por tipo de institución · ",
+      fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos), " comparables · ",
+      fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);
   }
 
   // ------------------------------------------------------------- hallazgos
   // Texto con cifras en <strong>: partes alternan texto y cifra ([texto, cifra, texto, ...]).
-  function parrafo(partes) {
-    var p = el("p");
+  function parrafoEn(nodo, partes) {
     partes.forEach(function (parte, i) {
-      p.appendChild(i % 2 ? el("strong", null, parte) : document.createTextNode(parte));
+      nodo.appendChild(i % 2 ? el("strong", null, parte) : document.createTextNode(parte));
     });
-    return p;
+    return nodo;
   }
+  function parrafo(partes) { return parrafoEn(el("p"), partes); }
 
-  function hallazgo(parece, peroNodos) {
+  // Tarjeta de la grilla: la lectura ingenua tachada (<s>: contenido que ya no es exacto), la
+  // corrección con una cifra grande y un enlace a la evidencia (gráfico o ficha).
+  function hallazgo(t) {
     var li = el("li", "hallazgo");
-    var izq = el("div", "hallazgo__parece");
-    izq.appendChild(el("p", "hallazgo__rotulo", "Parece que"));
-    izq.appendChild(el("p", null, parece));
-    var der = el("div", "hallazgo__pero");
-    der.appendChild(el("p", "hallazgo__rotulo", "Pero"));
-    peroNodos.forEach(function (n) { der.appendChild(n); });
-    li.appendChild(izq);
-    li.appendChild(der);
+    li.appendChild(el("p", "hallazgo__rotulo", "Parece que"));
+    var parece = el("p", "hallazgo__parece");
+    parece.appendChild(el("s", null, t.parece));
+    li.appendChild(parece);
+    li.appendChild(el("p", "hallazgo__rotulo", "Pero"));
+    var cifra = el("p", "hallazgo__cifra");
+    cifra.appendChild(el("strong", null, t.cifra));
+    cifra.appendChild(el("span", null, t.rotulo));
+    li.appendChild(cifra);
+    var cuerpo = el("div", "hallazgo__pero");
+    t.nodos.forEach(function (n) { cuerpo.appendChild(n); });
+    li.appendChild(cuerpo);
+    var accion;
+    if (t.href) {
+      accion = el("a", "hallazgo__accion", t.accion);
+      accion.href = t.href;
+    } else {
+      accion = el("button", "hallazgo__accion enlace-ficha", t.accion);
+      accion.type = "button";
+      accion.addEventListener("click", function () { abrirFicha(t.par, true); });
+    }
+    li.appendChild(accion);
     return li;
   }
 
@@ -1322,46 +1381,52 @@ p { margin: 0; }
     var h = datos.hallazgos;
 
     // (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
-    var tec = h.edad.filter(function (x) { return x.nivel === "Carreras Técnicas"; })[0];
-    var pro = h.edad.filter(function (x) { return x.nivel === "Carreras Profesionales"; })[0];
-    if (tec && pro && (tec.n_negativos || pro.n_negativos)) {
-      var nodosA = [parrafo(["En las carreras técnicas, ", fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
-        " ganan menos al quinto año que al primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."])];
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    if (tec && pro && tec.n_negativos) {
+      var nodosA = [parrafo(["No es que bajen los sueldos: ambos años se miden con los ingresos de 2024."])];
       if (tec.n_con_edad) {
-        nodosA.push(parrafo(["En ", fmtEntero.format(tec.n_con_edad),
-          " de ellas, quienes tienen 30 años o más pasan de ", pct(tec.mayores30[0]), " a ", pct(tec.mayores30[1]),
-          " de los titulados (mediana de esas ", fmtEntero.format(tec.n_con_edad),
-          "): muchos ya trabajaban antes de titularse."]));
+        nodosA.push(parrafo(["En ", fmtEntero.format(tec.n_con_edad), " de ellas, quienes tienen 30 años o más pasan de ",
+          pct(tec.mayores30[0]), " a ", pct(tec.mayores30[1]),
+          " de los titulados (mediana de esas " + fmtEntero.format(tec.n_con_edad) + "): muchos ya trabajaban antes de titularse."]));
       }
-      nodosA.push(parrafo(["En las profesionales pasa en ", fmtEntero.format(pro.n_negativos) + " de " + fmtEntero.format(pro.n_comparables),
-        ". El sueldo típico sube ", pctSigno(tec.mediana_p50_pct), " en las técnicas y ", pctSigno(pro.mediana_p50_pct),
-        " en las profesionales (medianas de cada nivel)."]));
-      ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", nodosA));
+      nodosA.push(parrafo(["En las profesionales pasa en ",
+        fmtEntero.format(pro.n_negativos) + " de " + fmtEntero.format(pro.n_comparables), "."]));
+      ul.appendChild(hallazgo({
+        parece: "Al quinto año siempre se gana más que al primero.",
+        cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
+        rotulo: "carreras técnicas ganan menos al quinto año que al primero",
+        nodos: nodosA, accion: "Verlas en el peine ↓", href: "#t-peine"
+      }));
     }
 
     var b = h.pct_pesos, eb = b.ejemplo;
-    if (eb) {
-      ul.appendChild(hallazgo("Crecer más en porcentaje es crecer más.", [
-        parrafo(["", fmtEntero.format(b.n_cambian), " carreras cambian de lugar si el crecimiento se mide en pesos en vez de porcentaje."]),
-        parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ", pesos(eb.p50_anio_1),
-                 ": son ", pesosSigno(eb.p50_delta_1_5),
-                 ", menos que el aumento de la carrera típica de su grupo, ponderada por titulados (",
-                 pesosSigno(eb.ref_delta_q50), ")."])
-      ]));
+    var pb = eb && parPorClave[eb.clave + "|" + eb.tipo];
+    if (pb) {
+      ul.appendChild(hallazgo({
+        parece: "Crecer más en porcentaje es crecer más.",
+        cifra: fmtEntero.format(b.n_cambian),
+        rotulo: "carreras cambian de cuadrante si el crecimiento se mide en pesos",
+        nodos: [parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ",
+          pesos(eb.p50_anio_1), ": suma ", pesosSigno(eb.p50_delta_1_5),
+          ", menos que la carrera típica de su grupo, ponderada por titulados (", pesosSigno(eb.ref_delta_q50), ")."])],
+        accion: "Ver su ficha →", par: pb
+      }));
     }
 
     var c = h.dispersion, ec = c.ejemplo;
-    if (ec) {
-      ul.appendChild(hallazgo("El promedio nacional describe a la carrera.", [
-        parrafo(["En ", fmtEntero.format(c.n_enganosos), " carreras las instituciones difieren ",
-                 fmtEntero.format(c.umbral_pp) + " puntos o más",
-                 " en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo de ellas."]),
+    var pc = ec && parPorClave[ec.clave + "|" + ec.tipo];
+    if (pc) {
+      ul.appendChild(hallazgo({
+        parece: "El promedio nacional describe a la carrera.",
+        cifra: fmtEntero.format(c.n_enganosos),
+        rotulo: "carreras donde las instituciones difieren " + fmtEntero.format(c.umbral_pp) +
+          " puntos o más en empleabilidad, aun sin el cuarto más alto ni el más bajo",
         // Se cita la mitad central (lo que mide el criterio); el mínimo y el máximo quedan en la franja.
-        parrafo([ec.nombre + " (" + ec.tipo + ", " + ec.n_inst + " instituciones): la mitad central va de ",
-                 pct(ec.q1), " a ", pct(ec.q3), " (", fmtUno.format(ec.iqr) + " puntos",
-                 "); la cifra nacional es ", pct(ec.nacional), "."]),
-        franja(parPorClave[ec.clave + "|" + ec.tipo].dispersion.emp1, ec.nacional)
-      ]));
+        nodos: [parrafo([ec.nombre + " (" + ec.tipo + ", " + ec.n_inst + " instituciones): la mitad central va de ",
+            pct(ec.q1), " a ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."]),
+          franja(pc.dispersion.emp1, ec.nacional)],
+        accion: "Ver su ficha →", par: pc
+      }));
     }
   }
 
@@ -2629,7 +2694,7 @@ p { margin: 0; }
   }
 
   iniciarTema();
-  pintarCifras();
+  pintarPortada();
   pintarPeine();
   alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();

@@ -262,23 +262,24 @@ p { margin: 0; }
 /* Regreso desde la ficha: arriba de todo, porque es lo primero que se ve después del salto. */
 .ficha__volver { margin-top: 0.75rem; }
 
-/* Cifras de cabecera: rótulo arriba, monto abajo, como las líneas de una liquidación. */
-.cifras {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));   /* de a dos en un celular de 390 px */
-  gap: 1.25rem 1.5rem;
-  margin: 2.25rem 0 0;
+/* Portada mínima (N2): la línea técnica es el "membrete" del análisis; los límites, su letra chica. */
+.portada__tecnica {
+  margin-top: 1.75rem;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--tinta);
+  max-width: 64ch;
+  font-size: var(--t-0);
+  color: var(--tinta-suave);
 }
-.cifras div { border-top: 2px solid var(--tinta); padding-top: 0.5rem; }
-.cifras dt { font-size: var(--t-0); color: var(--tinta-suave); }
-.cifras dd {
-  margin: 0.15rem 0 0;
+.portada__tecnica strong {
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
-  font-size: var(--t-2);
+  font-weight: 600;
+  color: var(--tinta);
 }
-/* Un valor que no es cifra (p. ej. la unidad) va en la fuente de texto: la monoespaciada es solo para números. */
-.cifras dd.cifras__texto { font-family: var(--f-texto); font-size: var(--t-1); padding-top: 0.2rem; }
+.portada__limites { margin-top: 0.4rem; max-width: 64ch; font-size: var(--t-0); color: var(--tinta-suave); }
+.portada__limites a { color: var(--tinta); white-space: nowrap; }
+.portada__bajada strong { color: var(--tinta); font-weight: 600; white-space: nowrap; }
 
 /* ---------------------------------------------------------------- bloques */
 .bloque { padding-block: 3rem 1rem; }
@@ -349,18 +350,27 @@ p { margin: 0; }
 /* ---------------------------------------------------------------- hallazgos */
 /* "Parece que… / Pero…": cada hallazgo corrige una lectura ingenua. La columna izquierda
    va apagada (es la lectura que se descarta); la derecha lleva el peso. */
+/* Grilla de hallazgos (N2): tres columnas que se comparan de un vistazo; una sola en celular.
+   Sin cajas: cada tarjeta es una columna de papel con su regla superior, como la cabecera. */
+.bloque--hallazgos { padding-top: 1.75rem; }
 .hallazgos {
   list-style: none;
-  margin: 1.75rem 0 0;
+  margin: 0;
   padding: 0;
-  border-top: 2px solid var(--tinta);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem 2rem;
 }
+/* subgrid: las seis filas de cada tarjeta (rótulo, lectura, rótulo, cifra, texto, enlace) se
+   alinean entre columnas, así los «Pero» y las cifras quedan a la misma altura. */
 .hallazgo {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-  gap: 0.75rem 2.5rem;
-  padding-block: 1.5rem;
-  border-bottom: 1px solid var(--regla);
+  grid-row: span 6;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-content: start;
+  border-top: 2px solid var(--tinta);
+  padding-top: 0.75rem;
 }
 .hallazgo__rotulo {
   font-family: var(--f-titulo);
@@ -368,25 +378,47 @@ p { margin: 0; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tinta-suave);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
-/* :not(): sin él, esta regla (más específica) le ganaba a .hallazgo__rotulo y agrandaba el rótulo. */
-.hallazgo__parece p:not(.hallazgo__rotulo) {
+/* El tachado es la seña de la grilla: va en tinta (no en --timbre, reservado a advertencias). */
+.hallazgo__parece {
   font-family: var(--f-titulo);
   font-size: var(--t-2);
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--tinta-suave);
+  margin-bottom: 1.1rem;
 }
-.hallazgo__pero p { max-width: 60ch; }
-.hallazgo__pero p + p { margin-top: 0.5rem; }
-.hallazgo strong {
+.hallazgo__parece s {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--tinta);
+}
+.hallazgo__cifra { margin-bottom: 0.75rem; }
+.hallazgo__cifra strong {
+  display: block;
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+  font-size: var(--t-3);
+  line-height: 1.1;
+}
+.hallazgo__cifra span { display: block; margin-top: 0.2rem; font-weight: 600; line-height: 1.35; }
+.hallazgo__pero { color: var(--tinta-suave); }
+.hallazgo__pero p + p { margin-top: 0.5rem; }
+.hallazgo__pero strong {
+  font-family: var(--f-cifra);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--tinta);
   white-space: nowrap;
 }
-@media (max-width: 40rem) {
-  .hallazgo { grid-template-columns: 1fr; }
+/* align-self end: los enlaces quedan alineados al pie de las tres columnas. */
+.hallazgo__accion { padding-top: 1rem; align-self: end; justify-self: start; }
+a.hallazgo__accion { color: var(--tinta); }
+@media (max-width: 60rem) {
+  .hallazgos { grid-template-columns: 1fr; }
+  .hallazgo { grid-row: auto; grid-template-rows: none; }
+  .hallazgo__parece, .hallazgo__pero, .hallazgo__cifra { max-width: 60ch; }
 }
 
 /* Mini franja del hallazgo (c): rango, mitad central y cifra nacional de una carrera. */

@@ -103,47 +103,68 @@
     });
   }
 
-  // ------------------------------------------------------------- cifras de portada
-  function pintarCifras() {
-    var qa = datos.qa.resumen;
-    var aprobados = qa.OK || 0;
-    var exentos = qa.EXENTO || 0;
-    var qnd = datos.que_no_dice;
-    var filas = [
-      ["Carreras por tipo de institución", fmtEntero.format(qnd.pares_total)],
-      ["Comparables entre sí", fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos)],
-      ["Controles de calidad aprobados" + (exentos ? " (" + exentos + " no aplican)" : ""), fmtEntero.format(aprobados)],
-      ["Ingresos en", "pesos de septiembre de 2025", true]
-    ];
-    var dl = document.getElementById("cifras");
-    filas.forEach(function (f) {
-      var bloque = el("div");
-      bloque.appendChild(el("dt", null, f[0]));
-      bloque.appendChild(el("dd", f[2] ? "cifras__texto" : null, f[1]));
-      dl.appendChild(bloque);
-    });
+  // ------------------------------------------------------------- portada (N2)
+  // Tesis y línea técnica, redactadas desde datos.json: la tesis usa las medianas por nivel de
+  // analytics.hallazgo_edad (nunca una mediana que mezcle técnicas y profesionales).
+  function nivelEdad(nombre) {
+    return datos.hallazgos.edad.filter(function (x) { return x.nivel === nombre; })[0];
+  }
+
+  function pintarPortada() {
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    var tesis = document.getElementById("portada-tesis");
+    if (tec && pro) {
+      // "más" / "menos" según el signo: con datos nuevos una mediana podría quedar bajo cero.
+      var dif = function (v) { return [pct(Math.abs(v)), v < 0 ? " menos" : " más"]; };
+      var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
+      parrafoEn(tesis, ["En la carrera técnica típica, quienes se titularon hace cinco años ganan ",
+        dt[0], dt[1] + " que los recién titulados; en la profesional típica, ",
+        dp[0], dp[1] + ". Tres lecturas comunes de esas cifras fallan."]);
+    }
+    var qa = datos.qa.resumen, qnd = datos.que_no_dice;
+    var total = (qa.OK || 0) + (qa.EXENTO || 0);
+    parrafoEn(document.getElementById("portada-tecnica"), [
+      "", fmtEntero.format(qnd.pares_total), " carreras por tipo de institución · ",
+      fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos), " comparables · ",
+      fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);
   }
 
   // ------------------------------------------------------------- hallazgos
   // Texto con cifras en <strong>: partes alternan texto y cifra ([texto, cifra, texto, ...]).
-  function parrafo(partes) {
-    var p = el("p");
+  function parrafoEn(nodo, partes) {
     partes.forEach(function (parte, i) {
-      p.appendChild(i % 2 ? el("strong", null, parte) : document.createTextNode(parte));
+      nodo.appendChild(i % 2 ? el("strong", null, parte) : document.createTextNode(parte));
     });
-    return p;
+    return nodo;
   }
+  function parrafo(partes) { return parrafoEn(el("p"), partes); }
 
-  function hallazgo(parece, peroNodos) {
+  // Tarjeta de la grilla: la lectura ingenua tachada (<s>: contenido que ya no es exacto), la
+  // corrección con una cifra grande y un enlace a la evidencia (gráfico o ficha).
+  function hallazgo(t) {
     var li = el("li", "hallazgo");
-    var izq = el("div", "hallazgo__parece");
-    izq.appendChild(el("p", "hallazgo__rotulo", "Parece que"));
-    izq.appendChild(el("p", null, parece));
-    var der = el("div", "hallazgo__pero");
-    der.appendChild(el("p", "hallazgo__rotulo", "Pero"));
-    peroNodos.forEach(function (n) { der.appendChild(n); });
-    li.appendChild(izq);
-    li.appendChild(der);
+    li.appendChild(el("p", "hallazgo__rotulo", "Parece que"));
+    var parece = el("p", "hallazgo__parece");
+    parece.appendChild(el("s", null, t.parece));
+    li.appendChild(parece);
+    li.appendChild(el("p", "hallazgo__rotulo", "Pero"));
+    var cifra = el("p", "hallazgo__cifra");
+    cifra.appendChild(el("strong", null, t.cifra));
+    cifra.appendChild(el("span", null, t.rotulo));
+    li.appendChild(cifra);
+    var cuerpo = el("div", "hallazgo__pero");
+    t.nodos.forEach(function (n) { cuerpo.appendChild(n); });
+    li.appendChild(cuerpo);
+    var accion;
+    if (t.href) {
+      accion = el("a", "hallazgo__accion", t.accion);
+      accion.href = t.href;
+    } else {
+      accion = el("button", "hallazgo__accion enlace-ficha", t.accion);
+      accion.type = "button";
+      accion.addEventListener("click", function () { abrirFicha(t.par, true); });
+    }
+    li.appendChild(accion);
     return li;
   }
 
@@ -186,46 +207,52 @@
     var h = datos.hallazgos;
 
     // (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
-    var tec = h.edad.filter(function (x) { return x.nivel === "Carreras Técnicas"; })[0];
-    var pro = h.edad.filter(function (x) { return x.nivel === "Carreras Profesionales"; })[0];
-    if (tec && pro && (tec.n_negativos || pro.n_negativos)) {
-      var nodosA = [parrafo(["En las carreras técnicas, ", fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
-        " ganan menos al quinto año que al primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."])];
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    if (tec && pro && tec.n_negativos) {
+      var nodosA = [parrafo(["No es que bajen los sueldos: ambos años se miden con los ingresos de 2024."])];
       if (tec.n_con_edad) {
-        nodosA.push(parrafo(["En ", fmtEntero.format(tec.n_con_edad),
-          " de ellas, quienes tienen 30 años o más pasan de ", pct(tec.mayores30[0]), " a ", pct(tec.mayores30[1]),
-          " de los titulados (mediana de esas ", fmtEntero.format(tec.n_con_edad),
-          "): muchos ya trabajaban antes de titularse."]));
+        nodosA.push(parrafo(["En ", fmtEntero.format(tec.n_con_edad), " de ellas, quienes tienen 30 años o más pasan de ",
+          pct(tec.mayores30[0]), " a ", pct(tec.mayores30[1]),
+          " de los titulados (mediana de esas " + fmtEntero.format(tec.n_con_edad) + "): muchos ya trabajaban antes de titularse."]));
       }
-      nodosA.push(parrafo(["En las profesionales pasa en ", fmtEntero.format(pro.n_negativos) + " de " + fmtEntero.format(pro.n_comparables),
-        ". El sueldo típico sube ", pctSigno(tec.mediana_p50_pct), " en las técnicas y ", pctSigno(pro.mediana_p50_pct),
-        " en las profesionales (medianas de cada nivel)."]));
-      ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", nodosA));
+      nodosA.push(parrafo(["En las profesionales pasa en ",
+        fmtEntero.format(pro.n_negativos) + " de " + fmtEntero.format(pro.n_comparables), "."]));
+      ul.appendChild(hallazgo({
+        parece: "Al quinto año siempre se gana más que al primero.",
+        cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
+        rotulo: "carreras técnicas ganan menos al quinto año que al primero",
+        nodos: nodosA, accion: "Verlas en el peine ↓", href: "#t-peine"
+      }));
     }
 
     var b = h.pct_pesos, eb = b.ejemplo;
-    if (eb) {
-      ul.appendChild(hallazgo("Crecer más en porcentaje es crecer más.", [
-        parrafo(["", fmtEntero.format(b.n_cambian), " carreras cambian de lugar si el crecimiento se mide en pesos en vez de porcentaje."]),
-        parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ", pesos(eb.p50_anio_1),
-                 ": son ", pesosSigno(eb.p50_delta_1_5),
-                 ", menos que el aumento de la carrera típica de su grupo, ponderada por titulados (",
-                 pesosSigno(eb.ref_delta_q50), ")."])
-      ]));
+    var pb = eb && parPorClave[eb.clave + "|" + eb.tipo];
+    if (pb) {
+      ul.appendChild(hallazgo({
+        parece: "Crecer más en porcentaje es crecer más.",
+        cifra: fmtEntero.format(b.n_cambian),
+        rotulo: "carreras cambian de cuadrante si el crecimiento se mide en pesos",
+        nodos: [parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ",
+          pesos(eb.p50_anio_1), ": suma ", pesosSigno(eb.p50_delta_1_5),
+          ", menos que la carrera típica de su grupo, ponderada por titulados (", pesosSigno(eb.ref_delta_q50), ")."])],
+        accion: "Ver su ficha →", par: pb
+      }));
     }
 
     var c = h.dispersion, ec = c.ejemplo;
-    if (ec) {
-      ul.appendChild(hallazgo("El promedio nacional describe a la carrera.", [
-        parrafo(["En ", fmtEntero.format(c.n_enganosos), " carreras las instituciones difieren ",
-                 fmtEntero.format(c.umbral_pp) + " puntos o más",
-                 " en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo de ellas."]),
+    var pc = ec && parPorClave[ec.clave + "|" + ec.tipo];
+    if (pc) {
+      ul.appendChild(hallazgo({
+        parece: "El promedio nacional describe a la carrera.",
+        cifra: fmtEntero.format(c.n_enganosos),
+        rotulo: "carreras donde las instituciones difieren " + fmtEntero.format(c.umbral_pp) +
+          " puntos o más en empleabilidad, aun sin el cuarto más alto ni el más bajo",
         // Se cita la mitad central (lo que mide el criterio); el mínimo y el máximo quedan en la franja.
-        parrafo([ec.nombre + " (" + ec.tipo + ", " + ec.n_inst + " instituciones): la mitad central va de ",
-                 pct(ec.q1), " a ", pct(ec.q3), " (", fmtUno.format(ec.iqr) + " puntos",
-                 "); la cifra nacional es ", pct(ec.nacional), "."]),
-        franja(parPorClave[ec.clave + "|" + ec.tipo].dispersion.emp1, ec.nacional)
-      ]));
+        nodos: [parrafo([ec.nombre + " (" + ec.tipo + ", " + ec.n_inst + " instituciones): la mitad central va de ",
+            pct(ec.q1), " a ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."]),
+          franja(pc.dispersion.emp1, ec.nacional)],
+        accion: "Ver su ficha →", par: pc
+      }));
     }
   }
 
@@ -1493,7 +1520,7 @@
   }
 
   iniciarTema();
-  pintarCifras();
+  pintarPortada();
   pintarPeine();
   alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();
