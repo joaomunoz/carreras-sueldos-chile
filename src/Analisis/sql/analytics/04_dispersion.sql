@@ -9,8 +9,8 @@
 -- REFERENCIA = MEDIANA DE LAS INSTITUCIONES PUBLICADAS DEL PAR (corrección de D1 aprobada en A4).
 -- D1 decía comparar cada institución con la cifra NACIONAL de su par. Los datos lo desaconsejan:
 -- la cifra nacional queda sistemáticamente sobre el promedio de las instituciones publicadas,
--- incluso ponderado por titulaciones (empleabilidad 1er año: −1,65 pp en el par mediano, por
--- debajo en 9 de cada 10 pares; tramo del 4° año: −5,8 % en el punto medio), con las mismas
+-- incluso ponderado por titulaciones, en la empleabilidad del 1er año y en el tramo del 4° año
+-- (magnitud vigente: detalle del control qa brecha_nacional_instituciones), con las mismas
 -- cohortes, moneda y filtro de sueldo mínimo según la metodología. La cifra nacional describe
 -- una población más amplia que las filas por institución; no hay datos para saber cuál. Contra
 -- ella, "bajo el promedio" quedaba inflado (715 tramos "bajo" vs 131 "sobre"). La mediana del
@@ -269,8 +269,8 @@ FROM (SELECT count(*) AS n FROM analytics.dispersion_segmento
 UNION ALL
 -- 5. Brecha cifra nacional − instituciones publicadas, ponderada por titulaciones SIES de las
 --    cohortes de cada indicador, en los pares con dispersión. Es la razón de la corrección de
---    D1: se mide en cada build para que quede a la vista. Calibrado el 16-11-26: empleabilidad
---    1er año +1,65 pp y tramo +5,8 % en el par mediano. Falla si cambia de escala (> 5 pp o
+--    D1: se mide en cada build para que quede a la vista (la cifra vigente está en el detalle de
+--    este control; los rangos se fijaron con holgura sobre lo medido en A4). Falla si cambia de escala (> 5 pp o
 --    > 15 %), lo que indicaría un cambio de definición en MiFuturo, o si se invierte el signo.
 SELECT 'analytics_dispersion', 'brecha_nacional_instituciones',
        CASE WHEN med_emp BETWEEN 0 AND 5 AND med_tramo BETWEEN 0 AND 0.15 THEN 'OK' ELSE 'FALLA' END,

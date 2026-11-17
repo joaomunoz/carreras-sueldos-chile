@@ -1,4 +1,4 @@
--- src/Analisis/sql/analytics/06_exportacion.sql
+-- src/Analisis/sql/analytics/07_exportacion.sql
 --
 -- A6 (Fase 2): todo lo que la web necesita, armado como UN documento JSON en la base
 -- (vista analytics.v_datos_json). src/Analisis/exportar.py solo lo valida y lo escribe en
@@ -10,14 +10,9 @@
 -- Orden: todo json_agg lleva ORDER BY, para que dos exportaciones seguidas sean idénticas.
 -- json_build_object (no jsonb) conserva el orden de las claves tal como se escriben.
 --
--- Agrega además la marca de COMPOSICIÓN POR EDAD (hallazgo de A5): la cohorte de los
--- percentiles del 1er año (2023) tiene >= min_cambio_edad_pp puntos más de titulados de 30 años o
--- más que la del 5° año (2019), cota alta del rango. Sensibilidad revisada en A6: 10 pp marca 50
--- pares, 15 pp 27 (≈ decil superior; capta 7 de los 13 con P50 1→5 negativo), 20 pp 10.
--- Requiere 01 a 05.
-
-INSERT INTO analytics.parametro VALUES
-    ('min_cambio_edad_pp', 15, 'Aumento (puntos) de titulados de 30+ entre la cohorte de los percentiles del 5° año y la del 1er año para marcar la comparación 1°→5° como sesgada por composición', 'A6 (hallazgo de A5)');
+-- La marca de COMPOSICIÓN POR EDAD se define en 05_contexto.sql (analytics.contexto.composicion_edad);
+-- aquí solo se exporta. Las cifras de los hallazgos de portada vienen de 06_hallazgos.sql.
+-- Requiere 01 a 06.
 
 -- --------------------------------------------------------------------------
 -- Un objeto por par, con todo lo que muestra la ficha por carrera
@@ -38,8 +33,7 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'baja_cobertura', p.baja_cobertura,
         'es_derecho', p.es_derecho,
         'cohorte_atipica', coalesce(es.atipica, false),
-        'composicion_edad', coalesce((c.mayores30_max_p1 - c.mayores30_max_p5) * 100
-                                     >= analytics.param('min_cambio_edad_pp'), false),
+        'composicion_edad', coalesce(c.composicion_edad, false),
         'promedio_enganoso', coalesce(de1.promedio_enganoso, false)),
     'conteos', json_build_object('n_inst_oferta', p.n_inst_oferta, 'n_pub_emp1', p.n_pub_emp1,
                                  'n_pub_emp2', p.n_pub_emp2, 'n_pub_tramo', p.n_pub_tramo,
@@ -175,6 +169,29 @@ SELECT json_build_object(
                         'q75', round(q75, CASE WHEN metrica = 'p50_pct_1_5' THEN 1 ELSE 0 END))
                         ORDER BY grupo_id, metrica)
                     FROM analytics.referencia),
+    -- Cifras y ejemplos de los hallazgos de portada (06_hallazgos.sql): la web y el README solo redactan.
+    'hallazgos', json_build_object(
+        'edad', (SELECT json_build_object(
+                     'n_comparables', n_comparables, 'mediana_p50_pct', round(mediana_p50_pct, 1),
+                     'n_negativos', n_negativos, 'n_con_edad', n_con_edad,
+                     'mayores30', json_build_array(round(100 * mayores30_p5, 1), round(100 * mayores30_p1, 1)))
+                 FROM analytics.hallazgo_edad),
+        'pct_pesos', (SELECT json_build_object(
+                     'n_cambian', h.n_cambian,
+                     'ejemplo', CASE WHEN h.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(
+                         'clave', h.clave_carrera_generica, 'tipo', h.tipo_institucion, 'nombre', p.nombre,
+                         'p50_anio_1', h.p50_anio_1, 'p50_pct_1_5', round(h.p50_pct_1_5, 1),
+                         'p50_delta_1_5', round(h.p50_delta_1_5), 'ref_delta_q50', round(h.ref_delta_q50)) END)
+                 FROM analytics.hallazgo_pct_pesos h
+                 LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)),
+        'dispersion', (SELECT json_build_object(
+                     'n_enganosos', h.n_enganosos, 'umbral_pp', analytics.param('min_iqr_enganoso'),
+                     'ejemplo', CASE WHEN h.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(
+                         'clave', h.clave_carrera_generica, 'tipo', h.tipo_institucion, 'nombre', p.nombre,
+                         'n_inst', h.n_inst, 'q1', round(h.q1, 1), 'q3', round(h.q3, 1),
+                         'iqr', round(h.iqr, 1), 'nacional', h.nacional) END)
+                 FROM analytics.hallazgo_dispersion h
+                 LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion))),
     'pares', (SELECT json_agg(datos ORDER BY tipo_institucion, clave_carrera_generica) FROM analytics.v_par_json),
     'programas', (SELECT json_agg(json_build_object(
                       'institucion', i.nombre, 'codigo_institucion', pv.codigo_institucion,
@@ -201,8 +218,7 @@ SELECT json_build_object(
         'celdas_validas', (SELECT count(DISTINCT (area_cine13, tipo_institucion, nivel_carrera)) FROM analytics.par WHERE celda_valida),
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
-        'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto
-                                   WHERE (mayores30_max_p1 - mayores30_max_p5) * 100 >= analytics.param('min_cambio_edad_pp')),
+        'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto WHERE composicion_edad),
         'brecha_nacional_instituciones', (SELECT detalle FROM qa.control
                                           WHERE control = 'analytics_dispersion' AND objeto = 'brecha_nacional_instituciones'),
         'pct_titulaciones_genericas_no_publicadas', (

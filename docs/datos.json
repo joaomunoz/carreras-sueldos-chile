@@ -23,6 +23,12 @@
    "origen": "T4, auditoría 05"
   },
   {
+   "nombre": "margen_ejemplo_pesos",
+   "valor": 0.2,
+   "descripcion": "Hallazgo (b): el ejemplo crece en pesos al menos esta proporción menos que la mediana de su grupo (sin margen podría ser la propia mediana)",
+   "origen": "W3; movido de app.js a SQL en la revisión del 16-11-26"
+  },
+  {
    "nombre": "max_cobertura_baja",
    "valor": 0.75,
    "descripcion": "Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura",
@@ -51,6 +57,12 @@
    "valor": 5,
    "descripcion": "Instituciones publicadas con el dato para medir dispersión entre instituciones",
    "origen": "D1"
+  },
+  {
+   "nombre": "min_inst_ejemplo",
+   "valor": 20,
+   "descripcion": "Hallazgo (c): instituciones mínimas para que una carrera sirva de ejemplo (con pocas sería anecdótico)",
+   "origen": "W3; ídem"
   },
   {
    "nombre": "min_inst_oferta",
@@ -407,7 +419,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 47
+   "OK": 50
   },
   "controles": [
    {
@@ -514,6 +526,27 @@
     "estado": "OK",
     "umbral": "un objeto JSON por par",
     "detalle": "252 objetos en v_par_json; 252 pares"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "edad_mismo_grupo",
+    "estado": "OK",
+    "umbral": "medianas de edad = recálculo sobre las carreras que bajan y tienen la marca de edad",
+    "detalle": "7 de 9 carreras que bajan; 30+ pasa de 32.5 % a 56.6 %"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "ejemplo_dispersion",
+    "estado": "OK",
+    "umbral": "q3 − q1 = iqr ≥ min_iqr_enganoso y n_inst ≥ min_inst_ejemplo",
+    "detalle": "TRABAJO SOCIAL (Universidad, 32 instituciones): mitad central 52.5–74.2 %"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "ejemplo_pct_pesos",
+    "estado": "OK",
+    "umbral": "cambia de cuadrante, progresa más en % y crece en pesos ≤ (1 − margen) × mediana de su grupo",
+    "detalle": "INGENIERIA EN ALIMENTOS (Universidad): 66.5 % y 592205 pesos frente a 805627"
    },
    {
     "control": "analytics_par",
@@ -1617,6 +1650,44 @@
    "q75": 31.9
   }
  ],
+ "hallazgos": {
+  "edad": {
+   "n_comparables": 210,
+   "mediana_p50_pct": 29.3,
+   "n_negativos": 9,
+   "n_con_edad": 7,
+   "mayores30": [
+    32.5,
+    56.6
+   ]
+  },
+  "pct_pesos": {
+   "n_cambian": 30,
+   "ejemplo": {
+    "clave": "INGENIERIA EN ALIMENTOS",
+    "tipo": "Universidad",
+    "nombre": "Ingeniería en Alimentos",
+    "p50_anio_1": 891077,
+    "p50_pct_1_5": 66.5,
+    "p50_delta_1_5": 592205,
+    "ref_delta_q50": 805627
+   }
+  },
+  "dispersion": {
+   "n_enganosos": 19,
+   "umbral_pp": 15,
+   "ejemplo": {
+    "clave": "TRABAJO SOCIAL",
+    "tipo": "Universidad",
+    "nombre": "Trabajo Social",
+    "n_inst": 32,
+    "q1": 52.5,
+    "q3": 74.2,
+    "iqr": 21.7,
+    "nacional": 66.9
+   }
+  }
+ },
  "pares": [
   {
    "clave": "SECRETARIADO BILINGUE",

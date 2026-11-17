@@ -2,7 +2,7 @@
 <src/Analisis/exportar.py>
 
 Exporta los datos de la web a docs/datos.json desde la vista analytics.v_datos_json
-(src/Analisis/sql/analytics/06_exportacion.sql). El armado del JSON y el redondeo viven en
+(src/Analisis/sql/analytics/07_exportacion.sql). El armado del JSON y el redondeo viven en
 SQL; este script solo verifica y escribe, para que el archivo no pueda contradecir a la base.
 
 Uso (desde la raíz del proyecto, con la base ya construida por src/BD/build.py):

@@ -7,6 +7,10 @@ Arma docs/index.html: un único archivo autónomo a partir de
   src/Web/app.js          → @APP@,
   src/Web/fuentes/*.woff2 → @FUENTE@ (como data URI; licencia OFL en src/Web/fuentes/),
   docs/datos.json         → @DATOS@ (salida de src/Analisis/exportar.py).
+Además regenera en README.md el bloque "Qué encontré" (entre los marcadores HALLAZGOS:INICIO y
+HALLAZGOS:FIN) desde datos.json["hallazgos"]: así el README y la web citan las mismas cifras, que
+se calculan en SQL con controles qa (src/Analisis/sql/analytics/06_hallazgos.sql). Copiarlas a mano
+fue como un error de la web llegó también al README.
 
 Por qué incrustar todo: abierta con doble clic (file://), la página no puede leer un JSON
 externo (el navegador lo bloquea), y el requisito es cero dependencias externas.
@@ -33,6 +37,9 @@ DIR_WEB = RAIZ / "src" / "Web"
 DATOS = RAIZ / "docs" / "datos.json"
 SALIDA = RAIZ / "docs" / "index.html"
 FUENTE = DIR_WEB / "fuentes" / "ArchivoNarrow-600-latin.woff2"
+README = RAIZ / "README.md"
+INICIO = "<!-- HALLAZGOS:INICIO · generado por src/Web/construir.py desde docs/datos.json; no editar a mano -->"
+FIN = "<!-- HALLAZGOS:FIN -->"
 
 
 def _leer(ruta: Path) -> str:
@@ -74,6 +81,54 @@ def _reemplazar(plantilla: str, marcador: str, contenido: str) -> str:
     return plantilla.replace(marcador, contenido)
 
 
+def _num(valor: float, decimales: int = 0) -> str:
+    # Formato es-CL (1.234,5) sin depender del locale del sistema, que haría el build no determinista.
+    texto = f"{abs(valor):,.{decimales}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return ("−" if valor < 0 else "") + texto
+
+
+def _hallazgos_readme(h: dict) -> str:
+    a, b, c = h["edad"], h["pct_pesos"], h["dispersion"]
+    items = []
+    if a["n_negativos"]:
+        t = (f"**Al quinto año no siempre se gana más.** La mediana de las {a['n_comparables']} carreras comparables "
+             f"sube {_num(a['mediana_p50_pct'], 1)} % su sueldo típico (P50) entre el primer y el quinto año, "
+             f"pero en {a['n_negativos']} baja.")
+        if a["n_con_edad"]:
+            t += (f" No es que caigan los sueldos: en {a['n_con_edad']} de esas {a['n_negativos']}, quienes se titularon "
+                  f"hace poco son mucho mayores (los de 30 años o más pasan de {_num(a['mayores30'][0], 1)} % "
+                  f"a {_num(a['mayores30'][1], 1)} %, mediana de esas {a['n_con_edad']}), y muchos ya trabajaban "
+                  f"antes de titularse.")
+        items.append(t)
+    if b["ejemplo"]:
+        e = b["ejemplo"]
+        items.append(f"**Crecer más en porcentaje no es crecer más.** {b['n_cambian']} carreras cambian de cuadrante si el "
+                     f"crecimiento se mide en pesos en vez de en porcentaje. {e['nombre']} ({e['tipo']}) sube "
+                     f"{_num(e['p50_pct_1_5'], 1)} %, pero eso son +${_num(e['p50_delta_1_5'])}, frente a "
+                     f"+${_num(e['ref_delta_q50'])} de la carrera típica de su grupo (mediana ponderada por titulados).")
+    if c["ejemplo"]:
+        e = c["ejemplo"]
+        items.append(f"**El promedio nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras las "
+                     f"instituciones difieren {_num(c['umbral_pp'])} puntos o más en empleabilidad, aun dejando fuera al "
+                     f"cuarto más alto y al cuarto más bajo. En {e['nombre']} ({e['tipo']}, {e['n_inst']} instituciones) "
+                     f"la mitad central va de {_num(e['q1'], 1)} % a {_num(e['q3'], 1)} %, con una cifra nacional de "
+                     f"{_num(e['nacional'], 1)} %.")
+    return "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
+
+
+def _actualizar_readme(datos: dict) -> None:
+    texto = _leer(README)
+    if texto.count(INICIO) != 1 or texto.count(FIN) != 1:
+        raise SystemExit("README.md debe tener una vez cada marcador HALLAZGOS:INICIO / HALLAZGOS:FIN.")
+    antes, resto = texto.split(INICIO)
+    _, despues = resto.split(FIN)
+    nuevo = antes + INICIO + "\n" + _hallazgos_readme(datos["hallazgos"]) + "\n" + FIN + despues
+    if nuevo != texto:   # sin cambios no se reescribe: git no ve diferencias falsas
+        temporal = README.with_suffix(".md.tmp")
+        temporal.write_text(nuevo, encoding="utf-8")
+        temporal.replace(README)
+
+
 def construir() -> str:
     plantilla = _leer(DIR_WEB / "plantilla.html")
     estilos = _leer(DIR_WEB / "estilos.css")
@@ -85,6 +140,8 @@ def construir() -> str:
 
     datos = json.loads(_leer(DATOS))
     _verificar_qa(datos)
+    if "hallazgos" not in datos:
+        raise SystemExit("datos.json no trae 'hallazgos': exportar de nuevo (src/Analisis/exportar.py).")
 
     html = plantilla
     html = _reemplazar(html, "/*@FUENTE@*/", _fuente_css())
@@ -96,6 +153,7 @@ def construir() -> str:
     temporal = SALIDA.with_suffix(".html.tmp")
     temporal.write_text(html, encoding="utf-8")
     temporal.replace(SALIDA)
+    _actualizar_readme(datos)   # después de index.html: si la web no se construye, el README no cambia
     return hashlib.sha256(html.encode("utf-8")).hexdigest()
 
 

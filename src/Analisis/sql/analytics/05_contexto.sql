@@ -22,7 +22,8 @@
 
 INSERT INTO analytics.parametro VALUES
     ('min_desvio_atipico_pp', 5, 'Desvío mínimo (puntos) de la empleabilidad de la cohorte de los percentiles respecto de sus cohortes previas para marcarla atípica', 'A5 (D5)'),
-    ('min_z_atipico',         2, 'Desvío mínimo en desviaciones estándar de las cohortes previas para marcarla atípica (se exigen ambos umbrales)',                    'A5 (D5)');
+    ('min_z_atipico',         2, 'Desvío mínimo en desviaciones estándar de las cohortes previas para marcarla atípica (se exigen ambos umbrales)',                    'A5 (D5)'),
+    ('min_cambio_edad_pp',   15, 'Aumento (puntos) de titulados de 30+ entre la cohorte de los percentiles del 5° año y la del 1er año para marcar la comparación 1°→5° como sesgada por composición', 'A6 (hallazgo de A5)');
 
 -- --------------------------------------------------------------------------
 -- 1. Contexto SIES por par
@@ -49,6 +50,11 @@ CREATE TABLE analytics.contexto (
     mayores30_max_p1         numeric,
     mayores30_min_p5         numeric,            -- cohorte de los percentiles del 5° año (2019)
     mayores30_max_p5         numeric,
+    -- Composición por edad: la cohorte de los percentiles del 1er año tiene >= min_cambio_edad_pp
+    -- puntos más de titulados de 30+ (cota alta) que la del 5° año. Se define UNA vez: antes la
+    -- fórmula estaba repetida en la exportación y el hallazgo (a) la habría repetido otra vez.
+    -- Sensibilidad medida al decidir (A6, no se actualiza): 10 pp marca 50 pares, 15 pp 27, 20 pp 10.
+    composicion_edad         boolean  NOT NULL,
     PRIMARY KEY (clave_carrera_generica, tipo_institucion),
     FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par,
     CHECK (fuera30_min_1 <= fuera30_max_1 AND fuera30_min_5 <= fuera30_max_5),
@@ -114,7 +120,10 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
        coalesce(a.jov_5, 0), coalesce(a.jov_1, 0),
        a.jov_1::numeric / nullif(a.jov_5, 0) - 1,
        a.m35_p1::numeric / nullif(a.edad_p1, 0), (a.m35_p1 + a.m30_p1)::numeric / nullif(a.edad_p1, 0),
-       a.m35_p5::numeric / nullif(a.edad_p5, 0), (a.m35_p5 + a.m30_p5)::numeric / nullif(a.edad_p5, 0)
+       a.m35_p5::numeric / nullif(a.edad_p5, 0), (a.m35_p5 + a.m30_p5)::numeric / nullif(a.edad_p5, 0),
+       coalesce(((a.m35_p1 + a.m30_p1)::numeric / nullif(a.edad_p1, 0)
+                 - (a.m35_p5 + a.m30_p5)::numeric / nullif(a.edad_p5, 0)) * 100
+                >= analytics.param('min_cambio_edad_pp'), false)
 FROM analytics.par p
 LEFT JOIN agg a USING (tipo_institucion, clave_carrera_generica);
 

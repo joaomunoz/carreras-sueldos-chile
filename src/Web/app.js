@@ -39,12 +39,6 @@
     throw new Error("Parámetro inexistente en datos.json: " + nombre);
   }
 
-  function mediana(valores) {
-    var v = valores.slice().sort(function (a, b) { return a - b; });
-    var m = Math.floor(v.length / 2);
-    return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
-  }
-
   function maximoPor(lista, clave) {
     return lista.reduce(function (mejor, x) { return mejor == null || clave(x) > clave(mejor) ? x : mejor; }, null);
   }
@@ -183,70 +177,52 @@
     return cont;
   }
 
+  // Las cifras y los ejemplos de los hallazgos vienen calculados de la base
+  // (src/Analisis/sql/analytics/06_hallazgos.sql, con controles qa): aquí solo se redactan.
+  // Calcularlos aquí produjo errores que ningún control veía (una mediana de edad de 9
+  // carreras atribuida a 7). Si un hallazgo no tiene ejemplo, se omite sin cortar los demás.
   function pintarHallazgos() {
     var ul = document.getElementById("hallazgos");
+    var h = datos.hallazgos;
 
-    // (a) Progresión típica y su trampa de composición por edad.
-    var crecimientos = comparables.map(function (p) { return p.percentiles.p50_pct_1_5; });
-    var negativos = comparables.filter(function (p) { return p.percentiles.p50_pct_1_5 < 0; });
-    var conEdad = negativos.filter(function (p) { return p.marcas.composicion_edad; });
-    // Sin carreras negativas el hallazgo (a) no aplica tal cual: se omite, sin cortar los demás.
-    if (negativos.length) {
-    var edad5 = mediana(negativos.map(function (p) { return p.contexto.mayores30_cohorte_p5[1]; }));
-    var edad1 = mediana(negativos.map(function (p) { return p.contexto.mayores30_cohorte_p1[1]; }));
-    ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", [
-      parrafo(["En ", fmtEntero.format(negativos.length), " de las ", fmtEntero.format(comparables.length),
-               " carreras comparables, el sueldo típico del quinto año es menor que el del primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."]),
-      parrafo(["En ", fmtEntero.format(conEdad.length), " de ellas, los titulados recientes son mucho mayores: quienes tienen 30 años o más pasan de ",
-               fmtEntero.format(edad5) + " %", " a ", fmtEntero.format(edad1) + " %",
-               ". Muchos ya trabajaban antes de titularse. La carrera típica sube ",
-               pctSigno(mediana(crecimientos)), "."])
-    ]));
+    var a = h.edad;
+    if (a.n_negativos) {
+      var nodosA = [parrafo(["En ", fmtEntero.format(a.n_negativos), " de las ", fmtEntero.format(a.n_comparables),
+        " carreras comparables, el sueldo típico del quinto año es menor que el del primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."])];
+      if (a.n_con_edad) {
+        nodosA.push(parrafo(["En ", fmtEntero.format(a.n_con_edad),
+          " de ellas, los titulados recientes son mucho mayores: quienes tienen 30 años o más pasan de ",
+          pct(a.mayores30[0]), " a ", pct(a.mayores30[1]), " (mediana de esas ", fmtEntero.format(a.n_con_edad),
+          "). Muchos ya trabajaban antes de titularse."]));
+      }
+      nodosA.push(parrafo(["La mediana de las carreras comparables sube ", pctSigno(a.mediana_p50_pct), "."]));
+      ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", nodosA));
     }
 
-    // (b) El % engaña cuando la base es baja. Ejemplo por regla: el mayor % entre las carreras
-    // cuyo aumento en pesos queda al menos un 20 % bajo la mediana de su referencia. Sin ese
-    // margen el ejemplo puede ser la propia mediana (empate) o quedar a unos pocos miles: no
-    // ilustraría nada.
-    function refDeltaDe(p) {
-      return datos.referencias.filter(function (r) {
-        return r.grupo === p.marcas.grupo_referencia && r.metrica === "p50_delta_1_5";
-      })[0];
-    }
-    var cambian = comparables.filter(function (p) { return p.posicion.cambia_cuadrante; });
-    var pctAlto = cambian.filter(function (p) {
-      return p.posicion.cuadrante_pct.indexOf("progresa más") >= 0
-        && p.percentiles.p50_delta_1_5 <= 0.8 * refDeltaDe(p).q50;
-    });
-    var ej = maximoPor(pctAlto, function (p) { return p.percentiles.p50_pct_1_5; });
-    // Con otros datos podría no haber ejemplo: se omite el hallazgo en vez de romper la página.
-    if (ej) {
-    var refDelta = refDeltaDe(ej);
-    ul.appendChild(hallazgo("Crecer más en porcentaje es crecer más.", [
-      parrafo(["", fmtEntero.format(cambian.length), " carreras cambian de lugar si el crecimiento se mide en pesos en vez de porcentaje."]),
-      parrafo([ej.nombre + " (" + ej.tipo + ") sube ", pctSigno(ej.percentiles.p50_pct_1_5), ", pero parte de ",
-               pesos(ej.percentiles.anio_1.p50), ": son ", pesosSigno(ej.percentiles.p50_delta_1_5),
-               ", menos que el aumento típico de su grupo (", pesosSigno(refDelta.q50), ")."])
-    ]));
+    var b = h.pct_pesos, eb = b.ejemplo;
+    if (eb) {
+      ul.appendChild(hallazgo("Crecer más en porcentaje es crecer más.", [
+        parrafo(["", fmtEntero.format(b.n_cambian), " carreras cambian de lugar si el crecimiento se mide en pesos en vez de porcentaje."]),
+        parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ", pesos(eb.p50_anio_1),
+                 ": son ", pesosSigno(eb.p50_delta_1_5),
+                 ", menos que el aumento de la carrera típica de su grupo, ponderada por titulados (",
+                 pesosSigno(eb.ref_delta_q50), ")."])
+      ]));
     }
 
-    // (c) El promedio nacional esconde diferencias entre instituciones. Ejemplo por regla: la
-    // carrera engañosa con mayor IQR entre las que tienen al menos 20 instituciones (un ejemplo
-    // con pocas instituciones sería anecdótico).
-    var enganosos = pares.filter(function (p) { return p.marcas.promedio_enganoso; });
-    var ejc = maximoPor(enganosos.filter(function (p) { return p.dispersion.emp1.n_inst >= 20; }),
-                        function (p) { return p.dispersion.emp1.iqr; });
-    if (!ejc) return;
-    var d = ejc.dispersion.emp1;
-    var nodosC = [
-      parrafo(["En ", fmtEntero.format(enganosos.length), " carreras las instituciones difieren ",
-               fmtEntero.format(parametro("min_iqr_enganoso")) + " puntos o más",
-               " en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo de ellas."]),
-      parrafo([ejc.nombre + " (" + ejc.tipo + ", " + d.n_inst + " instituciones) va de ", pct(d.min), " a ", pct(d.max),
-               "; la cifra nacional es ", pct(ejc.empleabilidad_nacional[0]), "."]),
-      franja(d, ejc.empleabilidad_nacional[0])
-    ];
-    ul.appendChild(hallazgo("El promedio nacional describe a la carrera.", nodosC));
+    var c = h.dispersion, ec = c.ejemplo;
+    if (ec) {
+      ul.appendChild(hallazgo("El promedio nacional describe a la carrera.", [
+        parrafo(["En ", fmtEntero.format(c.n_enganosos), " carreras las instituciones difieren ",
+                 fmtEntero.format(c.umbral_pp) + " puntos o más",
+                 " en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo de ellas."]),
+        // Se cita la mitad central (lo que mide el criterio); el mínimo y el máximo quedan en la franja.
+        parrafo([ec.nombre + " (" + ec.tipo + ", " + ec.n_inst + " instituciones): la mitad central va de ",
+                 pct(ec.q1), " a ", pct(ec.q3), " (", fmtUno.format(ec.iqr) + " puntos",
+                 "); la cifra nacional es ", pct(ec.nacional), "."]),
+        franja(parPorClave[ec.clave + "|" + ec.tipo].dispersion.emp1, ec.nacional)
+      ]));
+    }
   }
 
   // ------------------------------------------------------------- tabla de segmentos
@@ -918,7 +894,8 @@
   // Una "liquidación" por carrera. Cada bloque aparece solo si hay datos para él: la ficha
   // tiene que funcionar en las 252 (también sin dispersión, sin posición o no comparables).
   function claveDe(p) { return p.clave + "|" + p.tipo; }
-  var parPorClave = {};
+  // Sin prototipo: "#carrera=constructor" no debe encontrar una propiedad heredada de Object.
+  var parPorClave = Object.create(null);
   pares.forEach(function (p) { parPorClave[claveDe(p)] = p; });
   var programasPor = {};
   datos.programas.forEach(function (g) {
@@ -1163,7 +1140,10 @@
 
   function desdeDireccion() {
     var m = /#carrera=([^&]+)/.exec(location.hash);
-    return m ? parPorClave[decodeURIComponent(m[1])] : null;
+    if (!m) return null;
+    // Un enlace cortado al compartirlo trae un "%" incompleto: decodeURIComponent lanza URIError
+    // y, sin el try, el arranque se detenía y dejaba vacías la ficha y las secciones siguientes.
+    try { return parPorClave[decodeURIComponent(m[1])] || null; } catch (e) { return null; }
   }
 
   function prepararFicha() {
