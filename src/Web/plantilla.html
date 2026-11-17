@@ -156,11 +156,16 @@
       <h3 id="t-ficha" class="bloque__titulo">Ficha de carrera</h3>
       <p class="ficha__volver" id="ficha-volver" hidden><button type="button" class="boton boton--sutil" id="ficha-volver-boton">← Volver</button></p>
       <form class="filtros ficha__buscar" id="ficha-form" role="search" aria-label="Buscar una carrera">
-        <label class="filtro filtro--busqueda">
-          <span class="filtro__rotulo">Escribe tu carrera</span>
-          <input type="search" id="ficha-texto" list="ficha-opciones" autocomplete="off" placeholder="Ej.: kinesiología">
-          <datalist id="ficha-opciones"></datalist>
-        </label>
+        <!-- Buscador propio (patrón combobox de ARIA) en vez de <datalist>: el desplegable nativo
+             no seguía el estilo ni el modo oscuro, repetía cada carrera por tipo, exigía tildes y
+             no abría la ficha al elegir. La lista la arma app.js (prepararBuscador). -->
+        <div class="filtro filtro--busqueda buscador" id="buscador">
+          <label class="filtro__rotulo" for="ficha-texto">Escribe tu carrera</label>
+          <input type="search" id="ficha-texto" autocomplete="off" spellcheck="false" placeholder="Ej.: kinesiología"
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ficha-sugerencias">
+          <div class="sugerencias" id="ficha-sugerencias" role="listbox" aria-label="Carreras que coinciden" hidden></div>
+          <p class="solo-lectores" id="ficha-sugerencias-estado" role="status" aria-live="polite"></p>
+        </div>
         <button type="submit" class="boton">Ver ficha</button>
         <button type="button" class="boton boton--sutil" id="ficha-enlace">Copiar enlace a esta ficha</button>
       </form>

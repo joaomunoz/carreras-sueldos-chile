@@ -468,6 +468,51 @@ a.hallazgo__accion { color: var(--tinta); }
 .filtro { display: grid; gap: 0.25rem; font-size: var(--t-0); }
 .filtro__rotulo { color: var(--tinta-suave); }
 .filtro--busqueda { flex: 1 1 14rem; }
+/* Buscador de la ficha: lista propia pegada bajo el campo, con los colores del proyecto. Una
+   fila por carrera y sus tipos como opciones; el texto que coincide va en negrita (no en color:
+   el ocre es solo para «esta carrera»). */
+.buscador { position: relative; }
+.sugerencias {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  z-index: 20;
+  max-height: min(24rem, 60vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--papel-alto);
+  border: 1px solid var(--regla);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+  font-size: 0.9375rem;
+}
+.sugerencias[hidden] { display: none; }
+/* En celular el campo ocupa toda la fila (los botones bajan): compartiéndola con «Ver ficha» la
+   lista quedaba de ~250 px y los tipos saltaban de línea. */
+@media (max-width: 40rem) {
+  .ficha__buscar .buscador { flex-basis: 100%; }
+}
+.sugerencia { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--regla); }
+.sugerencia:last-of-type { border-bottom: 0; }
+.sugerencia__nombre { color: var(--tinta); line-height: 1.3; }
+.sugerencia__nombre b { font-weight: 700; }
+.sugerencia__tipos { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.35rem; }
+.sugerencia__nivel { font-size: var(--t-0); color: var(--tinta-suave); margin-right: 0.15rem; }
+.sugerencia__tipo {
+  font-size: 0.8125rem;
+  color: var(--tinta);
+  border: 1px solid var(--regla);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--papel);
+}
+.sugerencia__tipo:hover { border-color: var(--tinta-suave); }
+.sugerencia__tipo[aria-selected="true"] { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
+.sugerencia__tipo small { color: inherit; opacity: 0.75; margin-left: 0.25rem; }
+.sugerencias__pie { position: sticky; bottom: 0; padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--tinta-suave); background: var(--papel-alto); border-top: 1px solid var(--regla); }
+.sugerencias__vacio { padding: 0.75rem; color: var(--tinta-suave); }
 .filtro input[type="search"], .filtro select {
   font: inherit;
   font-size: 0.9375rem;
@@ -1045,11 +1090,16 @@ a.hallazgo__accion { color: var(--tinta); }
       <h3 id="t-ficha" class="bloque__titulo">Ficha de carrera</h3>
       <p class="ficha__volver" id="ficha-volver" hidden><button type="button" class="boton boton--sutil" id="ficha-volver-boton">← Volver</button></p>
       <form class="filtros ficha__buscar" id="ficha-form" role="search" aria-label="Buscar una carrera">
-        <label class="filtro filtro--busqueda">
-          <span class="filtro__rotulo">Escribe tu carrera</span>
-          <input type="search" id="ficha-texto" list="ficha-opciones" autocomplete="off" placeholder="Ej.: kinesiología">
-          <datalist id="ficha-opciones"></datalist>
-        </label>
+        <!-- Buscador propio (patrón combobox de ARIA) en vez de <datalist>: el desplegable nativo
+             no seguía el estilo ni el modo oscuro, repetía cada carrera por tipo, exigía tildes y
+             no abría la ficha al elegir. La lista la arma app.js (prepararBuscador). -->
+        <div class="filtro filtro--busqueda buscador" id="buscador">
+          <label class="filtro__rotulo" for="ficha-texto">Escribe tu carrera</label>
+          <input type="search" id="ficha-texto" autocomplete="off" spellcheck="false" placeholder="Ej.: kinesiología"
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ficha-sugerencias">
+          <div class="sugerencias" id="ficha-sugerencias" role="listbox" aria-label="Carreras que coinciden" hidden></div>
+          <p class="solo-lectores" id="ficha-sugerencias-estado" role="status" aria-live="polite"></p>
+        </div>
         <button type="submit" class="boton">Ver ficha</button>
         <button type="button" class="boton boton--sutil" id="ficha-enlace">Copiar enlace a esta ficha</button>
       </form>
@@ -2864,14 +2914,166 @@ a.hallazgo__accion { color: var(--tinta); }
     calcular();
   }
 
+  // Palabras de la búsqueda, sin tildes ni mayúsculas ("Téc  enfer" → ["tec", "enfer"]).
+  function palabras(texto) { return normalizar(texto).split(/\s+/).filter(Boolean); }
+  function coincide(nombreNorm, pals) { return pals.every(function (w) { return nombreNorm.indexOf(w) >= 0; }); }
+
   function buscarPar(texto) {
     var exacto = pares.filter(function (p) { return etiquetaPar(p) === texto; })[0];
     if (exacto) return exacto;
-    var n = normalizar(texto.trim());
-    if (!n) return null;
-    // Sin tildes; ante varias coincidencias, la comparable con más titulados.
-    var candidatos = pares.filter(function (p) { return normalizar(etiquetaPar(p)).indexOf(n) >= 0; });
+    var pals = palabras(texto);
+    if (!pals.length) return null;
+    // Todas las palabras, en cualquier parte del nombre y tipo; ante varias, la comparable con más titulados.
+    var candidatos = pares.filter(function (p) { return coincide(normalizar(etiquetaPar(p)), pals); });
     return maximoPor(candidatos, function (p) { return (p.marcas.representativo ? 1e9 : 0) + p.conteos.peso; });
+  }
+
+  // ------------------------------------------------------------- buscador de la ficha (combobox)
+  // Reemplaza al <datalist>: el desplegable nativo no seguía el estilo ni el modo oscuro, repetía
+  // cada carrera una vez por tipo (252 opciones para 165 carreras), exigía tildes y no abría la
+  // ficha al elegir. Patrón combobox de ARIA: el foco queda en el campo y la opción activa se
+  // indica con aria-activedescendant; ↑↓ recorren los tipos de todas las filas en orden.
+  var carrerasBuscador = (function () {
+    var por = {}, lista = [];
+    pares.forEach(function (p) {
+      var g = por[p.clave];
+      if (!g) { g = por[p.clave] = { nombre: p.nombre, norm: normalizar(p.nombre), pares: [], peso: 0 }; lista.push(g); }
+      g.pares.push(p);
+      g.peso += p.conteos.peso;
+    });
+    var ordenTipo = { "Universidad": 0, "IP": 1, "CFT": 2 };
+    lista.forEach(function (g) { g.pares.sort(function (a, b) { return ordenTipo[a.tipo] - ordenTipo[b.tipo]; }); });
+    return lista;
+  })();
+
+  // El nombre con las partes que coinciden en negrita. Se compara carácter por carácter sobre el
+  // texto normalizado, así "enfermeria" marca "Enfermería" (cada letra normaliza a una sola).
+  function nombreResaltado(nombre, pals) {
+    var cont = el("span", "sugerencia__nombre");
+    var norm = nombre.split("").map(function (c) { var n = normalizar(c); return n.length === 1 ? n : "\u0000"; }).join("");
+    var marca = new Array(nombre.length).fill(false);
+    pals.forEach(function (w) {
+      var i = norm.indexOf(w);
+      if (i >= 0) for (var k = i; k < i + w.length; k++) marca[k] = true;
+    });
+    var tramo = "", enMarca = false;
+    function cerrar() { if (tramo) cont.appendChild(enMarca ? el("b", null, tramo) : document.createTextNode(tramo)); tramo = ""; }
+    for (var i = 0; i < nombre.length; i++) {
+      if (marca[i] !== enMarca) { cerrar(); enMarca = marca[i]; }
+      tramo += nombre[i];
+    }
+    cerrar();
+    return cont;
+  }
+
+  function prepararBuscador() {
+    var campo = document.getElementById("ficha-texto");
+    var caja = document.getElementById("ficha-sugerencias");
+    var estado = document.getElementById("ficha-sugerencias-estado");
+    var opciones = [], activa = -1;
+
+    function cerrar() {
+      caja.hidden = true;
+      campo.setAttribute("aria-expanded", "false");
+      campo.removeAttribute("aria-activedescendant");
+      activa = -1;
+    }
+    function marcar(i) {
+      if (activa >= 0 && opciones[activa]) opciones[activa].nodo.setAttribute("aria-selected", "false");
+      activa = i;
+      if (i < 0) { campo.removeAttribute("aria-activedescendant"); return; }
+      var o = opciones[i];
+      o.nodo.setAttribute("aria-selected", "true");
+      campo.setAttribute("aria-activedescendant", o.nodo.id);
+      o.nodo.scrollIntoView({ block: "nearest" });
+    }
+    function elegir(p) {
+      campo.value = etiquetaPar(p);
+      cerrar();
+      abrirFicha(p, false);
+    }
+    function actualizar() {
+      var pals = palabras(campo.value);
+      opciones = [];
+      activa = -1;
+      caja.replaceChildren();
+      if (!pals.length || carrerasBuscador.some(function (g) { return g.pares.some(function (p) { return etiquetaPar(p) === campo.value; }); })) {
+        cerrar();   // vacío, o el texto es la carrera ya elegida: no hay nada que sugerir
+        return;
+      }
+      // Orden: el nombre empieza con la búsqueda → alguna palabra empieza con la primera → el
+      // resto; dentro de cada grupo, la carrera con más titulados primero.
+      var primera = pals[0], frase = pals.join(" ");
+      var hallados = carrerasBuscador.filter(function (g) { return coincide(g.norm, pals); }).map(function (g) {
+        var rango = g.norm.indexOf(frase) === 0 ? 0 : (" " + g.norm).indexOf(" " + primera) >= 0 ? 1 : 2;
+        return { g: g, rango: rango };
+      }).sort(function (a, b) { return a.rango - b.rango || b.g.peso - a.g.peso || colador.compare(a.g.nombre, b.g.nombre); });
+
+      if (!hallados.length) {
+        caja.appendChild(el("p", "sugerencias__vacio", "Ninguna carrera contiene «" + campo.value.trim() + "». Prueba con una parte del nombre."));
+        estado.textContent = "Sin resultados.";
+      }
+      // Todas las coincidencias (como mucho las 165 carreras): se ven ~6 y el resto con desplazamiento.
+      hallados.forEach(function (h, gi) {
+        var fila = el("div", "sugerencia");
+        fila.setAttribute("role", "group");
+        var nombre = nombreResaltado(h.g.nombre, pals);
+        nombre.id = "sug-n-" + gi;
+        fila.setAttribute("aria-labelledby", nombre.id);
+        fila.appendChild(nombre);
+        var tipos = el("div", "sugerencia__tipos");
+        var niveles = {};
+        h.g.pares.forEach(function (p) { niveles[nivelCorto(p)] = true; });
+        tipos.appendChild(el("span", "sugerencia__nivel", Object.keys(niveles).join(" / ")));
+        h.g.pares.forEach(function (p) {
+          var op = el("span", "sugerencia__tipo", p.tipo);
+          op.id = "sug-" + opciones.length;
+          op.setAttribute("role", "option");
+          op.setAttribute("aria-selected", "false");
+          if (!p.marcas.representativo) {
+            var n = p.conteos.n_inst_oferta;
+            op.appendChild(el("small", null, n + " inst."));
+            op.setAttribute("aria-label", p.tipo + ", sin comparación (" + n + (n === 1 ? " institución)" : " instituciones)"));
+          }
+          // mousedown con preventDefault: el campo no pierde el foco antes del clic.
+          op.addEventListener("mousedown", function (e) { e.preventDefault(); });
+          op.addEventListener("click", function () { elegir(p); });
+          tipos.appendChild(op);
+          opciones.push({ nodo: op, p: p });
+        });
+        fila.appendChild(tipos);
+        caja.appendChild(fila);
+      });
+      if (hallados.length) {
+        var n = hallados.length;
+        caja.appendChild(el("p", "sugerencias__pie", n + (n === 1 ? " carrera" : " carreras") +
+          " · ↑↓ para moverte · Enter abre la ficha"));
+        estado.textContent = n + (n === 1 ? " carrera coincide" : " carreras coinciden") + ". Usa las flechas para elegir el tipo de institución.";
+      }
+      caja.hidden = false;
+      campo.setAttribute("aria-expanded", "true");
+    }
+
+    campo.addEventListener("input", actualizar);
+    // Al entrar al campo con la carrera actual escrita, se selecciona todo: escribir la reemplaza.
+    campo.addEventListener("focus", function () { if (fichaActual && campo.value === etiquetaPar(fichaActual)) campo.select(); });
+    campo.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (caja.hidden) { actualizar(); if (caja.hidden) return; }
+        e.preventDefault();
+        if (!opciones.length) return;
+        var sig = e.key === "ArrowDown" ? (activa + 1) % opciones.length : (activa <= 0 ? opciones.length - 1 : activa - 1);
+        marcar(sig);
+      } else if (e.key === "Enter" && !caja.hidden && activa >= 0) {
+        e.preventDefault();
+        elegir(opciones[activa].p);
+      } else if (e.key === "Escape" && !caja.hidden) {
+        e.preventDefault();
+        cerrar();
+      }
+    });
+    campo.addEventListener("blur", function () { window.setTimeout(cerrar, 0); });
+    document.getElementById("ficha-form").addEventListener("submit", cerrar);
   }
 
   function desdeDireccion() {
@@ -2883,9 +3085,7 @@ a.hallazgo__accion { color: var(--tinta); }
   }
 
   function prepararFicha() {
-    var lista = document.getElementById("ficha-opciones");
-    pares.slice().sort(function (a, b) { return colador.compare(etiquetaPar(a), etiquetaPar(b)); })
-      .forEach(function (p) { var op = el("option"); op.value = etiquetaPar(p); lista.appendChild(op); });
+    prepararBuscador();
     document.getElementById("ficha-form").addEventListener("submit", function (e) {
       e.preventDefault();
       var p = buscarPar(document.getElementById("ficha-texto").value);
