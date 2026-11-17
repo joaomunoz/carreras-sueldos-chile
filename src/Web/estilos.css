@@ -18,7 +18,7 @@
   --tinta: #13211c;
   --tinta-suave: #4a5c55;
   --regla: #c9d6d0;
-  --anio1: #5e9c93;           /* cardenillo claro: primer año */
+  --anio1: #4f8f86;           /* cardenillo claro: primer año (3,34:1 sobre el papel; validado como par ordinal) */
   --anio5: #0b4f47;           /* cardenillo profundo: quinto año */
   --timbre: #7a2e6e;          /* tinta de timbre: solo advertencias */
   --foco: #0b4f47;
@@ -409,6 +409,94 @@ p { margin: 0; }
 .orden-movil { display: none; }
 @media (max-width: 40rem) {
   .orden-movil { display: grid; }
+}
+
+/* ---------------------------------------------------------------- gráficos (W3) */
+/* Reglas de la skill dataviz: marcas finas, grilla recesiva, texto en tinta (nunca del color
+   de la serie), leyenda siempre presente con 2 series, tooltip en cada marca. */
+.grafico { position: relative; margin: 1.5rem 0 0; }
+.grafico__lienzo svg { display: block; width: 100%; overflow: visible; }
+.grafico__lienzo:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; }
+.grafico__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-top: 0.75rem;
+  font-size: var(--t-0);
+  color: var(--tinta-suave);
+}
+.grafico__eje-x { flex-basis: 100%; }
+.leyenda-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+.punto { width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; }
+.punto--anio1 { background: var(--anio1); }
+.punto--anio5 { background: var(--anio5); }
+.trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
+.trazo--timbre { border-top: 3px solid var(--timbre); }
+.trazo--fino { border-top: 1px solid var(--tinta-suave); }
+.barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
+
+/* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */
+.g-grilla { stroke: var(--regla); stroke-width: 1; }
+.g-eje-texto { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); font-variant-numeric: tabular-nums; }
+/* Halo del color del papel: el rótulo se lee aunque cruce una línea. */
+.g-rotulo { fill: var(--tinta); font: 600 0.75rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.g-guia { stroke: var(--tinta-suave); stroke-width: 1; }
+.g-linea { stroke: var(--tinta-suave); stroke-opacity: 0.55; }
+.g-linea--timbre { stroke: var(--timbre); stroke-opacity: 1; }
+.g-anio1 { fill: var(--anio1); }
+.g-anio5 { fill: var(--anio5); }
+.g-resalte { fill: var(--regla); opacity: 0.55; }
+.g-anillo { stroke: var(--papel); stroke-width: 1.5; }   /* 2 px de superficie alrededor del punto */
+
+/* Tooltip compartido */
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  max-width: 19rem;
+  background: var(--papel-alto);
+  color: var(--tinta);
+  border: 1px solid var(--regla);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.tooltip__titulo { font-weight: 600; }
+.tooltip__sub { color: var(--tinta-suave); font-size: var(--t-0); }
+.tooltip__cifras { margin-top: 0.35rem; font-family: var(--f-cifra); font-variant-numeric: tabular-nums; font-size: var(--t-0); }
+.tooltip .timbres { margin-top: 0.35rem; }
+
+/* Mancuerna: filas de 2 líneas (1er año / 5° año) con eje común en pesos. */
+.mancuerna__eje { margin-left: var(--rotulos); height: 1.5rem; position: relative; }
+.mancuerna__eje svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.mancuerna__filas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--regla); }
+.mancuerna { --rotulos: 16rem; }
+.mancuerna__fila {
+  display: grid;
+  grid-template-columns: var(--rotulos) minmax(0, 1fr);
+  align-items: center;
+  border-bottom: 1px solid var(--regla);
+  padding-block: 0.3rem;
+}
+.mancuerna__fila:hover, .mancuerna__fila:focus-visible { background: var(--papel-alto); }
+.mancuerna__fila:focus-visible { outline: 2px solid var(--foco); outline-offset: -2px; }
+.mancuerna__rotulo { font-size: 0.875rem; line-height: 1.25; padding-right: 0.75rem; }
+.mancuerna__rotulo .timbre { font-size: 0.6875rem; }
+.mancuerna__svg svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
+.m-rango { stroke-width: 1.5; stroke-linecap: round; }
+.m-rango--anio1 { stroke: var(--anio1); stroke-opacity: 0.6; }
+.m-rango--anio5 { stroke: var(--anio5); stroke-opacity: 0.6; }
+.m-caja { stroke-width: 6; stroke-linecap: round; }
+.m-caja--anio1 { stroke: var(--anio1); }
+.m-caja--anio5 { stroke: var(--anio5); }
+.m-etiqueta { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); }
+.mancuerna__vacio { padding: 1rem 0; color: var(--tinta-suave); }
+@media (max-width: 40rem) {
+  .mancuerna { --rotulos: 0rem; }
+  .mancuerna__fila { grid-template-columns: 1fr; }
+  .mancuerna__rotulo { padding: 0.2rem 0 0.1rem; }
 }
 
 /* ---------------------------------------------------------------- pie */

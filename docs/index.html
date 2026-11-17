@@ -32,7 +32,7 @@
   --tinta: #13211c;
   --tinta-suave: #4a5c55;
   --regla: #c9d6d0;
-  --anio1: #5e9c93;           /* cardenillo claro: primer año */
+  --anio1: #4f8f86;           /* cardenillo claro: primer año (3,34:1 sobre el papel; validado como par ordinal) */
   --anio5: #0b4f47;           /* cardenillo profundo: quinto año */
   --timbre: #7a2e6e;          /* tinta de timbre: solo advertencias */
   --foco: #0b4f47;
@@ -425,6 +425,94 @@ p { margin: 0; }
   .orden-movil { display: grid; }
 }
 
+/* ---------------------------------------------------------------- gráficos (W3) */
+/* Reglas de la skill dataviz: marcas finas, grilla recesiva, texto en tinta (nunca del color
+   de la serie), leyenda siempre presente con 2 series, tooltip en cada marca. */
+.grafico { position: relative; margin: 1.5rem 0 0; }
+.grafico__lienzo svg { display: block; width: 100%; overflow: visible; }
+.grafico__lienzo:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; }
+.grafico__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-top: 0.75rem;
+  font-size: var(--t-0);
+  color: var(--tinta-suave);
+}
+.grafico__eje-x { flex-basis: 100%; }
+.leyenda-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+.punto { width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; }
+.punto--anio1 { background: var(--anio1); }
+.punto--anio5 { background: var(--anio5); }
+.trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
+.trazo--timbre { border-top: 3px solid var(--timbre); }
+.trazo--fino { border-top: 1px solid var(--tinta-suave); }
+.barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
+
+/* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */
+.g-grilla { stroke: var(--regla); stroke-width: 1; }
+.g-eje-texto { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); font-variant-numeric: tabular-nums; }
+/* Halo del color del papel: el rótulo se lee aunque cruce una línea. */
+.g-rotulo { fill: var(--tinta); font: 600 0.75rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.g-guia { stroke: var(--tinta-suave); stroke-width: 1; }
+.g-linea { stroke: var(--tinta-suave); stroke-opacity: 0.55; }
+.g-linea--timbre { stroke: var(--timbre); stroke-opacity: 1; }
+.g-anio1 { fill: var(--anio1); }
+.g-anio5 { fill: var(--anio5); }
+.g-resalte { fill: var(--regla); opacity: 0.55; }
+.g-anillo { stroke: var(--papel); stroke-width: 1.5; }   /* 2 px de superficie alrededor del punto */
+
+/* Tooltip compartido */
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  max-width: 19rem;
+  background: var(--papel-alto);
+  color: var(--tinta);
+  border: 1px solid var(--regla);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.tooltip__titulo { font-weight: 600; }
+.tooltip__sub { color: var(--tinta-suave); font-size: var(--t-0); }
+.tooltip__cifras { margin-top: 0.35rem; font-family: var(--f-cifra); font-variant-numeric: tabular-nums; font-size: var(--t-0); }
+.tooltip .timbres { margin-top: 0.35rem; }
+
+/* Mancuerna: filas de 2 líneas (1er año / 5° año) con eje común en pesos. */
+.mancuerna__eje { margin-left: var(--rotulos); height: 1.5rem; position: relative; }
+.mancuerna__eje svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.mancuerna__filas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--regla); }
+.mancuerna { --rotulos: 16rem; }
+.mancuerna__fila {
+  display: grid;
+  grid-template-columns: var(--rotulos) minmax(0, 1fr);
+  align-items: center;
+  border-bottom: 1px solid var(--regla);
+  padding-block: 0.3rem;
+}
+.mancuerna__fila:hover, .mancuerna__fila:focus-visible { background: var(--papel-alto); }
+.mancuerna__fila:focus-visible { outline: 2px solid var(--foco); outline-offset: -2px; }
+.mancuerna__rotulo { font-size: 0.875rem; line-height: 1.25; padding-right: 0.75rem; }
+.mancuerna__rotulo .timbre { font-size: 0.6875rem; }
+.mancuerna__svg svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
+.m-rango { stroke-width: 1.5; stroke-linecap: round; }
+.m-rango--anio1 { stroke: var(--anio1); stroke-opacity: 0.6; }
+.m-rango--anio5 { stroke: var(--anio5); stroke-opacity: 0.6; }
+.m-caja { stroke-width: 6; stroke-linecap: round; }
+.m-caja--anio1 { stroke: var(--anio1); }
+.m-caja--anio5 { stroke: var(--anio5); }
+.m-etiqueta { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); }
+.mancuerna__vacio { padding: 1rem 0; color: var(--tinta-suave); }
+@media (max-width: 40rem) {
+  .mancuerna { --rotulos: 0rem; }
+  .mancuerna__fila { grid-template-columns: 1fr; }
+  .mancuerna__rotulo { padding: 0.2rem 0 0.1rem; }
+}
+
 /* ---------------------------------------------------------------- pie */
 .pie {
   margin-top: 3rem;
@@ -458,9 +546,79 @@ p { margin: 0; }
 </header>
 
 <main id="contenido" class="envoltorio">
+  <section class="bloque peine" aria-labelledby="t-peine">
+    <h2 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h2>
+    <p class="bloque__texto" id="peine-bajada"></p>
+    <figure class="grafico" id="peine">
+      <div class="grafico__lienzo" id="peine-lienzo"></div>
+      <div class="tooltip" id="peine-tooltip" hidden></div>
+      <figcaption class="grafico__leyenda">
+        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
+        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
+        <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
+        <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
+      </figcaption>
+    </figure>
+    <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico y recórrelo con las flechas ← →.</p>
+  </section>
+
   <section class="bloque" aria-labelledby="t-hallazgos">
     <h2 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h2>
     <ul class="hallazgos" id="hallazgos"></ul>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-mancuerna">
+    <h2 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h2>
+    <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>
+    <form class="filtros" id="mancuerna-filtros" aria-label="Elegir qué carreras mostrar">
+      <label class="filtro">
+        <span class="filtro__rotulo">Tipo y nivel</span>
+        <select id="m-segmento"></select>
+      </label>
+      <label class="filtro">
+        <span class="filtro__rotulo">Ordenar por</span>
+        <select id="m-orden">
+          <option value="p50_5">Sueldo típico al 5° año</option>
+          <option value="p50_1">Sueldo típico al 1er año</option>
+          <option value="crec">Crecimiento del sueldo típico</option>
+        </select>
+      </label>
+      <label class="filtro filtro--casilla">
+        <input type="checkbox" id="m-no-comparables">
+        <span>Incluir no comparables</span>
+      </label>
+    </form>
+    <figure class="grafico mancuerna" id="mancuerna">
+      <figcaption class="grafico__leyenda">
+        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>1er año</span>
+        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>5° año</span>
+        <span class="leyenda-item"><span class="barra-muestra" aria-hidden="true"></span>Mitad central (P25–P75)</span>
+        <span class="leyenda-item"><span class="trazo trazo--fino" aria-hidden="true"></span>P10–P90 (el P10 está truncado en el sueldo mínimo)</span>
+      </figcaption>
+      <div class="mancuerna__eje" id="mancuerna-eje" aria-hidden="true"></div>
+      <ol class="mancuerna__filas" id="mancuerna-filas"></ol>
+      <div class="tooltip" id="mancuerna-tooltip" hidden></div>
+    </figure>
+    <details class="leyenda">
+      <summary>Ver como tabla</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla" id="mancuerna-tabla">
+          <caption class="solo-lectores">Percentiles del sueldo al 1er y 5° año de las carreras mostradas</caption>
+          <thead>
+            <tr>
+              <th scope="col">Carrera</th>
+              <th scope="col">Año</th>
+              <th scope="col" class="num">P10</th>
+              <th scope="col" class="num">P25</th>
+              <th scope="col" class="num">P50</th>
+              <th scope="col" class="num">P75</th>
+              <th scope="col" class="num">P90</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
   </section>
 
   <section class="bloque" aria-labelledby="t-segmentos">
@@ -962,6 +1120,293 @@ p { margin: 0; }
       : "Ninguna carrera coincide con estos filtros. Prueba quitar alguno o desmarcar «Solo comparables».";
   }
 
+  // ------------------------------------------------------------- utilidades SVG y tooltip
+  var NS = "http://www.w3.org/2000/svg";
+  function svgEl(tipo, atributos, clase, padre) {
+    var n = document.createElementNS(NS, tipo);
+    Object.keys(atributos).forEach(function (k) { n.setAttribute(k, atributos[k]); });
+    if (clase) n.setAttribute("class", clase);
+    if (padre) padre.appendChild(n);
+    return n;
+  }
+
+  // Pesos abreviados para ejes: $800 mil, $1 M, $1,5 M.
+  function pesosCorto(v) {
+    if (v >= 1e6) return "$" + fmtUno.format(v / 1e6).replace(",0", "") + " M";
+    return "$" + fmtEntero.format(v / 1e3) + " mil";
+  }
+
+  // Marcas del eje cada 250 mil, 500 mil o 1 millón, según el rango (≈ 4 a 8 marcas).
+  function marcasPesos(lo, hi) {
+    var paso = (hi - lo) > 5e6 ? 1000000 : (hi - lo) > 2.5e6 ? 500000 : 250000;
+    var ticks = [];
+    for (var v = Math.ceil(lo / paso) * paso; v <= hi; v += paso) ticks.push(v);
+    return ticks;
+  }
+
+  function nivelCorto(p) { return p.nivel.replace("Carreras ", "").toLowerCase(); }
+
+  // Contenido del tooltip: nombre, tipo, cifras y timbres. Texto en tinta, nunca en color de serie.
+  function llenarTooltip(caja, p, lineas) {
+    caja.replaceChildren();
+    caja.appendChild(el("div", "tooltip__titulo", p.nombre));
+    caja.appendChild(el("div", "tooltip__sub", p.tipo + " · " + nivelCorto(p)));
+    var cifras = el("div", "tooltip__cifras");
+    lineas.forEach(function (l) { cifras.appendChild(el("div", null, l)); });
+    caja.appendChild(cifras);
+    var t = el("div", "timbres");
+    TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });
+    if (t.childNodes.length) caja.appendChild(t);
+  }
+
+  // Ubica el tooltip junto al punto (x, y) relativo a la figura, sin salirse por los costados.
+  function ubicarTooltip(caja, figura, x, y) {
+    caja.hidden = false;
+    var ancho = caja.offsetWidth, alto = caja.offsetHeight, max = figura.clientWidth;
+    var izq = Math.min(Math.max(x - ancho / 2, 0), max - ancho);
+    var arriba = y - alto - 12;
+    if (arriba < 0) arriba = y + 16;
+    caja.style.left = izq + "px";
+    caja.style.top = arriba + "px";
+  }
+
+  function alCambiarAncho(nodo, fn) {
+    var ultimo = 0;
+    if (!window.ResizeObserver) { window.addEventListener("resize", fn); return; }
+    new ResizeObserver(function (entradas) {
+      var ancho = Math.round(entradas[0].contentRect.width);
+      if (ancho !== ultimo) { ultimo = ancho; fn(); }
+    }).observe(nodo);
+  }
+
+  // ------------------------------------------------------------- peine (portada)
+  // Las carreras comparables, cada una una línea del P50 del 1er año al del 5°, ordenadas por
+  // el P50 del 1er año. Violeta = marca de composición por edad (en cualquier dirección).
+  var peine = { lista: [], activo: -1 };
+
+  function pintarPeine() {
+    var lienzo = document.getElementById("peine-lienzo");
+    var figura = document.getElementById("peine");
+    var caja = document.getElementById("peine-tooltip");
+    var lista = comparables.slice().sort(function (a, b) {
+      return a.percentiles.anio_1.p50 - b.percentiles.anio_1.p50 || colador.compare(a.nombre, b.nombre);
+    });
+    peine.lista = lista;
+
+    var bajan = lista.filter(function (p) { return p.percentiles.p50_pct_1_5 < 0; }).length;
+    var conEdad = lista.filter(function (p) { return p.marcas.composicion_edad; }).length;
+    document.getElementById("peine-bajada").textContent =
+      "Las " + fmtEntero.format(lista.length) + " carreras comparables. Cada línea va del sueldo típico de quienes se titularon hace un año al de quienes se titularon hace cinco. Casi todas suben; " +
+      fmtEntero.format(bajan) + " bajan. En violeta, las " + fmtEntero.format(conEdad) +
+      " en que los titulados recientes son mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
+
+    var W = lienzo.clientWidth || 800;
+    var angosto = W < 600;
+    var H = angosto ? 260 : 340;
+    var m = { izq: angosto ? 44 : 56, der: 8, arriba: 22, abajo: 8 };
+    var n = lista.length;
+    var paso = (W - m.izq - m.der) / n;
+    var valores = [];
+    lista.forEach(function (p) { valores.push(p.percentiles.anio_1.p50, p.percentiles.anio_5.p50); });
+    var lo = Math.min.apply(null, valores) * 0.94, hi = Math.max.apply(null, valores) * 1.03;
+    function x(i) { return m.izq + paso * (i + 0.5); }
+    function y(v) { return m.arriba + (1 - (v - lo) / (hi - lo)) * (H - m.arriba - m.abajo); }
+
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "img",
+      "aria-label": n + " carreras comparables. En " + bajan + " el sueldo típico del 5° año es menor que el del 1er año." });
+    marcasPesos(lo, hi).forEach(function (v) {
+      svgEl("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v) }, "g-grilla", svg);
+      var t = svgEl("text", { x: m.izq - 6, y: y(v) + 4, "text-anchor": "end" }, "g-eje-texto", svg);
+      t.textContent = pesosCorto(v);
+    });
+    var resalte = svgEl("rect", { x: 0, y: m.arriba - 6, width: Math.max(paso, 4), height: H - m.arriba - m.abajo + 12, rx: 2 }, "g-resalte", svg);
+    resalte.style.display = "none";
+
+    var r = Math.max(1.2, Math.min(3, paso * 0.42));
+    var grosor = Math.max(1, Math.min(2, paso * 0.4));
+    lista.forEach(function (p, i) {
+      var y1 = y(p.percentiles.anio_1.p50), y5 = y(p.percentiles.anio_5.p50);
+      var edad = p.marcas.composicion_edad;
+      svgEl("line", { x1: x(i), x2: x(i), y1: y1, y2: y5, "stroke-width": edad ? grosor + 1 : grosor },
+            "g-linea" + (edad ? " g-linea--timbre" : ""), svg);
+      svgEl("circle", { cx: x(i), cy: y1, r: r }, "g-anio1", svg);
+      svgEl("circle", { cx: x(i), cy: y5, r: r }, "g-anio5", svg);
+    });
+
+    lienzo.replaceChildren(svg);
+
+    // Rótulos directos solo en los dos extremos (elegidos por regla, no a mano). Van en el
+    // espacio vacío de arriba a la izquierda (sueldos bajos, sin líneas altas) con una guía
+    // hasta su carrera: así no se montan sobre las líneas ni quedan ambiguos.
+    var masSube = maximoPor(lista, function (p) { return p.percentiles.p50_pct_1_5; });
+    var masBaja = maximoPor(lista, function (p) { return -p.percentiles.p50_pct_1_5; });
+    [masSube, masBaja].forEach(function (p, k) {
+      var i = lista.indexOf(p);
+      var yRot = m.arriba + 10 + k * 18;
+      var t = svgEl("text", { x: m.izq + 8, y: yRot }, "g-rotulo", svg);
+      t.textContent = p.nombre + (p.tipo !== "Universidad" ? " (" + p.tipo + ")" : "") + " " + pctSigno(p.percentiles.p50_pct_1_5);
+      var fin = m.izq + 8 + t.getComputedTextLength() + 6;
+      var yDot = k === 0 ? Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50))
+                         : Math.max(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50));
+      svgEl("polyline", { points: fin + "," + (yRot - 4) + " " + (x(i) - 4) + "," + (yRot - 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4)),
+                          fill: "none" }, "g-guia", svg);
+    });
+    lienzo.tabIndex = 0;
+    lienzo.setAttribute("aria-describedby", "peine-ayuda");
+
+    function mostrar(i) {
+      peine.activo = i;
+      if (i < 0) { caja.hidden = true; resalte.style.display = "none"; return; }
+      var p = lista[i];
+      resalte.style.display = "";
+      resalte.setAttribute("x", x(i) - Math.max(paso, 4) / 2);
+      llenarTooltip(caja, p, [
+        "1er año " + pesos(p.percentiles.anio_1.p50),
+        "5° año  " + pesos(p.percentiles.anio_5.p50) + "  (" + pctSigno(p.percentiles.p50_pct_1_5) + ")"
+      ]);
+      var escala = lienzo.clientWidth / W;
+      ubicarTooltip(caja, figura, x(i) * escala,
+                    Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50)) * escala);
+    }
+    function desdePuntero(e) {
+      var caja2 = svg.getBoundingClientRect();
+      var xx = (e.clientX - caja2.left) * (W / caja2.width);
+      var i = Math.floor((xx - m.izq) / paso);
+      mostrar(i >= 0 && i < n ? i : -1);
+    }
+    svg.addEventListener("pointermove", desdePuntero);
+    svg.addEventListener("pointerdown", desdePuntero);   // un toque en pantallas táctiles
+    svg.addEventListener("pointerleave", function () { mostrar(-1); });
+    lienzo.onkeydown = function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        var i = peine.activo < 0 ? 0 : peine.activo + (e.key === "ArrowRight" ? 1 : -1);
+        mostrar(Math.max(0, Math.min(n - 1, i)));
+      } else if (e.key === "Escape") { mostrar(-1); }
+    };
+    lienzo.onblur = function () { mostrar(-1); };
+  }
+
+  // ------------------------------------------------------------- mancuerna con bandas
+  // Un segmento a la vez (decisión de diseño). Eje común en pesos para todas las filas del
+  // segmento, de P10 mínimo a P90 máximo de las carreras mostradas.
+  function prepararMancuerna() {
+    var sel = document.getElementById("m-segmento");
+    datos.segmentos.forEach(function (s) {
+      var op = el("option", null, s.tipo + " · " + s.nivel.replace("Carreras ", "").toLowerCase());
+      op.value = s.tipo + "|" + s.nivel;
+      sel.appendChild(op);
+    });
+    // Por defecto, el segmento con más carreras comparables (hoy Universidad profesional).
+    var mayor = maximoPor(datos.segmentos, function (s) { return s.representativos; });
+    sel.value = mayor.tipo + "|" + mayor.nivel;
+    var form = document.getElementById("mancuerna-filtros");
+    form.addEventListener("change", pintarMancuerna);
+    form.addEventListener("submit", function (e) { e.preventDefault(); });
+    alCambiarAncho(document.getElementById("mancuerna"), pintarMancuerna);
+  }
+
+  function pintarMancuerna() {
+    var partes = document.getElementById("m-segmento").value.split("|");
+    var criterio = document.getElementById("m-orden").value;
+    var incluir = document.getElementById("m-no-comparables").checked;
+    var valor = {
+      p50_5: function (p) { return p.percentiles.anio_5.p50; },
+      p50_1: function (p) { return p.percentiles.anio_1.p50; },
+      crec: function (p) { return p.percentiles.p50_pct_1_5; }
+    }[criterio];
+    var lista = pares.filter(function (p) {
+      return p.tipo === partes[0] && p.nivel === partes[1] && (incluir || p.marcas.representativo);
+    }).sort(function (a, b) { return valor(b) - valor(a) || colador.compare(a.nombre, b.nombre); });
+
+    var ol = document.getElementById("mancuerna-filas");
+    var ejeCont = document.getElementById("mancuerna-eje");
+    var figura = document.getElementById("mancuerna");
+    var caja = document.getElementById("mancuerna-tooltip");
+    var cuerpoTabla = document.querySelector("#mancuerna-tabla tbody");
+    ol.replaceChildren();
+    cuerpoTabla.replaceChildren();
+    if (!lista.length) {
+      ejeCont.replaceChildren();
+      ol.appendChild(el("li", "mancuerna__vacio", "No hay carreras comparables en este grupo. Marca «Incluir no comparables» para verlas."));
+      return;
+    }
+
+    var lo = Infinity, hi = -Infinity;
+    lista.forEach(function (p) {
+      lo = Math.min(lo, p.percentiles.anio_1.p10, p.percentiles.anio_5.p10);
+      hi = Math.max(hi, p.percentiles.anio_1.p90, p.percentiles.anio_5.p90);
+    });
+    lo = Math.floor(lo / 250000) * 250000;
+    hi = Math.ceil(hi / 250000) * 250000;
+    var anchoBarra = Math.max(200, ejeCont.clientWidth || 600);
+    var mIzq = 20, mDer = 8;
+    function x(v) { return mIzq + (v - lo) / (hi - lo) * (anchoBarra - mIzq - mDer); }
+
+    var eje = svgEl("svg", { viewBox: "0 0 " + anchoBarra + " 24", preserveAspectRatio: "none" });
+    marcasPesos(lo, hi).forEach(function (v, i, arr) {
+      // En pantallas angostas, una marca de por medio para que los rótulos no choquen.
+      if (anchoBarra < 420 && i % 2 && i !== arr.length - 1) return;
+      var t = svgEl("text", { x: x(v), y: 16, "text-anchor": "middle" }, "g-eje-texto", eje);
+      t.textContent = pesosCorto(v);
+    });
+    ejeCont.replaceChildren(eje);
+
+    lista.forEach(function (p) {
+      var li = el("li", "mancuerna__fila");
+      li.tabIndex = 0;
+      var rot = el("div", "mancuerna__rotulo");
+      rot.appendChild(el("span", null, p.nombre));
+      var t = el("div", "timbres");
+      TIMBRES.forEach(function (def) {
+        if (def.aplica(p) && def.id !== "baja_cobertura") t.appendChild(timbre(def)); // la baja cobertura es del segmento entero
+      });
+      if (t.childNodes.length) rot.appendChild(t);
+      li.appendChild(rot);
+
+      var cont = el("div", "mancuerna__svg");
+      var svg = svgEl("svg", { viewBox: "0 0 " + anchoBarra + " 36", preserveAspectRatio: "none", "aria-hidden": "true" });
+      marcasPesos(lo, hi).forEach(function (v) {
+        svgEl("line", { x1: x(v), x2: x(v), y1: 0, y2: 36 }, "g-grilla", svg);
+      });
+      [["anio1", p.percentiles.anio_1, 11, "1°"], ["anio5", p.percentiles.anio_5, 26, "5°"]].forEach(function (a) {
+        var q = a[1], yy = a[2];
+        var e = svgEl("text", { x: 2, y: yy + 4 }, "m-etiqueta", svg); e.textContent = a[3];
+        svgEl("line", { x1: x(q.p10), x2: x(q.p90), y1: yy, y2: yy }, "m-rango m-rango--" + a[0], svg);
+        svgEl("line", { x1: x(q.p25), x2: x(q.p75), y1: yy, y2: yy }, "m-caja m-caja--" + a[0], svg);
+        svgEl("circle", { cx: x(q.p50), cy: yy, r: 5 }, "g-" + a[0] + " g-anillo", svg);
+      });
+      cont.appendChild(svg);
+      li.appendChild(cont);
+
+      var lineas = [
+        "1er año  P50 " + pesos(p.percentiles.anio_1.p50),
+        "   mitad central " + pesos(p.percentiles.anio_1.p25) + "–" + pesos(p.percentiles.anio_1.p75),
+        "5° año   P50 " + pesos(p.percentiles.anio_5.p50) + " (" + pctSigno(p.percentiles.p50_pct_1_5) + ")",
+        "   mitad central " + pesos(p.percentiles.anio_5.p25) + "–" + pesos(p.percentiles.anio_5.p75)
+      ];
+      function mostrar() {
+        llenarTooltip(caja, p, lineas);
+        var rf = figura.getBoundingClientRect(), rs = cont.getBoundingClientRect();
+        ubicarTooltip(caja, figura, rs.left - rf.left + rs.width * (x(p.percentiles.anio_5.p50) / anchoBarra), rs.top - rf.top);
+      }
+      li.addEventListener("pointerenter", mostrar);
+      li.addEventListener("focus", mostrar);
+      li.addEventListener("pointerleave", function () { caja.hidden = true; });
+      li.addEventListener("blur", function () { caja.hidden = true; });
+      li.setAttribute("aria-label", p.nombre + ". " + lineas.join(". ").replace(/\s+/g, " "));
+      ol.appendChild(li);
+
+      [["1er año", p.percentiles.anio_1], ["5° año", p.percentiles.anio_5]].forEach(function (a, k) {
+        var tr = el("tr");
+        tr.appendChild(el("td", null, k === 0 ? p.nombre : ""));
+        tr.appendChild(el("td", null, a[0]));
+        ["p10", "p25", "p50", "p75", "p90"].forEach(function (c) { tr.appendChild(el("td", "num", pesos(a[1][c]))); });
+        cuerpoTabla.appendChild(tr);
+      });
+    });
+  }
+
   // ------------------------------------------------------------- notas y pie
   function pintarNotas() {
     document.getElementById("nota-carreras").textContent =
@@ -1003,7 +1448,11 @@ p { margin: 0; }
 
   iniciarTema();
   pintarCifras();
+  pintarPeine();
+  alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();
+  prepararMancuerna();
+  pintarMancuerna();
   pintarSegmentos();
   pintarLeyenda();
   prepararFiltros();

@@ -31,9 +31,79 @@
 </header>
 
 <main id="contenido" class="envoltorio">
+  <section class="bloque peine" aria-labelledby="t-peine">
+    <h2 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h2>
+    <p class="bloque__texto" id="peine-bajada"></p>
+    <figure class="grafico" id="peine">
+      <div class="grafico__lienzo" id="peine-lienzo"></div>
+      <div class="tooltip" id="peine-tooltip" hidden></div>
+      <figcaption class="grafico__leyenda">
+        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
+        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
+        <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
+        <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
+      </figcaption>
+    </figure>
+    <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico y recórrelo con las flechas ← →.</p>
+  </section>
+
   <section class="bloque" aria-labelledby="t-hallazgos">
     <h2 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h2>
     <ul class="hallazgos" id="hallazgos"></ul>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-mancuerna">
+    <h2 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h2>
+    <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>
+    <form class="filtros" id="mancuerna-filtros" aria-label="Elegir qué carreras mostrar">
+      <label class="filtro">
+        <span class="filtro__rotulo">Tipo y nivel</span>
+        <select id="m-segmento"></select>
+      </label>
+      <label class="filtro">
+        <span class="filtro__rotulo">Ordenar por</span>
+        <select id="m-orden">
+          <option value="p50_5">Sueldo típico al 5° año</option>
+          <option value="p50_1">Sueldo típico al 1er año</option>
+          <option value="crec">Crecimiento del sueldo típico</option>
+        </select>
+      </label>
+      <label class="filtro filtro--casilla">
+        <input type="checkbox" id="m-no-comparables">
+        <span>Incluir no comparables</span>
+      </label>
+    </form>
+    <figure class="grafico mancuerna" id="mancuerna">
+      <figcaption class="grafico__leyenda">
+        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>1er año</span>
+        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>5° año</span>
+        <span class="leyenda-item"><span class="barra-muestra" aria-hidden="true"></span>Mitad central (P25–P75)</span>
+        <span class="leyenda-item"><span class="trazo trazo--fino" aria-hidden="true"></span>P10–P90 (el P10 está truncado en el sueldo mínimo)</span>
+      </figcaption>
+      <div class="mancuerna__eje" id="mancuerna-eje" aria-hidden="true"></div>
+      <ol class="mancuerna__filas" id="mancuerna-filas"></ol>
+      <div class="tooltip" id="mancuerna-tooltip" hidden></div>
+    </figure>
+    <details class="leyenda">
+      <summary>Ver como tabla</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla" id="mancuerna-tabla">
+          <caption class="solo-lectores">Percentiles del sueldo al 1er y 5° año de las carreras mostradas</caption>
+          <thead>
+            <tr>
+              <th scope="col">Carrera</th>
+              <th scope="col">Año</th>
+              <th scope="col" class="num">P10</th>
+              <th scope="col" class="num">P25</th>
+              <th scope="col" class="num">P50</th>
+              <th scope="col" class="num">P75</th>
+              <th scope="col" class="num">P90</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
   </section>
 
   <section class="bloque" aria-labelledby="t-segmentos">
