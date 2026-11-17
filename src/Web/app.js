@@ -1480,23 +1480,33 @@
   }
 
   // La parte en pantalla queda marcada en la barra (aria-current), para saber dónde se está.
+  // Parte activa = la última cuyo inicio ya pasó una línea de lectura cerca de arriba (bajo la
+  // barra, a un 25 % de la pantalla), que es donde está leyendo la persona. Antes era la parte que
+  // cruzaba el centro: con el cierre de la Parte I arriba, el centro ya caía en la Parte II y la
+  // barra marcaba «Busca tu carrera» mientras se leía la Parte I. Al final de la página, la última.
   function marcarParteActiva() {
-    if (!window.IntersectionObserver) return;
     var enlaces = document.querySelectorAll(".barra__partes a");
-    var observador = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        enlaces.forEach(function (a) {
-          if (a.getAttribute("data-parte") === en.target.id) a.setAttribute("aria-current", "true");
-          else a.removeAttribute("aria-current");
-        });
+    var partes = Array.prototype.slice.call(document.querySelectorAll(".parte"));
+    var barra = document.querySelector(".barra");
+    var actual = null, pendiente = false;
+    function calcular() {
+      pendiente = false;
+      var linea = (barra ? barra.offsetHeight : 0) + window.innerHeight * 0.25;
+      var activa = null;
+      partes.forEach(function (s) { if (s.getBoundingClientRect().top <= linea) activa = s.id; });
+      var alFinal = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (alFinal && partes.length) activa = partes[partes.length - 1].id;
+      if (activa === actual) return;
+      actual = activa;
+      enlaces.forEach(function (a) {   // sobre la portada (ninguna parte pasó la línea) no hay activa
+        if (a.getAttribute("data-parte") === activa) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
       });
-    }, { rootMargin: "-45% 0px -50% 0px" });   // la parte que cruza el centro de la pantalla
-    document.querySelectorAll(".parte").forEach(function (s) { observador.observe(s); });
-    // Sobre la portada no hay parte activa.
-    new IntersectionObserver(function (entradas) {
-      if (entradas[0].isIntersecting) enlaces.forEach(function (a) { a.removeAttribute("aria-current"); });
-    }, { rootMargin: "-45% 0px -50% 0px" }).observe(document.getElementById("inicio"));
+    }
+    function programar() { if (!pendiente) { pendiente = true; window.requestAnimationFrame(calcular); } }
+    window.addEventListener("scroll", programar, { passive: true });
+    window.addEventListener("resize", programar);
+    calcular();
   }
 
   function buscarPar(texto) {
