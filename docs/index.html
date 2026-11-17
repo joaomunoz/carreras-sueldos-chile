@@ -49,6 +49,7 @@
 
   --ancho: 72rem;
   --margen: 1rem;
+  --alto-barra: 3rem;   /* barra fija: los saltos dejan este espacio para no tapar el título */
 }
 
 /* Modo oscuro: por preferencia del sistema salvo que el usuario elija claro, o por elección. */
@@ -93,7 +94,7 @@ body {
   line-height: 1.55;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: var(--f-titulo);
   font-weight: 600;
   line-height: 1.05;
@@ -144,20 +145,13 @@ p { margin: 0; }
   border-bottom: 1px solid var(--regla);
 }
 
-.portada__barra {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
 .portada__eyebrow {
   font-family: var(--f-titulo);
   font-size: var(--t-0);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tinta-suave);
+  margin-bottom: 2.5rem;
 }
 
 .portada__titulo {
@@ -185,6 +179,102 @@ p { margin: 0; }
 }
 .boton-tema:hover { border-color: var(--tinta-suave); }
 .boton-tema { white-space: nowrap; flex: 0 0 auto; }   /* a 320 px se partía en dos líneas */
+.boton-tema__icono { margin-right: 0.35rem; }
+
+/* ---------------------------------------------------------------- barra fija (N1)
+ * El índice de la página: las tres partes siempre a la vista. Rótulos en versalitas de título,
+ * como los encabezados de un formulario; la parte en pantalla va subrayada (aria-current). */
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--papel);
+  border-bottom: 1px solid var(--regla);
+}
+.barra__dentro {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: var(--alto-barra);
+}
+.barra__marca {
+  font-family: var(--f-titulo);
+  font-weight: 600;
+  color: var(--tinta);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.barra__nav { flex: 1 1 auto; }
+.barra__partes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+}
+.barra__partes a {
+  display: inline-block;
+  padding-block: 0.6rem;   /* área de toque de ~44 px sin agrandar la barra */
+  font-family: var(--f-titulo);
+  font-size: var(--t-0);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.barra__partes a:hover { color: var(--tinta); }
+.barra__partes a[aria-current="true"] {
+  color: var(--tinta);
+  text-decoration: underline 2px;
+  text-underline-offset: 6px;
+}
+.barra__corto { display: none; }
+
+/* Celular: sin marca, rótulos cortos y el tema solo con su ícono. Los rótulos largos y el texto
+ * del botón quedan para lectores de pantalla (con display:none el enlace se quedaría sin nombre). */
+@media (max-width: 40rem) {
+  .barra__dentro { gap: 0.5rem; }
+  .barra__marca { display: none; }
+  .barra__partes { justify-content: flex-start; gap: 0.25rem 0.9rem; }
+  .barra__partes a { letter-spacing: 0.06em; }
+  .barra__largo, .boton-tema__texto {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .barra__corto { display: inline; }
+  .boton-tema__icono { margin-right: 0; }
+}
+/* 320 px: los tres rótulos + el botón no cabían (el botón quedaba cortado en el borde). */
+@media (max-width: 22.5rem) {
+  .barra__partes { gap: 0.25rem 0.6rem; }
+  .barra__partes a { font-size: 0.75rem; letter-spacing: 0.02em; }
+  .barra .boton-tema { padding: 0.3rem 0.55rem; }
+}
+
+/* ---------------------------------------------------------------- partes (N1)
+ * Tres partes con número: es un orden de lectura real (relato → herramienta → respaldo). */
+.parte { padding-top: 4.5rem; }
+.parte__cabecera { border-top: 3px solid var(--tinta); padding-top: 0.9rem; }
+.parte__numero {
+  font-family: var(--f-titulo);
+  font-size: var(--t-0);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.parte__titulo { font-size: clamp(2.25rem, 5vw, 3.25rem); margin-top: 0.3rem; }
+.parte__bajada {
+  margin-top: 0.6rem;
+  max-width: 52ch;
+  font-size: var(--t-2);
+  line-height: 1.4;
+  color: var(--tinta-suave);
+}
+.parte, .bloque, .parte__titulo, .bloque__titulo { scroll-margin-top: calc(var(--alto-barra) + 0.75rem); }
+
+/* Regreso desde la ficha: arriba de todo, porque es lo primero que se ve después del salto. */
+.ficha__volver { margin-top: 0.75rem; }
 
 /* Cifras de cabecera: rótulo arriba, monto abajo, como las líneas de una liquidación. */
 .cifras {
@@ -568,6 +658,7 @@ p { margin: 0; }
 }
 .ficha__bloque { margin-top: 1.75rem; }
 .ficha__titulo {
+  margin-top: 1.33em;   /* el margen que tenía como h4; ahora es h5 (la ficha bajó un nivel) */
   font-family: var(--f-titulo);
   font-size: var(--t-0);
   letter-spacing: 0.12em;
@@ -649,18 +740,8 @@ p { margin: 0; }
   .mancuerna__rotulo { padding: 0.2rem 0 0.1rem; }
 }
 
-/* ---------------------------------------------------------------- índice y bloques finales (W6) */
-.indice { margin-top: 2rem; }
-.indice__rotulo {
-  font-family: var(--f-titulo);
-  font-size: var(--t-0);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--tinta-suave);
-}
-.indice ul { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem; }
-.indice a, .pie a { color: var(--tinta); text-decoration-color: var(--regla); text-underline-offset: 3px; }
-.indice a:hover { text-decoration-color: currentColor; }
+/* ---------------------------------------------------------------- bloques finales (W6) */
+.pie a { color: var(--tinta); text-decoration-color: var(--regla); text-underline-offset: 3px; }
 
 /* Qué no dice: las salvedades llevan el borde violeta, como las advertencias de la ficha. */
 .limites { list-style: none; margin: 1.5rem 0 0; padding: 0; border-left: 3px solid var(--timbre); max-width: 64rem; }
@@ -718,305 +799,328 @@ p { margin: 0; }
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
 
-<header class="portada">
+<!-- Barra fija con las tres partes: el índice queda a la vista al bajar (antes estaba solo en la
+     portada y se perdía) y el tema se cambia desde cualquier punto. -->
+<div class="barra">
+  <div class="envoltorio barra__dentro">
+    <a class="barra__marca" href="#inicio">Del 1er al 5° año</a>
+    <nav class="barra__nav" aria-label="Partes de la página">
+      <ul class="barra__partes">
+        <li><a href="#parte-hallazgos" data-parte="parte-hallazgos"><span class="barra__largo">Lo que encontré</span><span class="barra__corto" aria-hidden="true">Hallazgos</span></a></li>
+        <li><a href="#parte-carrera" data-parte="parte-carrera"><span class="barra__largo">Busca tu carrera</span><span class="barra__corto" aria-hidden="true">Tu carrera</span></a></li>
+        <li><a href="#parte-lectura" data-parte="parte-lectura"><span class="barra__largo">Cómo leerlo</span><span class="barra__corto" aria-hidden="true">Cómo leerlo</span></a></li>
+      </ul>
+    </nav>
+    <button type="button" class="boton-tema" id="boton-tema" aria-pressed="false"><span class="boton-tema__icono" aria-hidden="true">◐</span><span class="boton-tema__texto">Modo oscuro</span></button>
+  </div>
+</div>
+
+<header class="portada" id="inicio">
   <div class="envoltorio">
-    <div class="portada__barra">
-      <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
-      <button type="button" class="boton-tema" id="boton-tema" aria-pressed="false">Modo oscuro</button>
-    </div>
+    <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
     <h1 class="portada__titulo">Del primer al quinto año</h1>
     <p class="portada__bajada">Cuánto progresa el ingreso de cada carrera, comparando a quienes se titularon hace poco con quienes se titularon hace cinco años, y dónde el promedio esconde más de lo que muestra.</p>
     <dl class="cifras" id="cifras" aria-live="polite"></dl>
-    <nav class="indice" aria-label="En esta página">
-      <p class="indice__rotulo">En esta página</p>
-      <ul>
-        <li><a href="#t-peine">Cada carrera</a></li>
-        <li><a href="#t-hallazgos">Lecturas corregidas</a></li>
-        <li><a href="#t-cuadrantes">Entrada y progreso</a></li>
-        <li><a href="#t-mancuerna">Dispersión</a></li>
-        <li><a href="#t-segmentos">Cobertura</a></li>
-        <li><a href="#t-carreras">Todas las carreras</a></li>
-        <li><a href="#t-ficha">Ficha de carrera</a></li>
-        <li><a href="#t-limites">Qué no dice</a></li>
-        <li><a href="#t-metodo">Cómo se hizo</a></li>
-        <li><a href="#t-qa">Controles de calidad</a></li>
-      </ul>
-    </nav>
   </div>
 </header>
 
 <main id="contenido" class="envoltorio">
-  <section class="bloque peine" aria-labelledby="t-peine">
-    <h2 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h2>
-    <p class="bloque__texto" id="peine-bajada"></p>
-    <figure class="grafico" id="peine">
-      <div class="grafico__lienzo" id="peine-lienzo"></div>
-      <div class="tooltip" id="peine-tooltip" hidden></div>
-      <figcaption class="grafico__leyenda">
-        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
-        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
-        <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
-        <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
-      </figcaption>
-    </figure>
-    <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
+  <section class="parte" id="parte-hallazgos" aria-labelledby="t-parte-hallazgos">
+    <header class="parte__cabecera">
+      <p class="parte__numero">Parte I</p>
+      <h2 id="t-parte-hallazgos" class="parte__titulo">Lo que encontré</h2>
+      <p class="parte__bajada">Tres lecturas que parecen obvias sobre los sueldos de los titulados, y lo que los datos dicen en cada caso.</p>
+    </header>
+
+    <section class="bloque peine" aria-labelledby="t-peine">
+      <h3 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h3>
+      <p class="bloque__texto" id="peine-bajada"></p>
+      <figure class="grafico" id="peine">
+        <div class="grafico__lienzo" id="peine-lienzo"></div>
+        <div class="tooltip" id="peine-tooltip" hidden></div>
+        <figcaption class="grafico__leyenda">
+          <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
+          <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
+          <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
+          <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
+        </figcaption>
+      </figure>
+      <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
+    </section>
+
+    <section class="bloque" aria-labelledby="t-hallazgos">
+      <h3 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h3>
+      <ul class="hallazgos" id="hallazgos"></ul>
+    </section>
+
+    <section class="bloque" aria-labelledby="t-cuadrantes">
+      <h3 id="t-cuadrantes" class="bloque__titulo">Cuánto se entra ganando y cuánto se progresa</h3>
+      <p class="bloque__texto">Cada punto es una carrera, comparada con las de su mismo grupo (su área dentro del tipo de institución y nivel, o su tipo y nivel si el área tiene pocas carreras). Hacia la derecha, entra ganando más que la carrera típica de su grupo (la mediana, ponderada por titulados: las carreras con más titulados pesan más); hacia arriba, su sueldo típico crece más entre el primer y el quinto año. Cambia la medida del crecimiento para ver qué carreras se mueven.</p>
+      <div class="conmutador" role="group" aria-label="Medir el crecimiento en">
+        <button type="button" id="c-modo-pct" aria-pressed="true">Crecimiento en %</button>
+        <button type="button" id="c-modo-pesos" aria-pressed="false">Crecimiento en pesos</button>
+      </div>
+      <figure class="grafico" id="cuadrantes">
+        <div class="grafico__lienzo" id="cuadrantes-lienzo"></div>
+        <div class="tooltip" id="cuadrantes-tooltip" hidden></div>
+        <figcaption class="grafico__leyenda">
+          <span class="leyenda-item"><span class="punto punto--neutro" aria-hidden="true"></span>Carrera</span>
+          <span class="leyenda-item"><span class="punto punto--cambia" aria-hidden="true"></span>Cambia de cuadrante al medir en pesos</span>
+          <span class="leyenda-item"><span class="punto punto--anillo" aria-hidden="true"></span>Con advertencia (cohorte atípica o composición por edad)</span>
+        </figcaption>
+      </figure>
+      <p class="nota" id="cuadrantes-ayuda">Con el teclado: enfoca el gráfico, recorre las carreras con las flechas ← → (de izquierda a derecha) y abre su ficha con Enter.</p>
+      <details class="leyenda">
+        <summary>Ver las carreras que cambian de cuadrante</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla tabla--tarjetas" id="cuadrantes-tabla">
+            <caption class="solo-lectores">Carreras que cambian de cuadrante según se mida el crecimiento en porcentaje o en pesos</caption>
+            <thead>
+              <tr>
+                <th scope="col">Carrera</th>
+                <th scope="col" class="num">Crecimiento %</th>
+                <th scope="col" class="num">Crecimiento $</th>
+                <th scope="col">Cuadrante en %</th>
+                <th scope="col">Cuadrante en pesos</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
   </section>
 
-  <section class="bloque" aria-labelledby="t-hallazgos">
-    <h2 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h2>
-    <ul class="hallazgos" id="hallazgos"></ul>
-  </section>
+  <section class="parte" id="parte-carrera" aria-labelledby="t-parte-carrera">
+    <header class="parte__cabecera">
+      <p class="parte__numero">Parte II</p>
+      <h2 id="t-parte-carrera" class="parte__titulo">Busca tu carrera</h2>
+      <p class="parte__bajada">La ficha completa de una carrera en un tipo de institución, todas las carreras en una tabla y la dispersión de sus sueldos.</p>
+    </header>
 
-  <section class="bloque" aria-labelledby="t-cuadrantes">
-    <h2 id="t-cuadrantes" class="bloque__titulo">Cuánto se entra ganando y cuánto se progresa</h2>
-    <p class="bloque__texto">Cada punto es una carrera, comparada con las de su mismo grupo (su área dentro del tipo de institución y nivel, o su tipo y nivel si el área tiene pocas carreras). Hacia la derecha, entra ganando más que la carrera típica de su grupo (la mediana, ponderada por titulados: las carreras con más titulados pesan más); hacia arriba, su sueldo típico crece más entre el primer y el quinto año. Cambia la medida del crecimiento para ver qué carreras se mueven.</p>
-    <div class="conmutador" role="group" aria-label="Medir el crecimiento en">
-      <button type="button" id="c-modo-pct" aria-pressed="true">Crecimiento en %</button>
-      <button type="button" id="c-modo-pesos" aria-pressed="false">Crecimiento en pesos</button>
-    </div>
-    <figure class="grafico" id="cuadrantes">
-      <div class="grafico__lienzo" id="cuadrantes-lienzo"></div>
-      <div class="tooltip" id="cuadrantes-tooltip" hidden></div>
-      <figcaption class="grafico__leyenda">
-        <span class="leyenda-item"><span class="punto punto--neutro" aria-hidden="true"></span>Carrera</span>
-        <span class="leyenda-item"><span class="punto punto--cambia" aria-hidden="true"></span>Cambia de cuadrante al medir en pesos</span>
-        <span class="leyenda-item"><span class="punto punto--anillo" aria-hidden="true"></span>Con advertencia (cohorte atípica o composición por edad)</span>
-      </figcaption>
-    </figure>
-    <p class="nota" id="cuadrantes-ayuda">Con el teclado: enfoca el gráfico, recorre las carreras con las flechas ← → (de izquierda a derecha) y abre su ficha con Enter.</p>
-    <details class="leyenda">
-      <summary>Ver las carreras que cambian de cuadrante</summary>
+    <section class="bloque" aria-labelledby="t-ficha" id="ficha">
+      <h3 id="t-ficha" class="bloque__titulo">Ficha de carrera</h3>
+      <p class="ficha__volver" id="ficha-volver" hidden><button type="button" class="boton boton--sutil" id="ficha-volver-boton">← Volver</button></p>
+      <p class="bloque__texto">Todo lo que hay sobre una carrera en un tipo de institución. También se abre al hacer clic en una carrera de la tabla o de los gráficos.</p>
+      <form class="filtros ficha__buscar" id="ficha-form" role="search" aria-label="Buscar una carrera">
+        <label class="filtro filtro--busqueda">
+          <span class="filtro__rotulo">Buscar carrera</span>
+          <input type="search" id="ficha-texto" list="ficha-opciones" autocomplete="off" placeholder="Ej.: kinesiología">
+          <datalist id="ficha-opciones"></datalist>
+        </label>
+        <button type="submit" class="boton">Ver ficha</button>
+        <button type="button" class="boton boton--sutil" id="ficha-enlace">Copiar enlace a esta ficha</button>
+      </form>
+      <p class="filtros__conteo" id="ficha-estado" role="status" aria-live="polite"></p>
+      <article class="ficha" id="ficha-contenido" tabindex="-1" aria-labelledby="ficha-nombre"></article>
+    </section>
+
+    <section class="bloque" aria-labelledby="t-carreras">
+      <h3 id="t-carreras" class="bloque__titulo">Todas las carreras</h3>
+      <p class="bloque__texto">Sueldo típico (mediana, P50) de quienes se titularon hace un año y hace cinco, ambos con los ingresos de 2024. Ordena con los encabezados y filtra para encontrar una carrera.</p>
+
+      <form class="filtros" id="filtros" role="search" aria-label="Filtrar carreras">
+        <label class="filtro filtro--busqueda">
+          <span class="filtro__rotulo">Buscar carrera</span>
+          <input type="search" id="f-texto" autocomplete="off" placeholder="Ej.: enfermería">
+        </label>
+        <label class="filtro">
+          <span class="filtro__rotulo">Tipo de institución</span>
+          <select id="f-tipo"><option value="">Todos</option></select>
+        </label>
+        <label class="filtro">
+          <span class="filtro__rotulo">Nivel</span>
+          <select id="f-nivel"><option value="">Todos</option></select>
+        </label>
+        <label class="filtro">
+          <span class="filtro__rotulo">Área</span>
+          <select id="f-area"><option value="">Todas</option></select>
+        </label>
+        <label class="filtro orden-movil">
+          <span class="filtro__rotulo">Ordenar por</span>
+          <select id="f-orden"></select>
+        </label>
+        <label class="filtro filtro--casilla">
+          <input type="checkbox" id="f-comparables" checked>
+          <span>Solo comparables</span>
+        </label>
+      </form>
+      <p class="filtros__conteo" id="conteo" role="status" aria-live="polite"></p>
+
+      <details class="leyenda">
+        <summary>Qué significa cada timbre</summary>
+        <dl class="leyenda__lista" id="leyenda"></dl>
+      </details>
+
       <div class="tabla-desplazable">
-        <table class="tabla tabla--tarjetas" id="cuadrantes-tabla">
-          <caption class="solo-lectores">Carreras que cambian de cuadrante según se mida el crecimiento en porcentaje o en pesos</caption>
+        <table class="tabla tabla--tarjetas tabla--cifras" id="tabla-carreras">
+          <caption class="solo-lectores">Todas las carreras: sueldo típico al primer y quinto año, crecimiento, empleabilidad e instituciones</caption>
           <thead>
             <tr>
-              <th scope="col">Carrera</th>
-              <th scope="col" class="num">Crecimiento %</th>
-              <th scope="col" class="num">Crecimiento $</th>
-              <th scope="col">Cuadrante en %</th>
-              <th scope="col">Cuadrante en pesos</th>
+              <th scope="col" data-col="nombre"><button type="button">Carrera</button></th>
+              <th scope="col" data-col="tipo"><button type="button">Tipo</button></th>
+              <th scope="col" data-col="p50_1" class="num"><button type="button">P50 1er año</button></th>
+              <th scope="col" data-col="p50_5" class="num"><button type="button">P50 5° año</button></th>
+              <th scope="col" data-col="crec" class="num"><button type="button">Crecimiento P50</button></th>
+              <th scope="col" data-col="emp1" class="num"><button type="button">Empleabilidad 1er año</button></th>
+              <th scope="col" data-col="inst" class="num"><button type="button">Instituciones</button></th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </details>
+      <p class="nota" id="nota-carreras"></p>
+    </section>
+
+    <section class="bloque" aria-labelledby="t-mancuerna">
+      <h3 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h3>
+      <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>
+      <form class="filtros" id="mancuerna-filtros" aria-label="Elegir qué carreras mostrar">
+        <label class="filtro">
+          <span class="filtro__rotulo">Tipo y nivel</span>
+          <select id="m-segmento"></select>
+        </label>
+        <label class="filtro">
+          <span class="filtro__rotulo">Ordenar por</span>
+          <select id="m-orden">
+            <option value="p50_5">Sueldo típico al 5° año</option>
+            <option value="p50_1">Sueldo típico al 1er año</option>
+            <option value="crec">Crecimiento del sueldo típico</option>
+          </select>
+        </label>
+        <label class="filtro filtro--casilla">
+          <input type="checkbox" id="m-no-comparables">
+          <span>Incluir no comparables</span>
+        </label>
+      </form>
+      <figure class="grafico mancuerna" id="mancuerna">
+        <figcaption class="grafico__leyenda">
+          <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>1er año</span>
+          <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>5° año</span>
+          <span class="leyenda-item"><span class="barra-muestra" aria-hidden="true"></span>Mitad central (P25–P75)</span>
+          <span class="leyenda-item"><span class="trazo trazo--fino" aria-hidden="true"></span>P10–P90 (el P10 está truncado en el sueldo mínimo)</span>
+        </figcaption>
+        <div class="mancuerna__eje" id="mancuerna-eje" aria-hidden="true"></div>
+        <ol class="mancuerna__filas" id="mancuerna-filas"></ol>
+        <div class="tooltip" id="mancuerna-tooltip" hidden></div>
+      </figure>
+      <details class="leyenda">
+        <summary>Ver como tabla</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla" id="mancuerna-tabla">
+            <caption class="solo-lectores">Percentiles del sueldo al 1er y 5° año de las carreras mostradas</caption>
+            <thead>
+              <tr>
+                <th scope="col">Carrera</th>
+                <th scope="col">Año</th>
+                <th scope="col" class="num">P10</th>
+                <th scope="col" class="num">P25</th>
+                <th scope="col" class="num">P50</th>
+                <th scope="col" class="num">P75</th>
+                <th scope="col" class="num">P90</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
   </section>
 
-  <section class="bloque" aria-labelledby="t-mancuerna">
-    <h2 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h2>
-    <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>
-    <form class="filtros" id="mancuerna-filtros" aria-label="Elegir qué carreras mostrar">
-      <label class="filtro">
-        <span class="filtro__rotulo">Tipo y nivel</span>
-        <select id="m-segmento"></select>
-      </label>
-      <label class="filtro">
-        <span class="filtro__rotulo">Ordenar por</span>
-        <select id="m-orden">
-          <option value="p50_5">Sueldo típico al 5° año</option>
-          <option value="p50_1">Sueldo típico al 1er año</option>
-          <option value="crec">Crecimiento del sueldo típico</option>
-        </select>
-      </label>
-      <label class="filtro filtro--casilla">
-        <input type="checkbox" id="m-no-comparables">
-        <span>Incluir no comparables</span>
-      </label>
-    </form>
-    <figure class="grafico mancuerna" id="mancuerna">
-      <figcaption class="grafico__leyenda">
-        <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>1er año</span>
-        <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>5° año</span>
-        <span class="leyenda-item"><span class="barra-muestra" aria-hidden="true"></span>Mitad central (P25–P75)</span>
-        <span class="leyenda-item"><span class="trazo trazo--fino" aria-hidden="true"></span>P10–P90 (el P10 está truncado en el sueldo mínimo)</span>
-      </figcaption>
-      <div class="mancuerna__eje" id="mancuerna-eje" aria-hidden="true"></div>
-      <ol class="mancuerna__filas" id="mancuerna-filas"></ol>
-      <div class="tooltip" id="mancuerna-tooltip" hidden></div>
-    </figure>
-    <details class="leyenda">
-      <summary>Ver como tabla</summary>
+  <section class="parte" id="parte-lectura" aria-labelledby="t-parte-lectura">
+    <header class="parte__cabecera">
+      <p class="parte__numero">Parte III</p>
+      <h2 id="t-parte-lectura" class="parte__titulo">Cómo leerlo</h2>
+      <p class="parte__bajada">Lo que este análisis no puede decir, qué datos hay detrás y cómo se verificaron.</p>
+    </header>
+
+    <section class="bloque" aria-labelledby="t-limites">
+      <h3 id="t-limites" class="bloque__titulo">Qué no dice este análisis</h3>
+      <p class="bloque__texto">Los límites de los datos, con sus cifras. Leer cualquier resultado de esta página sin ellos lleva a conclusiones que los datos no sostienen.</p>
+      <ul class="limites" id="limites"></ul>
+    </section>
+
+    <section class="bloque" aria-labelledby="t-segmentos">
+      <h3 id="t-segmentos" class="bloque__titulo">Qué datos hay por tipo de institución</h3>
+      <p class="bloque__texto">Cada fila es un tipo de institución y nivel de carrera. «Comparables» son las carreras con al menos tres instituciones que las ofrecen; el resto se muestra en su ficha, pero no entra en rankings. La cobertura dice qué parte de los titulados del SIES queda en los programas que publica MiFuturo.</p>
       <div class="tabla-desplazable">
-        <table class="tabla" id="mancuerna-tabla">
-          <caption class="solo-lectores">Percentiles del sueldo al 1er y 5° año de las carreras mostradas</caption>
+        <table class="tabla tabla--tarjetas" id="tabla-segmentos">
+          <caption class="solo-lectores">Carreras y cobertura por tipo de institución y nivel</caption>
           <thead>
             <tr>
-              <th scope="col">Carrera</th>
-              <th scope="col">Año</th>
-              <th scope="col" class="num">P10</th>
-              <th scope="col" class="num">P25</th>
-              <th scope="col" class="num">P50</th>
-              <th scope="col" class="num">P75</th>
-              <th scope="col" class="num">P90</th>
+              <th scope="col">Tipo de institución</th>
+              <th scope="col">Nivel</th>
+              <th scope="col" class="num">Carreras</th>
+              <th scope="col" class="num">Comparables</th>
+              <th scope="col" class="num">Cobertura, titulados recientes</th>
+              <th scope="col" class="num">Cobertura, hace cinco años</th>
+              <th scope="col">Advertencias</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-    </details>
-  </section>
+    </section>
 
-  <section class="bloque" aria-labelledby="t-segmentos">
-    <h2 id="t-segmentos" class="bloque__titulo">Qué datos hay por tipo de institución</h2>
-    <p class="bloque__texto">Cada fila es un tipo de institución y nivel de carrera. «Comparables» son las carreras con al menos tres instituciones que las ofrecen; el resto se muestra en su ficha, pero no entra en rankings. La cobertura dice qué parte de los titulados del SIES queda en los programas que publica MiFuturo.</p>
-    <div class="tabla-desplazable">
-      <table class="tabla tabla--tarjetas" id="tabla-segmentos">
-        <caption class="solo-lectores">Carreras y cobertura por tipo de institución y nivel</caption>
-        <thead>
-          <tr>
-            <th scope="col">Tipo de institución</th>
-            <th scope="col">Nivel</th>
-            <th scope="col" class="num">Carreras</th>
-            <th scope="col" class="num">Comparables</th>
-            <th scope="col" class="num">Cobertura, titulados recientes</th>
-            <th scope="col" class="num">Cobertura, hace cinco años</th>
-            <th scope="col">Advertencias</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+    <section class="bloque" aria-labelledby="t-metodo">
+      <h3 id="t-metodo" class="bloque__titulo">Cómo se hizo</h3>
+      <div class="metodo" id="metodo"></div>
+      <details class="leyenda">
+        <summary>Qué titulados entran en cada cifra</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla tabla--tarjetas" id="tabla-cohortes">
+            <caption class="solo-lectores">Cohortes de titulación y años de ingreso de cada indicador</caption>
+            <thead>
+              <tr>
+                <th scope="col">Cifra</th>
+                <th scope="col">Titulados en</th>
+                <th scope="col">Ingresos de</th>
+                <th scope="col" class="num">Mínimo de casos</th>
+                <th scope="col">Fuente</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+      <details class="leyenda">
+        <summary>Reglas de decisión del análisis</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla tabla--tarjetas" id="tabla-parametros">
+            <caption class="solo-lectores">Umbrales del análisis</caption>
+            <thead>
+              <tr>
+                <th scope="col">Regla</th>
+                <th scope="col" class="num">Valor</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
 
-  <section class="bloque" aria-labelledby="t-carreras">
-    <h2 id="t-carreras" class="bloque__titulo">Todas las carreras</h2>
-    <p class="bloque__texto">Sueldo típico (mediana, P50) de quienes se titularon hace un año y hace cinco, ambos con los ingresos de 2024. Ordena con los encabezados y filtra para encontrar una carrera.</p>
-
-    <form class="filtros" id="filtros" role="search" aria-label="Filtrar carreras">
-      <label class="filtro filtro--busqueda">
-        <span class="filtro__rotulo">Buscar carrera</span>
-        <input type="search" id="f-texto" autocomplete="off" placeholder="Ej.: enfermería">
-      </label>
-      <label class="filtro">
-        <span class="filtro__rotulo">Tipo de institución</span>
-        <select id="f-tipo"><option value="">Todos</option></select>
-      </label>
-      <label class="filtro">
-        <span class="filtro__rotulo">Nivel</span>
-        <select id="f-nivel"><option value="">Todos</option></select>
-      </label>
-      <label class="filtro">
-        <span class="filtro__rotulo">Área</span>
-        <select id="f-area"><option value="">Todas</option></select>
-      </label>
-      <label class="filtro orden-movil">
-        <span class="filtro__rotulo">Ordenar por</span>
-        <select id="f-orden"></select>
-      </label>
-      <label class="filtro filtro--casilla">
-        <input type="checkbox" id="f-comparables" checked>
-        <span>Solo comparables</span>
-      </label>
-    </form>
-    <p class="filtros__conteo" id="conteo" role="status" aria-live="polite"></p>
-
-    <details class="leyenda">
-      <summary>Qué significa cada timbre</summary>
-      <dl class="leyenda__lista" id="leyenda"></dl>
-    </details>
-
-    <div class="tabla-desplazable">
-      <table class="tabla tabla--tarjetas tabla--cifras" id="tabla-carreras">
-        <caption class="solo-lectores">Todas las carreras: sueldo típico al primer y quinto año, crecimiento, empleabilidad e instituciones</caption>
-        <thead>
-          <tr>
-            <th scope="col" data-col="nombre"><button type="button">Carrera</button></th>
-            <th scope="col" data-col="tipo"><button type="button">Tipo</button></th>
-            <th scope="col" data-col="p50_1" class="num"><button type="button">P50 1er año</button></th>
-            <th scope="col" data-col="p50_5" class="num"><button type="button">P50 5° año</button></th>
-            <th scope="col" data-col="crec" class="num"><button type="button">Crecimiento P50</button></th>
-            <th scope="col" data-col="emp1" class="num"><button type="button">Empleabilidad 1er año</button></th>
-            <th scope="col" data-col="inst" class="num"><button type="button">Instituciones</button></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <p class="nota" id="nota-carreras"></p>
-  </section>
-
-  <section class="bloque" aria-labelledby="t-ficha" id="ficha">
-    <h2 id="t-ficha" class="bloque__titulo">Ficha de carrera</h2>
-    <p class="bloque__texto">Todo lo que hay sobre una carrera en un tipo de institución. También se abre al hacer clic en una carrera de la tabla o de los gráficos.</p>
-    <form class="filtros ficha__buscar" id="ficha-form" role="search" aria-label="Buscar una carrera">
-      <label class="filtro filtro--busqueda">
-        <span class="filtro__rotulo">Buscar carrera</span>
-        <input type="search" id="ficha-texto" list="ficha-opciones" autocomplete="off" placeholder="Ej.: kinesiología">
-        <datalist id="ficha-opciones"></datalist>
-      </label>
-      <button type="submit" class="boton">Ver ficha</button>
-      <button type="button" class="boton boton--sutil" id="ficha-enlace">Copiar enlace a esta ficha</button>
-    </form>
-    <p class="filtros__conteo" id="ficha-estado" role="status" aria-live="polite"></p>
-    <article class="ficha" id="ficha-contenido" tabindex="-1" aria-labelledby="ficha-nombre"></article>
-  </section>
-
-  <section class="bloque" aria-labelledby="t-limites">
-    <h2 id="t-limites" class="bloque__titulo">Qué no dice este análisis</h2>
-    <p class="bloque__texto">Los límites de los datos, con sus cifras. Leer cualquier resultado de esta página sin ellos lleva a conclusiones que los datos no sostienen.</p>
-    <ul class="limites" id="limites"></ul>
-  </section>
-
-  <section class="bloque" aria-labelledby="t-metodo">
-    <h2 id="t-metodo" class="bloque__titulo">Cómo se hizo</h2>
-    <div class="metodo" id="metodo"></div>
-    <details class="leyenda">
-      <summary>Qué titulados entran en cada cifra</summary>
-      <div class="tabla-desplazable">
-        <table class="tabla tabla--tarjetas" id="tabla-cohortes">
-          <caption class="solo-lectores">Cohortes de titulación y años de ingreso de cada indicador</caption>
-          <thead>
-            <tr>
-              <th scope="col">Cifra</th>
-              <th scope="col">Titulados en</th>
-              <th scope="col">Ingresos de</th>
-              <th scope="col" class="num">Mínimo de casos</th>
-              <th scope="col">Fuente</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
-    <details class="leyenda">
-      <summary>Reglas de decisión del análisis</summary>
-      <div class="tabla-desplazable">
-        <table class="tabla tabla--tarjetas" id="tabla-parametros">
-          <caption class="solo-lectores">Umbrales del análisis</caption>
-          <thead>
-            <tr>
-              <th scope="col">Regla</th>
-              <th scope="col" class="num">Valor</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
-  </section>
-
-  <section class="bloque" aria-labelledby="t-qa">
-    <h2 id="t-qa" class="bloque__titulo">Controles de calidad</h2>
-    <p class="bloque__texto">Cada vez que se construyen los datos, la base verifica estos controles. Si alguno falla, los datos no se exportan y esta página no se puede volver a generar.</p>
-    <p class="qa-resumen" id="qa-resumen"></p>
-    <details class="leyenda">
-      <summary>Ver los controles uno por uno</summary>
-      <div class="tabla-desplazable">
-        <table class="tabla tabla--tarjetas" id="tabla-qa">
-          <caption class="solo-lectores">Controles de calidad del último build</caption>
-          <thead>
-            <tr>
-              <th scope="col">Control</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Resultado</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
+    <section class="bloque" aria-labelledby="t-qa">
+      <h3 id="t-qa" class="bloque__titulo">Controles de calidad</h3>
+      <p class="bloque__texto">Cada vez que se construyen los datos, la base verifica estos controles. Si alguno falla, los datos no se exportan y esta página no se puede volver a generar.</p>
+      <p class="qa-resumen" id="qa-resumen"></p>
+      <details class="leyenda">
+        <summary>Ver los controles uno por uno</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla tabla--tarjetas" id="tabla-qa">
+            <caption class="solo-lectores">Controles de calidad del último build</caption>
+            <thead>
+              <tr>
+                <th scope="col">Control</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Resultado</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
   </section>
 </main>
 
@@ -1946,7 +2050,7 @@ p { margin: 0; }
 
   function bloque(cont, titulo) {
     var b = el("section", "ficha__bloque");
-    b.appendChild(el("h4", "ficha__titulo", titulo));
+    b.appendChild(el("h5", "ficha__titulo", titulo));
     cont.appendChild(b);
     return b;
   }
@@ -2036,7 +2140,7 @@ p { margin: 0; }
     art.replaceChildren();
 
     // Encabezado
-    art.appendChild(el("h3", "ficha__nombre", p.nombre)).id = "ficha-nombre";
+    art.appendChild(el("h4", "ficha__nombre", p.nombre)).id = "ficha-nombre";
     art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · " + p.area.cine13 +
       " (" + fmtEntero.format(p.area.pct_dominante) + " % de sus titulados)"));
     var t = el("div", "timbres");
@@ -2148,16 +2252,161 @@ p { margin: 0; }
     b5.appendChild(el("p", "ficha__nota", "Fuente: titulaciones SIES de todas las instituciones de este tipo. El rango de edad existe porque el SIES agrupa de 30 a 34 años."));
   }
 
-  function abrirFicha(p, desplazar) {
+  // ------------------------------------------------------------- ficha: apertura, regreso e historial (N1)
+  // Abrir una ficha con un clic agrega un paso al historial (pushState): así «Atrás» del navegador
+  // y el botón «Volver» llevan al punto de donde se salió. Antes era replaceState: el salto de
+  // ~30 pantallas no tenía regreso y «Atrás» sacaba al lector de la página.
+  // El estado guardado es serializable ({n, clave, origen: {y, titulo}}); el elemento que tenía el
+  // foco no se puede guardar en el historial, así que vive en `focoDe`, indexado por n.
+  var nav = { actual: null, n: 0, conHistorial: true };
+  var focoDe = {};
+
+  function suave() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  }
+
+  // De dónde se abrió la ficha: la sección del elemento con foco (clic o teclado) o, si no hay,
+  // la que está al centro de la pantalla. Desde la propia ficha no hay a dónde volver.
+  // Safari no enfoca un botón al hacer clic: el último elemento tocado sirve de respaldo para
+  // saber desde qué sección se abrió la ficha (si no, se adivinaría por el centro de la pantalla).
+  var ultimoToque = { el: null, t: 0 };
+  document.addEventListener("pointerdown", function (e) { ultimoToque = { el: e.target, t: Date.now() }; }, true);
+
+  function capturarOrigen() {
+    var foco = document.activeElement;
+    if (foco === document.body) foco = null;
+    if (!foco && ultimoToque.el && Date.now() - ultimoToque.t < 2000) foco = ultimoToque.el;
+    var seccion = foco && foco.closest ? foco.closest("section.bloque") : null;
+    if (!seccion) {
+      var centro = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+      seccion = centro && centro.closest ? centro.closest("section.bloque") : null;
+    }
+    if (seccion && seccion.id === "ficha") return null;
+    var titulo = seccion ? seccion.querySelector(".bloque__titulo") : null;
+    return { origen: { y: Math.round(window.scrollY), titulo: titulo ? titulo.textContent : null }, foco: foco };
+  }
+
+  function mostrarVolver(origen) {
+    var caja = document.getElementById("ficha-volver");
+    caja.hidden = !origen;
+    if (origen) {
+      document.getElementById("ficha-volver-boton").textContent =
+        origen.titulo ? "← Volver a «" + origen.titulo + "»" : "← Volver a donde estabas";
+    }
+  }
+
+  function volverA(origen, n) {
+    window.scrollTo({ top: origen.y, behavior: suave() });
+    var foco = focoDe[n];
+    if (foco && document.contains(foco)) foco.focus({ preventScroll: true });
+  }
+
+  function mostrarFicha(p) {
     pintarFicha(p);
     document.getElementById("ficha-texto").value = etiquetaPar(p);
     document.getElementById("ficha-estado").textContent = "Mostrando la ficha de " + etiquetaPar(p) + ".";
-    // La carrera queda en la dirección para compartirla; replaceState no agrega historial ni salta.
-    try { history.replaceState(null, "", "#carrera=" + encodeURIComponent(claveDe(p))); } catch (e) { /* file:// sin historial */ }
+  }
+
+  function irAFicha() {
+    document.getElementById("ficha").scrollIntoView({ behavior: suave() });
+    document.getElementById("ficha-contenido").focus({ preventScroll: true });
+  }
+
+  function abrirFicha(p, desplazar) {
+    mostrarFicha(p);
+    var direccion = "#carrera=" + encodeURIComponent(claveDe(p));
     if (desplazar) {
-      document.getElementById("ficha").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-      document.getElementById("ficha-contenido").focus({ preventScroll: true });
+      var o = capturarOrigen();
+      var estado = { n: nav.n + 1, clave: claveDe(p), origen: o ? o.origen : null };
+      try { history.pushState(estado, "", direccion); } catch (e) { nav.conHistorial = false; }
+      nav.n = estado.n;
+      nav.actual = estado;
+      if (o) focoDe[estado.n] = o.foco;
+      mostrarVolver(estado.origen);
+      irAFicha();
+    } else {
+      // Búsqueda dentro de la ficha: cambia la carrera de este mismo paso, sin perder su regreso.
+      var actual = nav.actual || { n: nav.n, origen: null };
+      var reemplazo = { n: actual.n, clave: claveDe(p), origen: actual.origen };
+      try { history.replaceState(reemplazo, "", direccion); } catch (e) { /* sin historial */ }
+      nav.actual = reemplazo;
     }
+  }
+
+  function prepararHistorial() {
+    // El paso inicial también lleva estado: así un popstate con estado null solo puede ser una
+    // dirección escrita a mano (#carrera=… en la barra del navegador).
+    // Sin esto el navegador restaura por su cuenta la posición al ir atrás, compite con volverA
+    // y deja al lector en otro punto (medido: 5.911 px en vez de 7.691).
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    var p0 = desdeDireccion();
+    nav.actual = { n: 0, clave: p0 ? claveDe(p0) : null, origen: null };
+    try { history.replaceState(nav.actual, "", location.href); } catch (e) { nav.conHistorial = false; }
+
+    // Con la restauración manual, «Atrás» tras un enlace interno (barra, «Saltar al contenido»)
+    // ya no volvería solo a donde se estaba: se guarda la posición en el paso actual antes del salto.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || !nav.actual) return;
+      nav.actual = Object.assign({}, nav.actual, { y: Math.round(window.scrollY) });
+      try { history.replaceState(nav.actual, "", location.href); } catch (err) { /* sin historial */ }
+    }, true);
+
+    document.getElementById("ficha-volver-boton").addEventListener("click", function () {
+      var actual = nav.actual;
+      if (!actual || !actual.origen) return;
+      if (nav.conHistorial && actual.n > 0) history.back();   // el popstate hace el regreso
+      else { volverA(actual.origen, actual.n); mostrarVolver(null); }
+    });
+
+    // Al cambiar el "#", el navegador hace su propio paso de scroll DESPUÉS del popstate y corta
+    // una animación iniciada aquí (medido: la ficha se pintaba pero la página no se movía). Por eso
+    // el desplazamiento se posterga una vuelta del bucle de eventos.
+    function despues(fn) { window.setTimeout(fn, 0); }
+
+    window.addEventListener("popstate", function (e) {
+      var dejado = nav.actual, destino = e.state, p = desdeDireccion();
+      if (!destino) {   // dirección escrita a mano: se abre esa ficha, sin regreso
+        nav.n += 1;
+        nav.actual = { n: nav.n, clave: p ? claveDe(p) : null, origen: null };
+        try { history.replaceState(nav.actual, "", location.href); } catch (err) { /* sin historial */ }
+        mostrarVolver(null);
+        if (p) { mostrarFicha(p); despues(irAFicha); }
+        return;
+      }
+      nav.actual = destino;
+      if (p) mostrarFicha(p);
+      mostrarVolver(destino.origen);
+      if (dejado && destino.n < dejado.n) {   // atrás
+        if (dejado.origen) despues(function () { volverA(dejado.origen, dejado.n); });   // de una ficha a su origen
+        else if (destino.y != null) despues(function () { window.scrollTo({ top: destino.y, behavior: suave() }); });
+      } else if (p) {                          // adelante: de nuevo a la ficha
+        despues(irAFicha);
+      } else {                                 // adelante a un enlace interno: a su destino
+        var objetivo = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
+        if (objetivo) despues(function () { objetivo.scrollIntoView({ behavior: suave() }); });
+      }
+    });
+  }
+
+  // La parte en pantalla queda marcada en la barra (aria-current), para saber dónde se está.
+  function marcarParteActiva() {
+    if (!window.IntersectionObserver) return;
+    var enlaces = document.querySelectorAll(".barra__partes a");
+    var observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        enlaces.forEach(function (a) {
+          if (a.getAttribute("data-parte") === en.target.id) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });   // la parte que cruza el centro de la pantalla
+    document.querySelectorAll(".parte").forEach(function (s) { observador.observe(s); });
+    // Sobre la portada no hay parte activa.
+    new IntersectionObserver(function (entradas) {
+      if (entradas[0].isIntersecting) enlaces.forEach(function (a) { a.removeAttribute("aria-current"); });
+    }, { rootMargin: "-45% 0px -50% 0px" }).observe(document.getElementById("inicio"));
   }
 
   function buscarPar(texto) {
@@ -2198,12 +2447,12 @@ p { margin: 0; }
         estado.textContent = "Copia este enlace: " + url;
       }
     });
-    window.addEventListener("hashchange", function () { var p = desdeDireccion(); if (p) abrirFicha(p, true); });
     // Ficha inicial: la de la dirección, o por regla la comparable con más titulados.
     var inicial = desdeDireccion() || maximoPor(comparables, function (p) { return p.conteos.peso; });
     pintarFicha(inicial);
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
+    prepararHistorial();
   }
 
   // ------------------------------------------------------------- qué no dice, método y controles (W6)
@@ -2363,7 +2612,7 @@ p { margin: 0; }
     }
     function rotular() {
       var oscuro = esOscuro();
-      boton.textContent = oscuro ? "Modo claro" : "Modo oscuro";
+      boton.querySelector(".boton-tema__texto").textContent = oscuro ? "Modo claro" : "Modo oscuro";
       boton.setAttribute("aria-pressed", String(oscuro));
     }
     boton.addEventListener("click", function () {
@@ -2389,6 +2638,7 @@ p { margin: 0; }
   prepararFiltros();
   pintarCarreras();
   prepararFicha();
+  marcarParteActiva();
   pintarLimites();
   pintarMetodo();
   pintarControles();

@@ -45,7 +45,7 @@ pip install -r requirements.txt
 createdb carreras_sueldos
 export PGDATABASE=carreras_sueldos
 
-make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 11 s)
+make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 13 s)
 ```
 
 | Comando | Qué hace |

@@ -914,7 +914,7 @@
 
   function bloque(cont, titulo) {
     var b = el("section", "ficha__bloque");
-    b.appendChild(el("h4", "ficha__titulo", titulo));
+    b.appendChild(el("h5", "ficha__titulo", titulo));
     cont.appendChild(b);
     return b;
   }
@@ -1004,7 +1004,7 @@
     art.replaceChildren();
 
     // Encabezado
-    art.appendChild(el("h3", "ficha__nombre", p.nombre)).id = "ficha-nombre";
+    art.appendChild(el("h4", "ficha__nombre", p.nombre)).id = "ficha-nombre";
     art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · " + p.area.cine13 +
       " (" + fmtEntero.format(p.area.pct_dominante) + " % de sus titulados)"));
     var t = el("div", "timbres");
@@ -1116,16 +1116,161 @@
     b5.appendChild(el("p", "ficha__nota", "Fuente: titulaciones SIES de todas las instituciones de este tipo. El rango de edad existe porque el SIES agrupa de 30 a 34 años."));
   }
 
-  function abrirFicha(p, desplazar) {
+  // ------------------------------------------------------------- ficha: apertura, regreso e historial (N1)
+  // Abrir una ficha con un clic agrega un paso al historial (pushState): así «Atrás» del navegador
+  // y el botón «Volver» llevan al punto de donde se salió. Antes era replaceState: el salto de
+  // ~30 pantallas no tenía regreso y «Atrás» sacaba al lector de la página.
+  // El estado guardado es serializable ({n, clave, origen: {y, titulo}}); el elemento que tenía el
+  // foco no se puede guardar en el historial, así que vive en `focoDe`, indexado por n.
+  var nav = { actual: null, n: 0, conHistorial: true };
+  var focoDe = {};
+
+  function suave() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  }
+
+  // De dónde se abrió la ficha: la sección del elemento con foco (clic o teclado) o, si no hay,
+  // la que está al centro de la pantalla. Desde la propia ficha no hay a dónde volver.
+  // Safari no enfoca un botón al hacer clic: el último elemento tocado sirve de respaldo para
+  // saber desde qué sección se abrió la ficha (si no, se adivinaría por el centro de la pantalla).
+  var ultimoToque = { el: null, t: 0 };
+  document.addEventListener("pointerdown", function (e) { ultimoToque = { el: e.target, t: Date.now() }; }, true);
+
+  function capturarOrigen() {
+    var foco = document.activeElement;
+    if (foco === document.body) foco = null;
+    if (!foco && ultimoToque.el && Date.now() - ultimoToque.t < 2000) foco = ultimoToque.el;
+    var seccion = foco && foco.closest ? foco.closest("section.bloque") : null;
+    if (!seccion) {
+      var centro = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+      seccion = centro && centro.closest ? centro.closest("section.bloque") : null;
+    }
+    if (seccion && seccion.id === "ficha") return null;
+    var titulo = seccion ? seccion.querySelector(".bloque__titulo") : null;
+    return { origen: { y: Math.round(window.scrollY), titulo: titulo ? titulo.textContent : null }, foco: foco };
+  }
+
+  function mostrarVolver(origen) {
+    var caja = document.getElementById("ficha-volver");
+    caja.hidden = !origen;
+    if (origen) {
+      document.getElementById("ficha-volver-boton").textContent =
+        origen.titulo ? "← Volver a «" + origen.titulo + "»" : "← Volver a donde estabas";
+    }
+  }
+
+  function volverA(origen, n) {
+    window.scrollTo({ top: origen.y, behavior: suave() });
+    var foco = focoDe[n];
+    if (foco && document.contains(foco)) foco.focus({ preventScroll: true });
+  }
+
+  function mostrarFicha(p) {
     pintarFicha(p);
     document.getElementById("ficha-texto").value = etiquetaPar(p);
     document.getElementById("ficha-estado").textContent = "Mostrando la ficha de " + etiquetaPar(p) + ".";
-    // La carrera queda en la dirección para compartirla; replaceState no agrega historial ni salta.
-    try { history.replaceState(null, "", "#carrera=" + encodeURIComponent(claveDe(p))); } catch (e) { /* file:// sin historial */ }
+  }
+
+  function irAFicha() {
+    document.getElementById("ficha").scrollIntoView({ behavior: suave() });
+    document.getElementById("ficha-contenido").focus({ preventScroll: true });
+  }
+
+  function abrirFicha(p, desplazar) {
+    mostrarFicha(p);
+    var direccion = "#carrera=" + encodeURIComponent(claveDe(p));
     if (desplazar) {
-      document.getElementById("ficha").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-      document.getElementById("ficha-contenido").focus({ preventScroll: true });
+      var o = capturarOrigen();
+      var estado = { n: nav.n + 1, clave: claveDe(p), origen: o ? o.origen : null };
+      try { history.pushState(estado, "", direccion); } catch (e) { nav.conHistorial = false; }
+      nav.n = estado.n;
+      nav.actual = estado;
+      if (o) focoDe[estado.n] = o.foco;
+      mostrarVolver(estado.origen);
+      irAFicha();
+    } else {
+      // Búsqueda dentro de la ficha: cambia la carrera de este mismo paso, sin perder su regreso.
+      var actual = nav.actual || { n: nav.n, origen: null };
+      var reemplazo = { n: actual.n, clave: claveDe(p), origen: actual.origen };
+      try { history.replaceState(reemplazo, "", direccion); } catch (e) { /* sin historial */ }
+      nav.actual = reemplazo;
     }
+  }
+
+  function prepararHistorial() {
+    // El paso inicial también lleva estado: así un popstate con estado null solo puede ser una
+    // dirección escrita a mano (#carrera=… en la barra del navegador).
+    // Sin esto el navegador restaura por su cuenta la posición al ir atrás, compite con volverA
+    // y deja al lector en otro punto (medido: 5.911 px en vez de 7.691).
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    var p0 = desdeDireccion();
+    nav.actual = { n: 0, clave: p0 ? claveDe(p0) : null, origen: null };
+    try { history.replaceState(nav.actual, "", location.href); } catch (e) { nav.conHistorial = false; }
+
+    // Con la restauración manual, «Atrás» tras un enlace interno (barra, «Saltar al contenido»)
+    // ya no volvería solo a donde se estaba: se guarda la posición en el paso actual antes del salto.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || !nav.actual) return;
+      nav.actual = Object.assign({}, nav.actual, { y: Math.round(window.scrollY) });
+      try { history.replaceState(nav.actual, "", location.href); } catch (err) { /* sin historial */ }
+    }, true);
+
+    document.getElementById("ficha-volver-boton").addEventListener("click", function () {
+      var actual = nav.actual;
+      if (!actual || !actual.origen) return;
+      if (nav.conHistorial && actual.n > 0) history.back();   // el popstate hace el regreso
+      else { volverA(actual.origen, actual.n); mostrarVolver(null); }
+    });
+
+    // Al cambiar el "#", el navegador hace su propio paso de scroll DESPUÉS del popstate y corta
+    // una animación iniciada aquí (medido: la ficha se pintaba pero la página no se movía). Por eso
+    // el desplazamiento se posterga una vuelta del bucle de eventos.
+    function despues(fn) { window.setTimeout(fn, 0); }
+
+    window.addEventListener("popstate", function (e) {
+      var dejado = nav.actual, destino = e.state, p = desdeDireccion();
+      if (!destino) {   // dirección escrita a mano: se abre esa ficha, sin regreso
+        nav.n += 1;
+        nav.actual = { n: nav.n, clave: p ? claveDe(p) : null, origen: null };
+        try { history.replaceState(nav.actual, "", location.href); } catch (err) { /* sin historial */ }
+        mostrarVolver(null);
+        if (p) { mostrarFicha(p); despues(irAFicha); }
+        return;
+      }
+      nav.actual = destino;
+      if (p) mostrarFicha(p);
+      mostrarVolver(destino.origen);
+      if (dejado && destino.n < dejado.n) {   // atrás
+        if (dejado.origen) despues(function () { volverA(dejado.origen, dejado.n); });   // de una ficha a su origen
+        else if (destino.y != null) despues(function () { window.scrollTo({ top: destino.y, behavior: suave() }); });
+      } else if (p) {                          // adelante: de nuevo a la ficha
+        despues(irAFicha);
+      } else {                                 // adelante a un enlace interno: a su destino
+        var objetivo = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
+        if (objetivo) despues(function () { objetivo.scrollIntoView({ behavior: suave() }); });
+      }
+    });
+  }
+
+  // La parte en pantalla queda marcada en la barra (aria-current), para saber dónde se está.
+  function marcarParteActiva() {
+    if (!window.IntersectionObserver) return;
+    var enlaces = document.querySelectorAll(".barra__partes a");
+    var observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        enlaces.forEach(function (a) {
+          if (a.getAttribute("data-parte") === en.target.id) a.setAttribute("aria-current", "true");
+          else a.removeAttribute("aria-current");
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });   // la parte que cruza el centro de la pantalla
+    document.querySelectorAll(".parte").forEach(function (s) { observador.observe(s); });
+    // Sobre la portada no hay parte activa.
+    new IntersectionObserver(function (entradas) {
+      if (entradas[0].isIntersecting) enlaces.forEach(function (a) { a.removeAttribute("aria-current"); });
+    }, { rootMargin: "-45% 0px -50% 0px" }).observe(document.getElementById("inicio"));
   }
 
   function buscarPar(texto) {
@@ -1166,12 +1311,12 @@
         estado.textContent = "Copia este enlace: " + url;
       }
     });
-    window.addEventListener("hashchange", function () { var p = desdeDireccion(); if (p) abrirFicha(p, true); });
     // Ficha inicial: la de la dirección, o por regla la comparable con más titulados.
     var inicial = desdeDireccion() || maximoPor(comparables, function (p) { return p.conteos.peso; });
     pintarFicha(inicial);
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
+    prepararHistorial();
   }
 
   // ------------------------------------------------------------- qué no dice, método y controles (W6)
@@ -1331,7 +1476,7 @@
     }
     function rotular() {
       var oscuro = esOscuro();
-      boton.textContent = oscuro ? "Modo claro" : "Modo oscuro";
+      boton.querySelector(".boton-tema__texto").textContent = oscuro ? "Modo claro" : "Modo oscuro";
       boton.setAttribute("aria-pressed", String(oscuro));
     }
     boton.addEventListener("click", function () {
@@ -1357,6 +1502,7 @@
   prepararFiltros();
   pintarCarreras();
   prepararFicha();
+  marcarParteActiva();
   pintarLimites();
   pintarMetodo();
   pintarControles();
