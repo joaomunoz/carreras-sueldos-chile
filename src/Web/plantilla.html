@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- src/Web/plantilla.html
+     Plantilla de docs/index.html. No se abre directo: src/Web/construir.py reemplaza los
+     cuatro marcadores (fuente, estilos, datos y app; cada uno aparece una sola vez) por la
+     fuente, el CSS, el JSON y el JS, para que la página final sea un único archivo que
+     funciona con doble clic. -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Del primer al quinto año · carreras en Chile</title>
+<meta name="description" content="Cuánto progresa el ingreso de cada carrera en Chile entre el primer y el quinto año de titulación, y dónde el promedio engaña. Datos de MiFuturo y SIES.">
+<style>
+/*@FUENTE@*/
+/*@ESTILOS@*/
+</style>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<header class="portada">
+  <div class="envoltorio">
+    <div class="portada__barra">
+      <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
+      <button type="button" class="boton-tema" id="boton-tema" aria-pressed="false">Modo oscuro</button>
+    </div>
+    <h1 class="portada__titulo">Del primer al quinto año</h1>
+    <p class="portada__bajada">Cuánto progresa el ingreso de cada carrera, comparando a quienes se titularon hace poco con quienes se titularon hace cinco años, y dónde el promedio esconde más de lo que muestra.</p>
+    <dl class="cifras" id="cifras" aria-live="polite"></dl>
+  </div>
+</header>
+
+<main id="contenido" class="envoltorio">
+  <section class="bloque" aria-labelledby="t-segmentos">
+    <h2 id="t-segmentos" class="bloque__titulo">Qué datos hay por tipo de institución</h2>
+    <p class="bloque__texto">Cada fila es un tipo de institución y nivel de carrera. «Comparables» son las carreras con al menos tres instituciones que las ofrecen; el resto se muestra en su ficha, pero no entra en rankings. La cobertura dice qué parte de los titulados del SIES queda en los programas que publica MiFuturo.</p>
+    <div class="tabla-desplazable" tabindex="0" role="region" aria-labelledby="t-segmentos">
+      <table class="tabla" id="tabla-segmentos">
+        <caption class="solo-lectores">Carreras y cobertura por tipo de institución y nivel</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tipo de institución</th>
+            <th scope="col">Nivel</th>
+            <th scope="col" class="num">Carreras</th>
+            <th scope="col" class="num">Comparables</th>
+            <th scope="col" class="num">Cobertura, titulados recientes</th>
+            <th scope="col" class="num">Cobertura, hace cinco años</th>
+            <th scope="col">Advertencias</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="pie envoltorio">
+  <p id="pie-comparacion"></p>
+  <p id="pie-fuentes"></p>
+</footer>
+
+<script id="datos" type="application/json">@DATOS@</script>
+<script>
+/*@APP@*/
+</script>
+</body>
+</html>
