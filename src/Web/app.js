@@ -2,18 +2,28 @@
  *
  * Lógica de la página. Los datos vienen incrustados en <script id="datos"> por
  * src/Web/construir.py (desde docs/datos.json): nada se pide a la red, así la página funciona
- * con doble clic. Ninguna cifra del texto se escribe a mano: todas se leen de `datos`.
+ * con doble clic. Ninguna cifra del texto se escribe a mano: todas se leen de `datos`,
+ * incluidos los umbrales (datos.parametros), para que la página no pueda contradecir al análisis.
  */
 (function () {
   "use strict";
 
   var datos = JSON.parse(document.getElementById("datos").textContent);
+  var pares = datos.pares;
 
   // ------------------------------------------------------------- formato (es-CL)
   var fmtEntero = new Intl.NumberFormat("es-CL", { maximumFractionDigits: 0 });
-  var fmtPct = new Intl.NumberFormat("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  var fmtUno = new Intl.NumberFormat("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-  function pct(valor) { return valor == null ? "—" : fmtPct.format(valor) + " %"; }
+  function pct(valor) { return valor == null ? "—" : fmtUno.format(valor) + " %"; }
+  function pctSigno(valor) {
+    if (valor == null) return "—";
+    return (valor > 0 ? "+" : valor < 0 ? "−" : "") + fmtUno.format(Math.abs(valor)) + " %";
+  }
+  function pesos(valor) { return valor == null ? "—" : "$" + fmtEntero.format(valor); }
+  function pesosSigno(valor) {
+    return (valor > 0 ? "+" : valor < 0 ? "−" : "") + "$" + fmtEntero.format(Math.abs(valor));
+  }
 
   function el(etiqueta, clase, texto) {
     var nodo = document.createElement(etiqueta);
@@ -22,10 +32,81 @@
     return nodo;
   }
 
-  function timbre(texto, descripcion) {
-    var nodo = el("span", "timbre", texto);
-    if (descripcion) nodo.title = descripcion;
+  function parametro(nombre) {
+    for (var i = 0; i < datos.parametros.length; i++) {
+      if (datos.parametros[i].nombre === nombre) return datos.parametros[i].valor;
+    }
+    throw new Error("Parámetro inexistente en datos.json: " + nombre);
+  }
+
+  function mediana(valores) {
+    var v = valores.slice().sort(function (a, b) { return a - b; });
+    var m = Math.floor(v.length / 2);
+    return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+  }
+
+  function maximoPor(lista, clave) {
+    return lista.reduce(function (mejor, x) { return mejor == null || clave(x) > clave(mejor) ? x : mejor; }, null);
+  }
+
+  // Sin tildes y en minúsculas: "enfermeria" encuentra "Enfermería".
+  function normalizar(texto) {
+    return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  }
+
+  var comparables = pares.filter(function (p) { return p.marcas.representativo; });
+  var segmentoDe = {};
+  datos.segmentos.forEach(function (s) { segmentoDe[s.tipo + "|" + s.nivel] = s; });
+
+  // ------------------------------------------------------------- timbres (advertencias)
+  // Una sola definición por timbre: el texto de la leyenda y el del title salen de aquí.
+  var TIMBRES = [
+    { id: "no_comparable", texto: "No comparable",
+      aplica: function (p) { return !p.marcas.representativo; },
+      explica: function () {
+        return "Menos de " + parametro("min_inst_oferta") + " instituciones la ofrecen: su cifra nacional es en realidad la de una o dos instituciones. Aparece en la tabla, pero no en rankings ni comparaciones.";
+      } },
+    { id: "cohorte_atipica", texto: "Cohorte atípica",
+      aplica: function (p) { return p.marcas.cohorte_atipica; },
+      explica: function () {
+        return "La empleabilidad de quienes se titularon en el año del P50 del primer año se aleja al menos " + parametro("min_desvio_atipico_pp") + " puntos de la de las cohortes anteriores: su sueldo del primer año viene de un año anómalo.";
+      } },
+    { id: "composicion_edad", texto: "Composición por edad",
+      aplica: function (p) { return p.marcas.composicion_edad; },
+      explica: function () {
+        return "Entre los titulados recientes hay al menos " + parametro("min_cambio_edad_pp") + " puntos más de personas de 30 años o más que hace cinco años. Muchos ya trabajaban: la comparación entre el primer y el quinto año mezcla edades.";
+      } },
+    { id: "promedio_enganoso", texto: "Promedio engañoso",
+      aplica: function (p) { return p.marcas.promedio_enganoso; },
+      explica: function () {
+        return "Las instituciones que la ofrecen difieren " + parametro("min_iqr_enganoso") + " puntos o más en empleabilidad (rango intercuartílico): el promedio nacional describe mal a cada una.";
+      } },
+    { id: "baja_cobertura", texto: "Baja cobertura",
+      aplica: function (p) { return p.marcas.baja_cobertura; },
+      explica: function () {
+        return "MiFuturo publica programas que reúnen menos del " + fmtEntero.format(parametro("max_cobertura_baja") * 100) + " % de los titulados de este tipo de institución y nivel.";
+      } },
+    { id: "derecho", texto: "Cohortes +1 año",
+      aplica: function (p) { return p.marcas.es_derecho; },
+      explica: function () {
+        return "Derecho se mide con las cohortes corridas un año, porque la titulación efectiva llega meses después del último trámite en la universidad.";
+      } }
+  ];
+
+  function timbre(def) {
+    var nodo = el("span", "timbre", def.texto);
+    nodo.title = def.explica();
     return nodo;
+  }
+
+  function pintarLeyenda() {
+    var dl = document.getElementById("leyenda");
+    TIMBRES.forEach(function (def) {
+      var dt = el("dt");
+      dt.appendChild(timbre(def));
+      dl.appendChild(dt);
+      dl.appendChild(el("dd", null, def.explica()));
+    });
   }
 
   // ------------------------------------------------------------- cifras de portada
@@ -49,37 +130,291 @@
     });
   }
 
-  function parametro(nombre) {
-    for (var i = 0; i < datos.parametros.length; i++) {
-      if (datos.parametros[i].nombre === nombre) return datos.parametros[i].valor;
+  // ------------------------------------------------------------- hallazgos
+  // Texto con cifras en <strong>: partes alternan texto y cifra ([texto, cifra, texto, ...]).
+  function parrafo(partes) {
+    var p = el("p");
+    partes.forEach(function (parte, i) {
+      p.appendChild(i % 2 ? el("strong", null, parte) : document.createTextNode(parte));
+    });
+    return p;
+  }
+
+  function hallazgo(parece, peroNodos) {
+    var li = el("li", "hallazgo");
+    var izq = el("div", "hallazgo__parece");
+    izq.appendChild(el("p", "hallazgo__rotulo", "Parece que"));
+    izq.appendChild(el("p", null, parece));
+    var der = el("div", "hallazgo__pero");
+    der.appendChild(el("p", "hallazgo__rotulo", "Pero"));
+    peroNodos.forEach(function (n) { der.appendChild(n); });
+    li.appendChild(izq);
+    li.appendChild(der);
+    return li;
+  }
+
+  // Franja del hallazgo (c): rango de empleabilidad entre instituciones, mitad central,
+  // mediana y cifra nacional. SVG con escala propia (mínimo a máximo de esa carrera).
+  function franja(disp, nacional) {
+    var ns = "http://www.w3.org/2000/svg";
+    var ancho = 300, alto = 36, m = 4;
+    var lo = Math.min(disp.min, nacional), hi = Math.max(disp.max, nacional);
+    function x(v) { return m + (v - lo) / (hi - lo) * (ancho - 2 * m); }
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 " + ancho + " " + alto);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "Empleabilidad entre instituciones: de " + pct(disp.min) + " a " + pct(disp.max) +
+      "; la mitad central entre " + pct(disp.q1) + " y " + pct(disp.q3) + "; cifra nacional " + pct(nacional) + ".");
+    function forma(tipo, atributos, clase) {
+      var n = document.createElementNS(ns, tipo);
+      Object.keys(atributos).forEach(function (k) { n.setAttribute(k, atributos[k]); });
+      n.setAttribute("class", clase);
+      svg.appendChild(n);
     }
-    throw new Error("Parámetro inexistente en datos.json: " + nombre);
+    forma("line", { x1: x(disp.min), x2: x(disp.max), y1: 14, y2: 14 }, "franja__rango");
+    forma("rect", { x: x(disp.q1), y: 7, width: x(disp.q3) - x(disp.q1), height: 14, rx: 1 }, "franja__caja");
+    forma("line", { x1: x(disp.mediana), x2: x(disp.mediana), y1: 7, y2: 21 }, "franja__mediana");
+    var xn = x(nacional);
+    forma("path", { d: "M" + xn + " 24 l-5 8 h10 z" }, "franja__nacional");
+    var cont = el("div", "franja");
+    cont.appendChild(svg);
+    cont.appendChild(el("p", "franja__leyenda",
+      "Línea: de la institución más baja a la más alta · bloque: la mitad central · ▲ cifra nacional"));
+    return cont;
+  }
+
+  function pintarHallazgos() {
+    var ul = document.getElementById("hallazgos");
+
+    // (a) Progresión típica y su trampa de composición por edad.
+    var crecimientos = comparables.map(function (p) { return p.percentiles.p50_pct_1_5; });
+    var negativos = comparables.filter(function (p) { return p.percentiles.p50_pct_1_5 < 0; });
+    var conEdad = negativos.filter(function (p) { return p.marcas.composicion_edad; });
+    // Sin carreras negativas el hallazgo (a) no aplica tal cual: se omite, sin cortar los demás.
+    if (negativos.length) {
+    var edad5 = mediana(negativos.map(function (p) { return p.contexto.mayores30_cohorte_p5[1]; }));
+    var edad1 = mediana(negativos.map(function (p) { return p.contexto.mayores30_cohorte_p1[1]; }));
+    ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", [
+      parrafo(["En ", fmtEntero.format(negativos.length), " de las ", fmtEntero.format(comparables.length),
+               " carreras comparables, el sueldo típico del quinto año es menor que el del primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."]),
+      parrafo(["En ", fmtEntero.format(conEdad.length), " de ellas, los titulados recientes son mucho mayores: quienes tienen 30 años o más pasan de ",
+               fmtEntero.format(edad5) + " %", " a ", fmtEntero.format(edad1) + " %",
+               ". Muchos ya trabajaban antes de titularse. La carrera típica sube ",
+               pctSigno(mediana(crecimientos)), "."])
+    ]));
+    }
+
+    // (b) El % engaña cuando la base es baja. Ejemplo por regla: el mayor % entre las carreras
+    // cuyo aumento en pesos queda al menos un 20 % bajo la mediana de su referencia. Sin ese
+    // margen el ejemplo puede ser la propia mediana (empate) o quedar a unos pocos miles: no
+    // ilustraría nada.
+    function refDeltaDe(p) {
+      return datos.referencias.filter(function (r) {
+        return r.grupo === p.marcas.grupo_referencia && r.metrica === "p50_delta_1_5";
+      })[0];
+    }
+    var cambian = comparables.filter(function (p) { return p.posicion.cambia_cuadrante; });
+    var pctAlto = cambian.filter(function (p) {
+      return p.posicion.cuadrante_pct.indexOf("progresa más") >= 0
+        && p.percentiles.p50_delta_1_5 <= 0.8 * refDeltaDe(p).q50;
+    });
+    var ej = maximoPor(pctAlto, function (p) { return p.percentiles.p50_pct_1_5; });
+    // Con otros datos podría no haber ejemplo: se omite el hallazgo en vez de romper la página.
+    if (ej) {
+    var refDelta = refDeltaDe(ej);
+    ul.appendChild(hallazgo("Crecer más en porcentaje es crecer más.", [
+      parrafo(["", fmtEntero.format(cambian.length), " carreras cambian de lugar si el crecimiento se mide en pesos en vez de porcentaje."]),
+      parrafo([ej.nombre + " (" + ej.tipo + ") sube ", pctSigno(ej.percentiles.p50_pct_1_5), ", pero parte de ",
+               pesos(ej.percentiles.anio_1.p50), ": son ", pesosSigno(ej.percentiles.p50_delta_1_5),
+               ", menos que el aumento típico de su grupo (", pesosSigno(refDelta.q50), ")."])
+    ]));
+    }
+
+    // (c) El promedio nacional esconde diferencias entre instituciones. Ejemplo por regla: la
+    // carrera engañosa con mayor IQR entre las que tienen al menos 20 instituciones (un ejemplo
+    // con pocas instituciones sería anecdótico).
+    var enganosos = pares.filter(function (p) { return p.marcas.promedio_enganoso; });
+    var ejc = maximoPor(enganosos.filter(function (p) { return p.dispersion.emp1.n_inst >= 20; }),
+                        function (p) { return p.dispersion.emp1.iqr; });
+    if (!ejc) return;
+    var d = ejc.dispersion.emp1;
+    var nodosC = [
+      parrafo(["En ", fmtEntero.format(enganosos.length), " carreras las instituciones difieren ",
+               fmtEntero.format(parametro("min_iqr_enganoso")) + " puntos o más",
+               " en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo de ellas."]),
+      parrafo([ejc.nombre + " (" + ejc.tipo + ", " + d.n_inst + " instituciones) va de ", pct(d.min), " a ", pct(d.max),
+               "; la cifra nacional es ", pct(ejc.empleabilidad_nacional[0]), "."]),
+      franja(d, ejc.empleabilidad_nacional[0])
+    ];
+    ul.appendChild(hallazgo("El promedio nacional describe a la carrera.", nodosC));
   }
 
   // ------------------------------------------------------------- tabla de segmentos
   function pintarSegmentos() {
     var cuerpo = document.querySelector("#tabla-segmentos tbody");
-    var umbralCobertura = fmtEntero.format(parametro("max_cobertura_baja") * 100) + " %";
+    var defBaja = TIMBRES.filter(function (t) { return t.id === "baja_cobertura"; })[0];
     datos.segmentos.forEach(function (s) {
       var tr = el("tr");
-      tr.appendChild(el("td", null, s.tipo));
-      tr.appendChild(el("td", null, s.nivel.replace("Carreras ", "")));
-      tr.appendChild(el("td", "num", fmtEntero.format(s.pares)));
-      tr.appendChild(el("td", "num", fmtEntero.format(s.representativos)));
-      tr.appendChild(el("td", "num", pct(s.cobertura[0])));
-      tr.appendChild(el("td", "num", pct(s.cobertura[1])));
+      var celdas = [
+        ["Tipo de institución", s.tipo, "td--titulo"],
+        ["Nivel", s.nivel.replace("Carreras ", ""), ""],
+        ["Carreras", fmtEntero.format(s.pares), "num"],
+        ["Comparables", fmtEntero.format(s.representativos), "num"],
+        ["Cobertura, titulados recientes", pct(s.cobertura[0]), "num"],
+        ["Cobertura, hace cinco años", pct(s.cobertura[1]), "num"]
+      ];
+      celdas.forEach(function (c) {
+        var td = el("td", c[2] || null, c[1]);
+        td.setAttribute("data-rotulo", c[0]);
+        tr.appendChild(td);
+      });
       var adv = el("td");
-      if (s.baja_cobertura) {
-        adv.appendChild(timbre("Baja cobertura",
-          "MiFuturo publica programas que reúnen menos del " + umbralCobertura + " de los titulados de este grupo"));
-      }
+      adv.setAttribute("data-rotulo", "Advertencias");
+      if (s.baja_cobertura) adv.appendChild(timbre(defBaja));
       tr.appendChild(adv);
       cuerpo.appendChild(tr);
     });
   }
 
-  // ------------------------------------------------------------- pie
-  function pintarPie() {
+  // ------------------------------------------------------------- tabla de carreras
+  var COLUMNAS = {
+    nombre: { rotulo: "Carrera", valor: function (p) { return p.nombre; }, texto: true },
+    tipo:   { rotulo: "Tipo", valor: function (p) { return p.tipo; }, texto: true },
+    p50_1:  { rotulo: "P50 1er año", valor: function (p) { return p.percentiles.anio_1.p50; } },
+    p50_5:  { rotulo: "P50 5° año", valor: function (p) { return p.percentiles.anio_5.p50; } },
+    crec:   { rotulo: "Crecimiento P50", valor: function (p) { return p.percentiles.p50_pct_1_5; } },
+    emp1:   { rotulo: "Empleabilidad 1er año", valor: function (p) { return p.empleabilidad_nacional[0]; } },
+    inst:   { rotulo: "Instituciones", valor: function (p) { return p.conteos.n_inst_oferta; } }
+  };
+  var orden = { col: "crec", desc: true };
+  var colador = new Intl.Collator("es", { sensitivity: "base" });
+
+  function llenarSelect(id, valores) {
+    var sel = document.getElementById(id);
+    valores.forEach(function (v) {
+      var op = el("option", null, v[1]);
+      op.value = v[0];
+      sel.appendChild(op);
+    });
+  }
+
+  function unicos(f) {
+    var vistos = {};
+    pares.forEach(function (p) { vistos[f(p)] = true; });
+    return Object.keys(vistos).sort(colador.compare);
+  }
+
+  function prepararFiltros() {
+    llenarSelect("f-tipo", unicos(function (p) { return p.tipo; }).map(function (v) { return [v, v]; }));
+    llenarSelect("f-nivel", unicos(function (p) { return p.nivel; }).map(function (v) { return [v, v.replace("Carreras ", "")]; }));
+    llenarSelect("f-area", unicos(function (p) { return p.area.cine13; }).map(function (v) { return [v, v]; }));
+    var opcionesOrden = [];
+    Object.keys(COLUMNAS).forEach(function (k) {
+      var c = COLUMNAS[k];
+      if (c.texto) opcionesOrden.push([k + "|asc", c.rotulo + " (A–Z)"]);
+      else {
+        opcionesOrden.push([k + "|desc", c.rotulo + " (mayor primero)"]);
+        opcionesOrden.push([k + "|asc", c.rotulo + " (menor primero)"]);
+      }
+    });
+    llenarSelect("f-orden", opcionesOrden);
+    document.getElementById("f-orden").value = orden.col + "|" + (orden.desc ? "desc" : "asc");
+
+    var form = document.getElementById("filtros");
+    form.addEventListener("input", pintarCarreras);
+    form.addEventListener("change", pintarCarreras);
+    form.addEventListener("submit", function (e) { e.preventDefault(); });
+    document.getElementById("f-orden").addEventListener("change", function (e) {
+      var partes = e.target.value.split("|");
+      orden = { col: partes[0], desc: partes[1] === "desc" };
+      pintarCarreras();
+    });
+    document.querySelectorAll("#tabla-carreras thead th").forEach(function (th) {
+      th.querySelector("button").addEventListener("click", function () {
+        var col = th.getAttribute("data-col");
+        // Primer clic: texto de A a Z; cifras de mayor a menor (lo que se busca primero).
+        orden = orden.col === col ? { col: col, desc: !orden.desc } : { col: col, desc: !COLUMNAS[col].texto };
+        document.getElementById("f-orden").value = orden.col + "|" + (orden.desc ? "desc" : "asc");
+        pintarCarreras();
+      });
+    });
+  }
+
+  function filtrar() {
+    var texto = normalizar(document.getElementById("f-texto").value.trim());
+    var tipo = document.getElementById("f-tipo").value;
+    var nivel = document.getElementById("f-nivel").value;
+    var area = document.getElementById("f-area").value;
+    var soloComparables = document.getElementById("f-comparables").checked;
+    return pares.filter(function (p) {
+      return (!texto || normalizar(p.nombre).indexOf(texto) >= 0)
+        && (!tipo || p.tipo === tipo)
+        && (!nivel || p.nivel === nivel)
+        && (!area || p.area.cine13 === area)
+        && (!soloComparables || p.marcas.representativo);
+    });
+  }
+
+  function ordenar(lista) {
+    var c = COLUMNAS[orden.col];
+    var signo = orden.desc ? -1 : 1;
+    return lista.slice().sort(function (a, b) {
+      var va = c.valor(a), vb = c.valor(b);
+      // Los vacíos siempre al final, en cualquier sentido.
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      var r = c.texto ? colador.compare(va, vb) : va - vb;
+      return r !== 0 ? signo * r : colador.compare(a.nombre, b.nombre);
+    });
+  }
+
+  function celda(tr, rotulo, contenido, clase) {
+    var td = el("td", clase || null);
+    td.setAttribute("data-rotulo", rotulo);
+    if (typeof contenido === "string") td.textContent = contenido;
+    else td.appendChild(contenido);
+    tr.appendChild(td);
+    return td;
+  }
+
+  function pintarCarreras() {
+    var lista = ordenar(filtrar());
+    var cuerpo = document.querySelector("#tabla-carreras tbody");
+    var fragmento = document.createDocumentFragment();
+    lista.forEach(function (p) {
+      var tr = el("tr");
+      var nombre = el("div");
+      nombre.appendChild(el("span", "carrera__nombre", p.nombre));
+      var timbres = el("div", "timbres");
+      TIMBRES.forEach(function (def) { if (def.aplica(p)) timbres.appendChild(timbre(def)); });
+      if (timbres.childNodes.length) nombre.appendChild(timbres);
+      celda(tr, "Carrera", nombre, "td--titulo");
+      celda(tr, "Tipo", p.tipo + " · " + p.nivel.replace("Carreras ", "").toLowerCase());
+      celda(tr, "P50 1er año", pesos(p.percentiles.anio_1.p50), "num");
+      celda(tr, "P50 5° año", pesos(p.percentiles.anio_5.p50), "num");
+      celda(tr, "Crecimiento P50", pctSigno(p.percentiles.p50_pct_1_5),
+            "num" + (p.percentiles.p50_pct_1_5 < 0 ? " negativo" : ""));
+      celda(tr, "Empleabilidad 1er año", pct(p.empleabilidad_nacional[0]), "num");
+      celda(tr, "Instituciones", fmtEntero.format(p.conteos.n_inst_oferta), "num");
+      fragmento.appendChild(tr);
+    });
+    cuerpo.replaceChildren(fragmento);
+
+    document.querySelectorAll("#tabla-carreras thead th").forEach(function (th) {
+      if (th.getAttribute("data-col") === orden.col) th.setAttribute("aria-sort", orden.desc ? "descending" : "ascending");
+      else th.removeAttribute("aria-sort");
+    });
+    document.getElementById("conteo").textContent = lista.length
+      ? "Mostrando " + fmtEntero.format(lista.length) + " de " + fmtEntero.format(pares.length) + " carreras."
+      : "Ninguna carrera coincide con estos filtros. Prueba quitar alguno o desmarcar «Solo comparables».";
+  }
+
+  // ------------------------------------------------------------- notas y pie
+  function pintarNotas() {
+    document.getElementById("nota-carreras").textContent =
+      "P50: sueldo bruto mensual de la persona del medio (la mitad gana menos). Empleabilidad: " +
+      datos.meta.rotulo_empleabilidad + " (cifra nacional de MiFuturo). Instituciones: las que titularon en la carrera en ambos periodos comparados.";
     document.getElementById("pie-comparacion").textContent =
       "Comparación transversal: el primer y el quinto año son grupos distintos de titulados, no las mismas personas en el tiempo.";
     document.getElementById("pie-fuentes").textContent = "Fuentes: " + datos.meta.fuentes.join(" · ") + ".";
@@ -116,6 +451,10 @@
 
   iniciarTema();
   pintarCifras();
+  pintarHallazgos();
   pintarSegmentos();
-  pintarPie();
+  pintarLeyenda();
+  prepararFiltros();
+  pintarCarreras();
+  pintarNotas();
 })();

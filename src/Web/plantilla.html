@@ -31,11 +31,16 @@
 </header>
 
 <main id="contenido" class="envoltorio">
+  <section class="bloque" aria-labelledby="t-hallazgos">
+    <h2 id="t-hallazgos" class="bloque__titulo">Tres lecturas rápidas que los datos corrigen</h2>
+    <ul class="hallazgos" id="hallazgos"></ul>
+  </section>
+
   <section class="bloque" aria-labelledby="t-segmentos">
     <h2 id="t-segmentos" class="bloque__titulo">Qué datos hay por tipo de institución</h2>
     <p class="bloque__texto">Cada fila es un tipo de institución y nivel de carrera. «Comparables» son las carreras con al menos tres instituciones que las ofrecen; el resto se muestra en su ficha, pero no entra en rankings. La cobertura dice qué parte de los titulados del SIES queda en los programas que publica MiFuturo.</p>
-    <div class="tabla-desplazable" tabindex="0" role="region" aria-labelledby="t-segmentos">
-      <table class="tabla" id="tabla-segmentos">
+    <div class="tabla-desplazable">
+      <table class="tabla tabla--tarjetas" id="tabla-segmentos">
         <caption class="solo-lectores">Carreras y cobertura por tipo de institución y nivel</caption>
         <thead>
           <tr>
@@ -51,6 +56,63 @@
         <tbody></tbody>
       </table>
     </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-carreras">
+    <h2 id="t-carreras" class="bloque__titulo">Todas las carreras</h2>
+    <p class="bloque__texto">Sueldo típico (mediana, P50) de quienes se titularon hace un año y hace cinco, ambos con los ingresos de 2024. Ordena con los encabezados y filtra para encontrar una carrera.</p>
+
+    <form class="filtros" id="filtros" role="search" aria-label="Filtrar carreras">
+      <label class="filtro filtro--busqueda">
+        <span class="filtro__rotulo">Buscar carrera</span>
+        <input type="search" id="f-texto" autocomplete="off" placeholder="Ej.: enfermería">
+      </label>
+      <label class="filtro">
+        <span class="filtro__rotulo">Tipo de institución</span>
+        <select id="f-tipo"><option value="">Todos</option></select>
+      </label>
+      <label class="filtro">
+        <span class="filtro__rotulo">Nivel</span>
+        <select id="f-nivel"><option value="">Todos</option></select>
+      </label>
+      <label class="filtro">
+        <span class="filtro__rotulo">Área</span>
+        <select id="f-area"><option value="">Todas</option></select>
+      </label>
+      <label class="filtro orden-movil">
+        <span class="filtro__rotulo">Ordenar por</span>
+        <select id="f-orden"></select>
+      </label>
+      <label class="filtro filtro--casilla">
+        <input type="checkbox" id="f-comparables" checked>
+        <span>Solo comparables</span>
+      </label>
+    </form>
+    <p class="filtros__conteo" id="conteo" role="status" aria-live="polite"></p>
+
+    <details class="leyenda">
+      <summary>Qué significa cada timbre</summary>
+      <dl class="leyenda__lista" id="leyenda"></dl>
+    </details>
+
+    <div class="tabla-desplazable">
+      <table class="tabla tabla--tarjetas tabla--cifras" id="tabla-carreras">
+        <caption class="solo-lectores">Todas las carreras: sueldo típico al primer y quinto año, crecimiento, empleabilidad e instituciones</caption>
+        <thead>
+          <tr>
+            <th scope="col" data-col="nombre"><button type="button">Carrera</button></th>
+            <th scope="col" data-col="tipo"><button type="button">Tipo</button></th>
+            <th scope="col" data-col="p50_1" class="num"><button type="button">P50 1er año</button></th>
+            <th scope="col" data-col="p50_5" class="num"><button type="button">P50 5° año</button></th>
+            <th scope="col" data-col="crec" class="num"><button type="button">Crecimiento P50</button></th>
+            <th scope="col" data-col="emp1" class="num"><button type="button">Empleabilidad 1er año</button></th>
+            <th scope="col" data-col="inst" class="num"><button type="button">Instituciones</button></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="nota" id="nota-carreras"></p>
   </section>
 </main>
 

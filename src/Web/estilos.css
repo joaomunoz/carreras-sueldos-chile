@@ -255,6 +255,162 @@ p { margin: 0; }
   white-space: nowrap;
 }
 
+/* ---------------------------------------------------------------- hallazgos */
+/* "Parece que… / Pero…": cada hallazgo corrige una lectura ingenua. La columna izquierda
+   va apagada (es la lectura que se descarta); la derecha lleva el peso. */
+.hallazgos {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  border-top: 2px solid var(--tinta);
+}
+.hallazgo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 0.75rem 2.5rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--regla);
+}
+.hallazgo__rotulo {
+  font-family: var(--f-titulo);
+  font-size: var(--t-0);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-bottom: 0.35rem;
+}
+/* :not(): sin él, esta regla (más específica) le ganaba a .hallazgo__rotulo y agrandaba el rótulo. */
+.hallazgo__parece p:not(.hallazgo__rotulo) {
+  font-family: var(--f-titulo);
+  font-size: var(--t-2);
+  line-height: 1.2;
+  color: var(--tinta-suave);
+}
+.hallazgo__pero p { max-width: 60ch; }
+.hallazgo__pero p + p { margin-top: 0.5rem; }
+.hallazgo strong {
+  font-family: var(--f-cifra);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 40rem) {
+  .hallazgo { grid-template-columns: 1fr; }
+}
+
+/* Mini franja del hallazgo (c): rango, mitad central y cifra nacional de una carrera. */
+.franja { margin-top: 0.9rem; max-width: 30rem; }
+.franja svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
+.franja__rango { stroke: var(--tinta-suave); stroke-width: 1.5; }
+.franja__caja { fill: var(--anio1); }
+.franja__mediana { stroke: var(--papel); stroke-width: 2; }
+.franja__nacional { fill: var(--tinta); }
+.franja__texto { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); }
+.franja__leyenda { font-size: var(--t-0); color: var(--tinta-suave); margin-top: 0.25rem; max-width: 30rem; }
+
+/* ---------------------------------------------------------------- filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+  margin-top: 1.5rem;
+}
+.filtro { display: grid; gap: 0.25rem; font-size: var(--t-0); }
+.filtro__rotulo { color: var(--tinta-suave); }
+.filtro--busqueda { flex: 1 1 14rem; }
+.filtro input[type="search"], .filtro select {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--tinta);
+  background: var(--papel-alto);
+  border: 1px solid var(--regla);
+  border-radius: 4px;
+  padding: 0.45rem 0.6rem;
+  min-height: 2.5rem;
+  width: 100%;
+}
+.filtro select { min-width: 9rem; }
+.filtro--casilla {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9375rem;
+  min-height: 2.5rem;
+}
+.filtro--casilla input { width: 1.1rem; height: 1.1rem; accent-color: var(--anio5); }
+.filtros__conteo { margin-top: 0.75rem; font-size: var(--t-0); color: var(--tinta-suave); }
+
+/* ---------------------------------------------------------------- leyenda de timbres */
+.leyenda { margin-top: 0.75rem; font-size: 0.9375rem; }
+.leyenda summary { cursor: pointer; color: var(--tinta-suave); width: fit-content; }
+.leyenda__lista {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.6rem 1rem;
+  align-items: baseline;
+  margin: 0.9rem 0 0;
+}
+.leyenda__lista dd { margin: 0; color: var(--tinta-suave); max-width: 62ch; }
+@media (max-width: 40rem) {
+  .leyenda__lista { grid-template-columns: 1fr; gap: 0.2rem; }
+  .leyenda__lista dd { margin-bottom: 0.6rem; }
+}
+
+/* ---------------------------------------------------------------- tabla de carreras */
+.tabla thead th button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+.tabla thead th[aria-sort] button { color: var(--tinta); }
+.tabla thead th[aria-sort="ascending"] button::after { content: " ↑"; }
+.tabla thead th[aria-sort="descending"] button::after { content: " ↓"; }
+.tabla--cifras td:first-child { min-width: 14rem; }
+.carrera__nombre { display: block; }
+.timbres { display: flex; flex-wrap: wrap; gap: 0 0.15rem; margin: 0.25rem 0 0 -3px; }
+.tabla .negativo { color: var(--tinta); font-weight: 600; }
+.nota { margin-top: 0.75rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
+
+/* En pantallas angostas cada fila es una tarjeta: nombre y timbres arriba, cifras en pares
+   rótulo–valor. Así las advertencias no quedan escondidas fuera de la pantalla. */
+@media (max-width: 40rem) {
+  .tabla--tarjetas thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+  }
+  .tabla--tarjetas, .tabla--tarjetas tbody, .tabla--tarjetas tr, .tabla--tarjetas td { display: block; }
+  .tabla--tarjetas tr { padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--regla); }
+  .tabla--tarjetas tbody tr:last-child { border-bottom: 0; }
+  .tabla--tarjetas td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.15rem 0;
+    border: 0;
+    text-align: right;
+  }
+  .tabla--tarjetas td::before {
+    content: attr(data-rotulo);
+    font-family: var(--f-texto);
+    font-size: var(--t-0);
+    color: var(--tinta-suave);
+    text-align: left;
+  }
+  .tabla--tarjetas td.td--titulo { display: block; text-align: left; padding-bottom: 0.4rem; font-weight: 600; }
+  .tabla--tarjetas td.td--titulo::before { content: none; }
+  .tabla--tarjetas td:empty { display: none; }
+  .tabla--cifras td:first-child { min-width: 0; }
+}
+/* Sin encabezado visible en las tarjetas, el orden se elige desde este selector. */
+.orden-movil { display: none; }
+@media (max-width: 40rem) {
+  .orden-movil { display: grid; }
+}
+
 /* ---------------------------------------------------------------- pie */
 .pie {
   margin-top: 3rem;
