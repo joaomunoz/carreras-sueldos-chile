@@ -296,6 +296,10 @@
     inst:   { rotulo: "Instituciones", valor: function (p) { return p.conteos.n_inst_oferta; } }
   };
   var orden = { col: "crec", desc: true };
+  // N4: sin filtros la tabla muestra las primeras FILAS_TABLA según el orden elegido (el orden se
+  // aplica antes de cortar: ordenar por P50 5° año muestra las 20 que más ganan).
+  var FILAS_TABLA = 20;
+  var tablaCompleta = false;
   var colador = new Intl.Collator("es", { sensitivity: "base" });
 
   function llenarSelect(id, valores) {
@@ -333,6 +337,12 @@
     form.addEventListener("input", pintarCarreras);
     form.addEventListener("change", pintarCarreras);
     form.addEventListener("submit", function (e) { e.preventDefault(); });
+    document.getElementById("tabla-mas").addEventListener("click", function (e) {
+      tablaCompleta = !tablaCompleta;
+      pintarCarreras();
+      // Al plegar, la tabla se acorta bajo el lector: se vuelve al botón para no perderse.
+      if (!tablaCompleta) e.currentTarget.scrollIntoView({ block: "center", behavior: suave() });
+    });
     document.getElementById("f-orden").addEventListener("change", function (e) {
       var partes = e.target.value.split("|");
       orden = { col: partes[0], desc: partes[1] === "desc" };
@@ -347,6 +357,17 @@
         pintarCarreras();
       });
     });
+  }
+
+  // "Crecimiento P50" → "crecimiento P50", pero "P50 5° año" queda igual (sigla o cifra al inicio).
+  function enMinuscula(rotulo) {
+    return /^.[A-Z0-9]/.test(rotulo) ? rotulo : rotulo.charAt(0).toLowerCase() + rotulo.slice(1);
+  }
+
+  // "Solo comparables" no cuenta como filtro: viene marcado y no busca una carrera concreta.
+  function hayFiltro() {
+    return !!(document.getElementById("f-texto").value.trim() || document.getElementById("f-tipo").value ||
+              document.getElementById("f-nivel").value || document.getElementById("f-area").value);
   }
 
   function filtrar() {
@@ -389,9 +410,11 @@
 
   function pintarCarreras() {
     var lista = ordenar(filtrar());
+    var recortada = !hayFiltro() && lista.length > FILAS_TABLA;
+    var visibles = recortada && !tablaCompleta ? lista.slice(0, FILAS_TABLA) : lista;
     var cuerpo = document.querySelector("#tabla-carreras tbody");
     var fragmento = document.createDocumentFragment();
-    lista.forEach(function (p) {
+    visibles.forEach(function (p) {
       var tr = el("tr");
       var nombre = el("div");
       var boton = el("button", "carrera__nombre enlace-ficha", p.nombre);
@@ -417,9 +440,19 @@
       if (th.getAttribute("data-col") === orden.col) th.setAttribute("aria-sort", orden.desc ? "descending" : "ascending");
       else th.removeAttribute("aria-sort");
     });
-    document.getElementById("conteo").textContent = lista.length
-      ? "Mostrando " + fmtEntero.format(lista.length) + " de " + fmtEntero.format(pares.length) + " carreras."
-      : "Ninguna carrera coincide con estos filtros. Prueba quitar alguno o desmarcar «Solo comparables».";
+    var c = COLUMNAS[orden.col];
+    var sentido = c.texto ? (orden.desc ? "Z–A" : "A–Z") : (orden.desc ? "mayor primero" : "menor primero");
+    document.getElementById("conteo").textContent = !lista.length
+      ? "Ninguna carrera coincide con estos filtros. Prueba quitar alguno o desmarcar «Solo comparables»."
+      : visibles.length < lista.length
+        ? "Mostrando las " + fmtEntero.format(visibles.length) + " primeras de " + fmtEntero.format(lista.length) +
+          ", ordenadas por " + enMinuscula(c.rotulo) + " (" + sentido + ")."
+        : "Mostrando " + fmtEntero.format(lista.length) + " de " + fmtEntero.format(pares.length) + " carreras.";
+    var mas = document.getElementById("tabla-mas");
+    mas.hidden = !recortada;
+    mas.setAttribute("aria-expanded", String(recortada && tablaCompleta));
+    mas.textContent = tablaCompleta ? "Mostrar solo las " + FILAS_TABLA + " primeras"
+                                    : "Ver las " + fmtEntero.format(lista.length) + " carreras ↓";
   }
 
   // ------------------------------------------------------------- utilidades SVG y tooltip
@@ -892,6 +925,7 @@
     form.addEventListener("change", pintarMancuerna);
     form.addEventListener("submit", function (e) { e.preventDefault(); });
     alCambiarAncho(document.getElementById("mancuerna"), pintarMancuerna);
+    document.getElementById("mancuerna-plegable").addEventListener("toggle", pintarMancuerna);
   }
 
   // Dos filas (1er año / 5° año) de P10–P90, P25–P75 y P50 sobre un eje de lo a hi pesos.
@@ -914,6 +948,7 @@
   }
 
   function pintarMancuerna() {
+    if (!document.getElementById("mancuerna-plegable").open) return;   // N4: se dibuja al abrir
     var partes = document.getElementById("m-segmento").value.split("|");
     var criterio = document.getElementById("m-orden").value;
     var incluir = document.getElementById("m-no-comparables").checked;

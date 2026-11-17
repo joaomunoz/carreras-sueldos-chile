@@ -202,12 +202,19 @@
           <tbody></tbody>
         </table>
       </div>
+      <!-- N4: la tabla muestra 20 filas (ocupaba 17,5 pantallas de 34). Con un filtro activo se ven
+           todas las coincidencias y este botón se oculta; ver app.js, pintarCarreras. -->
+      <button type="button" class="boton boton--sutil tabla__mas" id="tabla-mas" aria-controls="tabla-carreras" aria-expanded="false" hidden></button>
       <p class="nota" id="nota-carreras"></p>
     </section>
 
     <section class="bloque" aria-labelledby="t-mancuerna">
       <h3 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h3>
       <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>
+      <!-- N4: plegada (5,5 pantallas abierta). Se dibuja la primera vez que se abre: plegada no
+           tiene ancho que medir. -->
+      <details class="plegable" id="mancuerna-plegable">
+      <summary>Ver la dispersión de un segmento</summary>
       <form class="filtros" id="mancuerna-filtros" aria-label="Elegir qué carreras mostrar">
         <label class="filtro">
           <span class="filtro__rotulo">Tipo y nivel</span>
@@ -256,6 +263,7 @@
             <tbody></tbody>
           </table>
         </div>
+      </details>
       </details>
     </section>
   </section>
