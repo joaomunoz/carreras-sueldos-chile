@@ -129,6 +129,46 @@
       fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);
   }
 
+  // ------------------------------------------------------------- títulos y cierre (N5)
+  // Los títulos de los gráficos dicen lo que muestran (no qué son), con conteos de SQL. Si falta
+  // un dato, queda el título descriptivo de la plantilla.
+  function pintarTitulos() {
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    if (tec && pro) {
+      var neg = tec.n_negativos + pro.n_negativos;
+      document.getElementById("t-peine").textContent = neg
+        ? fmtEntero.format(neg) + " de " + fmtEntero.format(tec.n_comparables + pro.n_comparables) +
+          " carreras ganan menos al quinto año" + (tec.n_negativos ? ", " + fmtEntero.format(tec.n_negativos) +
+          (tec.n_negativos === 1 ? " de ellas técnica" : " de ellas técnicas") : "")
+        : "Todas las carreras comparables ganan más al quinto año";
+    }
+    var b = datos.hallazgos.pct_pesos;
+    if (b.n_cambian) {
+      document.getElementById("t-cuadrantes").textContent = fmtEntero.format(b.n_cambian) +
+        " carreras cambian de cuadrante si el crecimiento se mide en pesos";
+    }
+  }
+
+  // Cierre de la Parte I: los tres hallazgos traducidos a cómo comparar, con sus cifras.
+  function pintarCierre() {
+    var ul = document.getElementById("llevar");
+    var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
+    var c = datos.hallazgos.dispersion;
+    var items = [];
+    var mueve = function (v) { return (v < 0 ? "baja " : "sube ") + pct(Math.abs(v)); };
+    if (tec && pro) items.push(["Compara dentro del mismo nivel. ", "El sueldo típico " + mueve(tec.mediana_p50_pct) +
+      " en la carrera técnica típica y " + mueve(pro.mediana_p50_pct) + " en la profesional: un promedio de ambas no describe a ninguna."]);
+    items.push(["Mira el aumento en pesos, no solo el porcentaje. ", "Una carrera que parte con un sueldo bajo puede crecer mucho en porcentaje y sumar poco a fin de mes."]);
+    items.push(["Mira tu institución, no solo la cifra nacional. ", "En " + fmtEntero.format(c.n_enganosos) +
+      " carreras las instituciones difieren " + fmtEntero.format(c.umbral_pp) + " puntos o más en empleabilidad."]);
+    items.forEach(function (it) {
+      var li = el("li");
+      li.appendChild(el("strong", null, it[0]));
+      li.appendChild(document.createTextNode(it[1]));
+      ul.appendChild(li);
+    });
+  }
+
   // ------------------------------------------------------------- hallazgos
   // Texto con cifras en <strong>: partes alternan texto y cifra ([texto, cifra, texto, ...]).
   function parrafoEn(nodo, partes) {
@@ -850,12 +890,39 @@
       g.style.transform = "translate(" + x(q.razon) + "px," + y(yDe(q)) + "px)";
       var rot = g.querySelector(".c-rotulo-ejemplo");
       if (rot) {
-        // Encima del punto (al lado tapaba a un vecino en el modo %), centrado; cerca de un
-        // borde se ancla hacia adentro para no salirse del gráfico.
-        var xp = x(q.razon), mitad = rot.getComputedTextLength() / 2 + 4;
-        var ancla = xp - mitad < m.izq ? "start" : xp + mitad > W - m.der ? "end" : "middle";
-        rot.setAttribute("x", ancla === "start" ? -8 : ancla === "end" ? 8 : 0);
-        rot.setAttribute("text-anchor", ancla);
+        // N5: se prueban posiciones alrededor del punto y, si la nube es densa (pantallas angostas),
+        // más lejos con una guía; gana la que tapa menos puntos, sin salirse del área de datos ni
+        // pisar las franjas de los rótulos de cuadrante. Usa las posiciones reales de este ancho y
+        // este modo: una posición fija tapaba la nube densa a 390 px en pesos.
+        var xp = x(q.razon), yp = y(yDe(q)), largo = rot.getComputedTextLength();
+        var otros = puntos.filter(function (o) { return o !== q; })
+          .map(function (o) { return [x(o.razon), y(yDe(o))]; });
+        var techo = m.arriba + franja, piso = H - m.abajo - franja;
+        var mejor = null;
+        [-15, 22, -45, 50, -80, 85, -120, 125].forEach(function (dy) {
+          [[0, "middle"], [14, "start"], [-14, "end"]].forEach(function (h) {
+            var dx = Math.abs(dy) > 22 ? 0 : h[0];   // lejos, la guía es vertical
+            var x0 = h[1] === "middle" ? xp - largo / 2 : h[1] === "start" ? xp + dx : xp + dx - largo;
+            if (Math.abs(dy) > 22 && h[1] !== "middle") x0 = h[1] === "start" ? xp - 6 : xp + 6 - largo;
+            var x1 = x0 + largo, y0 = yp + dy - 10, y1 = yp + dy + 3;
+            if (x0 < m.izq || x1 > W - m.der || y0 < techo || y1 > piso) return;
+            var tapados = otros.filter(function (o) { return o[0] > x0 - 4 && o[0] < x1 + 4 && o[1] > y0 - 4 && o[1] < y1 + 4; }).length;
+            var costo = tapados * 10 + Math.abs(dy) / 10;   // a igual tapado, lo más cerca
+            if (!mejor || costo < mejor.costo) mejor = { costo: costo, tapados: tapados, x: x0 - xp, dy: dy };
+          });
+        });
+        if (!mejor) mejor = { tapados: -1, x: 14, dy: 4 };
+        rot.setAttribute("x", mejor.x);
+        rot.setAttribute("y", mejor.dy);
+        rot.setAttribute("text-anchor", "start");
+        rot.setAttribute("data-tapados", mejor.tapados);
+        var guia = g.querySelector(".c-guia-ejemplo");
+        if (Math.abs(mejor.dy) > 22) {
+          if (!guia) { guia = svgEl("line", { x1: 0, y1: 0 }, "c-guia-ejemplo", g); g.insertBefore(guia, g.firstChild); }
+          guia.setAttribute("x2", 0);
+          guia.setAttribute("y2", mejor.dy > 0 ? mejor.dy - 11 : mejor.dy + 4);
+          guia.setAttribute("y1", mejor.dy > 0 ? 10 : -10);
+        } else if (guia) { guia.remove(); }
       }
     });
 
@@ -1249,8 +1316,16 @@
       tabla.appendChild(tb);
       var envol = el("div", "tabla-desplazable");
       envol.appendChild(tabla);
-      b4.appendChild(envol);
-      b4.appendChild(el("p", "ficha__nota", "Continuidad: titulados que al año siguiente siguen estudiando; baja la empleabilidad, por eso van juntas. Tramo: ingreso promedio al 4° año de la institución" +
+      // N5: con gráfico, la tabla va plegada (ocupaba 13,7 de 15,8 pantallas de la ficha a 390 px);
+      // la franja de puntos ya muestra el reparto. Sin gráfico (pocas instituciones) es lo único: abierta.
+      var destino = b4;
+      if (d1) {
+        destino = el("details", "plegable");
+        destino.appendChild(el("summary", null, "Ver las " + fmtEntero.format(progs.length) + " instituciones"));
+        b4.appendChild(destino);
+      }
+      destino.appendChild(envol);
+      destino.appendChild(el("p", "ficha__nota", "Continuidad: titulados que al año siguiente siguen estudiando; baja la empleabilidad, por eso van juntas. Tramo: ingreso promedio al 4° año de la institución" +
         (conTramo ? ", comparado con el tramo de la institución típica." : ".")));
     }
 
@@ -1645,6 +1720,8 @@
   pintarPeine();
   alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();
+  pintarTitulos();
+  pintarCierre();
   prepararCuadrantes();
   pintarCuadrantes(false);
   prepararMancuerna();

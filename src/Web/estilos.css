@@ -477,6 +477,12 @@ a.hallazgo__accion { color: var(--tinta); }
 }
 .plegable > summary:hover { border-color: var(--tinta-suave); }
 .plegable[open] > summary { margin-bottom: 0.5rem; }
+/* Cierre de la Parte I (N5): tres consejos con su regla, como las tarjetas de la grilla. */
+.cierre__lista { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.9rem; max-width: 64ch; }
+.cierre__lista li { border-left: 3px solid var(--tinta); padding-left: 0.9rem; color: var(--tinta-suave); }
+.cierre__lista strong { color: var(--tinta); }
+.cierre__accion { margin-top: 1.25rem; }
+.cierre__accion a { color: var(--tinta); font-weight: 600; }
 
 /* ---------------------------------------------------------------- leyenda de timbres */
 .leyenda { margin-top: 0.75rem; font-size: 0.9375rem; }
@@ -591,6 +597,7 @@ a.hallazgo__accion { color: var(--tinta); }
 /* Ejemplo del hallazgo (b) en los cuadrantes: anillo en tinta y nombre con halo de papel. */
 /* .c-punto delante: sin él ganaba ".c-punto circle" (más específica) y rellenaba el anillo. */
 .c-punto .c-anillo-ejemplo { fill: none; stroke: var(--tinta); stroke-width: 1.5; }
+.c-guia-ejemplo { stroke: var(--tinta); stroke-width: 1; }
 .c-rotulo-ejemplo { fill: var(--tinta); font: 600 0.75rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
 .g-anio1 { fill: var(--anio1); }
 .g-anio5 { fill: var(--anio5); }
