@@ -1197,6 +1197,43 @@
     dl.appendChild(fila);
   }
 
+  // Barra 100 % mujeres / hombres de los titulados 2024. Los % vienen del SQL (enteros que suman
+  // 100, analytics.sexo_titulados); los rótulos van arriba y en tinta, así se leen aunque un
+  // segmento sea angosto o 0 % (22 carreras tienen un sexo bajo el 5 %) y el color no es la
+  // única pista.
+  function barraSexo(tt) {
+    // Un entero 0 o 100 con personas del otro lado mentiría (Párvulos CFT: 2.495 mujeres y 6
+    // hombres redondea a 100 / 0): se dice «menos de 1 %» o «más de 99 %».
+    function texto(pctv, n, nOtro) {
+      if (pctv === 0 && n > 0) return "menos de 1 %";
+      if (pctv === 100 && nOtro > 0) return "más de 99 %";
+      return fmtEntero.format(pctv) + " %";
+    }
+    var tm = texto(tt.pct_mujeres, tt.mujeres, tt.hombres), th = texto(tt.pct_hombres, tt.hombres, tt.mujeres);
+    var caja = el("div", "sexo");
+    var rot = el("div", "sexo__rotulos");
+    rot.appendChild(el("span", "sexo__rotulo sexo__rotulo--mujeres", "Mujeres " + tm));
+    rot.appendChild(el("span", "sexo__rotulo sexo__rotulo--hombres", "Hombres " + th));
+    caja.appendChild(rot);
+    var barra = el("div", "sexo__barra");
+    barra.setAttribute("role", "img");
+    barra.setAttribute("aria-label", "Titulados 2024 por sexo: " + tm + " mujeres (" +
+      fmtEntero.format(tt.mujeres) + ") y " + th + " hombres (" + fmtEntero.format(tt.hombres) + ")");
+    // Solo se omite el segmento sin personas; uno con personas pero bajo el 1 % queda como astilla
+    // de 2 px (min-width), para que la barra no diga "nadie".
+    [["mujeres", tt.pct_mujeres, tt.mujeres], ["hombres", tt.pct_hombres, tt.hombres]].forEach(function (s) {
+      if (s[2] > 0) {
+        var seg = el("span", "sexo__seg sexo__seg--" + s[0]);
+        seg.style.flexGrow = String(Math.max(s[1], 0.01));
+        barra.appendChild(seg);
+      }
+    });
+    caja.appendChild(barra);
+    if (tt.sin_dato) caja.appendChild(el("p", "ficha__nota", fmtEntero.format(tt.sin_dato) +
+      (tt.sin_dato === 1 ? " titulado sin sexo informado (fuera de los %)." : " titulados sin sexo informado (fuera de los %).")));
+    return caja;
+  }
+
   function bloque(cont, titulo) {
     var b = el("section", "ficha__bloque");
     b.appendChild(el("h5", "ficha__titulo", titulo));
@@ -1398,9 +1435,14 @@
 
     // Quiénes se titulan
     var b5 = bloque(art, "Quiénes se titulan");
-    var dl5 = el("dl", "liq");
     var tt = p.titulados_2024;
-    if (tt.total) liq(dl5, "Titulados 2024", fmtEntero.format(tt.total) + (tt.mujeres != null ? " (" + fmtEntero.format(100 * tt.mujeres / tt.total) + " % mujeres)" : ""));
+    if (tt.total) {
+      var dlT = el("dl", "liq");
+      liq(dlT, "Titulados 2024", fmtEntero.format(tt.total));
+      b5.appendChild(dlT);
+      if (tt.pct_mujeres != null) b5.appendChild(barraSexo(tt));
+    }
+    var dl5 = el("dl", "liq");
     var f30 = p.contexto.fuera30_rango;
     if (f30[0] != null) liq(dl5, "Con 30 años o más al titularse (recientes)", "entre " + pct(f30[0]) + " y " + pct(f30[1]));
     if (p.contexto.var_oferta_joven_pct != null) liq(dl5, "Titulados menores de 30, hace cinco años → recientes", pctSigno(p.contexto.var_oferta_joven_pct));

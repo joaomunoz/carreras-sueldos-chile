@@ -68,8 +68,9 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'cambia_cuadrante', po.cambia_cuadrante) END,
     'empleabilidad_nacional', json_build_array(e.empleabilidad_1er_anio, e.empleabilidad_2do_anio),
     'duracion', json_build_object('formal', e.duracion_formal_semestres, 'real', e.duracion_real_semestres),
-    'titulados_2024', json_build_object('total', e.titulados_2024, 'mujeres', e.titulados_2024_mujeres,
-                                        'hombres', e.titulados_2024_hombres),
+    'titulados_2024', json_build_object('total', sx.total, 'mujeres', sx.mujeres, 'hombres', sx.hombres,
+                                        'sin_dato', sx.sin_dato,
+                                        'pct_mujeres', sx.pct_mujeres, 'pct_hombres', sx.pct_hombres),
     'contexto', json_build_object(
         'pct_mujeres', json_build_array(round(100 * c.pct_mujeres_1, 1), round(100 * c.pct_mujeres_5, 1)),
         'fuera30_rango', json_build_array(round(100 * c.fuera30_min_1, 1), round(100 * c.fuera30_max_1, 1)),
@@ -111,6 +112,7 @@ JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_instituci
 LEFT JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
 LEFT JOIN analytics.posicion po USING (clave_carrera_generica, tipo_institucion)
 LEFT JOIN analytics.contexto c USING (clave_carrera_generica, tipo_institucion)
+JOIN analytics.sexo_titulados sx USING (clave_carrera_generica, tipo_institucion)
 LEFT JOIN analytics.estabilidad es USING (clave_carrera_generica, tipo_institucion)
 LEFT JOIN analytics.dispersion_empleabilidad de1
        ON de1.clave_carrera_generica = p.clave_carrera_generica

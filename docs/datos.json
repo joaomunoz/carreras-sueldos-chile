@@ -431,7 +431,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 53
+   "OK": 54
   },
   "controles": [
    {
@@ -489,6 +489,13 @@
     "estado": "OK",
     "umbral": "toda proporción de contexto en [0; 1]",
     "detalle": "0 pares con alguna proporción fuera de rango"
+   },
+   {
+    "control": "analytics_contexto",
+    "objeto": "sexo_titulados",
+    "estado": "OK",
+    "umbral": "una fila por par; conteos = mifuturo_estadistica; |pct − 100 × parte / informados| ≤ 0,5",
+    "detalle": "0 filas incoherentes; 1 pares con titulados sin sexo informado"
    },
    {
     "control": "analytics_contexto",
@@ -1971,7 +1978,10 @@
    "titulados_2024": {
     "total": 37,
     "mujeres": 35,
-    "hombres": 2
+    "hombres": 2,
+    "sin_dato": 0,
+    "pct_mujeres": 95,
+    "pct_hombres": 5
    },
    "contexto": {
     "pct_mujeres": [
@@ -2113,7 +2123,10 @@
    "titulados_2024": {
     "total": 1094,
     "mujeres": 515,
-    "hombres": 579
+    "hombres": 579,
+    "sin_dato": 0,
+    "pct_mujeres": 47,
+    "pct_hombres": 53
    },
    "contexto": {
     "pct_mujeres": [
@@ -2264,7 +2277,10 @@
    "titulados_2024": {
     "total": 2501,
     "mujeres": 2495,
-    "hombres": 6
+    "hombres": 6,
+    "sin_dato": 0,
+    "pct_mujeres": 100,
+    "pct_hombres": 0
    },
    "contexto": {
     "pct_mujeres": [
@@ -2438,7 +2454,10 @@
    "titulados_2024": {
     "total": 1105,
     "mujeres": 1065,
-    "hombres": 40
+    "hombres": 40,
+    "sin_dato": 0,
+    "pct_mujeres": 96,
+    "pct_hombres": 4
    },
    "contexto": {
     "pct_mujeres": [
@@ -2589,7 +2608,10 @@
    "titulados_2024": {
     "total": 825,
     "mujeres": 735,
-    "hombres": 90
+    "hombres": 90,
+    "sin_dato": 0,
+    "pct_mujeres": 89,
+    "pct_hombres": 11
    },
    "contexto": {
     "pct_mujeres": [
@@ -2731,7 +2753,10 @@
    "titulados_2024": {
     "total": 67,
     "mujeres": 26,
-    "hombres": 41
+    "hombres": 41,
+    "sin_dato": 0,
+    "pct_mujeres": 39,
+    "pct_hombres": 61
    },
    "contexto": {
     "pct_mujeres": [
@@ -2868,7 +2893,10 @@
    "titulados_2024": {
     "total": 3401,
     "mujeres": 2229,
-    "hombres": 1172
+    "hombres": 1172,
+    "sin_dato": 0,
+    "pct_mujeres": 66,
+    "pct_hombres": 34
    },
    "contexto": {
     "pct_mujeres": [
@@ -3042,7 +3070,10 @@
    "titulados_2024": {
     "total": 363,
     "mujeres": 314,
-    "hombres": 49
+    "hombres": 49,
+    "sin_dato": 0,
+    "pct_mujeres": 87,
+    "pct_hombres": 13
    },
    "contexto": {
     "pct_mujeres": [
@@ -3175,7 +3206,10 @@
    "titulados_2024": {
     "total": 86,
     "mujeres": 43,
-    "hombres": 43
+    "hombres": 43,
+    "sin_dato": 0,
+    "pct_mujeres": 50,
+    "pct_hombres": 50
    },
    "contexto": {
     "pct_mujeres": [
@@ -3312,7 +3346,10 @@
    "titulados_2024": {
     "total": 452,
     "mujeres": 343,
-    "hombres": 109
+    "hombres": 109,
+    "sin_dato": 0,
+    "pct_mujeres": 76,
+    "pct_hombres": 24
    },
    "contexto": {
     "pct_mujeres": [
@@ -3454,7 +3491,10 @@
    "titulados_2024": {
     "total": 334,
     "mujeres": 190,
-    "hombres": 144
+    "hombres": 144,
+    "sin_dato": 0,
+    "pct_mujeres": 57,
+    "pct_hombres": 43
    },
    "contexto": {
     "pct_mujeres": [
@@ -3596,7 +3636,10 @@
    "titulados_2024": {
     "total": 1276,
     "mujeres": 175,
-    "hombres": 1101
+    "hombres": 1101,
+    "sin_dato": 0,
+    "pct_mujeres": 14,
+    "pct_hombres": 86
    },
    "contexto": {
     "pct_mujeres": [
@@ -3756,7 +3799,10 @@
    "titulados_2024": {
     "total": 1314,
     "mujeres": 276,
-    "hombres": 1038
+    "hombres": 1038,
+    "sin_dato": 0,
+    "pct_mujeres": 21,
+    "pct_hombres": 79
    },
    "contexto": {
     "pct_mujeres": [
@@ -3907,7 +3953,10 @@
    "titulados_2024": {
     "total": 809,
     "mujeres": 543,
-    "hombres": 266
+    "hombres": 266,
+    "sin_dato": 0,
+    "pct_mujeres": 67,
+    "pct_hombres": 33
    },
    "contexto": {
     "pct_mujeres": [
@@ -4067,7 +4116,10 @@
    "titulados_2024": {
     "total": 928,
     "mujeres": 244,
-    "hombres": 684
+    "hombres": 684,
+    "sin_dato": 0,
+    "pct_mujeres": 26,
+    "pct_hombres": 74
    },
    "contexto": {
     "pct_mujeres": [
@@ -4209,7 +4261,10 @@
    "titulados_2024": {
     "total": 1381,
     "mujeres": 59,
-    "hombres": 1322
+    "hombres": 1322,
+    "sin_dato": 0,
+    "pct_mujeres": 4,
+    "pct_hombres": 96
    },
    "contexto": {
     "pct_mujeres": [
@@ -4360,7 +4415,10 @@
    "titulados_2024": {
     "total": 71,
     "mujeres": 2,
-    "hombres": 69
+    "hombres": 69,
+    "sin_dato": 0,
+    "pct_mujeres": 3,
+    "pct_hombres": 97
    },
    "contexto": {
     "pct_mujeres": [
@@ -4502,7 +4560,10 @@
    "titulados_2024": {
     "total": 4930,
     "mujeres": 4204,
-    "hombres": 726
+    "hombres": 726,
+    "sin_dato": 0,
+    "pct_mujeres": 85,
+    "pct_hombres": 15
    },
    "contexto": {
     "pct_mujeres": [
@@ -4676,7 +4737,10 @@
    "titulados_2024": {
     "total": 703,
     "mujeres": 569,
-    "hombres": 134
+    "hombres": 134,
+    "sin_dato": 0,
+    "pct_mujeres": 81,
+    "pct_hombres": 19
    },
    "contexto": {
     "pct_mujeres": [
@@ -4818,7 +4882,10 @@
    "titulados_2024": {
     "total": 2843,
     "mujeres": 1674,
-    "hombres": 1169
+    "hombres": 1169,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -4969,7 +5036,10 @@
    "titulados_2024": {
     "total": 21,
     "mujeres": 6,
-    "hombres": 15
+    "hombres": 15,
+    "sin_dato": 0,
+    "pct_mujeres": 29,
+    "pct_hombres": 71
    },
    "contexto": {
     "pct_mujeres": [
@@ -5106,7 +5176,10 @@
    "titulados_2024": {
     "total": 751,
     "mujeres": 55,
-    "hombres": 696
+    "hombres": 696,
+    "sin_dato": 0,
+    "pct_mujeres": 7,
+    "pct_hombres": 93
    },
    "contexto": {
     "pct_mujeres": [
@@ -5257,7 +5330,10 @@
    "titulados_2024": {
     "total": 387,
     "mujeres": 319,
-    "hombres": 68
+    "hombres": 68,
+    "sin_dato": 0,
+    "pct_mujeres": 82,
+    "pct_hombres": 18
    },
    "contexto": {
     "pct_mujeres": [
@@ -5399,7 +5475,10 @@
    "titulados_2024": {
     "total": 1099,
     "mujeres": 473,
-    "hombres": 626
+    "hombres": 626,
+    "sin_dato": 0,
+    "pct_mujeres": 43,
+    "pct_hombres": 57
    },
    "contexto": {
     "pct_mujeres": [
@@ -5550,7 +5629,10 @@
    "titulados_2024": {
     "total": 1224,
     "mujeres": 102,
-    "hombres": 1122
+    "hombres": 1122,
+    "sin_dato": 0,
+    "pct_mujeres": 8,
+    "pct_hombres": 92
    },
    "contexto": {
     "pct_mujeres": [
@@ -5692,7 +5774,10 @@
    "titulados_2024": {
     "total": 2053,
     "mujeres": 104,
-    "hombres": 1949
+    "hombres": 1949,
+    "sin_dato": 0,
+    "pct_mujeres": 5,
+    "pct_hombres": 95
    },
    "contexto": {
     "pct_mujeres": [
@@ -5834,7 +5919,10 @@
    "titulados_2024": {
     "total": 221,
     "mujeres": 12,
-    "hombres": 209
+    "hombres": 209,
+    "sin_dato": 0,
+    "pct_mujeres": 5,
+    "pct_hombres": 95
    },
    "contexto": {
     "pct_mujeres": [
@@ -5967,7 +6055,10 @@
    "titulados_2024": {
     "total": 92,
     "mujeres": 44,
-    "hombres": 48
+    "hombres": 48,
+    "sin_dato": 0,
+    "pct_mujeres": 48,
+    "pct_hombres": 52
    },
    "contexto": {
     "pct_mujeres": [
@@ -6109,7 +6200,10 @@
    "titulados_2024": {
     "total": 332,
     "mujeres": 100,
-    "hombres": 232
+    "hombres": 232,
+    "sin_dato": 0,
+    "pct_mujeres": 30,
+    "pct_hombres": 70
    },
    "contexto": {
     "pct_mujeres": [
@@ -6251,7 +6345,10 @@
    "titulados_2024": {
     "total": 472,
     "mujeres": 449,
-    "hombres": 23
+    "hombres": 23,
+    "sin_dato": 0,
+    "pct_mujeres": 95,
+    "pct_hombres": 5
    },
    "contexto": {
     "pct_mujeres": [
@@ -6393,7 +6490,10 @@
    "titulados_2024": {
     "total": 160,
     "mujeres": 74,
-    "hombres": 86
+    "hombres": 86,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -6526,7 +6626,10 @@
    "titulados_2024": {
     "total": 216,
     "mujeres": 113,
-    "hombres": 103
+    "hombres": 103,
+    "sin_dato": 0,
+    "pct_mujeres": 52,
+    "pct_hombres": 48
    },
    "contexto": {
     "pct_mujeres": [
@@ -6659,7 +6762,10 @@
    "titulados_2024": {
     "total": 66,
     "mujeres": 43,
-    "hombres": 23
+    "hombres": 23,
+    "sin_dato": 0,
+    "pct_mujeres": 65,
+    "pct_hombres": 35
    },
    "contexto": {
     "pct_mujeres": [
@@ -6792,7 +6898,10 @@
    "titulados_2024": {
     "total": 58,
     "mujeres": 43,
-    "hombres": 15
+    "hombres": 15,
+    "sin_dato": 0,
+    "pct_mujeres": 74,
+    "pct_hombres": 26
    },
    "contexto": {
     "pct_mujeres": [
@@ -6925,7 +7034,10 @@
    "titulados_2024": {
     "total": 94,
     "mujeres": 6,
-    "hombres": 88
+    "hombres": 88,
+    "sin_dato": 0,
+    "pct_mujeres": 6,
+    "pct_hombres": 94
    },
    "contexto": {
     "pct_mujeres": [
@@ -7067,7 +7179,10 @@
    "titulados_2024": {
     "total": 839,
     "mujeres": 735,
-    "hombres": 104
+    "hombres": 104,
+    "sin_dato": 0,
+    "pct_mujeres": 88,
+    "pct_hombres": 12
    },
    "contexto": {
     "pct_mujeres": [
@@ -7218,7 +7333,10 @@
    "titulados_2024": {
     "total": 276,
     "mujeres": 24,
-    "hombres": 252
+    "hombres": 252,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -7360,7 +7478,10 @@
    "titulados_2024": {
     "total": 350,
     "mujeres": 78,
-    "hombres": 272
+    "hombres": 272,
+    "sin_dato": 0,
+    "pct_mujeres": 22,
+    "pct_hombres": 78
    },
    "contexto": {
     "pct_mujeres": [
@@ -7502,7 +7623,10 @@
    "titulados_2024": {
     "total": 619,
     "mujeres": 415,
-    "hombres": 204
+    "hombres": 204,
+    "sin_dato": 0,
+    "pct_mujeres": 67,
+    "pct_hombres": 33
    },
    "contexto": {
     "pct_mujeres": [
@@ -7653,7 +7777,10 @@
    "titulados_2024": {
     "total": 261,
     "mujeres": 202,
-    "hombres": 59
+    "hombres": 59,
+    "sin_dato": 0,
+    "pct_mujeres": 77,
+    "pct_hombres": 23
    },
    "contexto": {
     "pct_mujeres": [
@@ -7786,7 +7913,10 @@
    "titulados_2024": {
     "total": 151,
     "mujeres": 113,
-    "hombres": 38
+    "hombres": 38,
+    "sin_dato": 0,
+    "pct_mujeres": 75,
+    "pct_hombres": 25
    },
    "contexto": {
     "pct_mujeres": [
@@ -7928,7 +8058,10 @@
    "titulados_2024": {
     "total": 639,
     "mujeres": 512,
-    "hombres": 127
+    "hombres": 127,
+    "sin_dato": 0,
+    "pct_mujeres": 80,
+    "pct_hombres": 20
    },
    "contexto": {
     "pct_mujeres": [
@@ -8070,7 +8203,10 @@
    "titulados_2024": {
     "total": 66,
     "mujeres": 37,
-    "hombres": 29
+    "hombres": 29,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -8207,7 +8343,10 @@
    "titulados_2024": {
     "total": 4540,
     "mujeres": 3073,
-    "hombres": 1467
+    "hombres": 1467,
+    "sin_dato": 0,
+    "pct_mujeres": 68,
+    "pct_hombres": 32
    },
    "contexto": {
     "pct_mujeres": [
@@ -8381,7 +8520,10 @@
    "titulados_2024": {
     "total": 1073,
     "mujeres": 609,
-    "hombres": 464
+    "hombres": 464,
+    "sin_dato": 0,
+    "pct_mujeres": 57,
+    "pct_hombres": 43
    },
    "contexto": {
     "pct_mujeres": [
@@ -8514,7 +8656,10 @@
    "titulados_2024": {
     "total": 823,
     "mujeres": 531,
-    "hombres": 292
+    "hombres": 292,
+    "sin_dato": 0,
+    "pct_mujeres": 65,
+    "pct_hombres": 35
    },
    "contexto": {
     "pct_mujeres": [
@@ -8656,7 +8801,10 @@
    "titulados_2024": {
     "total": 936,
     "mujeres": 673,
-    "hombres": 263
+    "hombres": 263,
+    "sin_dato": 0,
+    "pct_mujeres": 72,
+    "pct_hombres": 28
    },
    "contexto": {
     "pct_mujeres": [
@@ -8798,7 +8946,10 @@
    "titulados_2024": {
     "total": 207,
     "mujeres": 123,
-    "hombres": 84
+    "hombres": 84,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -8940,7 +9091,10 @@
    "titulados_2024": {
     "total": 463,
     "mujeres": 213,
-    "hombres": 250
+    "hombres": 250,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -9082,7 +9236,10 @@
    "titulados_2024": {
     "total": 1490,
     "mujeres": 327,
-    "hombres": 1163
+    "hombres": 1163,
+    "sin_dato": 0,
+    "pct_mujeres": 22,
+    "pct_hombres": 78
    },
    "contexto": {
     "pct_mujeres": [
@@ -9224,7 +9381,10 @@
    "titulados_2024": {
     "total": 2092,
     "mujeres": 1372,
-    "hombres": 720
+    "hombres": 720,
+    "sin_dato": 0,
+    "pct_mujeres": 66,
+    "pct_hombres": 34
    },
    "contexto": {
     "pct_mujeres": [
@@ -9389,7 +9549,10 @@
    "titulados_2024": {
     "total": 143,
     "mujeres": 128,
-    "hombres": 15
+    "hombres": 15,
+    "sin_dato": 0,
+    "pct_mujeres": 90,
+    "pct_hombres": 10
    },
    "contexto": {
     "pct_mujeres": [
@@ -9531,7 +9694,10 @@
    "titulados_2024": {
     "total": 218,
     "mujeres": 193,
-    "hombres": 25
+    "hombres": 25,
+    "sin_dato": 0,
+    "pct_mujeres": 89,
+    "pct_hombres": 11
    },
    "contexto": {
     "pct_mujeres": [
@@ -9673,7 +9839,10 @@
    "titulados_2024": {
     "total": 857,
     "mujeres": 505,
-    "hombres": 352
+    "hombres": 352,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -9824,7 +9993,10 @@
    "titulados_2024": {
     "total": 109,
     "mujeres": 54,
-    "hombres": 55
+    "hombres": 55,
+    "sin_dato": 0,
+    "pct_mujeres": 50,
+    "pct_hombres": 50
    },
    "contexto": {
     "pct_mujeres": [
@@ -9957,7 +10129,10 @@
    "titulados_2024": {
     "total": 89,
     "mujeres": 77,
-    "hombres": 12
+    "hombres": 12,
+    "sin_dato": 0,
+    "pct_mujeres": 87,
+    "pct_hombres": 13
    },
    "contexto": {
     "pct_mujeres": [
@@ -10094,7 +10269,10 @@
    "titulados_2024": {
     "total": 863,
     "mujeres": 427,
-    "hombres": 436
+    "hombres": 436,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -10236,7 +10414,10 @@
    "titulados_2024": {
     "total": 714,
     "mujeres": 52,
-    "hombres": 662
+    "hombres": 662,
+    "sin_dato": 0,
+    "pct_mujeres": 7,
+    "pct_hombres": 93
    },
    "contexto": {
     "pct_mujeres": [
@@ -10378,7 +10559,10 @@
    "titulados_2024": {
     "total": 630,
     "mujeres": 366,
-    "hombres": 264
+    "hombres": 264,
+    "sin_dato": 0,
+    "pct_mujeres": 58,
+    "pct_hombres": 42
    },
    "contexto": {
     "pct_mujeres": [
@@ -10520,7 +10704,10 @@
    "titulados_2024": {
     "total": 2225,
     "mujeres": 303,
-    "hombres": 1922
+    "hombres": 1922,
+    "sin_dato": 0,
+    "pct_mujeres": 14,
+    "pct_hombres": 86
    },
    "contexto": {
     "pct_mujeres": [
@@ -10694,7 +10881,10 @@
    "titulados_2024": {
     "total": 705,
     "mujeres": 64,
-    "hombres": 641
+    "hombres": 641,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -10836,7 +11026,10 @@
    "titulados_2024": {
     "total": 1280,
     "mujeres": 287,
-    "hombres": 993
+    "hombres": 993,
+    "sin_dato": 0,
+    "pct_mujeres": 22,
+    "pct_hombres": 78
    },
    "contexto": {
     "pct_mujeres": [
@@ -10978,7 +11171,10 @@
    "titulados_2024": {
     "total": 1888,
     "mujeres": 85,
-    "hombres": 1803
+    "hombres": 1803,
+    "sin_dato": 0,
+    "pct_mujeres": 5,
+    "pct_hombres": 95
    },
    "contexto": {
     "pct_mujeres": [
@@ -11138,7 +11334,10 @@
    "titulados_2024": {
     "total": 1186,
     "mujeres": 762,
-    "hombres": 424
+    "hombres": 424,
+    "sin_dato": 0,
+    "pct_mujeres": 64,
+    "pct_hombres": 36
    },
    "contexto": {
     "pct_mujeres": [
@@ -11280,7 +11479,10 @@
    "titulados_2024": {
     "total": 152,
     "mujeres": 64,
-    "hombres": 88
+    "hombres": 88,
+    "sin_dato": 0,
+    "pct_mujeres": 42,
+    "pct_hombres": 58
    },
    "contexto": {
     "pct_mujeres": [
@@ -11422,7 +11624,10 @@
    "titulados_2024": {
     "total": 243,
     "mujeres": 161,
-    "hombres": 82
+    "hombres": 82,
+    "sin_dato": 0,
+    "pct_mujeres": 66,
+    "pct_hombres": 34
    },
    "contexto": {
     "pct_mujeres": [
@@ -11564,7 +11769,10 @@
    "titulados_2024": {
     "total": 1304,
     "mujeres": 541,
-    "hombres": 763
+    "hombres": 763,
+    "sin_dato": 0,
+    "pct_mujeres": 41,
+    "pct_hombres": 59
    },
    "contexto": {
     "pct_mujeres": [
@@ -11697,7 +11905,10 @@
    "titulados_2024": {
     "total": 575,
     "mujeres": 320,
-    "hombres": 255
+    "hombres": 255,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -11839,7 +12050,10 @@
    "titulados_2024": {
     "total": 2801,
     "mujeres": 105,
-    "hombres": 2696
+    "hombres": 2696,
+    "sin_dato": 0,
+    "pct_mujeres": 4,
+    "pct_hombres": 96
    },
    "contexto": {
     "pct_mujeres": [
@@ -11972,7 +12186,10 @@
    "titulados_2024": {
     "total": 181,
     "mujeres": 111,
-    "hombres": 70
+    "hombres": 70,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -12105,7 +12322,10 @@
    "titulados_2024": {
     "total": 104,
     "mujeres": 49,
-    "hombres": 55
+    "hombres": 55,
+    "sin_dato": 0,
+    "pct_mujeres": 47,
+    "pct_hombres": 53
    },
    "contexto": {
     "pct_mujeres": [
@@ -12247,7 +12467,10 @@
    "titulados_2024": {
     "total": 521,
     "mujeres": 154,
-    "hombres": 367
+    "hombres": 367,
+    "sin_dato": 0,
+    "pct_mujeres": 30,
+    "pct_hombres": 70
    },
    "contexto": {
     "pct_mujeres": [
@@ -12389,7 +12612,10 @@
    "titulados_2024": {
     "total": 1631,
     "mujeres": 754,
-    "hombres": 877
+    "hombres": 877,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -12563,7 +12789,10 @@
    "titulados_2024": {
     "total": 100,
     "mujeres": 68,
-    "hombres": 32
+    "hombres": 32,
+    "sin_dato": 0,
+    "pct_mujeres": 68,
+    "pct_hombres": 32
    },
    "contexto": {
     "pct_mujeres": [
@@ -12705,7 +12934,10 @@
    "titulados_2024": {
     "total": 1293,
     "mujeres": 1018,
-    "hombres": 275
+    "hombres": 275,
+    "sin_dato": 0,
+    "pct_mujeres": 79,
+    "pct_hombres": 21
    },
    "contexto": {
     "pct_mujeres": [
@@ -12838,7 +13070,10 @@
    "titulados_2024": {
     "total": 66,
     "mujeres": 0,
-    "hombres": 66
+    "hombres": 66,
+    "sin_dato": 0,
+    "pct_mujeres": 0,
+    "pct_hombres": 100
    },
    "contexto": {
     "pct_mujeres": [
@@ -12971,7 +13206,10 @@
    "titulados_2024": {
     "total": 751,
     "mujeres": 110,
-    "hombres": 641
+    "hombres": 641,
+    "sin_dato": 0,
+    "pct_mujeres": 15,
+    "pct_hombres": 85
    },
    "contexto": {
     "pct_mujeres": [
@@ -13113,7 +13351,10 @@
    "titulados_2024": {
     "total": 171,
     "mujeres": 15,
-    "hombres": 156
+    "hombres": 156,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -13246,7 +13487,10 @@
    "titulados_2024": {
     "total": 282,
     "mujeres": 28,
-    "hombres": 254
+    "hombres": 254,
+    "sin_dato": 0,
+    "pct_mujeres": 10,
+    "pct_hombres": 90
    },
    "contexto": {
     "pct_mujeres": [
@@ -13388,7 +13632,10 @@
    "titulados_2024": {
     "total": 893,
     "mujeres": 95,
-    "hombres": 798
+    "hombres": 798,
+    "sin_dato": 0,
+    "pct_mujeres": 11,
+    "pct_hombres": 89
    },
    "contexto": {
     "pct_mujeres": [
@@ -13521,7 +13768,10 @@
    "titulados_2024": {
     "total": 702,
     "mujeres": 48,
-    "hombres": 654
+    "hombres": 654,
+    "sin_dato": 0,
+    "pct_mujeres": 7,
+    "pct_hombres": 93
    },
    "contexto": {
     "pct_mujeres": [
@@ -13654,7 +13904,10 @@
    "titulados_2024": {
     "total": 114,
     "mujeres": 56,
-    "hombres": 58
+    "hombres": 58,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -13796,7 +14049,10 @@
    "titulados_2024": {
     "total": 243,
     "mujeres": 64,
-    "hombres": 179
+    "hombres": 179,
+    "sin_dato": 0,
+    "pct_mujeres": 26,
+    "pct_hombres": 74
    },
    "contexto": {
     "pct_mujeres": [
@@ -13938,7 +14194,10 @@
    "titulados_2024": {
     "total": 58,
     "mujeres": 47,
-    "hombres": 11
+    "hombres": 11,
+    "sin_dato": 0,
+    "pct_mujeres": 81,
+    "pct_hombres": 19
    },
    "contexto": {
     "pct_mujeres": [
@@ -14080,7 +14339,10 @@
    "titulados_2024": {
     "total": 1445,
     "mujeres": 1372,
-    "hombres": 73
+    "hombres": 73,
+    "sin_dato": 0,
+    "pct_mujeres": 95,
+    "pct_hombres": 5
    },
    "contexto": {
     "pct_mujeres": [
@@ -14240,7 +14502,10 @@
    "titulados_2024": {
     "total": 335,
     "mujeres": 199,
-    "hombres": 136
+    "hombres": 136,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -14382,7 +14647,10 @@
    "titulados_2024": {
     "total": 131,
     "mujeres": 107,
-    "hombres": 24
+    "hombres": 24,
+    "sin_dato": 0,
+    "pct_mujeres": 82,
+    "pct_hombres": 18
    },
    "contexto": {
     "pct_mujeres": [
@@ -14524,7 +14792,10 @@
    "titulados_2024": {
     "total": 250,
     "mujeres": 96,
-    "hombres": 154
+    "hombres": 154,
+    "sin_dato": 0,
+    "pct_mujeres": 38,
+    "pct_hombres": 62
    },
    "contexto": {
     "pct_mujeres": [
@@ -14666,7 +14937,10 @@
    "titulados_2024": {
     "total": 2553,
     "mujeres": 2547,
-    "hombres": 6
+    "hombres": 6,
+    "sin_dato": 0,
+    "pct_mujeres": 100,
+    "pct_hombres": 0
    },
    "contexto": {
     "pct_mujeres": [
@@ -14840,7 +15114,10 @@
    "titulados_2024": {
     "total": 1093,
     "mujeres": 1060,
-    "hombres": 33
+    "hombres": 33,
+    "sin_dato": 0,
+    "pct_mujeres": 97,
+    "pct_hombres": 3
    },
    "contexto": {
     "pct_mujeres": [
@@ -15000,7 +15277,10 @@
    "titulados_2024": {
     "total": 1061,
     "mujeres": 929,
-    "hombres": 132
+    "hombres": 132,
+    "sin_dato": 0,
+    "pct_mujeres": 88,
+    "pct_hombres": 12
    },
    "contexto": {
     "pct_mujeres": [
@@ -15142,7 +15422,10 @@
    "titulados_2024": {
     "total": 3956,
     "mujeres": 2643,
-    "hombres": 1313
+    "hombres": 1313,
+    "sin_dato": 0,
+    "pct_mujeres": 67,
+    "pct_hombres": 33
    },
    "contexto": {
     "pct_mujeres": [
@@ -15316,7 +15599,10 @@
    "titulados_2024": {
     "total": 663,
     "mujeres": 529,
-    "hombres": 134
+    "hombres": 134,
+    "sin_dato": 0,
+    "pct_mujeres": 80,
+    "pct_hombres": 20
    },
    "contexto": {
     "pct_mujeres": [
@@ -15476,7 +15762,10 @@
    "titulados_2024": {
     "total": 226,
     "mujeres": 20,
-    "hombres": 206
+    "hombres": 206,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -15618,7 +15907,10 @@
    "titulados_2024": {
     "total": 375,
     "mujeres": 217,
-    "hombres": 158
+    "hombres": 158,
+    "sin_dato": 0,
+    "pct_mujeres": 58,
+    "pct_hombres": 42
    },
    "contexto": {
     "pct_mujeres": [
@@ -15760,7 +16052,10 @@
    "titulados_2024": {
     "total": 662,
     "mujeres": 409,
-    "hombres": 253
+    "hombres": 253,
+    "sin_dato": 0,
+    "pct_mujeres": 62,
+    "pct_hombres": 38
    },
    "contexto": {
     "pct_mujeres": [
@@ -15893,7 +16188,10 @@
    "titulados_2024": {
     "total": 26,
     "mujeres": 20,
-    "hombres": 6
+    "hombres": 6,
+    "sin_dato": 0,
+    "pct_mujeres": 77,
+    "pct_hombres": 23
    },
    "contexto": {
     "pct_mujeres": [
@@ -16035,7 +16333,10 @@
    "titulados_2024": {
     "total": 376,
     "mujeres": 215,
-    "hombres": 161
+    "hombres": 161,
+    "sin_dato": 0,
+    "pct_mujeres": 57,
+    "pct_hombres": 43
    },
    "contexto": {
     "pct_mujeres": [
@@ -16177,7 +16478,10 @@
    "titulados_2024": {
     "total": 1778,
     "mujeres": 262,
-    "hombres": 1516
+    "hombres": 1516,
+    "sin_dato": 0,
+    "pct_mujeres": 15,
+    "pct_hombres": 85
    },
    "contexto": {
     "pct_mujeres": [
@@ -16337,7 +16641,10 @@
    "titulados_2024": {
     "total": 159,
     "mujeres": 44,
-    "hombres": 115
+    "hombres": 115,
+    "sin_dato": 0,
+    "pct_mujeres": 28,
+    "pct_hombres": 72
    },
    "contexto": {
     "pct_mujeres": [
@@ -16479,7 +16786,10 @@
    "titulados_2024": {
     "total": 1199,
     "mujeres": 198,
-    "hombres": 1001
+    "hombres": 1001,
+    "sin_dato": 0,
+    "pct_mujeres": 17,
+    "pct_hombres": 83
    },
    "contexto": {
     "pct_mujeres": [
@@ -16630,7 +16940,10 @@
    "titulados_2024": {
     "total": 1703,
     "mujeres": 1182,
-    "hombres": 521
+    "hombres": 521,
+    "sin_dato": 0,
+    "pct_mujeres": 69,
+    "pct_hombres": 31
    },
    "contexto": {
     "pct_mujeres": [
@@ -16804,7 +17117,10 @@
    "titulados_2024": {
     "total": 792,
     "mujeres": 171,
-    "hombres": 621
+    "hombres": 621,
+    "sin_dato": 0,
+    "pct_mujeres": 22,
+    "pct_hombres": 78
    },
    "contexto": {
     "pct_mujeres": [
@@ -16946,7 +17262,10 @@
    "titulados_2024": {
     "total": 225,
     "mujeres": 86,
-    "hombres": 139
+    "hombres": 139,
+    "sin_dato": 0,
+    "pct_mujeres": 38,
+    "pct_hombres": 62
    },
    "contexto": {
     "pct_mujeres": [
@@ -17088,7 +17407,10 @@
    "titulados_2024": {
     "total": 223,
     "mujeres": 121,
-    "hombres": 102
+    "hombres": 102,
+    "sin_dato": 0,
+    "pct_mujeres": 54,
+    "pct_hombres": 46
    },
    "contexto": {
     "pct_mujeres": [
@@ -17230,7 +17552,10 @@
    "titulados_2024": {
     "total": 1210,
     "mujeres": 52,
-    "hombres": 1158
+    "hombres": 1158,
+    "sin_dato": 0,
+    "pct_mujeres": 4,
+    "pct_hombres": 96
    },
    "contexto": {
     "pct_mujeres": [
@@ -17395,7 +17720,10 @@
    "titulados_2024": {
     "total": 134,
     "mujeres": 10,
-    "hombres": 124
+    "hombres": 124,
+    "sin_dato": 0,
+    "pct_mujeres": 7,
+    "pct_hombres": 93
    },
    "contexto": {
     "pct_mujeres": [
@@ -17528,7 +17856,10 @@
    "titulados_2024": {
     "total": 125,
     "mujeres": 15,
-    "hombres": 110
+    "hombres": 110,
+    "sin_dato": 0,
+    "pct_mujeres": 12,
+    "pct_hombres": 88
    },
    "contexto": {
     "pct_mujeres": [
@@ -17665,7 +17996,10 @@
    "titulados_2024": {
     "total": 6237,
     "mujeres": 5259,
-    "hombres": 978
+    "hombres": 978,
+    "sin_dato": 0,
+    "pct_mujeres": 84,
+    "pct_hombres": 16
    },
    "contexto": {
     "pct_mujeres": [
@@ -17830,7 +18164,10 @@
    "titulados_2024": {
     "total": 275,
     "mujeres": 182,
-    "hombres": 93
+    "hombres": 93,
+    "sin_dato": 0,
+    "pct_mujeres": 66,
+    "pct_hombres": 34
    },
    "contexto": {
     "pct_mujeres": [
@@ -17972,7 +18309,10 @@
    "titulados_2024": {
     "total": 489,
     "mujeres": 246,
-    "hombres": 243
+    "hombres": 243,
+    "sin_dato": 0,
+    "pct_mujeres": 50,
+    "pct_hombres": 50
    },
    "contexto": {
     "pct_mujeres": [
@@ -18114,7 +18454,10 @@
    "titulados_2024": {
     "total": 46,
     "mujeres": 19,
-    "hombres": 27
+    "hombres": 27,
+    "sin_dato": 0,
+    "pct_mujeres": 41,
+    "pct_hombres": 59
    },
    "contexto": {
     "pct_mujeres": [
@@ -18256,7 +18599,10 @@
    "titulados_2024": {
     "total": 917,
     "mujeres": 75,
-    "hombres": 842
+    "hombres": 842,
+    "sin_dato": 0,
+    "pct_mujeres": 8,
+    "pct_hombres": 92
    },
    "contexto": {
     "pct_mujeres": [
@@ -18398,7 +18744,10 @@
    "titulados_2024": {
     "total": 212,
     "mujeres": 164,
-    "hombres": 48
+    "hombres": 48,
+    "sin_dato": 0,
+    "pct_mujeres": 77,
+    "pct_hombres": 23
    },
    "contexto": {
     "pct_mujeres": [
@@ -18540,7 +18889,10 @@
    "titulados_2024": {
     "total": 1572,
     "mujeres": 531,
-    "hombres": 1041
+    "hombres": 1041,
+    "sin_dato": 0,
+    "pct_mujeres": 34,
+    "pct_hombres": 66
    },
    "contexto": {
     "pct_mujeres": [
@@ -18691,7 +19043,10 @@
    "titulados_2024": {
     "total": 327,
     "mujeres": 18,
-    "hombres": 309
+    "hombres": 309,
+    "sin_dato": 0,
+    "pct_mujeres": 6,
+    "pct_hombres": 94
    },
    "contexto": {
     "pct_mujeres": [
@@ -18833,7 +19188,10 @@
    "titulados_2024": {
     "total": 293,
     "mujeres": 219,
-    "hombres": 74
+    "hombres": 74,
+    "sin_dato": 0,
+    "pct_mujeres": 75,
+    "pct_hombres": 25
    },
    "contexto": {
     "pct_mujeres": [
@@ -18975,7 +19333,10 @@
    "titulados_2024": {
     "total": 834,
     "mujeres": 41,
-    "hombres": 793
+    "hombres": 793,
+    "sin_dato": 0,
+    "pct_mujeres": 5,
+    "pct_hombres": 95
    },
    "contexto": {
     "pct_mujeres": [
@@ -19117,7 +19478,10 @@
    "titulados_2024": {
     "total": 473,
     "mujeres": 114,
-    "hombres": 359
+    "hombres": 359,
+    "sin_dato": 0,
+    "pct_mujeres": 24,
+    "pct_hombres": 76
    },
    "contexto": {
     "pct_mujeres": [
@@ -19259,7 +19623,10 @@
    "titulados_2024": {
     "total": 1483,
     "mujeres": 1454,
-    "hombres": 29
+    "hombres": 29,
+    "sin_dato": 0,
+    "pct_mujeres": 98,
+    "pct_hombres": 2
    },
    "contexto": {
     "pct_mujeres": [
@@ -19401,7 +19768,10 @@
    "titulados_2024": {
     "total": 801,
     "mujeres": 752,
-    "hombres": 49
+    "hombres": 49,
+    "sin_dato": 0,
+    "pct_mujeres": 94,
+    "pct_hombres": 6
    },
    "contexto": {
     "pct_mujeres": [
@@ -19543,7 +19913,10 @@
    "titulados_2024": {
     "total": 954,
     "mujeres": 477,
-    "hombres": 477
+    "hombres": 477,
+    "sin_dato": 0,
+    "pct_mujeres": 50,
+    "pct_hombres": 50
    },
    "contexto": {
     "pct_mujeres": [
@@ -19676,7 +20049,10 @@
    "titulados_2024": {
     "total": 139,
     "mujeres": 85,
-    "hombres": 54
+    "hombres": 54,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -19818,7 +20194,10 @@
    "titulados_2024": {
     "total": 2030,
     "mujeres": 1759,
-    "hombres": 271
+    "hombres": 271,
+    "sin_dato": 0,
+    "pct_mujeres": 87,
+    "pct_hombres": 13
    },
    "contexto": {
     "pct_mujeres": [
@@ -19978,7 +20357,10 @@
    "titulados_2024": {
     "total": 257,
     "mujeres": 30,
-    "hombres": 227
+    "hombres": 227,
+    "sin_dato": 0,
+    "pct_mujeres": 12,
+    "pct_hombres": 88
    },
    "contexto": {
     "pct_mujeres": [
@@ -20111,7 +20493,10 @@
    "titulados_2024": {
     "total": 158,
     "mujeres": 10,
-    "hombres": 148
+    "hombres": 148,
+    "sin_dato": 0,
+    "pct_mujeres": 6,
+    "pct_hombres": 94
    },
    "contexto": {
     "pct_mujeres": [
@@ -20253,7 +20638,10 @@
    "titulados_2024": {
     "total": 195,
     "mujeres": 28,
-    "hombres": 167
+    "hombres": 167,
+    "sin_dato": 0,
+    "pct_mujeres": 14,
+    "pct_hombres": 86
    },
    "contexto": {
     "pct_mujeres": [
@@ -20386,7 +20774,10 @@
    "titulados_2024": {
     "total": 68,
     "mujeres": 42,
-    "hombres": 26
+    "hombres": 26,
+    "sin_dato": 0,
+    "pct_mujeres": 62,
+    "pct_hombres": 38
    },
    "contexto": {
     "pct_mujeres": [
@@ -20528,7 +20919,10 @@
    "titulados_2024": {
     "total": 480,
     "mujeres": 312,
-    "hombres": 168
+    "hombres": 168,
+    "sin_dato": 0,
+    "pct_mujeres": 65,
+    "pct_hombres": 35
    },
    "contexto": {
     "pct_mujeres": [
@@ -20688,7 +21082,10 @@
    "titulados_2024": {
     "total": 561,
     "mujeres": 413,
-    "hombres": 148
+    "hombres": 148,
+    "sin_dato": 0,
+    "pct_mujeres": 74,
+    "pct_hombres": 26
    },
    "contexto": {
     "pct_mujeres": [
@@ -20830,7 +21227,10 @@
    "titulados_2024": {
     "total": 125,
     "mujeres": 87,
-    "hombres": 38
+    "hombres": 38,
+    "sin_dato": 0,
+    "pct_mujeres": 70,
+    "pct_hombres": 30
    },
    "contexto": {
     "pct_mujeres": [
@@ -20963,7 +21363,10 @@
    "titulados_2024": {
     "total": 234,
     "mujeres": 191,
-    "hombres": 43
+    "hombres": 43,
+    "sin_dato": 0,
+    "pct_mujeres": 82,
+    "pct_hombres": 18
    },
    "contexto": {
     "pct_mujeres": [
@@ -21096,7 +21499,10 @@
    "titulados_2024": {
     "total": 187,
     "mujeres": 161,
-    "hombres": 26
+    "hombres": 26,
+    "sin_dato": 0,
+    "pct_mujeres": 86,
+    "pct_hombres": 14
    },
    "contexto": {
     "pct_mujeres": [
@@ -21238,7 +21644,10 @@
    "titulados_2024": {
     "total": 3627,
     "mujeres": 3193,
-    "hombres": 434
+    "hombres": 434,
+    "sin_dato": 0,
+    "pct_mujeres": 88,
+    "pct_hombres": 12
    },
    "contexto": {
     "pct_mujeres": [
@@ -21412,7 +21821,10 @@
    "titulados_2024": {
     "total": 214,
     "mujeres": 148,
-    "hombres": 66
+    "hombres": 66,
+    "sin_dato": 0,
+    "pct_mujeres": 69,
+    "pct_hombres": 31
    },
    "contexto": {
     "pct_mujeres": [
@@ -21554,7 +21966,10 @@
    "titulados_2024": {
     "total": 2626,
     "mujeres": 1594,
-    "hombres": 1032
+    "hombres": 1032,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -21728,7 +22143,10 @@
    "titulados_2024": {
     "total": 1477,
     "mujeres": 822,
-    "hombres": 655
+    "hombres": 655,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -21902,7 +22320,10 @@
    "titulados_2024": {
     "total": 357,
     "mujeres": 213,
-    "hombres": 144
+    "hombres": 144,
+    "sin_dato": 0,
+    "pct_mujeres": 60,
+    "pct_hombres": 40
    },
    "contexto": {
     "pct_mujeres": [
@@ -22062,7 +22483,10 @@
    "titulados_2024": {
     "total": 938,
     "mujeres": 373,
-    "hombres": 565
+    "hombres": 565,
+    "sin_dato": 0,
+    "pct_mujeres": 40,
+    "pct_hombres": 60
    },
    "contexto": {
     "pct_mujeres": [
@@ -22236,7 +22660,10 @@
    "titulados_2024": {
     "total": 274,
     "mujeres": 173,
-    "hombres": 101
+    "hombres": 101,
+    "sin_dato": 0,
+    "pct_mujeres": 63,
+    "pct_hombres": 37
    },
    "contexto": {
     "pct_mujeres": [
@@ -22396,7 +22823,10 @@
    "titulados_2024": {
     "total": 1716,
     "mujeres": 916,
-    "hombres": 800
+    "hombres": 800,
+    "sin_dato": 0,
+    "pct_mujeres": 53,
+    "pct_hombres": 47
    },
    "contexto": {
     "pct_mujeres": [
@@ -22570,7 +23000,10 @@
    "titulados_2024": {
     "total": 576,
     "mujeres": 435,
-    "hombres": 141
+    "hombres": 141,
+    "sin_dato": 0,
+    "pct_mujeres": 76,
+    "pct_hombres": 24
    },
    "contexto": {
     "pct_mujeres": [
@@ -22730,7 +23163,10 @@
    "titulados_2024": {
     "total": 66,
     "mujeres": 45,
-    "hombres": 21
+    "hombres": 21,
+    "sin_dato": 0,
+    "pct_mujeres": 68,
+    "pct_hombres": 32
    },
    "contexto": {
     "pct_mujeres": [
@@ -22867,7 +23303,10 @@
    "titulados_2024": {
     "total": 183,
     "mujeres": 109,
-    "hombres": 74
+    "hombres": 74,
+    "sin_dato": 0,
+    "pct_mujeres": 60,
+    "pct_hombres": 40
    },
    "contexto": {
     "pct_mujeres": [
@@ -23009,7 +23448,10 @@
    "titulados_2024": {
     "total": 222,
     "mujeres": 135,
-    "hombres": 87
+    "hombres": 87,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -23146,7 +23588,10 @@
    "titulados_2024": {
     "total": 315,
     "mujeres": 181,
-    "hombres": 133
+    "hombres": 133,
+    "sin_dato": 1,
+    "pct_mujeres": 58,
+    "pct_hombres": 42
    },
    "contexto": {
     "pct_mujeres": [
@@ -23306,7 +23751,10 @@
    "titulados_2024": {
     "total": 333,
     "mujeres": 193,
-    "hombres": 140
+    "hombres": 140,
+    "sin_dato": 0,
+    "pct_mujeres": 58,
+    "pct_hombres": 42
    },
    "contexto": {
     "pct_mujeres": [
@@ -23466,7 +23914,10 @@
    "titulados_2024": {
     "total": 171,
     "mujeres": 69,
-    "hombres": 102
+    "hombres": 102,
+    "sin_dato": 0,
+    "pct_mujeres": 40,
+    "pct_hombres": 60
    },
    "contexto": {
     "pct_mujeres": [
@@ -23608,7 +24059,10 @@
    "titulados_2024": {
     "total": 422,
     "mujeres": 106,
-    "hombres": 316
+    "hombres": 316,
+    "sin_dato": 0,
+    "pct_mujeres": 25,
+    "pct_hombres": 75
    },
    "contexto": {
     "pct_mujeres": [
@@ -23782,7 +24236,10 @@
    "titulados_2024": {
     "total": 2119,
     "mujeres": 1300,
-    "hombres": 819
+    "hombres": 819,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -23956,7 +24413,10 @@
    "titulados_2024": {
     "total": 4923,
     "mujeres": 2690,
-    "hombres": 2233
+    "hombres": 2233,
+    "sin_dato": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
    },
    "contexto": {
     "pct_mujeres": [
@@ -24130,7 +24590,10 @@
    "titulados_2024": {
     "total": 696,
     "mujeres": 578,
-    "hombres": 118
+    "hombres": 118,
+    "sin_dato": 0,
+    "pct_mujeres": 83,
+    "pct_hombres": 17
    },
    "contexto": {
     "pct_mujeres": [
@@ -24304,7 +24767,10 @@
    "titulados_2024": {
     "total": 232,
     "mujeres": 141,
-    "hombres": 91
+    "hombres": 91,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -24455,7 +24921,10 @@
    "titulados_2024": {
     "total": 82,
     "mujeres": 42,
-    "hombres": 40
+    "hombres": 40,
+    "sin_dato": 0,
+    "pct_mujeres": 51,
+    "pct_hombres": 49
    },
    "contexto": {
     "pct_mujeres": [
@@ -24597,7 +25066,10 @@
    "titulados_2024": {
     "total": 5642,
     "mujeres": 4713,
-    "hombres": 929
+    "hombres": 929,
+    "sin_dato": 0,
+    "pct_mujeres": 84,
+    "pct_hombres": 16
    },
    "contexto": {
     "pct_mujeres": [
@@ -24771,7 +25243,10 @@
    "titulados_2024": {
     "total": 1398,
     "mujeres": 1276,
-    "hombres": 122
+    "hombres": 122,
+    "sin_dato": 0,
+    "pct_mujeres": 91,
+    "pct_hombres": 9
    },
    "contexto": {
     "pct_mujeres": [
@@ -24945,7 +25420,10 @@
    "titulados_2024": {
     "total": 234,
     "mujeres": 109,
-    "hombres": 125
+    "hombres": 125,
+    "sin_dato": 0,
+    "pct_mujeres": 47,
+    "pct_hombres": 53
    },
    "contexto": {
     "pct_mujeres": [
@@ -25105,7 +25583,10 @@
    "titulados_2024": {
     "total": 538,
     "mujeres": 222,
-    "hombres": 316
+    "hombres": 316,
+    "sin_dato": 0,
+    "pct_mujeres": 41,
+    "pct_hombres": 59
    },
    "contexto": {
     "pct_mujeres": [
@@ -25265,7 +25746,10 @@
    "titulados_2024": {
     "total": 140,
     "mujeres": 78,
-    "hombres": 62
+    "hombres": 62,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -25393,7 +25877,10 @@
    "titulados_2024": {
     "total": 39,
     "mujeres": 22,
-    "hombres": 17
+    "hombres": 17,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -25530,7 +26017,10 @@
    "titulados_2024": {
     "total": 579,
     "mujeres": 72,
-    "hombres": 507
+    "hombres": 507,
+    "sin_dato": 0,
+    "pct_mujeres": 12,
+    "pct_hombres": 88
    },
    "contexto": {
     "pct_mujeres": [
@@ -25704,7 +26194,10 @@
    "titulados_2024": {
     "total": 263,
     "mujeres": 20,
-    "hombres": 243
+    "hombres": 243,
+    "sin_dato": 0,
+    "pct_mujeres": 8,
+    "pct_hombres": 92
    },
    "contexto": {
     "pct_mujeres": [
@@ -25837,7 +26330,10 @@
    "titulados_2024": {
     "total": 97,
     "mujeres": 55,
-    "hombres": 42
+    "hombres": 42,
+    "sin_dato": 0,
+    "pct_mujeres": 57,
+    "pct_hombres": 43
    },
    "contexto": {
     "pct_mujeres": [
@@ -25979,7 +26475,10 @@
    "titulados_2024": {
     "total": 1537,
     "mujeres": 163,
-    "hombres": 1374
+    "hombres": 1374,
+    "sin_dato": 0,
+    "pct_mujeres": 11,
+    "pct_hombres": 89
    },
    "contexto": {
     "pct_mujeres": [
@@ -26153,7 +26652,10 @@
    "titulados_2024": {
     "total": 680,
     "mujeres": 165,
-    "hombres": 515
+    "hombres": 515,
+    "sin_dato": 0,
+    "pct_mujeres": 24,
+    "pct_hombres": 76
    },
    "contexto": {
     "pct_mujeres": [
@@ -26327,7 +26829,10 @@
    "titulados_2024": {
     "total": 559,
     "mujeres": 152,
-    "hombres": 407
+    "hombres": 407,
+    "sin_dato": 0,
+    "pct_mujeres": 27,
+    "pct_hombres": 73
    },
    "contexto": {
     "pct_mujeres": [
@@ -26501,7 +27006,10 @@
    "titulados_2024": {
     "total": 6491,
     "mujeres": 1897,
-    "hombres": 4594
+    "hombres": 4594,
+    "sin_dato": 0,
+    "pct_mujeres": 29,
+    "pct_hombres": 71
    },
    "contexto": {
     "pct_mujeres": [
@@ -26675,7 +27183,10 @@
    "titulados_2024": {
     "total": 768,
     "mujeres": 68,
-    "hombres": 700
+    "hombres": 700,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -26849,7 +27360,10 @@
    "titulados_2024": {
     "total": 219,
     "mujeres": 59,
-    "hombres": 160
+    "hombres": 160,
+    "sin_dato": 0,
+    "pct_mujeres": 27,
+    "pct_hombres": 73
    },
    "contexto": {
     "pct_mujeres": [
@@ -27023,7 +27537,10 @@
    "titulados_2024": {
     "total": 777,
     "mujeres": 222,
-    "hombres": 555
+    "hombres": 555,
+    "sin_dato": 0,
+    "pct_mujeres": 29,
+    "pct_hombres": 71
    },
    "contexto": {
     "pct_mujeres": [
@@ -27197,7 +27714,10 @@
    "titulados_2024": {
     "total": 390,
     "mujeres": 177,
-    "hombres": 213
+    "hombres": 213,
+    "sin_dato": 0,
+    "pct_mujeres": 45,
+    "pct_hombres": 55
    },
    "contexto": {
     "pct_mujeres": [
@@ -27371,7 +27891,10 @@
    "titulados_2024": {
     "total": 7786,
     "mujeres": 3506,
-    "hombres": 4280
+    "hombres": 4280,
+    "sin_dato": 0,
+    "pct_mujeres": 45,
+    "pct_hombres": 55
    },
    "contexto": {
     "pct_mujeres": [
@@ -27545,7 +28068,10 @@
    "titulados_2024": {
     "total": 107,
     "mujeres": 69,
-    "hombres": 38
+    "hombres": 38,
+    "sin_dato": 0,
+    "pct_mujeres": 64,
+    "pct_hombres": 36
    },
    "contexto": {
     "pct_mujeres": [
@@ -27687,7 +28213,10 @@
    "titulados_2024": {
     "total": 217,
     "mujeres": 12,
-    "hombres": 205
+    "hombres": 205,
+    "sin_dato": 0,
+    "pct_mujeres": 6,
+    "pct_hombres": 94
    },
    "contexto": {
     "pct_mujeres": [
@@ -27829,7 +28358,10 @@
    "titulados_2024": {
     "total": 331,
     "mujeres": 179,
-    "hombres": 152
+    "hombres": 152,
+    "sin_dato": 0,
+    "pct_mujeres": 54,
+    "pct_hombres": 46
    },
    "contexto": {
     "pct_mujeres": [
@@ -27989,7 +28521,10 @@
    "titulados_2024": {
     "total": 257,
     "mujeres": 156,
-    "hombres": 101
+    "hombres": 101,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -28131,7 +28666,10 @@
    "titulados_2024": {
     "total": 1201,
     "mujeres": 123,
-    "hombres": 1078
+    "hombres": 1078,
+    "sin_dato": 0,
+    "pct_mujeres": 10,
+    "pct_hombres": 90
    },
    "contexto": {
     "pct_mujeres": [
@@ -28305,7 +28843,10 @@
    "titulados_2024": {
     "total": 1304,
     "mujeres": 271,
-    "hombres": 1033
+    "hombres": 1033,
+    "sin_dato": 0,
+    "pct_mujeres": 21,
+    "pct_hombres": 79
    },
    "contexto": {
     "pct_mujeres": [
@@ -28479,7 +29020,10 @@
    "titulados_2024": {
     "total": 661,
     "mujeres": 367,
-    "hombres": 294
+    "hombres": 294,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -28639,7 +29183,10 @@
    "titulados_2024": {
     "total": 433,
     "mujeres": 15,
-    "hombres": 418
+    "hombres": 418,
+    "sin_dato": 0,
+    "pct_mujeres": 3,
+    "pct_hombres": 97
    },
    "contexto": {
     "pct_mujeres": [
@@ -28781,7 +29328,10 @@
    "titulados_2024": {
     "total": 63,
     "mujeres": 8,
-    "hombres": 55
+    "hombres": 55,
+    "sin_dato": 0,
+    "pct_mujeres": 13,
+    "pct_hombres": 87
    },
    "contexto": {
     "pct_mujeres": [
@@ -28923,7 +29473,10 @@
    "titulados_2024": {
     "total": 142,
     "mujeres": 33,
-    "hombres": 109
+    "hombres": 109,
+    "sin_dato": 0,
+    "pct_mujeres": 23,
+    "pct_hombres": 77
    },
    "contexto": {
     "pct_mujeres": [
@@ -29056,7 +29609,10 @@
    "titulados_2024": {
     "total": 92,
     "mujeres": 69,
-    "hombres": 23
+    "hombres": 23,
+    "sin_dato": 0,
+    "pct_mujeres": 75,
+    "pct_hombres": 25
    },
    "contexto": {
     "pct_mujeres": [
@@ -29189,7 +29745,10 @@
    "titulados_2024": {
     "total": 343,
     "mujeres": 122,
-    "hombres": 221
+    "hombres": 221,
+    "sin_dato": 0,
+    "pct_mujeres": 36,
+    "pct_hombres": 64
    },
    "contexto": {
     "pct_mujeres": [
@@ -29331,7 +29890,10 @@
    "titulados_2024": {
     "total": 81,
     "mujeres": 25,
-    "hombres": 56
+    "hombres": 56,
+    "sin_dato": 0,
+    "pct_mujeres": 31,
+    "pct_hombres": 69
    },
    "contexto": {
     "pct_mujeres": [
@@ -29468,7 +30030,10 @@
    "titulados_2024": {
     "total": 245,
     "mujeres": 137,
-    "hombres": 108
+    "hombres": 108,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -29610,7 +30175,10 @@
    "titulados_2024": {
     "total": 33,
     "mujeres": 12,
-    "hombres": 21
+    "hombres": 21,
+    "sin_dato": 0,
+    "pct_mujeres": 36,
+    "pct_hombres": 64
    },
    "contexto": {
     "pct_mujeres": [
@@ -29752,7 +30320,10 @@
    "titulados_2024": {
     "total": 298,
     "mujeres": 69,
-    "hombres": 229
+    "hombres": 229,
+    "sin_dato": 0,
+    "pct_mujeres": 23,
+    "pct_hombres": 77
    },
    "contexto": {
     "pct_mujeres": [
@@ -29903,7 +30474,10 @@
    "titulados_2024": {
     "total": 379,
     "mujeres": 176,
-    "hombres": 203
+    "hombres": 203,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -30045,7 +30619,10 @@
    "titulados_2024": {
     "total": 100,
     "mujeres": 55,
-    "hombres": 45
+    "hombres": 45,
+    "sin_dato": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
    },
    "contexto": {
     "pct_mujeres": [
@@ -30187,7 +30764,10 @@
    "titulados_2024": {
     "total": 24,
     "mujeres": 13,
-    "hombres": 11
+    "hombres": 11,
+    "sin_dato": 0,
+    "pct_mujeres": 54,
+    "pct_hombres": 46
    },
    "contexto": {
     "pct_mujeres": [
@@ -30324,7 +30904,10 @@
    "titulados_2024": {
     "total": 229,
     "mujeres": 127,
-    "hombres": 102
+    "hombres": 102,
+    "sin_dato": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
    },
    "contexto": {
     "pct_mujeres": [
@@ -30466,7 +31049,10 @@
    "titulados_2024": {
     "total": 123,
     "mujeres": 61,
-    "hombres": 62
+    "hombres": 62,
+    "sin_dato": 0,
+    "pct_mujeres": 50,
+    "pct_hombres": 50
    },
    "contexto": {
     "pct_mujeres": [
@@ -30608,7 +31194,10 @@
    "titulados_2024": {
     "total": 1855,
     "mujeres": 451,
-    "hombres": 1404
+    "hombres": 1404,
+    "sin_dato": 0,
+    "pct_mujeres": 24,
+    "pct_hombres": 76
    },
    "contexto": {
     "pct_mujeres": [
@@ -30773,7 +31362,10 @@
    "titulados_2024": {
     "total": 79,
     "mujeres": 16,
-    "hombres": 63
+    "hombres": 63,
+    "sin_dato": 0,
+    "pct_mujeres": 20,
+    "pct_hombres": 80
    },
    "contexto": {
     "pct_mujeres": [
@@ -30910,7 +31502,10 @@
    "titulados_2024": {
     "total": 273,
     "mujeres": 15,
-    "hombres": 258
+    "hombres": 258,
+    "sin_dato": 0,
+    "pct_mujeres": 5,
+    "pct_hombres": 95
    },
    "contexto": {
     "pct_mujeres": [
@@ -31061,7 +31656,10 @@
    "titulados_2024": {
     "total": 2714,
     "mujeres": 1463,
-    "hombres": 1251
+    "hombres": 1251,
+    "sin_dato": 0,
+    "pct_mujeres": 54,
+    "pct_hombres": 46
    },
    "contexto": {
     "pct_mujeres": [
@@ -31235,7 +31833,10 @@
    "titulados_2024": {
     "total": 352,
     "mujeres": 248,
-    "hombres": 104
+    "hombres": 104,
+    "sin_dato": 0,
+    "pct_mujeres": 70,
+    "pct_hombres": 30
    },
    "contexto": {
     "pct_mujeres": [
@@ -31395,7 +31996,10 @@
    "titulados_2024": {
     "total": 2430,
     "mujeres": 1331,
-    "hombres": 1099
+    "hombres": 1099,
+    "sin_dato": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
    },
    "contexto": {
     "pct_mujeres": [
@@ -31569,7 +32173,10 @@
    "titulados_2024": {
     "total": 1485,
     "mujeres": 1098,
-    "hombres": 387
+    "hombres": 387,
+    "sin_dato": 0,
+    "pct_mujeres": 74,
+    "pct_hombres": 26
    },
    "contexto": {
     "pct_mujeres": [
@@ -31743,7 +32350,10 @@
    "titulados_2024": {
     "total": 407,
     "mujeres": 193,
-    "hombres": 214
+    "hombres": 214,
+    "sin_dato": 0,
+    "pct_mujeres": 47,
+    "pct_hombres": 53
    },
    "contexto": {
     "pct_mujeres": [
@@ -31903,7 +32513,10 @@
    "titulados_2024": {
     "total": 1798,
     "mujeres": 1532,
-    "hombres": 266
+    "hombres": 266,
+    "sin_dato": 0,
+    "pct_mujeres": 85,
+    "pct_hombres": 15
    },
    "contexto": {
     "pct_mujeres": [
@@ -32077,7 +32690,10 @@
    "titulados_2024": {
     "total": 2072,
     "mujeres": 1975,
-    "hombres": 97
+    "hombres": 97,
+    "sin_dato": 0,
+    "pct_mujeres": 95,
+    "pct_hombres": 5
    },
    "contexto": {
     "pct_mujeres": [
@@ -32251,7 +32867,10 @@
    "titulados_2024": {
     "total": 1781,
     "mujeres": 1226,
-    "hombres": 555
+    "hombres": 555,
+    "sin_dato": 0,
+    "pct_mujeres": 69,
+    "pct_hombres": 31
    },
    "contexto": {
     "pct_mujeres": [
@@ -32425,7 +33044,10 @@
    "titulados_2024": {
     "total": 366,
     "mujeres": 186,
-    "hombres": 180
+    "hombres": 180,
+    "sin_dato": 0,
+    "pct_mujeres": 51,
+    "pct_hombres": 49
    },
    "contexto": {
     "pct_mujeres": [
@@ -32599,7 +33221,10 @@
    "titulados_2024": {
     "total": 527,
     "mujeres": 304,
-    "hombres": 223
+    "hombres": 223,
+    "sin_dato": 0,
+    "pct_mujeres": 58,
+    "pct_hombres": 42
    },
    "contexto": {
     "pct_mujeres": [
@@ -32773,7 +33398,10 @@
    "titulados_2024": {
     "total": 1521,
     "mujeres": 1338,
-    "hombres": 183
+    "hombres": 183,
+    "sin_dato": 0,
+    "pct_mujeres": 88,
+    "pct_hombres": 12
    },
    "contexto": {
     "pct_mujeres": [
@@ -32947,7 +33575,10 @@
    "titulados_2024": {
     "total": 1434,
     "mujeres": 1432,
-    "hombres": 2
+    "hombres": 2,
+    "sin_dato": 0,
+    "pct_mujeres": 100,
+    "pct_hombres": 0
    },
    "contexto": {
     "pct_mujeres": [
@@ -33121,7 +33752,10 @@
    "titulados_2024": {
     "total": 1929,
     "mujeres": 1834,
-    "hombres": 95
+    "hombres": 95,
+    "sin_dato": 0,
+    "pct_mujeres": 95,
+    "pct_hombres": 5
    },
    "contexto": {
     "pct_mujeres": [
@@ -33295,7 +33929,10 @@
    "titulados_2024": {
     "total": 1305,
     "mujeres": 423,
-    "hombres": 882
+    "hombres": 882,
+    "sin_dato": 0,
+    "pct_mujeres": 32,
+    "pct_hombres": 68
    },
    "contexto": {
     "pct_mujeres": [
@@ -33460,7 +34097,10 @@
    "titulados_2024": {
     "total": 246,
     "mujeres": 134,
-    "hombres": 112
+    "hombres": 112,
+    "sin_dato": 0,
+    "pct_mujeres": 54,
+    "pct_hombres": 46
    },
    "contexto": {
     "pct_mujeres": [
@@ -33602,7 +34242,10 @@
    "titulados_2024": {
     "total": 102,
     "mujeres": 52,
-    "hombres": 50
+    "hombres": 50,
+    "sin_dato": 0,
+    "pct_mujeres": 51,
+    "pct_hombres": 49
    },
    "contexto": {
     "pct_mujeres": [
@@ -33739,7 +34382,10 @@
    "titulados_2024": {
     "total": 97,
     "mujeres": 48,
-    "hombres": 49
+    "hombres": 49,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -33881,7 +34527,10 @@
    "titulados_2024": {
     "total": 532,
     "mujeres": 244,
-    "hombres": 288
+    "hombres": 288,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -34055,7 +34704,10 @@
    "titulados_2024": {
     "total": 989,
     "mujeres": 686,
-    "hombres": 303
+    "hombres": 303,
+    "sin_dato": 0,
+    "pct_mujeres": 69,
+    "pct_hombres": 31
    },
    "contexto": {
     "pct_mujeres": [
@@ -34229,7 +34881,10 @@
    "titulados_2024": {
     "total": 749,
     "mujeres": 533,
-    "hombres": 216
+    "hombres": 216,
+    "sin_dato": 0,
+    "pct_mujeres": 71,
+    "pct_hombres": 29
    },
    "contexto": {
     "pct_mujeres": [
@@ -34403,7 +35058,10 @@
    "titulados_2024": {
     "total": 597,
     "mujeres": 291,
-    "hombres": 306
+    "hombres": 306,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -34577,7 +35235,10 @@
    "titulados_2024": {
     "total": 1386,
     "mujeres": 771,
-    "hombres": 615
+    "hombres": 615,
+    "sin_dato": 0,
+    "pct_mujeres": 56,
+    "pct_hombres": 44
    },
    "contexto": {
     "pct_mujeres": [
@@ -34751,7 +35412,10 @@
    "titulados_2024": {
     "total": 353,
     "mujeres": 183,
-    "hombres": 170
+    "hombres": 170,
+    "sin_dato": 0,
+    "pct_mujeres": 52,
+    "pct_hombres": 48
    },
    "contexto": {
     "pct_mujeres": [
@@ -34902,7 +35566,10 @@
    "titulados_2024": {
     "total": 6775,
     "mujeres": 4926,
-    "hombres": 1849
+    "hombres": 1849,
+    "sin_dato": 0,
+    "pct_mujeres": 73,
+    "pct_hombres": 27
    },
    "contexto": {
     "pct_mujeres": [
@@ -35076,7 +35743,10 @@
    "titulados_2024": {
     "total": 134,
     "mujeres": 128,
-    "hombres": 6
+    "hombres": 6,
+    "sin_dato": 0,
+    "pct_mujeres": 96,
+    "pct_hombres": 4
    },
    "contexto": {
     "pct_mujeres": [
@@ -35218,7 +35888,10 @@
    "titulados_2024": {
     "total": 496,
     "mujeres": 274,
-    "hombres": 222
+    "hombres": 222,
+    "sin_dato": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
    },
    "contexto": {
     "pct_mujeres": [
@@ -35392,7 +36065,10 @@
    "titulados_2024": {
     "total": 115,
     "mujeres": 53,
-    "hombres": 62
+    "hombres": 62,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -35529,7 +36205,10 @@
    "titulados_2024": {
     "total": 1048,
     "mujeres": 622,
-    "hombres": 426
+    "hombres": 426,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -35703,7 +36382,10 @@
    "titulados_2024": {
     "total": 205,
     "mujeres": 101,
-    "hombres": 104
+    "hombres": 104,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -35854,7 +36536,10 @@
    "titulados_2024": {
     "total": 44,
     "mujeres": 28,
-    "hombres": 16
+    "hombres": 16,
+    "sin_dato": 0,
+    "pct_mujeres": 64,
+    "pct_hombres": 36
    },
    "contexto": {
     "pct_mujeres": [
@@ -35996,7 +36681,10 @@
    "titulados_2024": {
     "total": 479,
     "mujeres": 236,
-    "hombres": 243
+    "hombres": 243,
+    "sin_dato": 0,
+    "pct_mujeres": 49,
+    "pct_hombres": 51
    },
    "contexto": {
     "pct_mujeres": [
@@ -36170,7 +36858,10 @@
    "titulados_2024": {
     "total": 127,
     "mujeres": 58,
-    "hombres": 69
+    "hombres": 69,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -36312,7 +37003,10 @@
    "titulados_2024": {
     "total": 499,
     "mujeres": 499,
-    "hombres": 0
+    "hombres": 0,
+    "sin_dato": 0,
+    "pct_mujeres": 100,
+    "pct_hombres": 0
    },
    "contexto": {
     "pct_mujeres": [
@@ -36472,7 +37166,10 @@
    "titulados_2024": {
     "total": 1089,
     "mujeres": 686,
-    "hombres": 403
+    "hombres": 403,
+    "sin_dato": 0,
+    "pct_mujeres": 63,
+    "pct_hombres": 37
    },
    "contexto": {
     "pct_mujeres": [
@@ -36646,7 +37343,10 @@
    "titulados_2024": {
     "total": 48,
     "mujeres": 36,
-    "hombres": 12
+    "hombres": 12,
+    "sin_dato": 0,
+    "pct_mujeres": 75,
+    "pct_hombres": 25
    },
    "contexto": {
     "pct_mujeres": [
@@ -36788,7 +37488,10 @@
    "titulados_2024": {
     "total": 69,
     "mujeres": 50,
-    "hombres": 19
+    "hombres": 19,
+    "sin_dato": 0,
+    "pct_mujeres": 72,
+    "pct_hombres": 28
    },
    "contexto": {
     "pct_mujeres": [
@@ -36921,7 +37624,10 @@
    "titulados_2024": {
     "total": 23,
     "mujeres": 14,
-    "hombres": 9
+    "hombres": 9,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -37058,7 +37764,10 @@
    "titulados_2024": {
     "total": 169,
     "mujeres": 22,
-    "hombres": 147
+    "hombres": 147,
+    "sin_dato": 0,
+    "pct_mujeres": 13,
+    "pct_hombres": 87
    },
    "contexto": {
     "pct_mujeres": [
@@ -37200,7 +37909,10 @@
    "titulados_2024": {
     "total": 364,
     "mujeres": 62,
-    "hombres": 302
+    "hombres": 302,
+    "sin_dato": 0,
+    "pct_mujeres": 17,
+    "pct_hombres": 83
    },
    "contexto": {
     "pct_mujeres": [
@@ -37360,7 +38072,10 @@
    "titulados_2024": {
     "total": 192,
     "mujeres": 41,
-    "hombres": 151
+    "hombres": 151,
+    "sin_dato": 0,
+    "pct_mujeres": 21,
+    "pct_hombres": 79
    },
    "contexto": {
     "pct_mujeres": [
@@ -37511,7 +38226,10 @@
    "titulados_2024": {
     "total": 284,
     "mujeres": 11,
-    "hombres": 273
+    "hombres": 273,
+    "sin_dato": 0,
+    "pct_mujeres": 4,
+    "pct_hombres": 96
    },
    "contexto": {
     "pct_mujeres": [
@@ -37644,7 +38362,10 @@
    "titulados_2024": {
     "total": 38,
     "mujeres": 1,
-    "hombres": 37
+    "hombres": 37,
+    "sin_dato": 0,
+    "pct_mujeres": 3,
+    "pct_hombres": 97
    },
    "contexto": {
     "pct_mujeres": [
@@ -37786,7 +38507,10 @@
    "titulados_2024": {
     "total": 781,
     "mujeres": 636,
-    "hombres": 145
+    "hombres": 145,
+    "sin_dato": 0,
+    "pct_mujeres": 81,
+    "pct_hombres": 19
    },
    "contexto": {
     "pct_mujeres": [
@@ -37960,7 +38684,10 @@
    "titulados_2024": {
     "total": 128,
     "mujeres": 18,
-    "hombres": 110
+    "hombres": 110,
+    "sin_dato": 0,
+    "pct_mujeres": 14,
+    "pct_hombres": 86
    },
    "contexto": {
     "pct_mujeres": [
@@ -38102,7 +38829,10 @@
    "titulados_2024": {
     "total": 166,
     "mujeres": 87,
-    "hombres": 79
+    "hombres": 79,
+    "sin_dato": 0,
+    "pct_mujeres": 52,
+    "pct_hombres": 48
    },
    "contexto": {
     "pct_mujeres": [
@@ -38244,7 +38974,10 @@
    "titulados_2024": {
     "total": 192,
     "mujeres": 13,
-    "hombres": 179
+    "hombres": 179,
+    "sin_dato": 0,
+    "pct_mujeres": 7,
+    "pct_hombres": 93
    },
    "contexto": {
     "pct_mujeres": [
@@ -38377,7 +39110,10 @@
    "titulados_2024": {
     "total": 76,
     "mujeres": 2,
-    "hombres": 74
+    "hombres": 74,
+    "sin_dato": 0,
+    "pct_mujeres": 3,
+    "pct_hombres": 97
    },
    "contexto": {
     "pct_mujeres": [
@@ -38519,7 +39255,10 @@
    "titulados_2024": {
     "total": 157,
     "mujeres": 14,
-    "hombres": 143
+    "hombres": 143,
+    "sin_dato": 0,
+    "pct_mujeres": 9,
+    "pct_hombres": 91
    },
    "contexto": {
     "pct_mujeres": [
@@ -38661,7 +39400,10 @@
    "titulados_2024": {
     "total": 76,
     "mujeres": 29,
-    "hombres": 47
+    "hombres": 47,
+    "sin_dato": 0,
+    "pct_mujeres": 38,
+    "pct_hombres": 62
    },
    "contexto": {
     "pct_mujeres": [
@@ -38803,7 +39545,10 @@
    "titulados_2024": {
     "total": 196,
     "mujeres": 51,
-    "hombres": 145
+    "hombres": 145,
+    "sin_dato": 0,
+    "pct_mujeres": 26,
+    "pct_hombres": 74
    },
    "contexto": {
     "pct_mujeres": [
@@ -38936,7 +39681,10 @@
    "titulados_2024": {
     "total": 61,
     "mujeres": 28,
-    "hombres": 33
+    "hombres": 33,
+    "sin_dato": 0,
+    "pct_mujeres": 46,
+    "pct_hombres": 54
    },
    "contexto": {
     "pct_mujeres": [
@@ -39078,7 +39826,10 @@
    "titulados_2024": {
     "total": 49,
     "mujeres": 29,
-    "hombres": 20
+    "hombres": 20,
+    "sin_dato": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
    },
    "contexto": {
     "pct_mujeres": [
@@ -39220,7 +39971,10 @@
    "titulados_2024": {
     "total": 2210,
     "mujeres": 1352,
-    "hombres": 858
+    "hombres": 858,
+    "sin_dato": 0,
+    "pct_mujeres": 61,
+    "pct_hombres": 39
    },
    "contexto": {
     "pct_mujeres": [
@@ -39394,7 +40148,10 @@
    "titulados_2024": {
     "total": 2121,
     "mujeres": 1840,
-    "hombres": 281
+    "hombres": 281,
+    "sin_dato": 0,
+    "pct_mujeres": 87,
+    "pct_hombres": 13
    },
    "contexto": {
     "pct_mujeres": [
@@ -39568,7 +40325,10 @@
    "titulados_2024": {
     "total": 3162,
     "mujeres": 2641,
-    "hombres": 521
+    "hombres": 521,
+    "sin_dato": 0,
+    "pct_mujeres": 84,
+    "pct_hombres": 16
    },
    "contexto": {
     "pct_mujeres": [
@@ -39742,7 +40502,10 @@
    "titulados_2024": {
     "total": 283,
     "mujeres": 192,
-    "hombres": 91
+    "hombres": 91,
+    "sin_dato": 0,
+    "pct_mujeres": 68,
+    "pct_hombres": 32
    },
    "contexto": {
     "pct_mujeres": [

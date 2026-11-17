@@ -13,6 +13,8 @@
 --        mínimo = (35-39 + 40 y más) / con edad; máximo = mínimo + 30-34 / con edad.
 --      - Edad de las cohortes de los percentiles (2023 y 2019): mismo rango, para probar la
 --        hipótesis de A2 (P50 1°→5° negativo en técnicas de IP/CFT: ¿titulados que ya trabajaban?).
+--   3. analytics.sexo_titulados: composición por sexo de los titulados 2024 (MiFuturo) para la
+--      barra de la ficha. Antes el % lo calculaba app.js; ahora sale de aquí con su control.
 --   2. analytics.estabilidad (D5): ¿la cohorte de los percentiles del 1er año (2023) fue atípica en
 --      su serie de empleabilidad del 1er año (cohortes 2019-2022)? Se marca, no se excluye.
 --
@@ -165,6 +167,39 @@ FROM s
 WHERE v IS NOT NULL AND n >= 3;   -- con menos de 3 previas no hay base para hablar de atípica
 
 -- --------------------------------------------------------------------------
+-- 3. Sexo de los titulados 2024 (barra de la ficha)
+-- --------------------------------------------------------------------------
+-- Porcentajes sobre los titulados con sexo informado, en enteros que suman 100: con dos partes,
+-- redondear una y completar la otra ES el método del resto mayor (redondear ambas podía dar
+-- 57 % + 44 %). Los sin sexo informado (hoy 1 de 315 en Bioquímica, Universidad) se cuentan
+-- aparte: un segmento de 0,3 % no se vería y la web los nombra en una nota.
+CREATE TABLE analytics.sexo_titulados (
+    clave_carrera_generica  text     NOT NULL,
+    tipo_institucion        text     NOT NULL,
+    total                   integer  NOT NULL CHECK (total >= 0),
+    mujeres                 integer  NOT NULL CHECK (mujeres >= 0),
+    hombres                 integer  NOT NULL CHECK (hombres >= 0),
+    sin_dato                integer  NOT NULL CHECK (sin_dato >= 0),
+    pct_mujeres             smallint CHECK (pct_mujeres BETWEEN 0 AND 100),   -- NULL si nadie informa sexo
+    pct_hombres             smallint CHECK (pct_hombres BETWEEN 0 AND 100),
+    PRIMARY KEY (clave_carrera_generica, tipo_institucion),
+    FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par,
+    CHECK (total = mujeres + hombres + sin_dato),
+    CHECK ((pct_mujeres IS NULL) = (mujeres + hombres = 0)),
+    CHECK (pct_mujeres + pct_hombres = 100)
+);
+
+INSERT INTO analytics.sexo_titulados
+SELECT p.clave_carrera_generica, p.tipo_institucion, e.titulados_2024,
+       e.titulados_2024_mujeres, e.titulados_2024_hombres,
+       e.titulados_2024 - e.titulados_2024_mujeres - e.titulados_2024_hombres,
+       x.pm, 100 - x.pm
+FROM analytics.par p
+JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+CROSS JOIN LATERAL (SELECT round(100.0 * e.titulados_2024_mujeres
+                                 / nullif(e.titulados_2024_mujeres + e.titulados_2024_hombres, 0))::smallint AS pm) x;
+
+-- --------------------------------------------------------------------------
 -- Controles qa
 -- --------------------------------------------------------------------------
 INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
@@ -200,4 +235,18 @@ SELECT 'analytics_contexto', 'estabilidad_atipica', CASE WHEN n = 0 THEN 'OK' EL
               (SELECT count(*) FROM analytics.estabilidad))
 FROM (SELECT count(*) AS n FROM analytics.estabilidad
       WHERE atipica <> (abs(desvio) >= analytics.param('min_desvio_atipico_pp')
-                        AND abs(desvio) >= analytics.param('min_z_atipico') * coalesce(sd_previas, 0))) x;
+                        AND abs(desvio) >= analytics.param('min_z_atipico') * coalesce(sd_previas, 0))) x
+UNION ALL
+-- 5. Sexo: una fila por par, conteos = MiFuturo y cada % a menos de medio punto de su proporción
+--    exacta (el CHECK ya obliga a que sumen 100).
+SELECT 'analytics_contexto', 'sexo_titulados', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'una fila por par; conteos = mifuturo_estadistica; |pct − 100 × parte / informados| ≤ 0,5',
+       format('%s filas incoherentes; %s pares con titulados sin sexo informado', n,
+              (SELECT count(*) FROM analytics.sexo_titulados WHERE sin_dato > 0))
+FROM (SELECT (SELECT count(*) FROM analytics.par) - (SELECT count(*) FROM analytics.sexo_titulados)
+           + (SELECT count(*) FROM analytics.sexo_titulados s
+              JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+              WHERE s.mujeres <> e.titulados_2024_mujeres OR s.hombres <> e.titulados_2024_hombres
+                 OR s.total <> e.titulados_2024
+                 OR abs(s.pct_mujeres - 100.0 * s.mujeres / nullif(s.mujeres + s.hombres, 0)) > 0.5
+                 OR abs(s.pct_hombres - 100.0 * s.hombres / nullif(s.mujeres + s.hombres, 0)) > 0.5) AS n) x;

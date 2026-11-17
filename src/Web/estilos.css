@@ -21,6 +21,8 @@
   --anio1: #4f8f86;           /* cardenillo claro: primer año (3,34:1 sobre el papel; validado como par ordinal) */
   --anio5: #0b4f47;           /* cardenillo profundo: quinto año */
   --timbre: #7a2e6e;          /* tinta de timbre: solo advertencias */
+  --mujeres: #d6457f;         /* barra por sexo de la ficha (pedido del usuario: rosado y azul); validados */
+  --hombres: #2f6bc4;         /* entre sí, contra ambos papeles y el rosado contra --timbre (ΔE ≥ 15) */
   --cambia: #a8650a;          /* ocre: "cambia de cuadrante" (antes reusaba --anio5, que es el 5° año);
                                  validado con validate_palette.js contra el gris, el timbre y ambos papeles */
   --foco: #0b4f47;
@@ -53,6 +55,8 @@
     --anio5: #d3efe9;
     --timbre: #e09bd3;
     --cambia: #c97a14;
+    --mujeres: #e0507a;
+    --hombres: #5b8fe0;
     --foco: #7fc0b6;
   }
 }
@@ -67,6 +71,8 @@
   --anio5: #d3efe9;
   --timbre: #e09bd3;
   --cambia: #c97a14;
+  --mujeres: #e0507a;
+  --hombres: #5b8fe0;
   --foco: #7fc0b6;
 }
 
@@ -737,6 +743,14 @@ a.hallazgo__accion { color: var(--tinta); }
   margin-bottom: 0.4rem;
 }
 .liq { margin: 0; }
+/* Barra por sexo (ficha, «Quiénes se titulan»). */
+.sexo { margin: 0.35rem 0 0.75rem; }
+.sexo__rotulos { display: flex; justify-content: space-between; gap: 1rem; font-size: var(--t-0); color: var(--tinta); font-variant-numeric: tabular-nums; }
+.sexo__barra { display: flex; gap: 2px; height: 12px; margin-top: 0.25rem; }
+.sexo__seg { flex: 0 0 0; min-width: 2px; border-radius: 4px; }
+.sexo__seg--mujeres { background: var(--mujeres); }
+.sexo__seg--hombres { background: var(--hombres); }
+.sexo .ficha__nota { margin-top: 0.35rem; }
 .liq__linea {
   display: flex;
   align-items: baseline;
