@@ -13,19 +13,21 @@
 *Este bloque lo genera `make web` desde `docs/datos.json`: son las mismas cifras de la web, calculadas en SQL con controles de calidad.*
 
 <!-- HALLAZGOS:INICIO · generado por src/Web/construir.py desde docs/datos.json; no editar a mano -->
-1. **Al quinto año no siempre se gana más.** La mediana de las 210 carreras comparables sube 29,3 % su sueldo típico (P50) entre el primer y el quinto año, pero en 9 baja. No es que caigan los sueldos: en 7 de esas 9, quienes se titularon hace poco son mucho mayores (los de 30 años o más pasan de 32,5 % a 56,6 %, mediana de esas 7), y muchos ya trabajaban antes de titularse.
+1. **Al quinto año no siempre se gana más.** El sueldo típico (P50) sube 15,7 % entre el primer y el quinto año en las carreras técnicas y 43,2 % en las profesionales (medianas de cada nivel), pero baja en 7 de 85 técnicas y en 2 de 125 profesionales. No es que caigan los sueldos: en 6 de esas 7 técnicas, quienes se titularon hace poco son mucho mayores (los de 30 años o más pasan de 32,3 % a 55,6 %, mediana de esas 6), y muchos ya trabajaban antes de titularse.
 2. **Crecer más en porcentaje no es crecer más.** 30 carreras cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje. Ingeniería en Alimentos (Universidad) sube 66,5 %, pero eso son +$592.205, frente a +$805.627 de la carrera típica de su grupo (mediana ponderada por titulados).
 3. **El promedio nacional esconde diferencias entre instituciones.** En 19 carreras las instituciones difieren 15 puntos o más en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo. En Trabajo Social (Universidad, 32 instituciones) la mitad central va de 52,5 % a 74,2 %, con una cifra nacional de 66,9 %.
 <!-- HALLAZGOS:FIN -->
 
 > **Corrección (16-11-26).** La versión anterior decía que, en las carreras con cambio de edad, los titulados de 30 años o más pasaban de 28 % a 55 %. Esa mediana se calculaba sobre las 9 carreras que bajan y no sobre las 7 que nombraba la frase; la cifra correcta es 32,5 % → 56,6 %. Desde esta versión, las cifras de los hallazgos se calculan en SQL y tienen sus propios controles de calidad.
+>
+> **Corrección (17-11-26).** El hallazgo 1 daba una sola mediana de crecimiento para las 210 carreras comparables (+29,3 %), que mezclaba técnicas y profesionales y no describía a ninguno de los dos niveles. Ahora se informa por nivel.
 
 ---
 
 ## Por qué confiar en las cifras
 
 - **Cuatro capas en PostgreSQL:** `raw` (copia fiel de los CSV) → `modelo` (relacional, con PK, FK y `CHECK`) → `analytics` (métricas) → `qa` (controles). Todo se construye en **una sola transacción**: si algo falla, la base queda como estaba.
-- **53 controles de calidad**: 50 hacen fallar el build y 3 están exentos por diseño (documentados). Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
+- <!-- CONTROLES:INICIO -->**54 controles de calidad**: 51 hacen fallar el build y 3 están exentos por diseño (documentados)<!-- CONTROLES:FIN -->. Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
 - **Determinista:** reconstruir la base y volver a exportar da el mismo archivo, con el mismo SHA-256.
 - **Los datos corrigieron dos decisiones del plan** y quedaron documentadas:
   - Con la ponderación, 4 grupos de área estaban dominados por una sola carrera (Psicología pesaba el 70 % de su grupo). Se agregó una regla: un grupo deja de ser referencia si una carrera supera el 50 % de su peso.
@@ -52,7 +54,7 @@ make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 1
 |---|---|
 | `make base` | `src/BD/build.py`: crea `raw`, `modelo`, `analytics` y `qa`, carga los CSV y corre los controles, todo en una transacción |
 | `make datos` | `src/Analisis/exportar.py`: escribe `docs/datos.json` (no exporta si algún control falla) |
-| `make web` | `src/Web/construir.py`: arma `docs/index.html` con todo incluido (no necesita la base) y regenera el bloque «Qué encontré» de este README |
+| `make web` | `src/Web/construir.py`: arma `docs/index.html` con todo incluido (no necesita la base) y regenera en este README el bloque «Qué encontré» y el conteo de controles |
 
 Los CSV procesados están versionados en `src/Scrapers/*/Salida/`, así que no hace falta descargar nada. Para rehacerlos desde las fuentes:
 

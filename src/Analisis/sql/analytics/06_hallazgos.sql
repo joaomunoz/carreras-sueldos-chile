@@ -20,39 +20,50 @@ INSERT INTO analytics.parametro VALUES
     ('min_inst_ejemplo',     20,   'Hallazgo (c): instituciones mínimas para que una carrera sirva de ejemplo (con pocas sería anecdótico)',                                  'W3; ídem');
 
 -- --------------------------------------------------------------------------
--- (a) Al quinto año no siempre se gana más
+-- (a) Al quinto año no siempre se gana más — POR NIVEL
 -- --------------------------------------------------------------------------
+-- Una fila por nivel: técnicas y profesionales nunca se mezclan en una mediana (regla de
+-- segmentación). La primera versión daba una sola mediana de las 210 comparables (+29,3 %), que
+-- quedaba a mitad de camino entre los dos niveles y no describía a ninguno.
 CREATE TABLE analytics.hallazgo_edad (
+    nivel_carrera    text    PRIMARY KEY,
     n_comparables    integer NOT NULL,
-    mediana_p50_pct  numeric NOT NULL,   -- mediana SIMPLE (no ponderada) del crecimiento del P50 1°→5°
-    n_negativos      integer NOT NULL,   -- comparables cuyo P50 del 5° año es menor que el del 1°
+    mediana_p50_pct  numeric NOT NULL,   -- mediana SIMPLE del crecimiento del P50 1°→5°, dentro del nivel
+    n_negativos      integer NOT NULL,   -- comparables del nivel cuyo P50 del 5° año es menor que el del 1°
+    claves_bajan     text[]  NOT NULL,   -- 'CLAVE|tipo' de esas carreras: el peine las destaca sin volver a filtrar
     n_con_edad       integer NOT NULL,   -- de ellas, con la marca de composición por edad
     n_base_edad      integer NOT NULL,   -- carreras sobre las que se calculan las dos medianas de edad
     mayores30_p5     numeric,            -- mediana de la cota alta de 30+ (0-1), cohorte del 5° año
     mayores30_p1     numeric,            -- ídem, cohorte del 1er año
     -- La frase dice "en N de ellas… pasan de X a Y": X e Y deben describir a esas N.
     CHECK (n_base_edad = n_con_edad),
+    CHECK (cardinality(claves_bajan) = n_negativos),
     CHECK (n_con_edad <= n_negativos AND n_negativos <= n_comparables),
     CHECK ((n_con_edad = 0) = (mayores30_p5 IS NULL))
 );
 
 INSERT INTO analytics.hallazgo_edad
 WITH comp AS (
-    SELECT b.p50_pct_1_5, c.composicion_edad, c.mayores30_max_p5, c.mayores30_max_p1
+    SELECT p.nivel_carrera, p.clave_carrera_generica || '|' || p.tipo_institucion AS clave,
+           b.p50_pct_1_5, c.composicion_edad, c.mayores30_max_p5, c.mayores30_max_p1
     FROM analytics.par p
     JOIN analytics.brecha b   USING (clave_carrera_generica, tipo_institucion)
     JOIN analytics.contexto c USING (clave_carrera_generica, tipo_institucion)
     WHERE p.representativo
-),
-edad AS (SELECT * FROM comp WHERE p50_pct_1_5 < 0 AND composicion_edad)
-SELECT (SELECT count(*) FROM comp),
-       (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY p50_pct_1_5) FROM comp)::numeric,
-       (SELECT count(*) FROM comp WHERE p50_pct_1_5 < 0),
-       (SELECT count(*) FROM comp WHERE p50_pct_1_5 < 0 AND composicion_edad),
+)
+SELECT nivel_carrera,
        count(*),
-       percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p5)::numeric,
-       percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p1)::numeric
-FROM edad;
+       (percentile_cont(0.5) WITHIN GROUP (ORDER BY p50_pct_1_5))::numeric,
+       count(*) FILTER (WHERE p50_pct_1_5 < 0),
+       coalesce(array_agg(clave ORDER BY clave) FILTER (WHERE p50_pct_1_5 < 0), '{}'),
+       count(*) FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad),
+       count(*) FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad),
+       (percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p5)
+            FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad))::numeric,
+       (percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p1)
+            FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad))::numeric
+FROM comp
+GROUP BY nivel_carrera;
 
 -- --------------------------------------------------------------------------
 -- (b) Crecer más en % no es crecer más
@@ -117,22 +128,44 @@ LEFT JOIN LATERAL (
 -- Controles qa
 -- --------------------------------------------------------------------------
 INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
--- 1. (a) por otro camino: P50 desde modelo (no desde brecha) y la marca con su fórmula (no la columna).
-SELECT 'analytics_hallazgos', 'edad_mismo_grupo',
-       CASE WHEN h.n_con_edad = x.n AND h.mayores30_p5 IS NOT DISTINCT FROM x.p5
-                 AND h.mayores30_p1 IS NOT DISTINCT FROM x.p1 THEN 'OK' ELSE 'FALLA' END,
-       x.n, 'medianas de edad = recálculo sobre las carreras que bajan y tienen la marca de edad',
-       format('%s de %s carreras que bajan; 30+ pasa de %s %% a %s %%', h.n_con_edad, h.n_negativos,
-              round(100 * h.mayores30_p5, 1), round(100 * h.mayores30_p1, 1))
-FROM analytics.hallazgo_edad h,
-     (SELECT count(*) AS n,
-             percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p5)::numeric AS p5,
-             percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p1)::numeric AS p1
-      FROM analytics.par p
-      JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
-      JOIN analytics.contexto c USING (clave_carrera_generica, tipo_institucion)
-      WHERE p.representativo AND e.percentil_50_anio_5 < e.percentil_50_anio_1
-        AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100 >= analytics.param('min_cambio_edad_pp')) x
+-- 1. (a) por otro camino, nivel por nivel: P50 desde modelo (no desde brecha) y la marca con su
+--    fórmula (no la columna). FULL JOIN: un nivel que falte de un lado también cuenta como diferencia.
+SELECT 'analytics_hallazgos', 'edad_mismo_grupo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'conteos y medianas de edad = recálculo por nivel sobre las carreras que bajan con marca de edad',
+       (SELECT string_agg(format('%s: %s de %s bajan, %s con edad', nivel_carrera, n_negativos, n_comparables, n_con_edad),
+                          '; ' ORDER BY nivel_carrera)
+        FROM analytics.hallazgo_edad)
+FROM (SELECT count(*) AS n
+      FROM analytics.hallazgo_edad h
+      FULL JOIN (SELECT p.nivel_carrera,
+                        count(*) FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1) AS neg,
+                        count(*) FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                                           AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
+                                               >= analytics.param('min_cambio_edad_pp')) AS edad,
+                        (percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p5)
+                             FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                                       AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
+                                           >= analytics.param('min_cambio_edad_pp')))::numeric AS p5,
+                        (percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p1)
+                             FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                                       AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
+                                           >= analytics.param('min_cambio_edad_pp')))::numeric AS p1
+                 FROM analytics.par p
+                 JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+                 JOIN analytics.contexto c USING (clave_carrera_generica, tipo_institucion)
+                 WHERE p.representativo
+                 GROUP BY p.nivel_carrera) x USING (nivel_carrera)
+      WHERE h.n_negativos IS DISTINCT FROM x.neg OR h.n_con_edad IS DISTINCT FROM x.edad
+         OR h.mayores30_p5 IS DISTINCT FROM x.p5 OR h.mayores30_p1 IS DISTINCT FROM x.p1) x
+UNION ALL
+-- 1b. Los niveles cubren a todas las comparables, sin perder ni repetir pares (p. ej. un nivel nuevo).
+SELECT 'analytics_hallazgos', 'edad_niveles',
+       CASE WHEN n_niveles = 2 AND n_suma = n_rep THEN 'OK' ELSE 'FALLA' END,
+       n_niveles, '2 niveles (técnicas y profesionales) que suman todas las comparables',
+       format('%s niveles; %s comparables en los niveles, %s en analytics.par', n_niveles, n_suma, n_rep)
+FROM (SELECT (SELECT count(*) FROM analytics.hallazgo_edad) AS n_niveles,
+             (SELECT coalesce(sum(n_comparables), 0) FROM analytics.hallazgo_edad) AS n_suma,
+             (SELECT count(*) FROM analytics.par WHERE representativo) AS n_rep) x
 UNION ALL
 -- 2. (b) el ejemplo cumple la regla y su referencia es la de SU grupo.
 SELECT 'analytics_hallazgos', 'ejemplo_pct_pesos', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,

@@ -185,17 +185,21 @@
     var ul = document.getElementById("hallazgos");
     var h = datos.hallazgos;
 
-    var a = h.edad;
-    if (a.n_negativos) {
-      var nodosA = [parrafo(["En ", fmtEntero.format(a.n_negativos), " de las ", fmtEntero.format(a.n_comparables),
-        " carreras comparables, el sueldo típico del quinto año es menor que el del primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."])];
-      if (a.n_con_edad) {
-        nodosA.push(parrafo(["En ", fmtEntero.format(a.n_con_edad),
-          " de ellas, los titulados recientes son mucho mayores: quienes tienen 30 años o más pasan de ",
-          pct(a.mayores30[0]), " a ", pct(a.mayores30[1]), " (mediana de esas ", fmtEntero.format(a.n_con_edad),
-          "). Muchos ya trabajaban antes de titularse."]));
+    // (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
+    var tec = h.edad.filter(function (x) { return x.nivel === "Carreras Técnicas"; })[0];
+    var pro = h.edad.filter(function (x) { return x.nivel === "Carreras Profesionales"; })[0];
+    if (tec && pro && (tec.n_negativos || pro.n_negativos)) {
+      var nodosA = [parrafo(["En las carreras técnicas, ", fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
+        " ganan menos al quinto año que al primero. No es que bajen los sueldos: ambos se miden con los ingresos de 2024."])];
+      if (tec.n_con_edad) {
+        nodosA.push(parrafo(["En ", fmtEntero.format(tec.n_con_edad),
+          " de ellas, quienes tienen 30 años o más pasan de ", pct(tec.mayores30[0]), " a ", pct(tec.mayores30[1]),
+          " de los titulados (mediana de esas ", fmtEntero.format(tec.n_con_edad),
+          "): muchos ya trabajaban antes de titularse."]));
       }
-      nodosA.push(parrafo(["La mediana de las carreras comparables sube ", pctSigno(a.mediana_p50_pct), "."]));
+      nodosA.push(parrafo(["En las profesionales pasa en ", fmtEntero.format(pro.n_negativos) + " de " + fmtEntero.format(pro.n_comparables),
+        ". El sueldo típico sube ", pctSigno(tec.mediana_p50_pct), " en las técnicas y ", pctSigno(pro.mediana_p50_pct),
+        " en las profesionales (medianas de cada nivel)."]));
       ul.appendChild(hallazgo("Al quinto año siempre se gana más que al primero.", nodosA));
     }
 

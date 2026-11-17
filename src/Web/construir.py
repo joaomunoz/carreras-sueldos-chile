@@ -10,7 +10,9 @@ Arma docs/index.html: un único archivo autónomo a partir de
 Además regenera en README.md el bloque "Qué encontré" (entre los marcadores HALLAZGOS:INICIO y
 HALLAZGOS:FIN) desde datos.json["hallazgos"]: así el README y la web citan las mismas cifras, que
 se calculan en SQL con controles qa (src/Analisis/sql/analytics/06_hallazgos.sql). Copiarlas a mano
-fue como un error de la web llegó también al README.
+fue como un error de la web llegó también al README. Por la misma razón regenera el conteo de
+controles (entre CONTROLES:INICIO y CONTROLES:FIN) desde datos.json["qa"]["resumen"]: escrito a
+mano, ya se había desactualizado una vez.
 
 Por qué incrustar todo: abierta con doble clic (file://), la página no puede leer un JSON
 externo (el navegador lo bloquea), y el requisito es cero dependencias externas.
@@ -40,6 +42,9 @@ FUENTE = DIR_WEB / "fuentes" / "ArchivoNarrow-600-latin.woff2"
 README = RAIZ / "README.md"
 INICIO = "<!-- HALLAZGOS:INICIO · generado por src/Web/construir.py desde docs/datos.json; no editar a mano -->"
 FIN = "<!-- HALLAZGOS:FIN -->"
+# Marcadores en línea: el conteo vive dentro de una viñeta del README, no en un bloque propio.
+CONTROLES_INICIO = "<!-- CONTROLES:INICIO -->"
+CONTROLES_FIN = "<!-- CONTROLES:FIN -->"
 
 
 def _leer(ruta: Path) -> str:
@@ -88,16 +93,22 @@ def _num(valor: float, decimales: int = 0) -> str:
 
 
 def _hallazgos_readme(h: dict) -> str:
-    a, b, c = h["edad"], h["pct_pesos"], h["dispersion"]
+    b, c = h["pct_pesos"], h["dispersion"]
+    # (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
+    nivel = {x["nivel"]: x for x in h["edad"]}
+    tec, pro = nivel.get("Carreras Técnicas"), nivel.get("Carreras Profesionales")
+    if tec is None or pro is None:
+        raise SystemExit("datos.json no trae el hallazgo (a) para técnicas y profesionales: exportar de nuevo.")
     items = []
-    if a["n_negativos"]:
-        t = (f"**Al quinto año no siempre se gana más.** La mediana de las {a['n_comparables']} carreras comparables "
-             f"sube {_num(a['mediana_p50_pct'], 1)} % su sueldo típico (P50) entre el primer y el quinto año, "
-             f"pero en {a['n_negativos']} baja.")
-        if a["n_con_edad"]:
-            t += (f" No es que caigan los sueldos: en {a['n_con_edad']} de esas {a['n_negativos']}, quienes se titularon "
-                  f"hace poco son mucho mayores (los de 30 años o más pasan de {_num(a['mayores30'][0], 1)} % "
-                  f"a {_num(a['mayores30'][1], 1)} %, mediana de esas {a['n_con_edad']}), y muchos ya trabajaban "
+    if tec["n_negativos"] or pro["n_negativos"]:
+        t = (f"**Al quinto año no siempre se gana más.** El sueldo típico (P50) sube {_num(tec['mediana_p50_pct'], 1)} % "
+             f"entre el primer y el quinto año en las carreras técnicas y {_num(pro['mediana_p50_pct'], 1)} % en las "
+             f"profesionales (medianas de cada nivel), pero baja en {tec['n_negativos']} de {tec['n_comparables']} técnicas "
+             f"y en {pro['n_negativos']} de {pro['n_comparables']} profesionales.")
+        if tec["n_con_edad"]:
+            t += (f" No es que caigan los sueldos: en {tec['n_con_edad']} de esas {tec['n_negativos']} técnicas, quienes se "
+                  f"titularon hace poco son mucho mayores (los de 30 años o más pasan de {_num(tec['mayores30'][0], 1)} % "
+                  f"a {_num(tec['mayores30'][1], 1)} %, mediana de esas {tec['n_con_edad']}), y muchos ya trabajaban "
                   f"antes de titularse.")
         items.append(t)
     if b["ejemplo"]:
@@ -116,13 +127,27 @@ def _hallazgos_readme(h: dict) -> str:
     return "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
 
 
+def _controles_readme(qa: dict) -> str:
+    resumen = qa["resumen"]
+    if set(resumen) - {"OK", "EXENTO"}:   # _verificar_qa ya descarta FALLA; otro estado sería nuevo
+        raise SystemExit(f"Estados qa inesperados para el README: {sorted(resumen)}")
+    ok, exentos = resumen.get("OK", 0), resumen.get("EXENTO", 0)
+    return (f"**{ok + exentos} controles de calidad**: {ok} hacen fallar el build y "
+            f"{exentos} están exentos por diseño (documentados)")
+
+
+def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str) -> str:
+    if texto.count(inicio) != 1 or texto.count(fin) != 1:
+        raise SystemExit(f"README.md debe tener una vez cada marcador {inicio} / {fin}.")
+    antes, resto = texto.split(inicio)
+    _, despues = resto.split(fin)
+    return antes + inicio + contenido + fin + despues
+
+
 def _actualizar_readme(datos: dict) -> None:
     texto = _leer(README)
-    if texto.count(INICIO) != 1 or texto.count(FIN) != 1:
-        raise SystemExit("README.md debe tener una vez cada marcador HALLAZGOS:INICIO / HALLAZGOS:FIN.")
-    antes, resto = texto.split(INICIO)
-    _, despues = resto.split(FIN)
-    nuevo = antes + INICIO + "\n" + _hallazgos_readme(datos["hallazgos"]) + "\n" + FIN + despues
+    nuevo = _reemplazar_bloque(texto, INICIO, FIN, "\n" + _hallazgos_readme(datos["hallazgos"]) + "\n")
+    nuevo = _reemplazar_bloque(nuevo, CONTROLES_INICIO, CONTROLES_FIN, _controles_readme(datos["qa"]))
     if nuevo != texto:   # sin cambios no se reescribe: git no ve diferencias falsas
         temporal = README.with_suffix(".md.tmp")
         temporal.write_text(nuevo, encoding="utf-8")

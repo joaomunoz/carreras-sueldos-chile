@@ -419,7 +419,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 50
+   "OK": 51
   },
   "controles": [
    {
@@ -531,8 +531,15 @@
     "control": "analytics_hallazgos",
     "objeto": "edad_mismo_grupo",
     "estado": "OK",
-    "umbral": "medianas de edad = recálculo sobre las carreras que bajan y tienen la marca de edad",
-    "detalle": "7 de 9 carreras que bajan; 30+ pasa de 32.5 % a 56.6 %"
+    "umbral": "conteos y medianas de edad = recálculo por nivel sobre las carreras que bajan con marca de edad",
+    "detalle": "Carreras Profesionales: 2 de 125 bajan, 1 con edad; Carreras Técnicas: 7 de 85 bajan, 6 con edad"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "edad_niveles",
+    "estado": "OK",
+    "umbral": "2 niveles (técnicas y profesionales) que suman todas las comparables",
+    "detalle": "2 niveles; 210 comparables en los niveles, 210 en analytics.par"
    },
    {
     "control": "analytics_hallazgos",
@@ -1651,16 +1658,43 @@
   }
  ],
  "hallazgos": {
-  "edad": {
-   "n_comparables": 210,
-   "mediana_p50_pct": 29.3,
-   "n_negativos": 9,
-   "n_con_edad": 7,
-   "mayores30": [
-    32.5,
-    56.6
-   ]
-  },
+  "edad": [
+   {
+    "nivel": "Carreras Técnicas",
+    "n_comparables": 85,
+    "mediana_p50_pct": 15.7,
+    "n_negativos": 7,
+    "claves_bajan": [
+     "TECNICO EN ADMINISTRACION DE REDES Y SOPORTE|IP",
+     "TECNICO EN GEOLOGIA|IP",
+     "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL|IP",
+     "TECNICO EN MINERIA|IP",
+     "TECNICO EN PREVENCION DE RIESGOS|CFT",
+     "TECNICO EN PREVENCION DE RIESGOS|IP",
+     "TECNICO JURIDICO|IP"
+    ],
+    "n_con_edad": 6,
+    "mayores30": [
+     32.3,
+     55.6
+    ]
+   },
+   {
+    "nivel": "Carreras Profesionales",
+    "n_comparables": 125,
+    "mediana_p50_pct": 43.2,
+    "n_negativos": 2,
+    "claves_bajan": [
+     "ACTUACION Y TEATRO|Universidad",
+     "INGENIERIA EN PREVENCION DE RIESGOS|IP"
+    ],
+    "n_con_edad": 1,
+    "mayores30": [
+     32.5,
+     64.6
+    ]
+   }
+  ],
   "pct_pesos": {
    "n_cambian": 30,
    "ejemplo": {
