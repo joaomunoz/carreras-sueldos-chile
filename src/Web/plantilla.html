@@ -52,6 +52,43 @@
     <ul class="hallazgos" id="hallazgos"></ul>
   </section>
 
+  <section class="bloque" aria-labelledby="t-cuadrantes">
+    <h2 id="t-cuadrantes" class="bloque__titulo">Cuánto se entra ganando y cuánto se progresa</h2>
+    <p class="bloque__texto">Cada punto es una carrera, comparada con las de su mismo grupo (su área dentro del tipo de institución y nivel, o su tipo y nivel si el área tiene pocas carreras). Hacia la derecha, entra ganando más que la carrera típica de su grupo; hacia arriba, su sueldo típico crece más entre el primer y el quinto año. Cambia la medida del crecimiento para ver qué carreras se mueven.</p>
+    <div class="conmutador" role="group" aria-label="Medir el crecimiento en">
+      <button type="button" id="c-modo-pct" aria-pressed="true">Crecimiento en %</button>
+      <button type="button" id="c-modo-pesos" aria-pressed="false">Crecimiento en pesos</button>
+    </div>
+    <figure class="grafico" id="cuadrantes">
+      <div class="grafico__lienzo" id="cuadrantes-lienzo"></div>
+      <div class="tooltip" id="cuadrantes-tooltip" hidden></div>
+      <figcaption class="grafico__leyenda">
+        <span class="leyenda-item"><span class="punto punto--neutro" aria-hidden="true"></span>Carrera</span>
+        <span class="leyenda-item"><span class="punto punto--cambia" aria-hidden="true"></span>Cambia de cuadrante al medir en pesos</span>
+        <span class="leyenda-item"><span class="punto punto--anillo" aria-hidden="true"></span>Con advertencia (cohorte atípica o composición por edad)</span>
+      </figcaption>
+    </figure>
+    <p class="nota" id="cuadrantes-ayuda">Con el teclado: enfoca el gráfico y recorre las carreras con las flechas ← →, de izquierda a derecha.</p>
+    <details class="leyenda">
+      <summary>Ver las carreras que cambian de cuadrante</summary>
+      <div class="tabla-desplazable">
+        <table class="tabla tabla--tarjetas" id="cuadrantes-tabla">
+          <caption class="solo-lectores">Carreras que cambian de cuadrante según se mida el crecimiento en porcentaje o en pesos</caption>
+          <thead>
+            <tr>
+              <th scope="col">Carrera</th>
+              <th scope="col" class="num">Crecimiento %</th>
+              <th scope="col" class="num">Crecimiento $</th>
+              <th scope="col">Cuadrante en %</th>
+              <th scope="col">Cuadrante en pesos</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
   <section class="bloque" aria-labelledby="t-mancuerna">
     <h2 id="t-mancuerna" class="bloque__titulo">Sueldo típico y dispersión</h2>
     <p class="bloque__texto">El punto es el sueldo típico (P50). La barra gruesa abarca a la mitad central de los titulados (entre P25 y P75) y la línea fina llega del P10 al P90. Arriba, quienes se titularon hace un año; abajo, hace cinco; ambos con los ingresos de 2024.</p>

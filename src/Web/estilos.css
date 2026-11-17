@@ -468,6 +468,39 @@ p { margin: 0; }
 .tooltip__cifras { margin-top: 0.35rem; font-family: var(--f-cifra); font-variant-numeric: tabular-nums; font-size: var(--t-0); }
 .tooltip .timbres { margin-top: 0.35rem; }
 
+/* Cuadrantes (W4) */
+.conmutador {
+  display: inline-flex;
+  margin-top: 1.25rem;
+  border: 1px solid var(--regla);
+  border-radius: 999px;
+  padding: 3px;
+  background: var(--papel-alto);
+}
+.conmutador button {
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--tinta-suave);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.conmutador button[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.punto--neutro { background: var(--tinta-suave); opacity: 0.7; }
+.punto--cambia { background: var(--anio5); width: 0.75rem; height: 0.75rem; }
+.punto--anillo { background: transparent; box-shadow: inset 0 0 0 2px var(--timbre); width: 0.75rem; height: 0.75rem; }
+.c-punto { transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+.c-punto circle { fill: var(--tinta-suave); fill-opacity: 0.7; stroke: var(--papel); stroke-width: 1; }
+.c-punto--cambia circle { fill: var(--anio5); fill-opacity: 1; }
+.c-punto--aviso circle { stroke: var(--timbre); stroke-width: 2; }
+.c-punto--activo circle { stroke: var(--tinta); stroke-width: 2.5; }
+.c-centro { stroke: var(--tinta-suave); stroke-width: 1.5; }
+.c-cuadrante { fill: var(--tinta-suave); font: 600 0.6875rem var(--f-titulo); letter-spacing: 0.08em; text-transform: uppercase; paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.c-conteo { fill: var(--tinta); font: 0.8125rem var(--f-cifra); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; }
+.c-titulo-eje { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); }
+
 /* Mancuerna: filas de 2 líneas (1er año / 5° año) con eje común en pesos. */
 .mancuerna__eje { margin-left: var(--rotulos); height: 1.5rem; position: relative; }
 .mancuerna__eje svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }

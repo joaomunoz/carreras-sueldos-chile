@@ -577,6 +577,203 @@
     lienzo.onblur = function () { mostrar(-1); };
   }
 
+  // ------------------------------------------------------------- cuadrantes (W4)
+  // Ejes RELATIVOS a la referencia de cada carrera (decisión aprobada): x = P50 1er año ÷
+  // mediana de su grupo (escala log: ×0,5 y ×2 equidistan de "típico"); y = crecimiento −
+  // crecimiento típico del grupo, en pp o en pesos. Así el lado en que cae cada punto es
+  // exactamente su clasificación en `posicion` (verificado: 0 discrepancias en 210).
+  var cuad = { modo: "pct", puntos: [], activo: -1 };
+
+  function refQ50(p, metrica) {
+    for (var i = 0; i < datos.referencias.length; i++) {
+      var r = datos.referencias[i];
+      if (r.grupo === p.marcas.grupo_referencia && r.metrica === metrica) return r.q50;
+    }
+    throw new Error("Sin referencia para " + p.clave + " / " + metrica);
+  }
+
+  // "celda|Área|Tipo|Nivel" → "Área · Tipo profesionales"; "segmento|Tipo|Nivel" → "Tipo profesionales (todas las áreas)".
+  function nombreGrupo(p) {
+    var g = p.marcas.grupo_referencia.split("|");
+    var tn = g[g.length - 2] + " " + g[g.length - 1].replace("Carreras ", "").toLowerCase();
+    return g[0] === "celda" ? g[1] + " · " + tn : tn + " (todas las áreas)";
+  }
+
+  function prepararCuadrantes() {
+    cuad.puntos = comparables.map(function (p) {
+      var r1 = refQ50(p, "p50_anio_1"), rp = refQ50(p, "p50_pct_1_5"), rd = refQ50(p, "p50_delta_1_5");
+      return { p: p, razon: p.percentiles.anio_1.p50 / r1, ref1: r1, refPct: rp, refDelta: rd,
+               yPct: p.percentiles.p50_pct_1_5 - rp, yPesos: p.percentiles.p50_delta_1_5 - rd };
+    }).sort(function (a, b) { return a.razon - b.razon || colador.compare(a.p.nombre, b.p.nombre); });
+
+    var botones = { pct: document.getElementById("c-modo-pct"), pesos: document.getElementById("c-modo-pesos") };
+    Object.keys(botones).forEach(function (modo) {
+      botones[modo].addEventListener("click", function () {
+        cuad.modo = modo;
+        botones.pct.setAttribute("aria-pressed", String(modo === "pct"));
+        botones.pesos.setAttribute("aria-pressed", String(modo === "pesos"));
+        pintarCuadrantes(true);
+      });
+    });
+
+    var cuerpo = document.querySelector("#cuadrantes-tabla tbody");
+    cuad.puntos.filter(function (q) { return q.p.posicion.cambia_cuadrante; })
+      .sort(function (a, b) { return colador.compare(a.p.nombre, b.p.nombre); })
+      .forEach(function (q) {
+        var tr = el("tr");
+        [["Carrera", q.p.nombre + " (" + q.p.tipo + ")", "td--titulo"],
+         ["Crecimiento %", pctSigno(q.p.percentiles.p50_pct_1_5), "num"],
+         ["Crecimiento $", pesosSigno(q.p.percentiles.p50_delta_1_5), "num"],
+         ["Cuadrante en %", q.p.posicion.cuadrante_pct, ""],
+         ["Cuadrante en pesos", q.p.posicion.cuadrante_pesos, ""]].forEach(function (c) {
+          var td = el("td", c[2] || null, c[1]);
+          td.setAttribute("data-rotulo", c[0]);
+          tr.appendChild(td);
+        });
+        cuerpo.appendChild(tr);
+      });
+    alCambiarAncho(document.getElementById("cuadrantes-lienzo"), function () { pintarCuadrantes(false); });
+  }
+
+  function pintarCuadrantes(animar) {
+    var lienzo = document.getElementById("cuadrantes-lienzo");
+    var figura = document.getElementById("cuadrantes");
+    var caja = document.getElementById("cuadrantes-tooltip");
+    var puntos = cuad.puntos, modo = cuad.modo;
+    var yDe = function (q) { return modo === "pct" ? q.yPct : q.yPesos; };
+    var clave = modo === "pct" ? "cuadrante_pct" : "cuadrante_pesos";
+
+    var W = lienzo.clientWidth || 800;
+    var angosto = W < 600;
+    var H = angosto ? Math.round(W * 1.05) : 460;
+    var m = { izq: angosto ? 50 : 66, der: 10, arriba: 10, abajo: 40 };
+    var razones = puntos.map(function (q) { return q.razon; });
+    var lx0 = Math.log2(Math.min.apply(null, razones) * 0.92), lx1 = Math.log2(Math.max.apply(null, razones) * 1.06);
+    var ys = puntos.map(yDe);
+    var y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+    var holgura = (y1 - y0) * 0.04; y0 -= holgura; y1 += holgura;
+    // Franjas reservadas arriba y abajo para los rótulos de los cuadrantes: los datos se dibujan
+    // en el área interior, así ningún punto queda debajo de un rótulo.
+    var franja = angosto ? 48 : 36;
+    function x(r) { return m.izq + (Math.log2(r) - lx0) / (lx1 - lx0) * (W - m.izq - m.der); }
+    function y(v) { return m.arriba + franja + (1 - (v - y0) / (y1 - y0)) * (H - m.arriba - m.abajo - 2 * franja); }
+    // Rango de valores que cubre toda el área (incluidas las franjas), para la grilla.
+    var yTope = y0 + (y1 - y0) * (H - m.arriba - m.abajo - franja) / (H - m.arriba - m.abajo - 2 * franja);
+    var yPiso = y1 - (y1 - y0) * (H - m.arriba - m.abajo - franja) / (H - m.arriba - m.abajo - 2 * franja);
+
+    // Reutiliza los puntos existentes para que el cambio de % a pesos se anime (transición CSS
+    // del transform); solo se redibuja todo al cambiar el ancho.
+    var svg = lienzo.querySelector("svg");
+    var reusar = animar && svg && Number(svg.getAttribute("data-ancho")) === W;
+    if (!reusar) {
+      svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "img", "data-ancho": W });
+      svgEl("g", {}, "c-fondo", svg);
+      var capa = svgEl("g", {}, "c-puntos", svg);
+      puntos.forEach(function (q, i) {
+        var g = svgEl("g", { "data-i": i }, "c-punto" + (q.p.posicion.cambia_cuadrante ? " c-punto--cambia" : "") +
+          (q.p.marcas.cohorte_atipica || q.p.marcas.composicion_edad ? " c-punto--aviso" : ""), capa);
+        svgEl("circle", { cx: 0, cy: 0, r: q.p.posicion.cambia_cuadrante ? (angosto ? 4 : 5) : (angosto ? 2.8 : 3.5) }, null, g);
+        g.style.transition = "none";   // sin animación al aparecer
+      });
+      svgEl("g", {}, "c-frente", svg);
+      lienzo.replaceChildren(svg);
+    }
+    svg.setAttribute("aria-label", puntos.length + " carreras comparables según sueldo de entrada y crecimiento " +
+      (modo === "pct" ? "en porcentaje" : "en pesos") + ", relativos a la carrera típica de su grupo.");
+
+    // Fondo: grilla, ejes y rótulos (se redibuja en cada modo: la escala Y cambia).
+    var fondo = svg.querySelector(".c-fondo");
+    fondo.replaceChildren();
+    [0.5, 0.75, 1, 1.5, 2, 2.5].forEach(function (r) {
+      if (Math.log2(r) < lx0 || Math.log2(r) > lx1) return;
+      svgEl("line", { x1: x(r), x2: x(r), y1: m.arriba, y2: H - m.abajo }, r === 1 ? "c-centro" : "g-grilla", fondo);
+      var t = svgEl("text", { x: x(r), y: H - m.abajo + 16, "text-anchor": "middle" }, "g-eje-texto", fondo);
+      // Hasta 2 decimales: con 1 decimal, ×0,75 se leía ×0,8.
+      t.textContent = r === 1 ? "típico" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
+    });
+    var tituloX = svgEl("text", { x: (m.izq + W - m.der) / 2, y: H - 4, "text-anchor": "middle" }, "c-titulo-eje", fondo);
+    tituloX.textContent = "Sueldo al 1er año respecto del típico de su grupo";
+    var pasoY = modo === "pct" ? 20 : ((y1 - y0) > 1.2e6 ? 500000 : 250000);
+    for (var v = Math.ceil(yPiso / pasoY) * pasoY; v <= yTope; v += pasoY) {
+      svgEl("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v) }, v === 0 ? "c-centro" : "g-grilla", fondo);
+      var ty = svgEl("text", { x: m.izq - 6, y: y(v) + 4, "text-anchor": "end" }, "g-eje-texto", fondo);
+      ty.textContent = v === 0 ? "típico" : modo === "pct" ? (v > 0 ? "+" : "−") + fmtEntero.format(Math.abs(v)) + " pp"
+                                                         : (v > 0 ? "+" : "−") + pesosCorto(Math.abs(v));
+    }
+
+    // Esquinas: nombre del cuadrante y conteo (desde `posicion`, la clasificación del análisis).
+    var frente = svg.querySelector(".c-frente");
+    frente.replaceChildren();
+    var conteo = {};
+    puntos.forEach(function (q) { conteo[q.p.posicion[clave]] = (conteo[q.p.posicion[clave]] || 0) + 1; });
+    // En pantallas angostas el rótulo va en dos líneas (si no, los de izquierda y derecha chocan).
+    var abajoY = H - m.abajo - (angosto ? 36 : 22);
+    [["entrada baja · progresa más", m.izq + 6, m.arriba + 12, "start"],
+     ["entrada alta · progresa más", W - m.der - 6, m.arriba + 12, "end"],
+     ["entrada baja · progresa menos", m.izq + 6, abajoY, "start"],
+     ["entrada alta · progresa menos", W - m.der - 6, abajoY, "end"]].forEach(function (e) {
+      var lineas = angosto ? e[0].split(" · ") : [e[0]];
+      lineas.forEach(function (l, k) {
+        var t = svgEl("text", { x: e[1], y: e[2] + k * 12, "text-anchor": e[3] }, "c-cuadrante", frente);
+        t.textContent = l;
+      });
+      var c = svgEl("text", { x: e[1], y: e[2] + (lineas.length - 1) * 12 + 16, "text-anchor": e[3] }, "c-conteo", frente);
+      c.textContent = fmtEntero.format(conteo[e[0]] || 0) + " carreras";
+    });
+
+    // Puntos: el transform lleva la posición; la transición CSS anima el cambio de modo.
+    svg.querySelectorAll(".c-punto").forEach(function (g) {
+      var q = puntos[Number(g.getAttribute("data-i"))];
+      if (reusar) g.style.transition = "";
+      g.style.transform = "translate(" + x(q.razon) + "px," + y(yDe(q)) + "px)";
+    });
+
+    function mostrar(i) {
+      cuad.activo = i;
+      svg.querySelectorAll(".c-punto--activo").forEach(function (g) { g.classList.remove("c-punto--activo"); });
+      if (i < 0) { caja.hidden = true; return; }
+      var q = puntos[i], p = q.p;
+      var g = svg.querySelector('.c-punto[data-i="' + i + '"]');
+      g.classList.add("c-punto--activo");
+      g.parentNode.appendChild(g);   // al frente
+      var lineas = [
+        "Se compara con: " + nombreGrupo(p),
+        "1er año " + pesos(p.percentiles.anio_1.p50) + (Math.abs(q.razon - 1) < 1e-9
+          ? " (es la carrera típica de su grupo)"
+          : " (×" + fmtUno.format(Math.round(q.razon * 100) / 100).replace(/,0$/, "") + " del típico, " + pesos(q.ref1) + ")"),
+        "Crece " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
+        "Típico del grupo: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
+        p.posicion[clave]
+      ];
+      if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]);
+      llenarTooltip(caja, p, lineas);
+      var escala = lienzo.clientWidth / W;
+      ubicarTooltip(caja, figura, x(q.razon) * escala, y(yDe(q)) * escala);
+    }
+    svg.onpointermove = svg.onpointerdown = function (e) {
+      var rc = svg.getBoundingClientRect(), k = W / rc.width;
+      var px = (e.clientX - rc.left) * k, py = (e.clientY - rc.top) * k;
+      var mejor = -1, dmin = 22 * 22;   // zona sensible: 22 px alrededor del punto
+      puntos.forEach(function (q, i) {
+        var dx = x(q.razon) - px, dy = y(yDe(q)) - py, d = dx * dx + dy * dy;
+        if (d < dmin) { dmin = d; mejor = i; }
+      });
+      mostrar(mejor);
+    };
+    svg.onpointerleave = function () { mostrar(-1); };
+    lienzo.tabIndex = 0;
+    lienzo.setAttribute("aria-describedby", "cuadrantes-ayuda");
+    lienzo.onkeydown = function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        var i = cuad.activo < 0 ? 0 : cuad.activo + (e.key === "ArrowRight" ? 1 : -1);
+        mostrar(Math.max(0, Math.min(puntos.length - 1, i)));
+      } else if (e.key === "Escape") { mostrar(-1); }
+    };
+    lienzo.onblur = function () { mostrar(-1); };
+    if (cuad.activo >= 0 && reusar) mostrar(cuad.activo);
+  }
+
   // ------------------------------------------------------------- mancuerna con bandas
   // Un segmento a la vez (decisión de diseño). Eje común en pesos para todas las filas del
   // segmento, de P10 mínimo a P90 máximo de las carreras mostradas.
@@ -741,6 +938,8 @@
   pintarPeine();
   alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();
+  prepararCuadrantes();
+  pintarCuadrantes(false);
   prepararMancuerna();
   pintarMancuerna();
   pintarSegmentos();
