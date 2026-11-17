@@ -566,6 +566,18 @@ a.hallazgo__accion { color: var(--tinta); }
 .g-guia { stroke: var(--tinta-suave); stroke-width: 1; }
 .g-linea { stroke: var(--tinta-suave); stroke-opacity: 0.55; }
 .g-linea--timbre { stroke: var(--timbre); stroke-opacity: 1; }
+/* ▼ bajo el eje: carreras que ganan menos al 5° año (en tinta: el violeta ya significa edad). */
+.g-marca-baja { fill: var(--tinta); font-size: 9px; }
+.marca-baja { font-size: 0.6875rem; color: var(--tinta); margin-right: 0.35rem; }
+.peine-bajan { margin-top: 1rem; max-width: 64ch; }
+.peine-bajan__titulo { font-size: var(--t-0); color: var(--tinta-suave); }
+.peine-bajan__lista { list-style: none; margin: 0.35rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-size: var(--t-0); }
+.peine-bajan__lista li { display: inline-flex; gap: 0.4rem; align-items: baseline; }
+.peine-bajan__cifra { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; color: var(--tinta-suave); }
+/* Ejemplo del hallazgo (b) en los cuadrantes: anillo en tinta y nombre con halo de papel. */
+/* .c-punto delante: sin él ganaba ".c-punto circle" (más específica) y rellenaba el anillo. */
+.c-punto .c-anillo-ejemplo { fill: none; stroke: var(--tinta); stroke-width: 1.5; }
+.c-rotulo-ejemplo { fill: var(--tinta); font: 600 0.75rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
 .g-anio1 { fill: var(--anio1); }
 .g-anio5 { fill: var(--anio5); }
 .g-resalte { fill: var(--regla); opacity: 0.55; }

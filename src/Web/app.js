@@ -159,6 +159,7 @@
     if (t.href) {
       accion = el("a", "hallazgo__accion", t.accion);
       accion.href = t.href;
+      if (t.alClic) accion.addEventListener("click", t.alClic);
     } else {
       accion = el("button", "hallazgo__accion enlace-ficha", t.accion);
       accion.type = "button";
@@ -221,7 +222,8 @@
         parece: "Al quinto año siempre se gana más que al primero.",
         cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
         rotulo: "carreras técnicas ganan menos al quinto año que al primero",
-        nodos: nodosA, accion: "Verlas en el peine ↓", href: "#t-peine"
+        nodos: nodosA, accion: "Verlas en el peine ↓", href: "#t-peine",
+        alClic: function () { elegirNivelPeine("Carreras Técnicas"); }
       }));
     }
 
@@ -480,30 +482,51 @@
   }
 
   // ------------------------------------------------------------- peine (portada)
-  // Las carreras comparables, cada una una línea del P50 del 1er año al del 5°, ordenadas por
-  // el P50 del 1er año. Violeta = marca de composición por edad (en cualquier dirección).
-  var peine = { lista: [], activo: -1 };
+  // Las carreras comparables de UN nivel (N3: técnicas y profesionales no comparten escala ni
+  // mediana), cada una una línea del P50 del 1er año al del 5°, ordenadas por el P50 del 1er año.
+  // Violeta = marca de composición por edad; ▼ = gana menos al 5° año. Los conteos del texto y
+  // las carreras marcadas vienen de analytics.hallazgo_edad: aquí no se cuenta nada.
+  var peine = { lista: [], activo: -1, nivel: "Carreras Técnicas" };
+
+  function elegirNivelPeine(nivel) {
+    peine.nivel = nivel;
+    peine.activo = -1;
+    document.getElementById("peine-nivel-tec").setAttribute("aria-pressed", String(nivel === "Carreras Técnicas"));
+    document.getElementById("peine-nivel-pro").setAttribute("aria-pressed", String(nivel === "Carreras Profesionales"));
+    pintarPeine();
+  }
+
+  function prepararPeine() {
+    document.getElementById("peine-nivel-tec").addEventListener("click", function () { elegirNivelPeine("Carreras Técnicas"); });
+    document.getElementById("peine-nivel-pro").addEventListener("click", function () { elegirNivelPeine("Carreras Profesionales"); });
+  }
 
   function pintarPeine() {
     var lienzo = document.getElementById("peine-lienzo");
     var figura = document.getElementById("peine");
     var caja = document.getElementById("peine-tooltip");
-    var lista = comparables.slice().sort(function (a, b) {
+    var nv = nivelEdad(peine.nivel);
+    var nombreNivel = peine.nivel.replace("Carreras ", "").toLowerCase();
+    var lista = comparables.filter(function (p) { return p.nivel === peine.nivel; }).sort(function (a, b) {
       return a.percentiles.anio_1.p50 - b.percentiles.anio_1.p50 || colador.compare(a.nombre, b.nombre);
     });
     peine.lista = lista;
+    var bajan = Object.create(null);
+    nv.claves_bajan.forEach(function (k) { bajan[k] = true; });
 
-    var bajan = lista.filter(function (p) { return p.percentiles.p50_pct_1_5 < 0; }).length;
-    var conEdad = lista.filter(function (p) { return p.marcas.composicion_edad; }).length;
-    document.getElementById("peine-bajada").textContent =
-      "Las " + fmtEntero.format(lista.length) + " carreras comparables. Cada línea va del sueldo típico de quienes se titularon hace un año al de quienes se titularon hace cinco. Casi todas suben; " +
-      fmtEntero.format(bajan) + " bajan. En violeta, las " + fmtEntero.format(conEdad) +
-      " en que los titulados recientes son mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
+    var texto = "Las " + fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel +
+      " comparables. Cada línea va del sueldo típico de quienes se titularon hace un año al de quienes se titularon hace cinco. " +
+      (nv.n_negativos ? "De ellas, " + fmtEntero.format(nv.n_negativos) + " ganan menos al 5° año que al 1° (▼). " : "Todas suben. ");
+    if (nv.n_marca_edad) {
+      texto += "En violeta, " + (nv.n_marca_edad === 1 ? "la que tiene" : "las " + fmtEntero.format(nv.n_marca_edad) + " que tienen") +
+        " titulados recientes mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
+    }
+    document.getElementById("peine-bajada").textContent = texto;
 
     var W = lienzo.clientWidth || 800;
     var angosto = W < 600;
     var H = angosto ? 260 : 340;
-    var m = { izq: angosto ? 44 : 56, der: 8, arriba: 22, abajo: 8 };
+    var m = { izq: angosto ? 44 : 56, der: 8, arriba: 22, abajo: 18 };   // abajo: fila de ▼
     var n = lista.length;
     var paso = (W - m.izq - m.der) / n;
     var valores = [];
@@ -513,7 +536,8 @@
     function y(v) { return m.arriba + (1 - (v - lo) / (hi - lo)) * (H - m.arriba - m.abajo); }
 
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "img",
-      "aria-label": n + " carreras comparables. En " + bajan + " el sueldo típico del 5° año es menor que el del 1er año." });
+      "aria-label": n + " carreras " + nombreNivel + " comparables. En " + nv.n_negativos +
+        " el sueldo típico del 5° año es menor que el del 1er año." });
     marcasPesos(lo, hi).forEach(function (v) {
       svgEl("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v) }, "g-grilla", svg);
       var t = svgEl("text", { x: m.izq - 6, y: y(v) + 4, "text-anchor": "end" }, "g-eje-texto", svg);
@@ -531,6 +555,10 @@
             "g-linea" + (edad ? " g-linea--timbre" : ""), svg);
       svgEl("circle", { cx: x(i), cy: y1, r: r }, "g-anio1", svg);
       svgEl("circle", { cx: x(i), cy: y5, r: r }, "g-anio5", svg);
+      if (bajan[p.clave + "|" + p.tipo]) {
+        var tri = svgEl("text", { x: x(i), y: H - 3, "text-anchor": "middle" }, "g-marca-baja", svg);
+        tri.textContent = "▼";
+      }
     });
 
     lienzo.replaceChildren(svg);
@@ -544,13 +572,23 @@
       var i = lista.indexOf(p);
       var yRot = m.arriba + 10 + k * 18;
       var t = svgEl("text", { x: m.izq + 8, y: yRot }, "g-rotulo", svg);
-      t.textContent = p.nombre + (p.tipo !== "Universidad" ? " (" + p.tipo + ")" : "") + " " + pctSigno(p.percentiles.p50_pct_1_5);
+      var nombre = p.nombre + (p.tipo !== "Universidad" ? " (" + p.tipo + ")" : "");
+      var cifra = " " + pctSigno(p.percentiles.p50_pct_1_5);
+      t.textContent = nombre + cifra;
+      // En pantallas angostas el nombre se acorta con "…" (la cifra queda entera): si no, se cortaba
+      // en el borde del gráfico (medido a 320 px con Técnico en Computación e Informática).
+      var cabe = W - m.der - (m.izq + 8) - 12;
+      while (t.getComputedTextLength() > cabe && nombre.length > 8) {
+        nombre = nombre.slice(0, -2);
+        t.textContent = nombre.replace(/[\s,(]+$/, "") + "…" + cifra;
+      }
       var fin = m.izq + 8 + t.getComputedTextLength() + 6;
       var yDot = k === 0 ? Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50))
                          : Math.max(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50));
       svgEl("polyline", { points: fin + "," + (yRot - 4) + " " + (x(i) - 4) + "," + (yRot - 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4)),
                           fill: "none" }, "g-guia", svg);
     });
+    pintarPeineBajan(lista, bajan, nombreNivel);
     lienzo.tabIndex = 0;
     lienzo.setAttribute("aria-describedby", "peine-ayuda");
 
@@ -590,6 +628,29 @@
     lienzo.onblur = function () { mostrar(-1); };
   }
 
+  // Las que bajan, por nombre y con su ficha: en el gráfico serían rótulos encimados (a 390 px hay
+  // menos de 4 px por carrera), y como lista se leen también sin ver el gráfico.
+  function pintarPeineBajan(lista, bajan, nombreNivel) {
+    var caja = document.getElementById("peine-bajan");
+    caja.replaceChildren();
+    var marcadas = lista.filter(function (p) { return bajan[p.clave + "|" + p.tipo]; })
+      .sort(function (a, b) { return a.percentiles.p50_pct_1_5 - b.percentiles.p50_pct_1_5; });
+    if (!marcadas.length) return;
+    caja.appendChild(el("p", "peine-bajan__titulo", "▼ Las " + fmtEntero.format(marcadas.length) + " " +
+      nombreNivel + " que ganan menos al 5° año:"));
+    var ul = el("ul", "peine-bajan__lista");
+    marcadas.forEach(function (p) {
+      var li = el("li");
+      var b = el("button", "enlace-ficha", p.nombre + (p.tipo !== "Universidad" ? " (" + p.tipo + ")" : ""));
+      b.type = "button";
+      b.addEventListener("click", function () { abrirFicha(p, true); });
+      li.appendChild(b);
+      li.appendChild(el("span", "peine-bajan__cifra", pctSigno(p.percentiles.p50_pct_1_5)));
+      ul.appendChild(li);
+    });
+    caja.appendChild(ul);
+  }
+
   // ------------------------------------------------------------- cuadrantes (W4)
   // Ejes RELATIVOS a la referencia de cada carrera (decisión aprobada): x = P50 1er año ÷
   // mediana de su grupo (escala log: ×0,5 y ×2 equidistan de "típico"); y = crecimiento −
@@ -610,6 +671,11 @@
     var g = p.marcas.grupo_referencia.split("|");
     var tn = g[g.length - 2] + " " + g[g.length - 1].replace("Carreras ", "").toLowerCase();
     return g[0] === "celda" ? g[1] + " · " + tn : tn + " (todas las áreas)";
+  }
+
+  function esEjemploB(p) {
+    var e = datos.hallazgos.pct_pesos.ejemplo;
+    return !!e && p.clave === e.clave && p.tipo === e.tipo;
   }
 
   function prepararCuadrantes() {
@@ -687,7 +753,17 @@
           (q.p.marcas.cohorte_atipica || q.p.marcas.composicion_edad ? " c-punto--aviso" : ""), capa);
         svgEl("circle", { cx: 0, cy: 0, r: q.p.posicion.cambia_cuadrante ? (angosto ? 4 : 5) : (angosto ? 2.8 : 3.5) }, null, g);
         g.style.transition = "none";   // sin animación al aparecer
+        // N3: el ejemplo del hallazgo (b) lleva anillo y nombre DENTRO de su grupo, así el rótulo
+        // viaja con el punto al animar % ↔ $ y se ve que cambia de cuadrante.
+        if (esEjemploB(q.p)) {
+          g.classList.add("c-punto--ejemplo");
+          svgEl("circle", { cx: 0, cy: 0, r: angosto ? 8 : 10 }, "c-anillo-ejemplo", g);
+          var rot = svgEl("text", { y: angosto ? -12 : -15 }, "c-rotulo-ejemplo", g);
+          rot.textContent = q.p.nombre;
+        }
       });
+      var ejemplo = capa.querySelector(".c-punto--ejemplo");
+      if (ejemplo) capa.appendChild(ejemplo);   // al frente de los demás puntos
       svgEl("g", {}, "c-frente", svg);
       lienzo.replaceChildren(svg);
     }
@@ -739,6 +815,15 @@
       var q = puntos[Number(g.getAttribute("data-i"))];
       if (reusar) g.style.transition = "";
       g.style.transform = "translate(" + x(q.razon) + "px," + y(yDe(q)) + "px)";
+      var rot = g.querySelector(".c-rotulo-ejemplo");
+      if (rot) {
+        // Encima del punto (al lado tapaba a un vecino en el modo %), centrado; cerca de un
+        // borde se ancla hacia adentro para no salirse del gráfico.
+        var xp = x(q.razon), mitad = rot.getComputedTextLength() / 2 + 4;
+        var ancla = xp - mitad < m.izq ? "start" : xp + mitad > W - m.der ? "end" : "middle";
+        rot.setAttribute("x", ancla === "start" ? -8 : ancla === "end" ? 8 : 0);
+        rot.setAttribute("text-anchor", ancla);
+      }
     });
 
     function mostrar(i) {
@@ -1521,6 +1606,7 @@
 
   iniciarTema();
   pintarPortada();
+  prepararPeine();
   pintarPeine();
   alCambiarAncho(document.getElementById("peine-lienzo"), pintarPeine);
   pintarHallazgos();

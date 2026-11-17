@@ -176,6 +176,7 @@ SELECT json_build_object(
                      'nivel', nivel_carrera,
                      'n_comparables', n_comparables, 'mediana_p50_pct', round(mediana_p50_pct, 1),
                      'n_negativos', n_negativos, 'claves_bajan', to_json(claves_bajan), 'n_con_edad', n_con_edad,
+                     'n_marca_edad', n_marca_edad,
                      'mayores30', json_build_array(round(100 * mayores30_p5, 1), round(100 * mayores30_p1, 1)))
                      ORDER BY nivel_carrera DESC)   -- técnicas primero: ahí está el hallazgo
                  FROM analytics.hallazgo_edad),

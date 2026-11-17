@@ -64,7 +64,13 @@
 
     <section class="bloque peine" aria-labelledby="t-peine">
       <h3 id="t-peine" class="bloque__titulo">Cada línea es una carrera</h3>
-      <p class="bloque__texto" id="peine-bajada"></p>
+      <!-- N3: un nivel a la vez. Técnicas y profesionales no se comparan en una misma escala ni
+           mediana; por defecto Técnicas, donde está el hallazgo (a). -->
+      <div class="conmutador" role="group" aria-label="Nivel de las carreras">
+        <button type="button" id="peine-nivel-tec" aria-pressed="true">Técnicas</button>
+        <button type="button" id="peine-nivel-pro" aria-pressed="false">Profesionales</button>
+      </div>
+      <p class="bloque__texto" id="peine-bajada" aria-live="polite"></p>
       <figure class="grafico" id="peine">
         <div class="grafico__lienzo" id="peine-lienzo"></div>
         <div class="tooltip" id="peine-tooltip" hidden></div>
@@ -72,9 +78,11 @@
           <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
           <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
           <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
-          <span class="grafico__eje-x">Carreras ordenadas por sueldo típico del 1er año, de menor a mayor →</span>
+          <span class="leyenda-item"><span class="marca-baja" aria-hidden="true">▼</span>Gana menos al 5° año</span>
+          <span class="grafico__eje-x">Carreras del nivel elegido, ordenadas por sueldo típico del 1er año, de menor a mayor → (escala propia de cada nivel)</span>
         </figcaption>
       </figure>
+      <div class="peine-bajan" id="peine-bajan"></div>
       <p class="nota" id="peine-ayuda">Con el teclado: enfoca el gráfico, recórrelo con las flechas ← → y abre la ficha de una carrera con Enter.</p>
     </section>
 

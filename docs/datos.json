@@ -532,7 +532,7 @@
     "objeto": "edad_mismo_grupo",
     "estado": "OK",
     "umbral": "conteos y medianas de edad = recálculo por nivel sobre las carreras que bajan con marca de edad",
-    "detalle": "Carreras Profesionales: 2 de 125 bajan, 1 con edad; Carreras Técnicas: 7 de 85 bajan, 6 con edad"
+    "detalle": "Carreras Profesionales: 2 de 125 bajan, 1 con edad; 6 con marca de edad; Carreras Técnicas: 7 de 85 bajan, 6 con edad; 18 con marca de edad"
    },
    {
     "control": "analytics_hallazgos",
@@ -1674,6 +1674,7 @@
      "TECNICO JURIDICO|IP"
     ],
     "n_con_edad": 6,
+    "n_marca_edad": 18,
     "mayores30": [
      32.3,
      55.6
@@ -1689,6 +1690,7 @@
      "INGENIERIA EN PREVENCION DE RIESGOS|IP"
     ],
     "n_con_edad": 1,
+    "n_marca_edad": 6,
     "mayores30": [
      32.5,
      64.6
