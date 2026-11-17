@@ -15,6 +15,22 @@
 -- Requiere 01 a 06.
 
 -- --------------------------------------------------------------------------
+-- Diferencia de cada par representativo con la típica de su grupo (ficha unificada)
+-- --------------------------------------------------------------------------
+CREATE VIEW analytics.v_dif_grupo AS
+SELECT po.clave_carrera_generica, po.tipo_institucion,
+       max(m.valor - r.q50) FILTER (WHERE m.metrica = 'p50_anio_1')    AS p50_anio_1,
+       max(m.valor - r.q50) FILTER (WHERE m.metrica = 'p50_anio_5')    AS p50_anio_5,
+       max(m.valor - r.q50) FILTER (WHERE m.metrica = 'emp1_nacional') AS emp1_nacional
+FROM analytics.posicion po
+JOIN analytics.miembro_referencia m
+  ON m.grupo_id = po.grupo_id
+ AND m.clave_carrera_generica = po.clave_carrera_generica
+ AND m.tipo_institucion = po.tipo_institucion
+JOIN analytics.referencia r ON r.grupo_id = m.grupo_id AND r.metrica = m.metrica
+GROUP BY 1, 2;
+
+-- --------------------------------------------------------------------------
 -- Un objeto por par, con todo lo que muestra la ficha por carrera
 -- --------------------------------------------------------------------------
 CREATE VIEW analytics.v_par_json AS
@@ -62,10 +78,17 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'asimetria', json_build_array(round(b.asimetria_1, 2), round(b.asimetria_5, 2))),
     'posicion', CASE WHEN po.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(
         'cuartil_p50_anio_1', po.cuartil_p50_anio_1, 'cuartil_p50_pct_1_5', po.cuartil_p50_pct_1_5,
-        'cuartil_p50_delta_1_5', po.cuartil_p50_delta_1_5,
+        'cuartil_p50_delta_1_5', po.cuartil_p50_delta_1_5, 'entrada_alta', po.entrada_alta,
         'cuadrante_pct', po.cuadrante_pct, 'cuadrante_pesos', po.cuadrante_pesos,
         'progreso_pct', po.progreso_pct, 'progreso_pesos', po.progreso_pesos,
         'cambia_cuadrante', po.cambia_cuadrante) END,
+    -- Diferencia con la típica de su grupo (valor − mediana ponderada) en las tres cifras de la
+    -- ficha; la web la usa en el título de acción ("entra ganando $96 mil más que la típica").
+    'dif_grupo', CASE WHEN po.clave_carrera_generica IS NULL THEN NULL ELSE (
+        SELECT json_build_object('p50_anio_1', round(dg.p50_anio_1), 'p50_anio_5', round(dg.p50_anio_5),
+                                 'emp1_nacional', round(dg.emp1_nacional, 1))
+        FROM analytics.v_dif_grupo dg
+        WHERE dg.clave_carrera_generica = p.clave_carrera_generica AND dg.tipo_institucion = p.tipo_institucion) END,
     'empleabilidad_nacional', json_build_array(e.empleabilidad_1er_anio, e.empleabilidad_2do_anio),
     'duracion', json_build_object('formal', e.duracion_formal_semestres, 'real', e.duracion_real_semestres),
     'titulados_2024', json_build_object('total', sx.total, 'mujeres', sx.mujeres, 'hombres', sx.hombres,
@@ -119,6 +142,22 @@ LEFT JOIN analytics.dispersion_empleabilidad de1
       AND de1.tipo_institucion = p.tipo_institucion AND de1.anio = 1;
 
 -- --------------------------------------------------------------------------
+-- Ficha de ejemplo de la Parte II: la carrera representativa con más titulados (peso SIES de
+-- ambas ventanas) que NO es la mediana de su grupo en ninguna de las tres cifras de la ficha.
+-- Si fuera la mediana (Ingeniería Comercial pesa el 40 % de su grupo), la primera ficha que se
+-- ve diría "es la típica" tres veces y no mostraría ninguna comparación.
+-- Desempate por clave y tipo: determinista.
+-- --------------------------------------------------------------------------
+CREATE VIEW analytics.v_ficha_ejemplo AS
+SELECT p.clave_carrera_generica, p.tipo_institucion, p.peso
+FROM analytics.par p
+JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
+WHERE p.representativo
+  AND d.p50_anio_1 <> 0 AND d.p50_anio_5 <> 0 AND d.emp1_nacional <> 0
+ORDER BY p.peso DESC, p.clave_carrera_generica, p.tipo_institucion
+LIMIT 1;
+
+-- --------------------------------------------------------------------------
 -- El documento completo
 -- --------------------------------------------------------------------------
 CREATE VIEW analytics.v_datos_json AS
@@ -130,7 +169,10 @@ SELECT json_build_object(
             'SIES: Titulados 2017-2025'),
         'unidad_ingresos', 'pesos de septiembre de 2025; ingreso bruto mensual; solo titulados con ingreso >= sueldo mínimo',
         'comparacion', 'transversal: el 1er y el 5° año son cohortes distintas, no las mismas personas',
-        'rotulo_empleabilidad', '% con ingreso >= sueldo mínimo entre titulados con registro en el SII'),
+        'rotulo_empleabilidad', '% con ingreso >= sueldo mínimo entre titulados con registro en el SII',
+        -- Ficha que abre la Parte II (regla en analytics.v_ficha_ejemplo); la web dice por qué.
+        'ficha_ejemplo', (SELECT json_build_object('clave', clave_carrera_generica, 'tipo', tipo_institucion)
+                          FROM analytics.v_ficha_ejemplo)),
     'parametros', (SELECT json_agg(json_build_object('nombre', nombre, 'valor', valor,
                                                      'descripcion', descripcion, 'origen', origen) ORDER BY nombre)
                    FROM analytics.parametro),
@@ -167,11 +209,21 @@ SELECT json_build_object(
                         'grupo', grupo_id, 'metrica', metrica, 'tipo_grupo', tipo_grupo, 'area', area_cine13,
                         'tipo', tipo_institucion, 'nivel', nivel_carrera, 'n_pares', n_pares,
                         'peso_max_pct', round(100 * peso_max_share, 1),
-                        'q25', round(q25, CASE WHEN metrica = 'p50_pct_1_5' THEN 1 ELSE 0 END),
-                        'q50', round(q50, CASE WHEN metrica = 'p50_pct_1_5' THEN 1 ELSE 0 END),
-                        'q75', round(q75, CASE WHEN metrica = 'p50_pct_1_5' THEN 1 ELSE 0 END))
+                        'q25', round(q25, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
+                        'q50', round(q50, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
+                        'q75', round(q75, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END))
                         ORDER BY grupo_id, metrica)
                     FROM analytics.referencia),
+    -- Miembros de cada grupo de comparación (las "vecinas" de la ficha). Salen de
+    -- miembro_referencia y no se deducen en la web: un segmento incluye también a las carreras
+    -- que se comparan con su celda (Universidad profesionales: 91 miembros, 14 lo usan).
+    'grupos', (SELECT json_object_agg(grupo_id, miembros ORDER BY grupo_id)
+               FROM (SELECT grupo_id,
+                            json_agg(json_build_object('clave', clave_carrera_generica, 'tipo', tipo_institucion)
+                                     ORDER BY clave_carrera_generica, tipo_institucion) AS miembros
+                     FROM (SELECT DISTINCT grupo_id, clave_carrera_generica, tipo_institucion
+                           FROM analytics.miembro_referencia) d
+                     GROUP BY grupo_id) g),
     -- Cifras y ejemplos de los hallazgos de portada (06_hallazgos.sql): la web y el README solo redactan.
     'hallazgos', json_build_object(
         -- Un objeto por nivel (técnicas, profesionales): nunca una mediana que mezcle ambos.
@@ -255,4 +307,57 @@ SELECT 'analytics_exportacion', 'pares_json', CASE WHEN n_json = n_par THEN 'OK'
        n_json, 'un objeto JSON por par',
        format('%s objetos en v_par_json; %s pares', n_json, n_par)
 FROM (SELECT (SELECT count(*) FROM analytics.v_par_json) AS n_json,
-             (SELECT count(*) FROM analytics.par) AS n_par) x;
+             (SELECT count(*) FROM analytics.par) AS n_par) x
+UNION ALL
+-- La ficha de ejemplo cumple su regla, recalculada sin ORDER BY/LIMIT y sin v_dif_grupo:
+-- representativa, distinta de la mediana en las tres cifras y sin otra así con más titulados.
+SELECT 'analytics_exportacion', 'ficha_ejemplo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'ficha de ejemplo = representativa de mayor peso que no es la mediana de su grupo en ninguna de las 3 cifras',
+       format('%s problemas; ejemplo: %s (%s), peso %s', n,
+              (SELECT clave_carrera_generica FROM analytics.v_ficha_ejemplo),
+              (SELECT tipo_institucion FROM analytics.v_ficha_ejemplo),
+              (SELECT peso FROM analytics.v_ficha_ejemplo))
+FROM (
+    WITH es_mediana AS (
+        SELECT po.clave_carrera_generica, po.tipo_institucion,
+               bool_or(m.valor = r.q50) AS alguna
+        FROM analytics.posicion po
+        JOIN analytics.miembro_referencia m
+          ON m.grupo_id = po.grupo_id AND m.clave_carrera_generica = po.clave_carrera_generica
+         AND m.tipo_institucion = po.tipo_institucion
+         AND m.metrica IN ('p50_anio_1', 'p50_anio_5', 'emp1_nacional')
+        JOIN analytics.referencia r ON r.grupo_id = m.grupo_id AND r.metrica = m.metrica
+        GROUP BY 1, 2
+    ),
+    candidatas AS (
+        SELECT p.* FROM analytics.par p JOIN es_mediana e USING (clave_carrera_generica, tipo_institucion)
+        WHERE p.representativo AND NOT e.alguna
+    )
+    SELECT (SELECT count(*) FROM analytics.v_ficha_ejemplo f
+            WHERE NOT EXISTS (SELECT 1 FROM candidatas c
+                              WHERE c.clave_carrera_generica = f.clave_carrera_generica
+                                AND c.tipo_institucion = f.tipo_institucion)
+               OR EXISTS (SELECT 1 FROM candidatas c WHERE c.peso > f.peso))
+         + (1 - (SELECT count(*) FROM analytics.v_ficha_ejemplo)) AS n
+) x
+UNION ALL
+-- Vecinas: cada grupo exportado tiene exactamente n_pares miembros distintos.
+SELECT 'analytics_exportacion', 'grupos_miembros', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'miembros distintos de cada grupo = n_pares de su referencia',
+       format('%s grupos con miembros distintos de n_pares; %s grupos', n,
+              (SELECT count(DISTINCT grupo_id) FROM analytics.referencia))
+FROM (SELECT count(*) AS n
+      FROM (SELECT grupo_id, count(DISTINCT (clave_carrera_generica, tipo_institucion)) AS miembros
+            FROM analytics.miembro_referencia GROUP BY 1) g
+      JOIN analytics.referencia r ON r.grupo_id = g.grupo_id AND r.metrica = 'p50_anio_1'
+      WHERE g.miembros <> r.n_pares) x
+UNION ALL
+-- Diferencia con la típica: una por representativo en las 3 cifras, y su signo en la entrada
+-- coincide con entrada_alta (calculada aparte en 03_referencia.sql como valor > mediana).
+SELECT 'analytics_exportacion', 'dif_grupo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'una diferencia no nula por representativo y métrica; dif. de entrada > 0 ⇔ entrada_alta',
+       format('%s problemas; %s representativos', n, (SELECT count(*) FROM analytics.posicion))
+FROM (SELECT (SELECT count(*) FROM analytics.posicion po
+              LEFT JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
+              WHERE d.p50_anio_1 IS NULL OR d.p50_anio_5 IS NULL OR d.emp1_nacional IS NULL
+                 OR (d.p50_anio_1 > 0) <> po.entrada_alta) AS n) x;

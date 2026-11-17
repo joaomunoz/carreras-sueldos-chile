@@ -23,8 +23,10 @@
   --timbre: #7a2e6e;          /* tinta de timbre: solo advertencias */
   --mujeres: #d6457f;         /* barra por sexo de la ficha (pedido del usuario: rosado y azul); validados */
   --hombres: #2f6bc4;         /* entre sí, contra ambos papeles y el rosado contra --timbre (ΔE ≥ 15) */
-  --cambia: #a8650a;          /* ocre: "cambia de cuadrante" (antes reusaba --anio5, que es el 5° año);
-                                 validado con validate_palette.js contra el gris, el timbre y ambos papeles */
+  --acento: #a8650a;          /* ocre: el ÚNICO acento de "lo que hay que mirar" (spotlight): en la Parte I
+                                 las carreras que cambian de cuadrante, en la ficha la carrera abierta.
+                                 validate_palette.js: frente al gris de contexto ΔE 17,3 normal / 11,8
+                                 protan (claro) y 17,4 / 15,1 (oscuro); frente al timbre 22,0 */
   --foco: #0b4f47;
 
   --f-titulo: "Archivo Narrow", "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -54,7 +56,7 @@
     --anio1: #7fc0b6;
     --anio5: #d3efe9;
     --timbre: #e09bd3;
-    --cambia: #c97a14;
+    --acento: #c97a14;
     --mujeres: #e0507a;
     --hombres: #5b8fe0;
     --foco: #7fc0b6;
@@ -70,7 +72,7 @@
   --anio1: #7fc0b6;
   --anio5: #d3efe9;
   --timbre: #e09bd3;
-  --cambia: #c97a14;
+  --acento: #c97a14;
   --mujeres: #e0507a;
   --hombres: #5b8fe0;
   --foco: #7fc0b6;
@@ -661,7 +663,7 @@ a.hallazgo__accion { color: var(--tinta); }
   .conmutador button { font-size: 0.75rem; padding: 0.35rem 0.55rem; }
 }
 .punto--neutro { background: var(--tinta-suave); opacity: 0.7; }
-.punto--cambia { background: var(--cambia); width: 0.75rem; height: 0.75rem; }
+.punto--acento { background: var(--acento); width: 0.75rem; height: 0.75rem; }
 .muestra-franja { width: 1.25rem; height: 0.6rem; background: var(--tinta-suave); opacity: 0.16; display: inline-block; }
 /* Dos conmutadores (nivel y medida) en una fila; en celular bajan uno bajo el otro. */
 .controles-grafico { display: flex; flex-wrap: wrap; gap: 0 0.75rem; }
@@ -669,7 +671,7 @@ a.hallazgo__accion { color: var(--tinta); }
 .punto--anillo { background: transparent; box-shadow: inset 0 0 0 2px var(--timbre); width: 0.75rem; height: 0.75rem; }
 .c-punto { transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 .c-punto circle { fill: var(--tinta-suave); fill-opacity: 0.7; stroke: var(--papel); stroke-width: 1; }
-.c-punto--cambia circle { fill: var(--cambia); fill-opacity: 1; }
+.c-punto--acento circle { fill: var(--acento); fill-opacity: 1; }
 /* Franja "progreso típico": ±margen de la mediana; recesiva, como la grilla. */
 .c-franja { fill: var(--tinta-suave); fill-opacity: 0.16; }
 .c-franja-texto { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
@@ -770,17 +772,9 @@ a.hallazgo__accion { color: var(--tinta); }
 .ficha__nota { margin-top: 0.4rem; font-size: var(--t-0); color: var(--tinta-suave); }
 .ficha__grafico { margin-top: 0.75rem; }
 .ficha__grafico svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
-.ficha__grafico--media svg { height: 6rem; }
-.ficha__grafico--franja svg { height: 2.5rem; }
+.ficha__grafico--franja svg { height: auto; }
 .ficha .tabla-desplazable { margin-top: 0.75rem; }
 .ficha .tabla { font-size: 0.875rem; }
-.f-media-linea { stroke: var(--tinta-suave); stroke-width: 1.5; fill: none; }
-.f-media-punto { fill: var(--anio5); }
-.f-media-punto--extremo { fill: var(--anio1); }
-.f-media-texto { fill: var(--tinta); font: 0.75rem var(--f-cifra); font-variant-numeric: tabular-nums; }
-.f-media-pct { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); }
-.f-inst { fill: var(--anio1); fill-opacity: 0.75; }
-.f-tipica { stroke: var(--tinta); stroke-width: 2; }
 /* Los nombres del SIES vienen en mayúsculas y son largos: un ancho mínimo evita cortes de 3–4 líneas. */
 .ficha .tabla th, .ficha .tabla td { padding: 0.55rem 0.6rem; }
 .ficha .tabla td.td--titulo { min-width: 12rem; font-size: 0.8125rem; letter-spacing: 0.01em; }
@@ -791,36 +785,54 @@ a.hallazgo__accion { color: var(--tinta); }
   .liq__linea dd { text-align: left; flex: 1 1 100%; min-width: 0; }   /* en celular el valor puede ocupar varias líneas */
 }
 
-/* Mancuerna: filas de 2 líneas (1er año / 5° año) con eje común en pesos. */
-.mancuerna__eje { margin-left: var(--rotulos); height: 1.5rem; position: relative; }
-.mancuerna__eje svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.mancuerna__filas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--regla); }
-.mancuerna { --rotulos: 16rem; }
-.mancuerna__fila {
-  display: grid;
-  grid-template-columns: var(--rotulos) minmax(0, 1fr);
-  align-items: center;
-  border-bottom: 1px solid var(--regla);
-  padding-block: 0.3rem;
-}
-.mancuerna__fila:hover, .mancuerna__fila:focus-visible { background: var(--papel-alto); }
-.mancuerna__fila:focus-visible { outline: 2px solid var(--foco); outline-offset: -2px; }
-.mancuerna__rotulo { font-size: 0.875rem; line-height: 1.25; padding-right: 0.75rem; }
-.mancuerna__rotulo .timbre { font-size: 0.6875rem; }
-.mancuerna__svg svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
-.m-rango { stroke-width: 1.5; stroke-linecap: round; }
-.m-rango--anio1 { stroke: var(--anio1); stroke-opacity: 0.6; }
-.m-rango--anio5 { stroke: var(--anio5); stroke-opacity: 0.6; }
-.m-caja { stroke-width: 6; stroke-linecap: round; }
-.m-caja--anio1 { stroke: var(--anio1); }
-.m-caja--anio5 { stroke: var(--anio5); }
-.m-etiqueta { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); }
-.mancuerna__vacio { padding: 1rem 0; color: var(--tinta-suave); }
+/* Ficha híbrida: la carrera dentro de su contexto. Títulos de acción (la conclusión con su cifra)
+   + subtítulo con la métrica; esta carrera en ocre (--acento, rombo) y el contexto en gris. */
+.ficha__veredicto { margin-top: 1rem; font-family: var(--f-titulo); font-size: var(--t-2); line-height: 1.3; max-width: 46ch; }
+.ficha__bloque { border-top: 1px solid var(--regla); padding-top: 1rem; }
+.ficha__accion { font-family: var(--f-titulo); font-size: 1.375rem; font-weight: 600; line-height: 1.25; max-width: 40ch; margin: 0; }
+.ficha__subaccion { font-family: var(--f-titulo); font-size: 1.0625rem; font-weight: 600; margin: 1.5rem 0 0; }
+.ficha__subtitulo { margin-top: 0.3rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
+.ficha__explica { margin-top: 0.6rem; max-width: 64ch; font-size: 0.9375rem; }
+.ficha .plegable { margin-top: 0.75rem; }
+.ficha__pie { margin-top: 2rem; }
+.ficha__pie ul { margin: 0.4rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
+.ficha__pie a { color: var(--tinta); }
+.grupo { position: relative; }
+.grupo__fila { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 1rem; align-items: center; margin-top: 0.6rem; }
+.grupo__rotulo { display: grid; gap: 0.1rem; }
+.grupo__metrica { font-size: var(--t-0); color: var(--tinta-suave); }
+.grupo__valor { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; font-size: 1.375rem; }
+.grupo__svg svg, .ficha__grafico--sueldo svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ficha__grafico--sueldo { position: relative; }
 @media (max-width: 40rem) {
-  .mancuerna { --rotulos: 0rem; }
-  .mancuerna__fila { grid-template-columns: 1fr; }
-  .mancuerna__rotulo { padding: 0.2rem 0 0.1rem; }
+  .grupo__fila { grid-template-columns: 1fr; gap: 0.1rem; margin-top: 0.9rem; }
+  .grupo__rotulo { grid-template-columns: 1fr auto; align-items: baseline; }
+  .grupo__valor { font-size: 1.125rem; }
 }
+.g-acento { fill: var(--acento); }
+.g-contexto { fill: var(--tinta-suave); fill-opacity: 0.55; }
+.g-blanco { fill: transparent; }
+.g-vecina { cursor: pointer; }
+.g-vecina:hover .g-contexto { fill-opacity: 1; }
+.g-tipica { stroke: var(--tinta); stroke-width: 2; }
+.g-rotulo-suave { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--papel-alto); stroke-width: 4px; stroke-linejoin: round; }
+.ficha .g-rotulo { stroke: var(--papel-alto); font-variant-numeric: tabular-nums; }
+.f-caja { stroke: var(--acento); stroke-width: 8; stroke-linecap: round; stroke-opacity: 0.45; }
+.f-ref { stroke: var(--tinta); stroke-width: 2; stroke-dasharray: 4 3; }
+.f-zona { fill: transparent; }
+.f-prom { fill: var(--papel-alto); stroke: var(--tinta-suave); stroke-width: 1.5; }
+.tabla--compacta { font-size: 0.875rem; }
+.ficha .tabla--compacta th, .ficha .tabla--compacta td { padding: 0.4rem 0.5rem; vertical-align: top; }
+.ficha .tabla--compacta td.num { white-space: nowrap; font-family: var(--f-cifra); font-variant-numeric: tabular-nums; }
+.ficha .tabla--compacta td.td--titulo { min-width: 0; }
+@media (max-width: 40rem) {
+  .tabla--compacta { font-size: 0.8125rem; }
+  .ficha .tabla--compacta th, .ficha .tabla--compacta td { padding: 0.35rem 0.3rem; }
+  .ficha .tabla--compacta td.td--titulo { min-width: 7.5rem; }
+}
+.tabla--ficha tr.fila--actual td { background: var(--papel); font-weight: 600; }
+.tabla--ficha tr.fila--actual td:first-child { box-shadow: inset 3px 0 0 var(--acento); }
+.marca-actual { color: var(--acento); }
 
 /* ---------------------------------------------------------------- bloques finales (W6) */
 .pie a { color: var(--tinta); text-decoration-color: var(--regla); text-underline-offset: 3px; }

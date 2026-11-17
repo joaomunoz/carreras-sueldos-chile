@@ -13,6 +13,11 @@
 --   p50_anio_1     eje x: con cuánto se entra (P50 del 1er año, ingresos 2024);
 --   p50_pct_1_5    eje y: crecimiento del P50 1°→5° en %;
 --   p50_delta_1_5  eje y alternativo (sensibilidad): crecimiento en pesos.
+-- Métricas solo de contexto (ficha de carrera: "típico de su grupo"; no entran en la posición):
+--   p50_anio_5     P50 del 5° año, ingresos 2024;
+--   emp1_nacional  empleabilidad nacional al 1er año (MiFuturo, agregado de la carrera genérica).
+-- Mismo método y mismos grupos que las demás, para que la ficha compare todo contra una sola
+-- referencia en vez de una distinta por bloque.
 --
 -- Cuantil ponderado: el menor valor cuyo peso acumulado (orden ascendente) alcanza q × peso
 -- total del grupo; sin interpolación, así cada cuantil es el valor de una carrera real. Peso =
@@ -44,7 +49,9 @@ WITH valores AS (
     CROSS JOIN LATERAL (VALUES
         ('p50_anio_1',    e.percentil_50_anio_1::numeric),
         ('p50_pct_1_5',   b.p50_pct_1_5),
-        ('p50_delta_1_5', b.p50_delta_1_5)
+        ('p50_delta_1_5', b.p50_delta_1_5),
+        ('p50_anio_5',    e.percentil_50_anio_5::numeric),
+        ('emp1_nacional', e.empleabilidad_1er_anio)
     ) AS m (metrica, valor)
     WHERE p.representativo
 )
@@ -64,7 +71,7 @@ WHERE celda_valida;
 -- --------------------------------------------------------------------------
 CREATE TABLE analytics.referencia (
     grupo_id          text    NOT NULL,
-    metrica           text    NOT NULL CHECK (metrica IN ('p50_anio_1', 'p50_pct_1_5', 'p50_delta_1_5')),
+    metrica           text    NOT NULL CHECK (metrica IN ('p50_anio_1', 'p50_pct_1_5', 'p50_delta_1_5', 'p50_anio_5', 'emp1_nacional')),
     tipo_grupo        text    NOT NULL CHECK (tipo_grupo IN ('celda', 'segmento')),
     area_cine13       text,                       -- NULL en los segmentos
     tipo_institucion  text    NOT NULL,
@@ -326,4 +333,13 @@ FROM (
                                 = CASE WHEN c.zona = 'progreso típico'
                                        THEN CASE WHEN po.entrada_alta THEN 'entrada alta' ELSE 'entrada baja' END || ' · progreso típico'
                                        ELSE c.zona END)) AS n
-) x;
+) x
+UNION ALL
+-- 8. La ficha compara cada representativo con su grupo en las cinco métricas: si faltara una,
+--    la web mostraría una tarjeta sin "típico de su grupo".
+SELECT 'analytics_referencia', 'referencia_completa', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'cada par representativo tiene referencia en sus 5 métricas',
+       format('%s pares con menos de 5 métricas de referencia', n)
+FROM (SELECT count(*) AS n
+      FROM analytics.posicion po
+      WHERE (SELECT count(*) FROM analytics.referencia r WHERE r.grupo_id = po.grupo_id) <> 5) x;
