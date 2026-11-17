@@ -9,7 +9,8 @@
 -- sobre el mismo conjunto que nombra la frase, y un control lo verifica por otro camino.
 --
 -- Los ejemplos se eligen por regla, no a dedo (la misma regla que tenía la web):
---   (b) entre las carreras que cambian de cuadrante y progresan más en %, la de mayor %, siempre
+--   (b) entre las carreras que cambian de cuadrante (fuera del margen de empate en % y en pesos,
+--       ver 03_referencia.sql) y progresan más en %, la de mayor %, siempre
 --       que su aumento en pesos quede al menos margen_ejemplo_pesos bajo la mediana de su grupo;
 --   (c) entre las de promedio engañoso con >= min_inst_ejemplo instituciones, la de mayor IQR.
 -- Empates: por tipo y clave, el mismo orden del JSON. Requiere 01 a 05.
@@ -72,7 +73,9 @@ GROUP BY nivel_carrera;
 -- (b) Crecer más en % no es crecer más
 -- --------------------------------------------------------------------------
 CREATE TABLE analytics.hallazgo_pct_pesos (
-    n_cambian               integer NOT NULL,   -- cambian de cuadrante entre % y pesos
+    -- Por nivel: el fenómeno es casi solo de las profesionales y un total mezclado lo escondía.
+    n_cambian_tec           integer NOT NULL,   -- técnicas que cambian de cuadrante entre % y pesos
+    n_cambian_pro           integer NOT NULL,   -- profesionales ídem
     clave_carrera_generica  text,               -- ejemplo; NULL si ninguna cumple la regla
     tipo_institucion        text,
     p50_anio_1              integer,
@@ -90,10 +93,13 @@ WITH cand AS (
     JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
     JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
     JOIN analytics.referencia r ON r.grupo_id = po.grupo_id AND r.metrica = 'p50_delta_1_5'
-    WHERE po.cambia_cuadrante AND po.progresa_mas_pct
+    WHERE po.cambia_cuadrante AND po.progreso_pct = 'más'
       AND b.p50_delta_1_5 <= (1 - analytics.param('margen_ejemplo_pesos')) * r.q50
 )
-SELECT (SELECT count(*) FROM analytics.posicion WHERE cambia_cuadrante),
+SELECT (SELECT count(*) FROM analytics.posicion po JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+        WHERE po.cambia_cuadrante AND p.nivel_carrera = 'Carreras Técnicas'),
+       (SELECT count(*) FROM analytics.posicion po JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+        WHERE po.cambia_cuadrante AND p.nivel_carrera = 'Carreras Profesionales'),
        ej.clave_carrera_generica, ej.tipo_institucion, ej.percentil_50_anio_1,
        ej.p50_pct_1_5, ej.p50_delta_1_5, ej.q50
 FROM (VALUES (1)) AS uno (x)
@@ -184,7 +190,7 @@ FROM (SELECT count(*) AS n
       FROM analytics.hallazgo_pct_pesos h
       JOIN analytics.posicion po USING (clave_carrera_generica, tipo_institucion)
       JOIN analytics.referencia r ON r.grupo_id = po.grupo_id AND r.metrica = 'p50_delta_1_5'
-      WHERE NOT (po.cambia_cuadrante AND po.progresa_mas_pct
+      WHERE NOT (po.cambia_cuadrante AND po.progreso_pct = 'más'
                  AND h.p50_delta_1_5 <= (1 - analytics.param('margen_ejemplo_pesos')) * r.q50)
          OR h.ref_delta_q50 <> r.q50) x
 UNION ALL

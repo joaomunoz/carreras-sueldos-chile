@@ -19,6 +19,17 @@
 -- analytics.par.peso (titulaciones SIES de ambas ventanas). Empates de valor se ordenan por
 -- clave para que el resultado sea determinista.
 -- Requiere 01_par.sql y 02_brecha.sql.
+--
+-- Progreso en tres valores (más / típico / menos): la mediana ponderada es siempre el valor de
+-- una carrera real, así que con un corte binario esa carrera (y las que quedan a centésimas)
+-- "cambiaba de cuadrante" solo por el desempate. Con ±margen_tipico_* de la mediana el progreso
+-- es "típico" y no cuenta como cambio. Sensibilidad (profesionales / técnicas que cambian):
+-- sin margen 18/1; ±1 pp o $10 mil 11/0; ±2 pp o $20 mil 10/0; ±3 pp o $30 mil 9/0.
+-- El eje x (entrada) conserva el corte "> mediana": sus empates no varían entre % y pesos.
+
+INSERT INTO analytics.parametro VALUES
+    ('margen_tipico_pp',    2,     'Distancia a la mediana del grupo (puntos porcentuales de crecimiento) dentro de la cual el progreso es "típico"', 'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)'),
+    ('margen_tipico_pesos', 20000, 'Ídem en pesos de aumento del P50; equivale a ~2 pp sobre una entrada típica de ~$900 mil',                         'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)');
 
 -- --------------------------------------------------------------------------
 -- Miembros de cada grupo de comparación (vista: la usan la tabla y los controles)
@@ -99,16 +110,21 @@ CREATE TABLE analytics.posicion (
     cuartil_p50_pct_1_5     smallint NOT NULL CHECK (cuartil_p50_pct_1_5 BETWEEN 1 AND 4),
     cuartil_p50_delta_1_5   smallint NOT NULL CHECK (cuartil_p50_delta_1_5 BETWEEN 1 AND 4),
     entrada_alta            boolean  NOT NULL,   -- P50 año 1 > mediana ponderada de la referencia
-    progresa_mas_pct        boolean  NOT NULL,   -- crecimiento % > mediana
-    progresa_mas_pesos      boolean  NOT NULL,   -- crecimiento $ > mediana
+    dif_pct                 numeric  NOT NULL,   -- crecimiento % − mediana del grupo (pp)
+    dif_pesos               numeric  NOT NULL,   -- crecimiento $ − mediana del grupo
+    progreso_pct            text     NOT NULL CHECK (progreso_pct   IN ('más', 'típico', 'menos')),
+    progreso_pesos          text     NOT NULL CHECK (progreso_pesos IN ('más', 'típico', 'menos')),
     cuadrante_pct           text     NOT NULL,
     cuadrante_pesos         text     NOT NULL,
-    cambia_cuadrante        boolean  NOT NULL,   -- el % y los pesos lo ubican distinto
+    cambia_cuadrante        boolean  NOT NULL,   -- el % y los pesos lo ubican en lados opuestos
     PRIMARY KEY (clave_carrera_generica, tipo_institucion),
-    FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par
+    FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par,
+    -- Un empate ("típico") en cualquiera de las dos medidas nunca es un cambio de cuadrante.
+    CHECK (cambia_cuadrante = (progreso_pct <> 'típico' AND progreso_pesos <> 'típico'
+                               AND progreso_pct <> progreso_pesos))
 );
 COMMENT ON TABLE analytics.posicion IS
-    'Solo pares representativos. Corte "> mediana": la carrera que ES la mediana queda en la mitad baja. cambia_cuadrante = el % alto se explica por una base baja (o al revés).';
+    'Solo pares representativos. Entrada: corte "> mediana" (la carrera que ES la mediana queda en la mitad baja). Progreso: "típico" a ±margen_tipico_* de la mediana. cambia_cuadrante = el % alto se explica por una base baja (o al revés), fuera del margen en ambas medidas.';
 
 INSERT INTO analytics.posicion
 WITH par_ref AS (
@@ -124,7 +140,8 @@ pos AS (
     SELECT r.clave_carrera_generica, r.tipo_institucion, r.grupo_id, m.metrica,
            CASE WHEN m.valor <= ref.q25 THEN 1 WHEN m.valor <= ref.q50 THEN 2
                 WHEN m.valor <= ref.q75 THEN 3 ELSE 4 END AS cuartil,
-           m.valor > ref.q50 AS sobre_mediana
+           m.valor > ref.q50 AS sobre_mediana,
+           m.valor - ref.q50 AS dif
     FROM par_ref r
     JOIN analytics.miembro_referencia m
       ON m.grupo_id = r.grupo_id
@@ -138,19 +155,65 @@ ancho AS (
            max(cuartil) FILTER (WHERE metrica = 'p50_pct_1_5')   AS c_pct,
            max(cuartil) FILTER (WHERE metrica = 'p50_delta_1_5') AS c_delta,
            bool_or(sobre_mediana) FILTER (WHERE metrica = 'p50_anio_1')    AS x_alta,
-           bool_or(sobre_mediana) FILTER (WHERE metrica = 'p50_pct_1_5')   AS y_pct,
-           bool_or(sobre_mediana) FILTER (WHERE metrica = 'p50_delta_1_5') AS y_pesos
+           max(dif) FILTER (WHERE metrica = 'p50_pct_1_5')   AS d_pct,
+           max(dif) FILTER (WHERE metrica = 'p50_delta_1_5') AS d_pesos
     FROM pos
     GROUP BY 1, 2, 3
+),
+progreso AS (
+    SELECT a.*,
+           CASE WHEN d_pct   >  analytics.param('margen_tipico_pp')    THEN 'más'
+                WHEN d_pct   < -analytics.param('margen_tipico_pp')    THEN 'menos' ELSE 'típico' END AS y_pct,
+           CASE WHEN d_pesos >  analytics.param('margen_tipico_pesos') THEN 'más'
+                WHEN d_pesos < -analytics.param('margen_tipico_pesos') THEN 'menos' ELSE 'típico' END AS y_pesos
+    FROM ancho a
 )
 SELECT clave_carrera_generica, tipo_institucion, grupo_id, c_x, c_pct, c_delta,
-       x_alta, y_pct, y_pesos,
+       x_alta, d_pct, d_pesos, y_pct, y_pesos,
        CASE WHEN x_alta THEN 'entrada alta' ELSE 'entrada baja' END || ' · '
-           || CASE WHEN y_pct THEN 'progresa más' ELSE 'progresa menos' END,
+           || CASE y_pct WHEN 'típico' THEN 'progreso típico' ELSE 'progresa ' || y_pct END,
        CASE WHEN x_alta THEN 'entrada alta' ELSE 'entrada baja' END || ' · '
-           || CASE WHEN y_pesos THEN 'progresa más' ELSE 'progresa menos' END,
-       y_pct <> y_pesos
-FROM ancho;
+           || CASE y_pesos WHEN 'típico' THEN 'progreso típico' ELSE 'progresa ' || y_pesos END,
+       y_pct <> 'típico' AND y_pesos <> 'típico' AND y_pct <> y_pesos
+FROM progreso;
+
+-- --------------------------------------------------------------------------
+-- Conteos del gráfico de cuadrantes: nivel × medida × zona (las cuatro esquinas y la franja
+-- "progreso típico", que no pertenece a ninguna esquina). Incluye los ceros: la web dibuja
+-- exactamente estas cifras, sin contar puntos.
+-- --------------------------------------------------------------------------
+CREATE TABLE analytics.cuadrante_conteo (
+    nivel_carrera  text    NOT NULL,
+    medida         text    NOT NULL CHECK (medida IN ('pct', 'pesos')),
+    zona           text    NOT NULL CHECK (zona IN ('entrada baja · progresa más', 'entrada alta · progresa más',
+                                                    'entrada baja · progresa menos', 'entrada alta · progresa menos',
+                                                    'progreso típico')),
+    n              integer NOT NULL CHECK (n >= 0),
+    PRIMARY KEY (nivel_carrera, medida, zona)
+);
+
+INSERT INTO analytics.cuadrante_conteo
+WITH zonas AS (
+    SELECT p.nivel_carrera, m.medida,
+           CASE WHEN m.progreso = 'típico' THEN 'progreso típico'
+                ELSE CASE WHEN po.entrada_alta THEN 'entrada alta' ELSE 'entrada baja' END
+                     || ' · progresa ' || m.progreso END AS zona
+    FROM analytics.posicion po
+    JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+    CROSS JOIN LATERAL (VALUES ('pct', po.progreso_pct), ('pesos', po.progreso_pesos)) AS m (medida, progreso)
+),
+celdas AS (
+    SELECT n.nivel_carrera, m.medida, z.zona
+    FROM (SELECT DISTINCT nivel_carrera FROM analytics.par WHERE representativo) n
+    CROSS JOIN (VALUES ('pct'), ('pesos')) AS m (medida)
+    CROSS JOIN (VALUES ('entrada baja · progresa más'), ('entrada alta · progresa más'),
+                       ('entrada baja · progresa menos'), ('entrada alta · progresa menos'),
+                       ('progreso típico')) AS z (zona)
+)
+SELECT c.nivel_carrera, c.medida, c.zona, count(z.zona)
+FROM celdas c
+LEFT JOIN zonas z USING (nivel_carrera, medida, zona)
+GROUP BY 1, 2, 3;
 
 -- --------------------------------------------------------------------------
 -- Controles qa
@@ -216,4 +279,51 @@ FROM (SELECT count(*) AS n
       FROM analytics.referencia r
       WHERE (SELECT coalesce(sum(m.peso), 0) FROM analytics.miembro_referencia m
              WHERE m.grupo_id = r.grupo_id AND m.metrica = r.metrica AND m.valor > r.q50)
-            > 0.5 * r.peso_total) x;
+            > 0.5 * r.peso_total) x
+UNION ALL
+-- 6. Progreso y cambio de cuadrante recalculados desde los valores y la referencia (no desde
+--    dif_*): la distancia a la mediana, el margen y el "típico" coinciden en cada carrera.
+SELECT 'analytics_referencia', 'progreso_por_margen', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'progreso = más / típico / menos según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas',
+       format('%s carreras con progreso o cambio distinto del recálculo; %s cambian (margen ±%s pp / ±$%s)', n,
+              (SELECT count(*) FROM analytics.posicion WHERE cambia_cuadrante),
+              analytics.param('margen_tipico_pp'), analytics.param('margen_tipico_pesos'))
+FROM (
+    WITH r AS (
+        SELECT po.*,
+               b.p50_pct_1_5 - rp.q50 AS d1, b.p50_delta_1_5 - rd.q50 AS d2
+        FROM analytics.posicion po
+        JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
+        JOIN analytics.referencia rp ON rp.grupo_id = po.grupo_id AND rp.metrica = 'p50_pct_1_5'
+        JOIN analytics.referencia rd ON rd.grupo_id = po.grupo_id AND rd.metrica = 'p50_delta_1_5'
+    )
+    SELECT count(*) AS n FROM r
+    WHERE d1 <> dif_pct OR d2 <> dif_pesos
+       OR (abs(d1) <= analytics.param('margen_tipico_pp'))    <> (progreso_pct = 'típico')
+       OR (abs(d2) <= analytics.param('margen_tipico_pesos')) <> (progreso_pesos = 'típico')
+       OR (progreso_pct <> 'típico' AND (d1 > 0) <> (progreso_pct = 'más'))
+       OR (progreso_pesos <> 'típico' AND (d2 > 0) <> (progreso_pesos = 'más'))
+       OR cambia_cuadrante <> (abs(d1) > analytics.param('margen_tipico_pp')
+                               AND abs(d2) > analytics.param('margen_tipico_pesos')
+                               AND sign(d1) <> sign(d2))
+) x
+UNION ALL
+-- 7. Conteos del gráfico: cada nivel × medida suma el total de representativos del nivel, y
+--    cada zona coincide con un recuento directo desde posicion.
+SELECT 'analytics_referencia', 'cuadrante_conteo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'Σ zonas = representativos del nivel en cada medida; cada zona = recuento desde posicion',
+       format('%s celdas o totales distintos; %s celdas', n, (SELECT count(*) FROM analytics.cuadrante_conteo))
+FROM (
+    SELECT (SELECT count(*) FROM (
+                SELECT c.nivel_carrera, c.medida, sum(c.n) AS s,
+                       (SELECT count(*) FROM analytics.par p WHERE p.representativo AND p.nivel_carrera = c.nivel_carrera) AS tot
+                FROM analytics.cuadrante_conteo c GROUP BY 1, 2) t WHERE s <> tot)
+         + (SELECT count(*) FROM analytics.cuadrante_conteo c
+            WHERE c.n <> (SELECT count(*) FROM analytics.posicion po
+                          JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+                          WHERE p.nivel_carrera = c.nivel_carrera
+                            AND CASE WHEN c.medida = 'pct' THEN po.cuadrante_pct ELSE po.cuadrante_pesos END
+                                = CASE WHEN c.zona = 'progreso típico'
+                                       THEN CASE WHEN po.entrada_alta THEN 'entrada alta' ELSE 'entrada baja' END || ' · progreso típico'
+                                       ELSE c.zona END)) AS n
+) x;

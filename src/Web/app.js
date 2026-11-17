@@ -142,10 +142,12 @@
           (tec.n_negativos === 1 ? " de ellas técnica" : " de ellas técnicas") : "")
         : "Todas las carreras comparables ganan más al quinto año";
     }
+    // Por nivel: el hallazgo es de las profesionales (en las técnicas no cambia ninguna).
     var b = datos.hallazgos.pct_pesos;
-    if (b.n_cambian) {
-      document.getElementById("t-cuadrantes").textContent = fmtEntero.format(b.n_cambian) +
-        " carreras cambian de cuadrante si el crecimiento se mide en pesos";
+    if (b.n_cambian_pro) {
+      document.getElementById("t-cuadrantes").textContent = fmtEntero.format(b.n_cambian_pro) +
+        (b.n_cambian_pro === 1 ? " carrera profesional cambia" : " carreras profesionales cambian") +
+        " de cuadrante si el crecimiento se mide en pesos";
     }
   }
 
@@ -272,8 +274,9 @@
     if (pb) {
       ul.appendChild(hallazgo({
         parece: "Crecer más en porcentaje es crecer más.",
-        cifra: fmtEntero.format(b.n_cambian),
-        rotulo: "carreras cambian de cuadrante si el crecimiento se mide en pesos",
+        cifra: fmtEntero.format(b.n_cambian_pro),
+        rotulo: "carreras profesionales cambian de cuadrante si el crecimiento se mide en pesos" +
+          (b.n_cambian_tec ? " (y " + fmtEntero.format(b.n_cambian_tec) + " técnicas)" : "; ninguna técnica"),
         nodos: [parrafo([eb.nombre + " (" + eb.tipo + ") sube ", pctSigno(eb.p50_pct_1_5), ", pero parte de ",
           pesos(eb.p50_anio_1), ": suma ", pesosSigno(eb.p50_delta_1_5),
           ", menos que la carrera típica de su grupo, ponderada por titulados (", pesosSigno(eb.ref_delta_q50), ")."])],
@@ -729,7 +732,9 @@
   // mediana de su grupo (escala log: ×0,5 y ×2 equidistan de "típico"); y = crecimiento −
   // crecimiento típico del grupo, en pp o en pesos. Así el lado en que cae cada punto es
   // exactamente su clasificación en `posicion` (verificado: 0 discrepancias en 210).
-  var cuad = { modo: "pct", puntos: [], activo: -1 };
+  // Un nivel a la vez (como el peine): técnicas y profesionales tienen grupos, escalas y conteos
+  // propios. Por defecto Profesionales, donde está el hallazgo (b).
+  var cuad = { modo: "pct", nivel: "Carreras Profesionales", todos: [], puntos: [], activo: -1 };
 
   function refQ50(p, metrica) {
     for (var i = 0; i < datos.referencias.length; i++) {
@@ -752,7 +757,7 @@
   }
 
   function prepararCuadrantes() {
-    cuad.puntos = comparables.map(function (p) {
+    cuad.todos = comparables.map(function (p) {
       var r1 = refQ50(p, "p50_anio_1"), rp = refQ50(p, "p50_pct_1_5"), rd = refQ50(p, "p50_delta_1_5");
       return { p: p, razon: p.percentiles.anio_1.p50 / r1, ref1: r1, refPct: rp, refDelta: rd,
                yPct: p.percentiles.p50_pct_1_5 - rp, yPesos: p.percentiles.p50_delta_1_5 - rd };
@@ -767,10 +772,45 @@
         pintarCuadrantes(true);
       });
     });
+    [["c-nivel-tec", "Carreras Técnicas"], ["c-nivel-pro", "Carreras Profesionales"]].forEach(function (b) {
+      document.getElementById(b[0]).addEventListener("click", function () { elegirNivelCuadrantes(b[1]); });
+    });
+    elegirNivelCuadrantes(cuad.nivel, true);
+    alCambiarAncho(document.getElementById("cuadrantes-lienzo"), function () { pintarCuadrantes(false); });
+  }
 
+  function elegirNivelCuadrantes(nivel, sinPintar) {
+    cuad.nivel = nivel;
+    cuad.activo = -1;
+    cuad.puntos = cuad.todos.filter(function (q) { return q.p.nivel === nivel; });
+    document.getElementById("c-nivel-tec").setAttribute("aria-pressed", String(nivel === "Carreras Técnicas"));
+    document.getElementById("c-nivel-pro").setAttribute("aria-pressed", String(nivel === "Carreras Profesionales"));
+    pintarTablaCuadrantes();
+    if (!sinPintar) pintarCuadrantes(false);
+  }
+
+  // Conteo de una zona (esquina o franja) desde el SQL (analytics.cuadrante_conteo).
+  function conteoZona(medida, zona) {
+    var c = datos.hallazgos.pct_pesos.conteos.filter(function (x) {
+      return x.nivel === cuad.nivel && x.medida === medida && x.zona === zona;
+    })[0];
+    if (!c) throw new Error("Sin conteo para " + cuad.nivel + " / " + medida + " / " + zona);
+    return c.n;
+  }
+
+  function pintarTablaCuadrantes() {
     var cuerpo = document.querySelector("#cuadrantes-tabla tbody");
-    cuad.puntos.filter(function (q) { return q.p.posicion.cambia_cuadrante; })
-      .sort(function (a, b) { return colador.compare(a.p.nombre, b.p.nombre); })
+    cuerpo.replaceChildren();
+    var cambian = cuad.puntos.filter(function (q) { return q.p.posicion.cambia_cuadrante; });
+    if (!cambian.length) {
+      var tr0 = el("tr"), td0 = el("td", null, "Ninguna carrera " +
+        cuad.nivel.replace("Carreras ", "").toLowerCase().replace(/s$/, "") + " cambia de cuadrante.");
+      td0.colSpan = 5;
+      tr0.appendChild(td0);
+      cuerpo.appendChild(tr0);
+      return;
+    }
+    cambian.sort(function (a, b) { return colador.compare(a.p.nombre, b.p.nombre); })
       .forEach(function (q) {
         var tr = el("tr");
         [["Carrera", q.p.nombre + " (" + q.p.tipo + ")", "td--titulo"],
@@ -784,7 +824,23 @@
         });
         cuerpo.appendChild(tr);
       });
-    alCambiarAncho(document.getElementById("cuadrantes-lienzo"), function () { pintarCuadrantes(false); });
+  }
+
+  // Bajo el gráfico: qué muestra el conmutador % / pesos en el nivel elegido. Cifras del SQL.
+  function pintarNotaCuadrantes() {
+    var b = datos.hallazgos.pct_pesos;
+    var tec = cuad.nivel === "Carreras Técnicas";
+    var n = tec ? b.n_cambian_tec : b.n_cambian_pro;
+    var nombre = tec ? "técnica" : "profesional", plural = tec ? "técnicas" : "profesionales";
+    var margen = "±" + fmtEntero.format(b.margen_pp) + " pp o ±" + pesos(b.margen_pesos);
+    document.getElementById("cuadrantes-nota").textContent = n
+      ? fmtEntero.format(n) + (n === 1 ? " carrera " + nombre + " cambia" : " carreras " + plural + " cambian") +
+        " de cuadrante (en color): crecen más que su grupo en porcentaje pero menos en pesos, o al revés. " +
+        "No cuentan las que quedan en la franja del típico (a " + margen + "): ahí la diferencia es un empate."
+      : "Ninguna carrera " + nombre + " cambia de cuadrante: en este nivel, medir en porcentaje o en pesos da la " +
+        "misma lectura. Los conteos de las esquinas varían solo porque algunas carreras entran o salen de la " +
+        "franja del típico (a " + margen + ").";
+    document.getElementById("c-leyenda-cambia").hidden = !n;
   }
 
   function pintarCuadrantes(animar) {
@@ -816,15 +872,16 @@
     // Reutiliza los puntos existentes para que el cambio de % a pesos se anime (transición CSS
     // del transform); solo se redibuja todo al cambiar el ancho.
     var svg = lienzo.querySelector("svg");
-    var reusar = animar && svg && Number(svg.getAttribute("data-ancho")) === W;
+    var reusar = animar && svg && Number(svg.getAttribute("data-ancho")) === W && svg.getAttribute("data-nivel") === cuad.nivel;
     if (!reusar) {
-      svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "img", "data-ancho": W });
+      svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, height: H, role: "img", "data-ancho": W, "data-nivel": cuad.nivel });
       svgEl("g", {}, "c-fondo", svg);
       var capa = svgEl("g", {}, "c-puntos", svg);
       puntos.forEach(function (q, i) {
         var g = svgEl("g", { "data-i": i }, "c-punto" + (q.p.posicion.cambia_cuadrante ? " c-punto--cambia" : "") +
           (q.p.marcas.cohorte_atipica || q.p.marcas.composicion_edad ? " c-punto--aviso" : ""), capa);
-        svgEl("circle", { cx: 0, cy: 0, r: q.p.posicion.cambia_cuadrante ? (angosto ? 4 : 5) : (angosto ? 2.8 : 3.5) }, null, g);
+        // Radio 4 (8 px, mínimo de la guía dataviz) para todos: "cambia" se distingue por el color.
+        svgEl("circle", { cx: 0, cy: 0, r: 4 }, null, g);
         g.style.transition = "none";   // sin animación al aparecer
         // N3: el ejemplo del hallazgo (b) lleva anillo y nombre DENTRO de su grupo, así el rótulo
         // viaja con el punto al animar % ↔ $ y se ve que cambia de cuadrante.
@@ -840,7 +897,8 @@
       svgEl("g", {}, "c-frente", svg);
       lienzo.replaceChildren(svg);
     }
-    svg.setAttribute("aria-label", puntos.length + " carreras comparables según sueldo de entrada y crecimiento " +
+    var nombreNivel = cuad.nivel.replace("Carreras ", "").toLowerCase();
+    svg.setAttribute("aria-label", puntos.length + " carreras " + nombreNivel + " comparables según sueldo de entrada y crecimiento " +
       (modo === "pct" ? "en porcentaje" : "en pesos") + ", relativos a la carrera típica de su grupo.");
 
     // Fondo: grilla, ejes y rótulos (se redibuja en cada modo: la escala Y cambia).
@@ -853,6 +911,16 @@
       // Hasta 2 decimales: con 1 decimal, ×0,75 se leía ×0,8.
       t.textContent = r === 1 ? "típico" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
     });
+    // Franja "progreso típico": ±margen de la mediana del grupo (0 en el eje relativo).
+    var mg = modo === "pct" ? datos.hallazgos.pct_pesos.margen_pp : datos.hallazgos.pct_pesos.margen_pesos;
+    svgEl("rect", { x: m.izq, width: W - m.der - m.izq, y: y(mg), height: Math.max(1, y(-mg) - y(mg)) }, "c-franja", fondo);
+    var nTipico = conteoZona(modo, "progreso típico");
+    document.getElementById("c-leyenda-franja").textContent = "Cerca del típico (±" +
+      (modo === "pct" ? fmtEntero.format(mg) + " pp" : pesos(mg)) + "): " + fmtEntero.format(nTipico) +
+      (nTipico === 1 ? " carrera" : " carreras") + ", fuera de las esquinas";
+    document.getElementById("c-titulo-y").textContent = "↑ Crecimiento del sueldo típico (1er → 5° año) frente al típico de su grupo, " +
+      (modo === "pct" ? "en puntos porcentuales (pp)" : "en pesos");
+    pintarNotaCuadrantes();
     var tituloX = svgEl("text", { x: (m.izq + W - m.der) / 2, y: H - 4, "text-anchor": "middle" }, "c-titulo-eje", fondo);
     tituloX.textContent = "Sueldo al 1er año respecto del típico de su grupo";
     var pasoY = modo === "pct" ? 20 : ((y1 - y0) > 1.2e6 ? 500000 : 250000);
@@ -866,8 +934,6 @@
     // Esquinas: nombre del cuadrante y conteo (desde `posicion`, la clasificación del análisis).
     var frente = svg.querySelector(".c-frente");
     frente.replaceChildren();
-    var conteo = {};
-    puntos.forEach(function (q) { conteo[q.p.posicion[clave]] = (conteo[q.p.posicion[clave]] || 0) + 1; });
     // En pantallas angostas el rótulo va en dos líneas (si no, los de izquierda y derecha chocan).
     var abajoY = H - m.abajo - (angosto ? 36 : 22);
     [["entrada baja · progresa más", m.izq + 6, m.arriba + 12, "start"],
@@ -880,7 +946,8 @@
         t.textContent = l;
       });
       var c = svgEl("text", { x: e[1], y: e[2] + (lineas.length - 1) * 12 + 16, "text-anchor": e[3] }, "c-conteo", frente);
-      c.textContent = fmtEntero.format(conteo[e[0]] || 0) + " carreras";
+      var nz = conteoZona(modo, e[0]);   // del SQL; la franja no pertenece a ninguna esquina
+      c.textContent = fmtEntero.format(nz) + (nz === 1 ? " carrera" : " carreras");
     });
 
     // Puntos: el transform lleva la posición; la transición CSS anima el cambio de modo.
@@ -1249,7 +1316,7 @@
       liq(dl, "Sueldo de entrada en su grupo", CUARTO[p.posicion.cuartil_p50_anio_1 - 1], true);
       liq(dl, "Crecimiento en su grupo (%)", CUARTO[p.posicion.cuartil_p50_pct_1_5 - 1], true);
       liq(dl, "Cuadrante (en % / en pesos)", p.posicion.cuadrante_pct +
-        (p.posicion.cambia_cuadrante ? " / " + p.posicion.cuadrante_pesos : " (igual en pesos)"), true);
+        (p.posicion.cuadrante_pesos !== p.posicion.cuadrante_pct ? " / " + p.posicion.cuadrante_pesos : " (igual en pesos)"), true);
     }
     b1.appendChild(dl);
     var lo = Math.floor(Math.min(p.percentiles.anio_1.p10, p.percentiles.anio_5.p10) / 250000) * 250000;

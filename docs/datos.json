@@ -29,6 +29,18 @@
    "origen": "W3; movido de app.js a SQL en la revisión del 16-11-26"
   },
   {
+   "nombre": "margen_tipico_pesos",
+   "valor": 20000,
+   "descripcion": "Ídem en pesos de aumento del P50; equivale a ~2 pp sobre una entrada típica de ~$900 mil",
+   "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
+  },
+  {
+   "nombre": "margen_tipico_pp",
+   "valor": 2,
+   "descripcion": "Distancia a la mediana del grupo (puntos porcentuales de crecimiento) dentro de la cual el progreso es \"típico\"",
+   "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
+  },
+  {
    "nombre": "max_cobertura_baja",
    "valor": 0.75,
    "descripcion": "Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura",
@@ -419,7 +431,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 51
+   "OK": 53
   },
   "controles": [
    {
@@ -592,6 +604,13 @@
    },
    {
     "control": "analytics_referencia",
+    "objeto": "cuadrante_conteo",
+    "estado": "OK",
+    "umbral": "Σ zonas = representativos del nivel en cada medida; cada zona = recuento desde posicion",
+    "detalle": "0 celdas o totales distintos; 20 celdas"
+   },
+   {
+    "control": "analytics_referencia",
     "objeto": "cuantil_directo",
     "estado": "OK",
     "umbral": "q25/q50/q75 = recálculo por autounión en todos los grupos y métricas",
@@ -617,6 +636,13 @@
     "estado": "OK",
     "umbral": "una posición por par representativo (los no representativos no tienen cuadrante)",
     "detalle": "210 posiciones; 210 pares representativos"
+   },
+   {
+    "control": "analytics_referencia",
+    "objeto": "progreso_por_margen",
+    "estado": "OK",
+    "umbral": "progreso = más / típico / menos según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas",
+    "detalle": "0 carreras con progreso o cambio distinto del recálculo; 10 cambian (margen ±2 pp / ±$20000)"
    },
    {
     "control": "analytics_referencia",
@@ -1698,7 +1724,132 @@
    }
   ],
   "pct_pesos": {
-   "n_cambian": 30,
+   "n_cambian_tec": 0,
+   "n_cambian_pro": 10,
+   "margen_pp": 2,
+   "margen_pesos": 20000,
+   "conteos": [
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "entrada alta · progresa más",
+     "n": 17
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "entrada alta · progresa menos",
+     "n": 24
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "entrada baja · progresa más",
+     "n": 38
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "entrada baja · progresa menos",
+     "n": 25
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "progreso típico",
+     "n": 21
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa más",
+     "n": 19
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa menos",
+     "n": 19
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa más",
+     "n": 24
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa menos",
+     "n": 42
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "progreso típico",
+     "n": 21
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
+     "zona": "entrada alta · progresa más",
+     "n": 13
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
+     "zona": "entrada alta · progresa menos",
+     "n": 17
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
+     "zona": "entrada baja · progresa más",
+     "n": 25
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
+     "zona": "entrada baja · progresa menos",
+     "n": 16
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
+     "zona": "progreso típico",
+     "n": 14
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa más",
+     "n": 14
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa menos",
+     "n": 16
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa más",
+     "n": 22
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa menos",
+     "n": 15
+    },
+    {
+     "nivel": "Carreras Técnicas",
+     "medida": "pesos",
+     "zona": "progreso típico",
+     "n": 18
+    }
+   ],
    "ejemplo": {
     "clave": "INGENIERIA EN ALIMENTOS",
     "tipo": "Universidad",
@@ -1945,9 +2096,11 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     48.3,
@@ -2096,6 +2249,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -2268,6 +2423,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -2415,8 +2572,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -2694,6 +2853,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -2866,6 +3027,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3134,6 +3297,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3273,7 +3438,9 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3414,6 +3581,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3572,6 +3741,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3721,6 +3892,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -3879,6 +4052,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -4017,9 +4192,11 @@
     "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     78.1,
@@ -4309,7 +4486,9 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -4482,6 +4661,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -4622,6 +4803,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -4908,6 +5091,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5056,7 +5241,9 @@
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5197,6 +5384,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5346,6 +5535,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5486,6 +5677,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5626,6 +5819,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -5897,9 +6092,11 @@
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     81.0,
@@ -6039,6 +6236,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -6179,6 +6378,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -6851,6 +7052,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7000,6 +7203,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7140,6 +7345,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7280,6 +7487,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7427,8 +7636,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7702,6 +7913,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7842,6 +8055,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -7977,6 +8192,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8149,6 +8366,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8422,6 +8641,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8562,6 +8783,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8702,6 +8925,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8840,8 +9065,10 @@
     "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -8982,6 +9209,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -9287,6 +9516,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -9425,8 +9656,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -9846,6 +10079,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -9986,6 +10221,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10126,6 +10363,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10266,6 +10505,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10438,6 +10679,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10578,6 +10821,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10718,6 +10963,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -10876,6 +11123,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -11016,6 +11265,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -11156,6 +11407,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -11296,6 +11549,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -11567,8 +11822,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -11975,6 +12232,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "menos",
+    "progreso_pesos": "más",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -12115,6 +12374,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -12287,6 +12548,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -12425,9 +12688,11 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa más",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     78.8,
@@ -12833,6 +13098,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -13106,6 +13373,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -13511,8 +13780,10 @@
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     29.9,
@@ -13651,7 +13922,9 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -13790,8 +14063,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -13949,8 +14224,10 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     56.8,
@@ -14089,7 +14366,9 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -14230,6 +14509,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -14368,9 +14649,11 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     47.3,
@@ -14542,6 +14825,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -14700,6 +14985,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -14838,8 +15125,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15012,6 +15301,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15170,6 +15461,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15310,6 +15603,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15450,6 +15745,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15723,6 +16020,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -15863,6 +16162,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16020,7 +16321,9 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16159,8 +16462,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16310,6 +16615,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16480,8 +16787,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16622,6 +16931,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16762,6 +17073,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -16902,6 +17215,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -17333,9 +17648,11 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa más",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     65.8,
@@ -17638,8 +17955,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -17780,6 +18099,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -17920,6 +18241,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18060,6 +18383,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18200,6 +18525,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18349,6 +18676,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18489,6 +18818,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18629,6 +18960,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18769,6 +19102,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -18909,6 +19244,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -19049,6 +19386,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -19189,6 +19528,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -19461,7 +19802,9 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -19620,6 +19963,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -19893,6 +20238,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -20166,6 +20513,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -20324,6 +20673,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -20464,6 +20815,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -20870,6 +21223,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21042,6 +21397,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21182,6 +21539,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21354,6 +21713,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21526,6 +21887,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21684,6 +22047,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -21856,6 +22221,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -22014,6 +22381,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -22186,6 +22555,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -22344,6 +22715,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -22479,6 +22852,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -22618,8 +22993,10 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     59.9,
@@ -22754,6 +23131,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -22912,6 +23291,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -23070,6 +23451,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -23209,8 +23592,10 @@
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     83.0,
@@ -23381,8 +23766,10 @@
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     85.3,
@@ -23553,7 +23940,9 @@
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -23726,6 +24115,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -23896,8 +24287,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24047,6 +24440,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24187,6 +24582,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24359,6 +24756,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24531,6 +24930,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24689,6 +25090,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -24847,6 +25250,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -25110,6 +25515,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -25282,6 +25689,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -25555,6 +25964,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -25727,6 +26138,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -25899,6 +26312,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -26069,8 +26484,10 @@
     "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -26243,6 +26660,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -26415,6 +26834,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -26587,6 +27008,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -26759,6 +27182,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -26929,9 +27354,11 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa más",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     82.0,
@@ -27103,6 +27530,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -27243,6 +27672,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -27381,9 +27812,11 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     62.9,
@@ -27541,6 +27974,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -27681,6 +28116,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -27851,8 +28288,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -28024,7 +28463,9 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -28183,6 +28624,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -28323,6 +28766,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -28463,6 +28908,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -28867,9 +29314,11 @@
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     89.7,
@@ -29004,6 +29453,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -29144,6 +29595,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -29284,6 +29737,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -29433,6 +29888,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -29573,6 +30030,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -29713,6 +30172,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -29846,8 +30307,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -29988,6 +30451,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -30128,6 +30593,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -30426,9 +30893,11 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     82.0,
@@ -30576,8 +31045,10 @@
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     52.5,
@@ -30749,6 +31220,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -30905,9 +31378,11 @@
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 4,
-    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     90.9,
@@ -31079,6 +31554,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -31251,6 +31728,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -31409,6 +31888,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -31581,6 +32062,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -31753,6 +32236,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -31923,8 +32408,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -32095,9 +32582,11 @@
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     89.9,
@@ -32267,8 +32756,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -32441,6 +32932,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -32611,8 +33104,10 @@
     "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -32785,6 +33280,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -33090,6 +33587,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -33225,6 +33724,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -33365,6 +33866,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -33536,8 +34039,10 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "cambia_cuadrante": true
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     63.1,
@@ -33708,7 +34213,9 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -33879,9 +34386,11 @@
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "cambia_cuadrante": true
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
+    "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
     91.3,
@@ -34053,6 +34562,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -34225,6 +34736,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -34374,6 +34887,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -34544,8 +35059,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 1,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -34686,6 +35203,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "más",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": true
    },
    "empleabilidad_nacional": [
@@ -34858,6 +35377,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -34993,6 +35514,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35164,7 +35687,9 @@
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35314,6 +35839,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35452,8 +35979,10 @@
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35626,6 +36155,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35764,8 +36295,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -35924,6 +36457,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36096,6 +36631,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36236,6 +36773,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36504,6 +37043,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36642,8 +37183,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36802,6 +37345,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -36951,6 +37496,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -37222,8 +37769,10 @@
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -37396,6 +37945,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -37535,7 +38086,9 @@
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -37676,6 +38229,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -37949,6 +38504,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38089,6 +38646,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38229,6 +38788,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38502,6 +39063,8 @@
     "cuartil_p50_delta_1_5": 4,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38642,6 +39205,8 @@
     "cuartil_p50_delta_1_5": 3,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38814,6 +39379,8 @@
     "cuartil_p50_delta_1_5": 2,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -38986,6 +39553,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [
@@ -39158,6 +39727,8 @@
     "cuartil_p50_delta_1_5": 1,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "empleabilidad_nacional": [

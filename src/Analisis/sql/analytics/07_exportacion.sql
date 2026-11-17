@@ -64,6 +64,7 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'cuartil_p50_anio_1', po.cuartil_p50_anio_1, 'cuartil_p50_pct_1_5', po.cuartil_p50_pct_1_5,
         'cuartil_p50_delta_1_5', po.cuartil_p50_delta_1_5,
         'cuadrante_pct', po.cuadrante_pct, 'cuadrante_pesos', po.cuadrante_pesos,
+        'progreso_pct', po.progreso_pct, 'progreso_pesos', po.progreso_pesos,
         'cambia_cuadrante', po.cambia_cuadrante) END,
     'empleabilidad_nacional', json_build_array(e.empleabilidad_1er_anio, e.empleabilidad_2do_anio),
     'duracion', json_build_object('formal', e.duracion_formal_semestres, 'real', e.duracion_real_semestres),
@@ -181,7 +182,13 @@ SELECT json_build_object(
                      ORDER BY nivel_carrera DESC)   -- técnicas primero: ahí está el hallazgo
                  FROM analytics.hallazgo_edad),
         'pct_pesos', (SELECT json_build_object(
-                     'n_cambian', h.n_cambian,
+                     'n_cambian_tec', h.n_cambian_tec, 'n_cambian_pro', h.n_cambian_pro,
+                     'margen_pp', analytics.param('margen_tipico_pp'), 'margen_pesos', analytics.param('margen_tipico_pesos'),
+                     -- Conteos de las esquinas y de la franja "progreso típico" (03_referencia.sql):
+                     -- la web los dibuja tal cual, sin contar puntos.
+                     'conteos', (SELECT json_agg(json_build_object('nivel', nivel_carrera, 'medida', medida, 'zona', zona, 'n', n)
+                                                 ORDER BY nivel_carrera, medida, zona)
+                                 FROM analytics.cuadrante_conteo),
                      'ejemplo', CASE WHEN h.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(
                          'clave', h.clave_carrera_generica, 'tipo', h.tipo_institucion, 'nombre', p.nombre,
                          'p50_anio_1', h.p50_anio_1, 'p50_pct_1_5', round(h.p50_pct_1_5, 1),
