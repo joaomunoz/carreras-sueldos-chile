@@ -67119,7 +67119,12 @@
   ],
   "cohortes_atipicas": 15,
   "pares_composicion_edad": 27,
-  "brecha_nacional_instituciones": "par mediano: empleabilidad 1er año 1.65 pp; tramo 4° año (punto medio) 6.2 %; 104 y 62 pares",
+  "brecha_nacional_instituciones": {
+   "emp_pp": 1.7,
+   "tramo_pct": 6.2,
+   "n_emp": 104,
+   "n_tramo": 62
+  },
   "pct_titulaciones_genericas_no_publicadas": 2.1
  }
 }

@@ -31,7 +31,7 @@
 - **Determinista:** reconstruir la base y volver a exportar da el mismo archivo, con el mismo SHA-256.
 - **Los datos corrigieron dos decisiones del plan** y quedaron documentadas:
   - Con la ponderación, 4 grupos de área estaban dominados por una sola carrera (Psicología pesaba el 70 % de su grupo). Se agregó una regla: un grupo deja de ser referencia si una carrera supera el 50 % de su peso.
-  - La cifra nacional queda sistemáticamente sobre el promedio de las instituciones publicadas (+1,65 puntos de empleabilidad y +6,2 % en el tramo de ingreso). Por eso cada institución se compara con la institución típica de su carrera, no con la cifra nacional.
+  - La cifra nacional queda sistemáticamente sobre el promedio de las instituciones publicadas (<!-- BRECHA:INICIO -->+1,7 puntos de empleabilidad y +6,2 % en el tramo de ingreso<!-- BRECHA:FIN -->). Por eso cada institución se compara con la institución típica de su carrera, no con la cifra nacional.
 - **Ninguna cifra de la web está escrita a mano:** textos, umbrales y ejemplos se calculan desde los datos, y los ejemplos se eligen por una regla, no a dedo.
 
 ---
@@ -96,7 +96,7 @@ docs/                  index.html (la web), datos.json y captura.png
 | **La media y los percentiles nunca se combinan** | La media de cada año junta tres cohortes con ingresos 2022–2024; los percentiles usan una sola cohorte con ingresos 2024. Son poblaciones distintas | `Media / P50` (mezclaría poblaciones) |
 | **Comparable = 3 o más instituciones la ofrecen** | Con 1 o 2, la "cifra nacional" es en realidad la de una institución | Comparar todas (42 de 252 carreras serían anécdotas) |
 | **Un grupo de área deja de ser referencia si una carrera pesa más del 50 %** | Con pesos por titulados, la mediana del grupo sería el valor de esa carrera | Avisarlo sin cambiar la referencia; mediana sin ponderar (mezcla criterios) |
-| **Cada institución se compara con la institución típica de su carrera** | La cifra nacional queda +1,65 pp y +6,2 % sobre las instituciones publicadas: describe una población más amplia | Compararla con la cifra nacional (inflaba "bajo el promedio": 715 contra 131) |
+| **Cada institución se compara con la institución típica de su carrera** | La cifra nacional queda <!-- BRECHA:INICIO -->+1,7 puntos de empleabilidad y +6,2 % en el tramo de ingreso<!-- BRECHA:FIN --> sobre las instituciones publicadas: describe una población más amplia | Compararla con la cifra nacional (inflaba "bajo el promedio": 715 contra 131) |
 | **Cuadrantes con ejes relativos al grupo de cada carrera** | Cada carrera se clasifica contra su propio grupo; con ejes absolutos el gráfico contradiría la clasificación | Ejes absolutos por segmento |
 | **El JSON se arma en SQL y la web es un solo archivo** | El archivo no puede contradecir a las tablas, y abierto con doble clic el navegador no permite leer un JSON externo | Armar el JSON en Python; leerlo con `fetch` (exige un servidor) |
 

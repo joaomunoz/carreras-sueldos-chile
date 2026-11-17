@@ -223,8 +223,12 @@ SELECT json_build_object(
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
         'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto WHERE composicion_edad),
-        'brecha_nacional_instituciones', (SELECT detalle FROM qa.control
-                                          WHERE control = 'analytics_dispersion' AND objeto = 'brecha_nacional_instituciones'),
+        'brecha_nacional_instituciones', (SELECT json_build_object(
+                                              -- Un decimal desde el valor exacto: redondear a 2 y luego a 1 daba 1,65 → «1,6» en
+                                              -- Python y «1,7» en la web (el exacto es 1,652…).
+                                              'emp_pp', round(med_emp, 1), 'tramo_pct', round(100 * med_tramo, 1),
+                                              'n_emp', n_emp, 'n_tramo', n_tramo)
+                                          FROM analytics.brecha_nacional),
         'pct_titulaciones_genericas_no_publicadas', (
             SELECT round(100.0 * sum(t.total_titulaciones) FILTER (
                        WHERE NOT EXISTS (SELECT 1 FROM modelo.mifuturo_programa m

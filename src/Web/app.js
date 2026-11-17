@@ -1554,20 +1554,13 @@
     });
   }
 
-  // El detalle del control qa trae las cifras en texto con punto decimal: "empleabilidad 1er
-  // año 1.65 pp; tramo 4° año (punto medio) 6.2 %". Se buscan por su contexto (un regex de
-  // "cualquier número" tomaría el 1 de "1er" y el 4 de "4°").
-  function brechaDe(texto) {
-    var e = /([-\d.]+) pp/.exec(texto), t = /\(punto medio\) ([-\d.]+) %/.exec(texto);
-    return e && t ? [Number(e[1]), Number(t[1])] : [];
-  }
-
   function pintarLimites() {
     var q = datos.que_no_dice, ul = document.getElementById("limites");
     function item(titulo, partes) { var li = el("li"); textoConCifras(li, titulo, partes); ul.appendChild(li); }
     var anomalos = q.hitos_con_anomalia.map(function (a) { return a + "°"; });
     var atipSalud = pares.filter(function (p) { return p.marcas.cohorte_atipica && p.area.cine13 === "Salud y Bienestar"; }).length;
-    var brecha = brechaDe(q.brecha_nacional_instituciones);
+    // Números de analytics.brecha_nacional (antes se sacaban con un regex del texto del control qa).
+    var brecha = q.brecha_nacional_instituciones || {};
 
     item("No dice por qué.", ["Describe cuánto ganan los titulados de cada carrera; no prueba que estudiar esa carrera cause ese sueldo. Pueden influir quién entra a estudiarla, en qué institución y dónde trabaja después."]);
     item("No sigue a las mismas personas.", ["El primer y el quinto año son grupos distintos de titulados medidos con los mismos ingresos de 2024: es una foto, no una trayectoria."]);
@@ -1583,9 +1576,9 @@
       " carreras la cohorte del sueldo al primer año tuvo una empleabilidad atípica (" + fmtEntero.format(atipSalud) +
       " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " los titulados recientes son mucho mayores que los de hace cinco años."]);
     item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el P10 está truncado. No hay datos por sexo, edad ni región."]);
-    if (brecha.length >= 2) {
-      item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha[0]) + " puntos",
-        " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha[1]) + " %",
+    if (brecha.emp_pp != null && brecha.tramo_pct != null) {
+      item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha.emp_pp) + " puntos",
+        " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
         " sobre ellas en el tramo de ingreso del cuarto año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución típica de su carrera."]);
     }
     item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),

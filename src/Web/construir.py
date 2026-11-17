@@ -12,7 +12,8 @@ HALLAZGOS:FIN) desde datos.json["hallazgos"]: así el README y la web citan las 
 se calculan en SQL con controles qa (src/Analisis/sql/analytics/06_hallazgos.sql). Copiarlas a mano
 fue como un error de la web llegó también al README. Por la misma razón regenera el conteo de
 controles (entre CONTROLES:INICIO y CONTROLES:FIN) desde datos.json["qa"]["resumen"]: escrito a
-mano, ya se había desactualizado una vez.
+mano, ya se había desactualizado una vez. Y la brecha cifra nacional − instituciones (dos pares
+BRECHA:INICIO/FIN) desde datos.json["que_no_dice"]["brecha_nacional_instituciones"].
 
 Por qué incrustar todo: abierta con doble clic (file://), la página no puede leer un JSON
 externo (el navegador lo bloquea), y el requisito es cero dependencias externas.
@@ -45,6 +46,9 @@ FIN = "<!-- HALLAZGOS:FIN -->"
 # Marcadores en línea: el conteo vive dentro de una viñeta del README, no en un bloque propio.
 CONTROLES_INICIO = "<!-- CONTROLES:INICIO -->"
 CONTROLES_FIN = "<!-- CONTROLES:FIN -->"
+# La brecha cifra nacional − instituciones aparece dos veces en el README (viñeta y tabla de decisiones).
+BRECHA_INICIO = "<!-- BRECHA:INICIO -->"
+BRECHA_FIN = "<!-- BRECHA:FIN -->"
 
 
 def _leer(ruta: Path) -> str:
@@ -136,18 +140,29 @@ def _controles_readme(qa: dict) -> str:
             f"{exentos} están exentos por diseño (documentados)")
 
 
-def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str) -> str:
-    if texto.count(inicio) != 1 or texto.count(fin) != 1:
-        raise SystemExit(f"README.md debe tener una vez cada marcador {inicio} / {fin}.")
-    antes, resto = texto.split(inicio)
-    _, despues = resto.split(fin)
-    return antes + inicio + contenido + fin + despues
+def _brecha_readme(qnd: dict) -> str:
+    b = qnd["brecha_nacional_instituciones"]
+    # 1 decimal, como la web ("Qué no dice"): el README y la página citan la misma cifra.
+    return (f"+{_num(b['emp_pp'], 1)} puntos de empleabilidad y "
+            f"+{_num(b['tramo_pct'], 1)} % en el tramo de ingreso")
+
+
+def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str, veces: int = 1) -> str:
+    if texto.count(inicio) != veces or texto.count(fin) != veces:
+        raise SystemExit(f"README.md debe tener {veces} vez/veces cada marcador {inicio} / {fin}.")
+    partes = texto.split(inicio)
+    salida = partes[0]
+    for parte in partes[1:]:
+        _, despues = parte.split(fin, 1)
+        salida += inicio + contenido + fin + despues
+    return salida
 
 
 def _actualizar_readme(datos: dict) -> None:
     texto = _leer(README)
     nuevo = _reemplazar_bloque(texto, INICIO, FIN, "\n" + _hallazgos_readme(datos["hallazgos"]) + "\n")
     nuevo = _reemplazar_bloque(nuevo, CONTROLES_INICIO, CONTROLES_FIN, _controles_readme(datos["qa"]))
+    nuevo = _reemplazar_bloque(nuevo, BRECHA_INICIO, BRECHA_FIN, _brecha_readme(datos["que_no_dice"]), veces=2)
     if nuevo != texto:   # sin cambios no se reescribe: git no ve diferencias falsas
         temporal = README.with_suffix(".md.tmp")
         temporal.write_text(nuevo, encoding="utf-8")

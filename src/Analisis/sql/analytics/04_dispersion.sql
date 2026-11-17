@@ -10,7 +10,7 @@
 -- D1 decía comparar cada institución con la cifra NACIONAL de su par. Los datos lo desaconsejan:
 -- la cifra nacional queda sistemáticamente sobre el promedio de las instituciones publicadas,
 -- incluso ponderado por titulaciones, en la empleabilidad del 1er año y en el tramo del 4° año
--- (magnitud vigente: detalle del control qa brecha_nacional_instituciones), con las mismas
+-- (magnitud vigente: tabla analytics.brecha_nacional, más abajo, con su control qa), con las mismas
 -- cohortes, moneda y filtro de sueldo mínimo según la metodología. La cifra nacional describe
 -- una población más amplia que las filas por institución; no hay datos para saber cuál. Contra
 -- ella, "bajo el promedio" quedaba inflado (715 tramos "bajo" vs 131 "sobre"). La mediana del
@@ -208,6 +208,56 @@ LEFT JOIN (SELECT p.tipo_institucion, p.nivel_carrera, count(*) AS pares,
            FROM analytics.dispersion_tramo d JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
            GROUP BY 1, 2) t USING (tipo_institucion, nivel_carrera);
 
+-- Brecha cifra nacional − instituciones publicadas, ponderada por titulaciones SIES de las cohortes
+-- de cada indicador, en los pares con dispersión. Es la razón de la corrección de D1 (cada
+-- institución se compara con la típica de su carrera, no con la nacional). Antes vivía solo en el
+-- detalle de texto de su control qa y la web la sacaba con un regex; como tabla, la web y el
+-- README citan los mismos números (07_exportacion.sql → que_no_dice.brecha_nacional_instituciones).
+CREATE TABLE analytics.brecha_nacional (
+    unica      boolean PRIMARY KEY DEFAULT true CHECK (unica),   -- una sola fila
+    med_emp    numeric,   -- pp de empleabilidad del 1er año, par mediano
+    med_tramo  numeric,   -- proporción (0,062 = 6,2 %) en el punto medio del tramo del 4° año
+    n_emp      integer NOT NULL,
+    n_tramo    integer NOT NULL
+);
+
+INSERT INTO analytics.brecha_nacional (med_emp, med_tramo, n_emp, n_tramo)
+SELECT med_emp, med_tramo, n_emp, n_tramo FROM (
+    WITH c1 AS (SELECT cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte WHERE indicador = 'empleabilidad_1er_anio_institucion'),
+         c4 AS (SELECT cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte WHERE indicador = 'tramo_ingreso_4to_anio_institucion'),
+    peso AS (
+        SELECT t.codigo_institucion, t.clave_carrera_generica,
+               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c1.d + (t.clave_carrera_generica = 'DERECHO')::int
+                                                                  AND c1.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w1,
+               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c4.d + (t.clave_carrera_generica = 'DERECHO')::int
+                                                                  AND c4.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w4
+        FROM modelo.titulacion t CROSS JOIN c1 CROSS JOIN c4
+        GROUP BY 1, 2
+    ),
+    emp AS (
+        SELECT pv.clave_carrera_generica, pv.tipo_institucion,
+               max(pv.nacional_1er_anio) - sum(pe.w1 * pv.empleabilidad_1er_anio) / nullif(sum(pe.w1), 0) AS brecha
+        FROM analytics.programa_vs_par pv
+        JOIN peso pe USING (codigo_institucion, clave_carrera_generica)
+        JOIN analytics.dispersion_empleabilidad d
+          ON d.clave_carrera_generica = pv.clave_carrera_generica AND d.tipo_institucion = pv.tipo_institucion AND d.anio = 1
+        GROUP BY 1, 2
+    ),
+    tramo AS (
+        SELECT pv.clave_carrera_generica, pv.tipo_institucion,
+               max(pv.ingreso_medio_4to_nacional)
+               / (sum(pe.w4 * (pv.tramo_min + coalesce(pv.tramo_max, pv.tramo_min)) / 2.0) / nullif(sum(pe.w4), 0)) - 1 AS brecha
+        FROM analytics.programa_vs_par pv
+        JOIN peso pe USING (codigo_institucion, clave_carrera_generica)
+        JOIN analytics.dispersion_tramo d USING (clave_carrera_generica, tipo_institucion)
+        WHERE pv.tramo_min IS NOT NULL
+        GROUP BY 1, 2
+    )
+    SELECT (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY brecha) FROM emp)::numeric   AS med_emp,
+           (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY brecha) FROM tramo)::numeric AS med_tramo,
+           (SELECT count(*) FROM emp) AS n_emp, (SELECT count(*) FROM tramo) AS n_tramo
+) x;
+
 -- --------------------------------------------------------------------------
 -- Controles qa
 -- --------------------------------------------------------------------------
@@ -267,48 +317,12 @@ FROM (SELECT count(*) AS n FROM analytics.dispersion_segmento
       WHERE resumen_tramo <> (pares_tramo >= analytics.param('min_pares_resumen_tramo'))
          OR (NOT resumen_tramo AND (amplitud_mediana_tramo IS NOT NULL OR tramos_distintos_mediana IS NOT NULL))) x
 UNION ALL
--- 5. Brecha cifra nacional − instituciones publicadas, ponderada por titulaciones SIES de las
---    cohortes de cada indicador, en los pares con dispersión. Es la razón de la corrección de
---    D1: se mide en cada build para que quede a la vista (la cifra vigente está en el detalle de
---    este control; los rangos se fijaron con holgura sobre lo medido en A4). Falla si cambia de escala (> 5 pp o
---    > 15 %), lo que indicaría un cambio de definición en MiFuturo, o si se invierte el signo.
+-- 5. Brecha cifra nacional − instituciones publicadas (calculada en analytics.brecha_nacional,
+--    arriba). Falla si cambia de escala (> 5 pp o > 15 %), lo que indicaría un cambio de
+--    definición en MiFuturo, o si se invierte el signo.
 SELECT 'analytics_dispersion', 'brecha_nacional_instituciones',
        CASE WHEN med_emp BETWEEN 0 AND 5 AND med_tramo BETWEEN 0 AND 0.15 THEN 'OK' ELSE 'FALLA' END,
        round(med_emp, 2), 'mediana de (nacional − promedio ponderado de instituciones) en [0; 5] pp y [0; 15] % (tramo)',
        format('par mediano: empleabilidad 1er año %s pp; tramo 4° año (punto medio) %s %%; %s y %s pares',
               round(med_emp, 2), round(100 * med_tramo, 1), n_emp, n_tramo)
-FROM (
-    WITH c1 AS (SELECT cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte WHERE indicador = 'empleabilidad_1er_anio_institucion'),
-         c4 AS (SELECT cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte WHERE indicador = 'tramo_ingreso_4to_anio_institucion'),
-    peso AS (
-        SELECT t.codigo_institucion, t.clave_carrera_generica,
-               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c1.d + (t.clave_carrera_generica = 'DERECHO')::int
-                                                                  AND c1.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w1,
-               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c4.d + (t.clave_carrera_generica = 'DERECHO')::int
-                                                                  AND c4.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w4
-        FROM modelo.titulacion t CROSS JOIN c1 CROSS JOIN c4
-        GROUP BY 1, 2
-    ),
-    emp AS (
-        SELECT pv.clave_carrera_generica, pv.tipo_institucion,
-               max(pv.nacional_1er_anio) - sum(pe.w1 * pv.empleabilidad_1er_anio) / nullif(sum(pe.w1), 0) AS brecha
-        FROM analytics.programa_vs_par pv
-        JOIN peso pe USING (codigo_institucion, clave_carrera_generica)
-        JOIN analytics.dispersion_empleabilidad d
-          ON d.clave_carrera_generica = pv.clave_carrera_generica AND d.tipo_institucion = pv.tipo_institucion AND d.anio = 1
-        GROUP BY 1, 2
-    ),
-    tramo AS (
-        SELECT pv.clave_carrera_generica, pv.tipo_institucion,
-               max(pv.ingreso_medio_4to_nacional)
-               / (sum(pe.w4 * (pv.tramo_min + coalesce(pv.tramo_max, pv.tramo_min)) / 2.0) / nullif(sum(pe.w4), 0)) - 1 AS brecha
-        FROM analytics.programa_vs_par pv
-        JOIN peso pe USING (codigo_institucion, clave_carrera_generica)
-        JOIN analytics.dispersion_tramo d USING (clave_carrera_generica, tipo_institucion)
-        WHERE pv.tramo_min IS NOT NULL
-        GROUP BY 1, 2
-    )
-    SELECT (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY brecha) FROM emp)::numeric   AS med_emp,
-           (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY brecha) FROM tramo)::numeric AS med_tramo,
-           (SELECT count(*) FROM emp) AS n_emp, (SELECT count(*) FROM tramo) AS n_tramo
-) x;
+FROM analytics.brecha_nacional;
