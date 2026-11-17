@@ -1,0 +1,8 @@
+# requirements.txt
+# Versiones con las que se construyó y verificó el proyecto (16-11-26).
+psycopg[binary]>=3.1     # conexión a PostgreSQL (build, exportación, diagrama)
+pandas>=2.0              # procesar.py de los scrapers
+numpy>=1.26
+openpyxl>=3.1            # lectura del Excel del SIES (Titulados/procesar.py)
+requests>=2.31           # obtener.py de los scrapers
+beautifulsoup4>=4.12     # obtener.py de los scrapers
