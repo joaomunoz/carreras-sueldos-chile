@@ -1250,6 +1250,7 @@ a.hallazgo__accion { color: var(--tinta); }
                 <th scope="col">Cifra</th>
                 <th scope="col">Titulados en</th>
                 <th scope="col">Ingresos de</th>
+                <th scope="col">Nivel</th>
                 <th scope="col" class="num">Mínimo de casos</th>
                 <th scope="col">Fuente</th>
               </tr>
@@ -2754,7 +2755,10 @@ a.hallazgo__accion { color: var(--tinta); }
     cont.appendChild(tituloGrafico("Sueldo típico y promedio por año desde la titulación · pesos"));
     var caja = el("div", "ficha__grafico ficha__grafico--sueldo");
     cont.appendChild(caja);
-    var W = caja.clientWidth || 600, H = 200, arriba = 12, abajo = 26;
+    // ¿Hay rangos por institución? Entonces el 4° año se marca: es el único año que MiFuturo publica
+    // por institución (la tabla de abajo), y une este gráfico nacional con esa tabla.
+    var conRango = (programasPor[claveDe(p)] || []).some(function (g) { return g.tramo; });
+    var W = caja.clientWidth || 600, H = conRango ? 216 : 200, arriba = 12, abajo = conRango ? 42 : 26;
     var angosto = W < 520;
     var mIzq = 70, mDer = angosto ? 92 : 200, dentro = angosto ? 16 : 26;
     var a1 = p.percentiles.anio_1, a5 = p.percentiles.anio_5, v = p.media.anio;
@@ -2780,9 +2784,13 @@ a.hallazgo__accion { color: var(--tinta); }
     var anomalos = {};
     datos.hitos.forEach(function (h) { anomalos[h.anio] = h.incluye_caida || h.incluye_rebote; });
     v.forEach(function (val, i) {
-      var et = svgEl("text", { x: x(i), y: H - 6, "text-anchor": "middle" }, "g-eje-texto", svg);
+      var et = svgEl("text", { x: x(i), y: H - (conRango ? 22 : 6), "text-anchor": "middle" }, "g-eje-texto", svg);
       et.textContent = (i + 1) + "°" + (anomalos[i + 1] ? "*" : "");
     });
+    if (conRango) {
+      var t4 = svgEl("text", { x: x(3), y: H - 2, "text-anchor": "middle" }, "g-rotulo-suave", svg);
+      t4.textContent = angosto ? "por institución ↓" : "el año que se publica por institución ↓";
+    }
     [[0, a1, ref1], [4, a5, ref5]].forEach(function (a) {
       var cx = x(a[0]), q = a[1];
       if (a[2]) svgEl("line", { x1: cx - 16, x2: cx + 16, y1: y(a[2].q50), y2: y(a[2].q50) }, "f-ref", svg);
@@ -2821,6 +2829,7 @@ a.hallazgo__accion { color: var(--tinta); }
       var zona = svgEl("rect", { x: x(i) - col / 2, y: 0, width: col, height: H - abajo }, "f-zona", svg);
       zona.addEventListener("pointerenter", function () {
         var lineas = ["Promedio " + pesos(val)];
+        if (i === 3 && conRango) lineas.push("Por institución, MiFuturo publica este año como rango (tabla de abajo)");
         var q = i === 0 ? a1 : i === 4 ? a5 : null, r = i === 0 ? ref1 : i === 4 ? ref5 : null;
         if (q) {
           lineas.unshift("Sueldo típico (P50) " + pesos(q.p50));
@@ -2866,7 +2875,8 @@ a.hallazgo__accion { color: var(--tinta); }
   // sugerir grupos (antes un zigzag por posición en la lista parecía tres niveles). Se puede
   // recorrer con el puntero o el teclado, y cada punto se enlaza con su fila de la tabla.
   // Devuelve { marcar(g) } para que la tabla resalte el punto de la fila bajo el puntero.
-  function graficoInstituciones(cont, progs, d, nacional, alElegir) {
+  // nac4: promedio nacional al 4° año, el par del rango de cada institución en el aviso.
+  function graficoInstituciones(cont, progs, d, nacional, alElegir, nac4) {
     cont.appendChild(tituloGrafico("Empleabilidad al 1er año en cada una de las " + fmtEntero.format(progs.length) +
       (progs.length === 1 ? " institución" : " instituciones") + " con datos"));
     cont.appendChild(el("p", "ficha__subtitulo", "Cada punto es una institución; se apilan cuando tienen valores parecidos. " +
@@ -2930,7 +2940,10 @@ a.hallazgo__accion { color: var(--tinta); }
       var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Empleabilidad 2° año: " + pct(g.emp2),
                     "Dif. 1er año con la institución típica: " + difPuntos(g.desvio_emp1),
                     "Continuidad de estudios: " + pct(g.continuidad)];
-      if (g.tramo) lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
+      if (g.tramo) {
+        lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
+        if (nac4 != null) lineas.push("Promedio nacional al 4° año: " + pesos(nac4));
+      }
       tip.replaceChildren(el("div", "tooltip__titulo", nombreInst(g.institucion)));
       var cifras = el("div", "tooltip__cifras");
       lineas.forEach(function (l) { cifras.appendChild(el("div", null, l)); });
@@ -3127,7 +3140,7 @@ a.hallazgo__accion { color: var(--tinta); }
         grafI = graficoInstituciones(b3, progs, d1, p.empleabilidad_nacional[0], function (g) {
           if (progs.indexOf(g) >= MAX_INST && !todasInst) { todasInst = true; pintarInst(); rotularInst(); }
           marcarFila(g, true);
-        });
+        }, p.media.anio[3]);
         // La explicación (población más amplia que las instituciones publicadas, A4) solo vale
         // cuando la cifra nacional queda sobre la institución típica; si no, se dice sin explicar.
         var dif = d1.nacional_menos_mediana;
@@ -3147,8 +3160,18 @@ a.hallazgo__accion { color: var(--tinta); }
       // entra en el análisis (pedido del usuario, 18-11-26). El ingreso es un rango porque MiFuturo
       // lo publica así por institución; no se imputa una cifra. «Ver las N» solo suma filas.
       // El sueldo promedio de cada año existe solo nacional: está en el bloque «año a año».
-      b3.appendChild(el("p", "ficha__nota", "MiFuturo no publica el sueldo de cada año por institución, solo un rango del 4° año. " +
-        "El promedio nacional de cada año está más arriba, en el gráfico de sueldo por año."));
+      // El 4° año de la tabla se compara con otro 4° año: el promedio nacional, mismo indicador,
+      // cohortes y años de ingreso que los rangos (no con el 1er y 5° año de arriba).
+      // Solo si alguna institución publica su rango: sin rangos no hay con qué compararlo.
+      if (progs.some(function (g) { return g.tramo; })) {
+        var corrD = p.marcas.es_derecho ? 1 : 0;
+        var dl4 = el("dl", "liq");
+        liq(dl4, "Promedio nacional al 4° año (titulados " + ventana("ingreso_medio_4to_anio", corrD) + ", ingresos " +
+          aniosIngreso("ingreso_medio_4to_anio") + ")", pesos(p.media.anio[3]));
+        b3.appendChild(dl4);
+      }
+      b3.appendChild(el("p", "ficha__nota", "MiFuturo publica el ingreso por institución solo al 4° año y como rango. " +
+        "El 1er y el 5° año existen solo para la carrera completa (nacional), en el gráfico de sueldo por año."));
       var envolI = el("div");
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
@@ -3652,7 +3675,7 @@ a.hallazgo__accion { color: var(--tinta); }
     if (brecha.emp_pp != null && brecha.tramo_pct != null) {
       item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha.emp_pp) + " puntos",
         " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
-        " sobre ellas en el tramo de ingreso del cuarto año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución típica de su carrera."]);
+        " sobre ellas en el rango de ingreso al 4° año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución típica de su carrera."]);
     }
     item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),
       " de las titulaciones recientes; entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);
@@ -3671,7 +3694,7 @@ a.hallazgo__accion { color: var(--tinta); }
     percentiles_anio_1: "Percentiles (P10–P90), 1er año", percentiles_anio_5: "Percentiles (P10–P90), 5° año",
     empleabilidad_1er_anio_nacional: "Empleabilidad nacional, 1er año", empleabilidad_2do_anio_nacional: "Empleabilidad nacional, 2° año",
     empleabilidad_1er_anio_institucion: "Empleabilidad por institución, 1er año", empleabilidad_2do_anio_institucion: "Empleabilidad por institución, 2° año",
-    tramo_ingreso_4to_anio_institucion: "Tramo de ingreso por institución, 4° año",
+    tramo_ingreso_4to_anio_institucion: "Rango de ingreso por institución, 4° año",
     continuidad_estudios_institucion: "Continuidad de estudios", duracion_real_institucion: "Duración real por institución",
     titulados_y_duracion: "Titulados y duración", titulados_sies: "Titulaciones SIES"
   };
@@ -3695,13 +3718,16 @@ a.hallazgo__accion { color: var(--tinta); }
       [["Cifra", NOMBRE_COHORTE[c.indicador] || c.indicador, "td--titulo"],
        ["Titulados en", rango(c.cohortes), ""],
        ["Ingresos de", rango(c.anios_ingreso), ""],
+       ["Nivel", /_institucion$/.test(c.indicador) ? "Por institución" : c.fuente === "Titulados" ? "Nacional (SIES)" : "Nacional", ""],
        ["Mínimo de casos", c.min_casos == null ? "—" : fmtEntero.format(c.min_casos), "num"],
        ["Fuente", FUENTE[c.fuente] || c.fuente, ""]].forEach(function (x) {
         var td = el("td", x[2] || null, x[1]); td.setAttribute("data-rotulo", x[0]); tr.appendChild(td);
       });
       cuerpo.appendChild(tr);
     });
-    var nota = el("p", "nota", "Derecho usa en todas las cifras las cohortes corridas un año.");
+    var nota = el("p", "nota", "El sueldo típico existe solo al 1er y 5° año (nacional); el promedio, del 1° al 5° año (nacional); " +
+      "por institución, solo un rango al 4° año. Por eso el análisis compara el 1er con el 5° año, y las instituciones, al 4°. " +
+      "Derecho usa en todas las cifras las cohortes corridas un año.");
     document.getElementById("tabla-cohortes").parentNode.parentNode.appendChild(nota);
 
     var cp = document.querySelector("#tabla-parametros tbody");

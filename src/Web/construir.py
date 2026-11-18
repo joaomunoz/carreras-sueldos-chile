@@ -160,7 +160,7 @@ def _brecha_readme(qnd: dict) -> str:
     b = qnd["brecha_nacional_instituciones"]
     # 1 decimal, como la web ("Qué no dice"): el README y la página citan la misma cifra.
     return (f"+{_num(b['emp_pp'], 1)} puntos de empleabilidad y "
-            f"+{_num(b['tramo_pct'], 1)} % en el tramo de ingreso")
+            f"+{_num(b['tramo_pct'], 1)} % en el rango de ingreso al 4° año")
 
 
 def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str, veces: int = 1) -> str:
