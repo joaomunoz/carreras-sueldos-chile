@@ -1317,39 +1317,79 @@
     return tb;
   }
 
-  var VECINAS_CERCA = 4;        // en grupos grandes, ±4 alrededor de la carrera
-  var GRUPO_COMPLETO = 25;      // hasta este tamaño se muestra el grupo entero
+  // «Otras carreras de su área»: por INTERÉS, no por estadística. Usa el área del conocimiento de
+  // MiFuturo (MINEDUC), la que ve quien busca carreras, del mismo nivel y en todos los tipos de
+  // institución (con columna Tipo). Antes eran las ±4 más cercanas en sueldo dentro del grupo de
+  // referencia, que en áreas chicas es todo el tipo × nivel: junto a Informática salía Pedagogía en
+  // Filosofía y Religión (pedido del usuario, 18-11-26). Las franjas y «la típica» siguen usando el
+  // grupo estadístico. Solo comparables (1–2 instituciones quedan fuera, como en todo ranking);
+  // la carrera abierta siempre está, marcada.
+  var AREA_COMPLETA = 25;       // hasta este tamaño se muestra el área entera
+  var AREA_CERCA = 5;           // en áreas grandes, ±5 alrededor de la carrera (10 vecinas)
 
-  function vecinas(cont, p, miembros) {
-    var orden = miembros.slice().sort(function (a, b) {
-      return b.percentiles.anio_1.p50 - a.percentiles.anio_1.p50 || colador.compare(a.nombre, b.nombre);
+  function carrerasDeArea(cont, p) {
+    var area = p.area.mineduc, nivel = nivelCorto(p);
+    var orden = pares.filter(function (q) {
+      return q.nivel === p.nivel && q.area.mineduc === area && (q.marcas.representativo || q === p);
+    }).sort(function (a, b) {
+      return b.percentiles.anio_1.p50 - a.percentiles.anio_1.p50 || colador.compare(a.nombre, b.nombre) || colador.compare(a.tipo, b.tipo);
     });
-    var cols = ["Carrera", "Sueldo 1er año", "5° año", "Empleab."];
-    var tb = tablaCon(cont, "Carreras del grupo de " + p.nombre + ", de mayor a menor sueldo típico al 1er año", cols);
+    // Las no comparables del área (1–2 instituciones) no entran al orden por sueldo (regla de todo
+    // ranking), pero sí se nombran aparte: son parte del interés del lector (p. ej. Ingeniería en
+    // Telecomunicaciones IP, con 2 instituciones, junto a Informática).
+    var sinComparar = pares.filter(function (q) {
+      return q.nivel === p.nivel && q.area.mineduc === area && !q.marcas.representativo && q !== p;
+    }).sort(function (a, b) { return colador.compare(a.nombre, b.nombre) || colador.compare(a.tipo, b.tipo); });
+    function pintarSinComparar() {
+      if (!sinComparar.length) return;
+      var nota = el("p", "ficha__nota", "Con menos de " + parametro("min_inst_oferta") + " instituciones, sin comparar: ");
+      sinComparar.forEach(function (q, i) {
+        var b = el("button", "enlace-ficha", q.nombre + " (" + q.tipo + ")");
+        b.type = "button";
+        b.addEventListener("click", function () { abrirFicha(q, "vecina"); });
+        nota.appendChild(b);
+        nota.appendChild(document.createTextNode(i < sinComparar.length - 1 ? ", " : "."));
+      });
+      cont.appendChild(nota);
+    }
+    var otras = orden.length - 1;
+    if (!otras) {
+      subbloque(cont, "Otras carreras de su área", "Es la única carrera " + nivel.replace(/es$/, "").replace(/s$/, "") +
+        " del área «" + area + "» de MiFuturo con datos comparables.");
+      pintarSinComparar();
+      return;
+    }
+    var grande = orden.length > AREA_COMPLETA, todas = !grande;
+    subbloque(cont, "Otras carreras de su área", (grande
+      ? "Las " + AREA_CERCA * 2 + " más cercanas en sueldo de entrada, de las " + fmtEntero.format(orden.length)
+      : "Las " + fmtEntero.format(orden.length)) +
+      " carreras " + nivel + " del área «" + area + "» de MiFuturo, en todos los tipos de institución, de mayor a menor sueldo de entrada. Haz clic en una para ver su ficha.");
+    var cols = ["Carrera", "Tipo", "Sueldo 1er año", "5° año", "Empleab."];
+    var tb = tablaCon(cont, "Carreras " + nivel + " del área " + area + ", de mayor a menor sueldo típico al 1er año", cols);
     var i0 = orden.indexOf(p);
-    var completo = orden.length <= GRUPO_COMPLETO;
     function pintar() {
       tb.replaceChildren();
-      var lista = completo ? orden : orden.slice(Math.max(0, i0 - VECINAS_CERCA), i0 + VECINAS_CERCA + 1);
+      var desde = Math.max(0, Math.min(i0 - AREA_CERCA, orden.length - AREA_CERCA * 2 - 1));
+      var lista = todas ? orden : orden.slice(desde, desde + AREA_CERCA * 2 + 1);
       lista.forEach(function (v) {
-        filaTabla(tb, [[cols[0], v.nombre, "td--titulo"], [cols[1], pesos(v.percentiles.anio_1.p50), "num"],
-                       [cols[2], pesos(v.percentiles.anio_5.p50), "num"], [cols[3], pct(v.empleabilidad_nacional[0]), "num"]],
+        filaTabla(tb, [[cols[0], v.nombre, "td--titulo"], [cols[1], v.tipo, ""], [cols[2], pesos(v.percentiles.anio_1.p50), "num"],
+                       [cols[3], pesos(v.percentiles.anio_5.p50), "num"], [cols[4], pct(v.empleabilidad_nacional[0]), "num"]],
                   v === p, function () { abrirFicha(v, "vecina"); });
       });
     }
     pintar();
-    if (orden.length > GRUPO_COMPLETO) {
-      var b = el("button", "boton boton--sutil tabla__mas");
-      b.type = "button";
-      function rotular() {
-        b.textContent = completo ? "Ver solo las " + (VECINAS_CERCA * 2) + " más cercanas"
-                                 : "Ver las " + fmtEntero.format(orden.length) + " carreras del grupo ↓";
-        b.setAttribute("aria-expanded", String(completo));
-      }
-      b.addEventListener("click", function () { completo = !completo; pintar(); rotular(); });
+    if (grande) {
+      var bA = el("button", "boton boton--sutil tabla__mas");
+      bA.type = "button";
+      var rotular = function () {
+        bA.textContent = todas ? "Mostrar solo las " + AREA_CERCA * 2 + " más cercanas" : "Ver las " + fmtEntero.format(orden.length) + " ↓";
+        bA.setAttribute("aria-expanded", String(todas));
+      };
+      bA.addEventListener("click", function () { todas = !todas; pintar(); rotular(); });
       rotular();
-      cont.appendChild(b);
+      cont.appendChild(bA);
     }
+    pintarSinComparar();
   }
 
   // Un solo gráfico de sueldo por año. Puntos sin línea: cada año es otra cohorte de titulados
@@ -1465,7 +1505,6 @@
   function difPuntos(v) {
     return v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + fmtUno.format(Math.abs(v)) + (Math.abs(v) === 1 ? " punto" : " puntos");
   }
-  function textoAcreditacion(g) { return g.acreditacion_anios ? g.acreditacion_anios + " años" : "No acreditada (MiFuturo)"; }
   var TRAMO_VS = { sobre: "más alto que la típica", igual: "igual a la típica", bajo: "más bajo que la típica" };
 
   // Empleabilidad al 1er año por institución. Cada punto es una institución; la altura NO es un
@@ -1534,9 +1573,10 @@
       var q = marcas[i], g = q.g;
       q.nodo.classList.add("g-inst--activa");
       svg.appendChild(q.nodo);   // al frente
-      var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Dif. con la institución típica: " + difPuntos(g.desvio_emp1)];
-      if (g.tramo) lineas.push("Ingreso promedio 4° año: " + tramoTexto(g.tramo));
-      lineas.push("Acreditación: " + textoAcreditacion(g));
+      var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Empleabilidad 2° año: " + pct(g.emp2),
+                    "Dif. 1er año con la institución típica: " + difPuntos(g.desvio_emp1),
+                    "Continuidad de estudios: " + pct(g.continuidad)];
+      if (g.tramo) lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
       tip.replaceChildren(el("div", "tooltip__titulo", nombreInst(g.institucion)));
       var cifras = el("div", "tooltip__cifras");
       lineas.forEach(function (l) { cifras.appendChild(el("div", null, l)); });
@@ -1628,10 +1668,6 @@
        { rotulo: "Sueldo típico al 5° año", valor: function (q) { return q.percentiles.anio_5.p50; }, formato: pesos, ref: referenciaDe(p, "p50_anio_5") },
        { rotulo: "Empleabilidad nacional al 1er año", valor: function (q) { return q.empleabilidad_nacional[0]; }, formato: pct, ref: referenciaDe(p, "emp1_nacional") }]
         .forEach(function (cfg) { franjaGrupo(b1, p, miembros, cfg, tipGrupo, b1); });
-      subbloque(b1, "Sus vecinas", miembros.length > GRUPO_COMPLETO
-        ? "Las " + (VECINAS_CERCA * 2) + " carreras más cercanas en sueldo de entrada, de mayor a menor. Haz clic en una para ver su ficha."
-        : "Las " + fmtEntero.format(miembros.length) + " carreras del grupo, de mayor a menor sueldo de entrada. Haz clic en una para ver su ficha.");
-      vecinas(b1, p, miembros);
     } else {
       b1 = bloque(art, "Entra ganando " + pesos(p.percentiles.anio_1.p50) + " y llega a " + pesos(p.percentiles.anio_5.p50) + " al 5° año",
         "Sueldo típico (P50) y empleabilidad nacional. Sin grupo de comparación: " + veredicto(p).replace(/^Sin comparación con otras carreras: /, ""));
@@ -1641,6 +1677,7 @@
       liq(dl0, "Empleabilidad nacional al 1er año", pct(p.empleabilidad_nacional[0]));
       b1.appendChild(dl0);
     }
+    carrerasDeArea(b1, p);
     var otrosTipos = pares.filter(function (q) { return q.clave === p.clave && q.nivel === p.nivel && q.tipo !== p.tipo; });
     if (otrosTipos.length) {
       subbloque(b1, "La misma carrera en otro tipo de institución",
@@ -1731,26 +1768,33 @@
           " instituciones con el dato, no se comparan entre sí: se listan sin comparación."));
       }
       var conTramo = !!p.dispersion.tramo;
-      // Por defecto 4 columnas y 10 filas: institución, empleabilidad, diferencia con la típica y el
-      // ingreso al 4° año (el único sueldo por institución: lo que más pesa al elegir dónde estudiar).
-      // «Ver las N» suma 2° año, continuidad y acreditación de la institución.
+      // Seis columnas siempre visibles, las dos empleabilidades juntas y la continuidad al lado (D3):
+      // quien sigue estudiando puede no tener aún un ingreso sobre el mínimo. En los datos la relación
+      // es débil (r −0,16 en total; positiva en técnicas), así que la nota no afirma que la baje. Sin acreditación: no
+      // entra en el análisis (pedido del usuario, 18-11-26). El ingreso es un rango porque MiFuturo
+      // lo publica así por institución; no se imputa una cifra. «Ver las N» solo suma filas.
+      // El sueldo promedio de cada año existe solo nacional: está en el bloque «año a año».
+      b3.appendChild(el("p", "ficha__nota", "MiFuturo no publica el sueldo de cada año por institución, solo un rango del 4° año. " +
+        "El promedio nacional de cada año está más arriba, en el gráfico de sueldo por año."));
       var envolI = el("div");
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
-      var COL_DIF = d1 ? "Dif. con la institución típica (" + pct(d1.mediana) + ")" : null;
+      var COL_DIF = d1 ? "Dif. 1er año con la institución típica (" + pct(d1.mediana) + ")" : null;
+      var COL_RANGO = "Rango de ingreso al 4° año";
       function pintarInst() {
         envolI.replaceChildren();
         filasI = [];
-        var cols = ["Institución", "Empleabilidad 1er año"].concat(d1 ? [COL_DIF] : []).concat(["Ingreso promedio 4° año (tramo)"])
-          .concat(todasInst ? ["Empleabilidad 2° año", "Continuidad de estudios", "Acreditación de la institución"] : []);
+        var cols = ["Institución", "Empleabilidad 1er año", "Empleabilidad 2° año"].concat(d1 ? [COL_DIF] : [])
+          .concat(["Continuidad de estudios", COL_RANGO]);
         var tbI = tablaCon(envolI, "Instituciones que publican " + p.nombre + " en MiFuturo, de mayor a menor empleabilidad", cols);
         tbI.parentNode.classList.add("tabla--inst");
         (todasInst ? progs : progs.slice(0, MAX_INST)).forEach(function (g) {
-          var celdas = [["Institución", nombreInst(g.institucion), "td--titulo"], ["Empleabilidad 1er año", pct(g.emp1), "num"]];
+          var celdas = [["Institución", nombreInst(g.institucion), "td--titulo"], ["Empleabilidad 1er año", pct(g.emp1), "num"],
+                        ["Empleabilidad 2° año", pct(g.emp2), "num"]];
           if (d1) celdas.push([COL_DIF, difPuntos(g.desvio_emp1), "num"]);
-          celdas.push(["Ingreso promedio 4° año (tramo)", g.tramo ? tramoTexto(g.tramo) : "sin dato", "num td--tramo"]);
-          if (todasInst) celdas.push(["Empleabilidad 2° año", pct(g.emp2), "num"], ["Continuidad de estudios", pct(g.continuidad), "num"],
-                                     ["Acreditación de la institución", textoAcreditacion(g), "num"]);
+          celdas.push(["Continuidad de estudios", pct(g.continuidad), "num"]);
+          // Espacio de ancho cero tras el guion: el rango puede partirse en dos líneas en vez de ensanchar la tabla.
+          celdas.push([COL_RANGO, g.tramo ? tramoTexto(g.tramo).replace("–", "–\u200b") : "sin dato", "num td--tramo"]);
           var tr = filaTabla(tbI, celdas, false, null);
           // La comparación del tramo en palabras, bajo la cifra ("(sobre)" no decía sobre qué).
           if (conTramo && g.tramo && g.tramo_vs_par) tr.querySelector(".td--tramo").appendChild(el("span", "td__nota", TRAMO_VS[g.tramo_vs_par]));
@@ -1770,17 +1814,17 @@
       var bI = el("button", "boton boton--sutil tabla__mas");
       bI.type = "button";
       function rotularInst() {
-        bI.textContent = todasInst ? "Mostrar solo las " + Math.min(MAX_INST, progs.length) + " primeras, en 4 columnas"
-                                   : "Ver las " + fmtEntero.format(progs.length) + " con todas las columnas ↓";
+        bI.textContent = todasInst ? "Mostrar solo las " + MAX_INST + " primeras"
+                                   : "Ver las " + fmtEntero.format(progs.length) + " instituciones ↓";
         bI.setAttribute("aria-expanded", String(todasInst));
       }
       bI.addEventListener("click", function () { todasInst = !todasInst; pintarInst(); rotularInst(); });
       rotularInst();
-      b3.appendChild(bI);
-      b3.appendChild(el("p", "ficha__nota", "Ingreso promedio al 4° año: MiFuturo lo publica por institución en tramos (rangos), no como cifra exacta" +
-        (conTramo ? "; se compara con el tramo de la institución típica." : ".") +
-        " Continuidad de estudios: titulados que al año siguiente siguen estudiando; baja la empleabilidad, por eso van juntas." +
-        " Acreditación: años de acreditación de la institución (no de la carrera), según MiFuturo."));
+      // Con 10 o menos no hay filas ocultas: el botón no haría nada.
+      if (progs.length > MAX_INST) b3.appendChild(bI);
+      b3.appendChild(el("p", "ficha__nota", "Rango de ingreso al 4° año: ingreso promedio que MiFuturo publica por institución como rango, no como cifra exacta" +
+        (conTramo ? "; se compara con el rango de la institución típica." : ".") +
+        " Continuidad de estudios: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
     }
 
     // 4. Quiénes la estudian

@@ -4049,7 +4049,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -4186,7 +4187,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -4346,7 +4348,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -4529,7 +4532,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -4689,7 +4693,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -4849,7 +4854,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": false,
@@ -4981,7 +4987,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -5164,7 +5171,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -5315,7 +5323,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -5447,7 +5456,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -5598,7 +5608,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -5749,7 +5760,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -5918,7 +5930,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -6078,7 +6091,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -6247,7 +6261,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -6398,7 +6413,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -6567,7 +6583,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -6704,7 +6721,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -6887,7 +6905,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -7038,7 +7057,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -7207,7 +7227,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": false,
@@ -7339,7 +7360,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -7499,7 +7521,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -7650,7 +7673,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -7810,7 +7834,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -7961,7 +7986,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -8112,7 +8138,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -8263,7 +8290,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -8400,7 +8428,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -8551,7 +8580,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -8702,7 +8732,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -8853,7 +8884,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": false,
@@ -8990,7 +9022,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": false,
@@ -9127,7 +9160,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -9264,7 +9298,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -9401,7 +9436,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -9561,7 +9597,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -9712,7 +9749,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -9863,7 +9901,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -10023,7 +10062,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Derecho"
    },
    "marcas": {
     "representativo": true,
@@ -10174,7 +10214,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -10311,7 +10352,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -10462,7 +10504,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -10608,7 +10651,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -10791,7 +10835,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -10942,7 +10987,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": false,
@@ -11079,7 +11125,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -11230,7 +11277,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -11381,7 +11429,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -11532,7 +11581,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -11683,7 +11733,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -11866,7 +11917,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": false,
@@ -12003,7 +12055,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -12154,7 +12207,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -12323,7 +12377,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -12460,7 +12515,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -12592,7 +12648,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -12743,7 +12800,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -12894,7 +12952,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -13045,7 +13104,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -13228,7 +13288,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -13379,7 +13440,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -13530,7 +13592,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -13699,7 +13762,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -13850,7 +13914,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 96.5,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -14001,7 +14066,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -14152,7 +14218,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -14303,7 +14370,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -14440,7 +14508,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -14591,7 +14660,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -14728,7 +14798,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -14865,7 +14936,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -15016,7 +15088,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -15199,7 +15272,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -15350,7 +15424,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -15501,7 +15576,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -15638,7 +15714,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -15775,7 +15852,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -15926,7 +16004,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -16063,7 +16142,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -16214,7 +16294,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -16351,7 +16432,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -16488,7 +16570,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -16639,7 +16722,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -16790,7 +16874,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -16959,7 +17044,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -17110,7 +17196,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -17261,7 +17348,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -17412,7 +17500,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -17595,7 +17684,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -17764,7 +17854,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -17915,7 +18006,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -18098,7 +18190,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -18267,7 +18360,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -18418,7 +18512,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -18569,7 +18664,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -18720,7 +18816,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -18857,7 +18954,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -19008,7 +19106,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -19177,7 +19276,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -19328,7 +19428,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -19488,7 +19589,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -19671,7 +19773,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -19822,7 +19925,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -19973,7 +20077,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -20124,7 +20229,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -20307,7 +20413,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -20444,7 +20551,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -20576,7 +20684,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -20759,7 +20868,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -20896,7 +21006,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -21047,7 +21158,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -21198,7 +21310,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -21349,7 +21462,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -21500,7 +21614,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -21660,7 +21775,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -21811,7 +21927,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -21962,7 +22079,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -22113,7 +22231,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -22264,7 +22383,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -22415,7 +22535,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -22566,7 +22687,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -22717,7 +22839,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -22854,7 +22977,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -23023,7 +23147,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -23174,7 +23299,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -23311,7 +23437,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -23462,7 +23589,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Humanidades"
    },
    "marcas": {
     "representativo": false,
@@ -23599,7 +23727,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -23768,7 +23897,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Derecho"
    },
    "marcas": {
     "representativo": true,
@@ -23919,7 +24049,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -24070,7 +24201,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": false,
@@ -24207,7 +24339,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": false,
@@ -24344,7 +24477,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -24527,7 +24661,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -24678,7 +24813,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -24861,7 +24997,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -25044,7 +25181,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -25213,7 +25351,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -25396,7 +25535,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -25565,7 +25705,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -25748,7 +25889,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -25917,7 +26059,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Humanidades"
    },
    "marcas": {
     "representativo": true,
@@ -26063,7 +26206,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -26214,7 +26358,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -26360,7 +26505,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -26529,7 +26675,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -26698,7 +26845,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -26849,7 +26997,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -27032,7 +27181,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -27215,7 +27365,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Derecho"
    },
    "marcas": {
     "representativo": true,
@@ -27398,7 +27549,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -27581,7 +27733,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -27741,7 +27894,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -27892,7 +28046,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -28075,7 +28230,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -28258,7 +28414,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -28427,7 +28584,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -28596,7 +28754,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -28742,7 +28901,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -28874,7 +29034,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -29057,7 +29218,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -29208,7 +29370,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -29345,7 +29508,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -29528,7 +29692,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -29711,7 +29876,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -29894,7 +30060,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -30077,7 +30244,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -30260,7 +30428,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -30443,7 +30612,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -30626,7 +30796,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -30809,7 +30980,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -30992,7 +31164,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -31143,7 +31316,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -31294,7 +31468,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -31463,7 +31638,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -31614,7 +31790,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -31797,7 +31974,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -31980,7 +32158,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -32149,7 +32328,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -32300,7 +32480,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -32451,7 +32632,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 96.5,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -32602,7 +32784,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": false,
@@ -32739,7 +32922,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -32876,7 +33060,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -33022,7 +33207,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -33173,7 +33359,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -33324,7 +33511,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -33484,7 +33672,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -33635,7 +33824,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -33786,7 +33976,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -33932,7 +34123,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -34083,7 +34275,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -34234,7 +34427,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -34417,7 +34611,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -34549,7 +34744,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -34709,7 +34905,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -34892,7 +35089,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Humanidades"
    },
    "marcas": {
     "representativo": true,
@@ -35061,7 +35259,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -35244,7 +35443,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -35427,7 +35627,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -35596,7 +35797,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -35779,7 +35981,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -35962,7 +36165,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -36145,7 +36349,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -36328,7 +36533,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -36511,7 +36717,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -36694,7 +36901,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -36877,7 +37085,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -37060,7 +37269,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -37243,7 +37453,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": false,
@@ -37380,7 +37591,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -37526,7 +37738,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -37677,7 +37890,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -37860,7 +38074,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -38043,7 +38258,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -38226,7 +38442,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -38409,7 +38626,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -38592,7 +38810,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -38752,7 +38971,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -38935,7 +39155,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -39086,7 +39307,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -39269,7 +39491,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -39415,7 +39638,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -39598,7 +39822,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Arte y Arquitectura"
    },
    "marcas": {
     "representativo": true,
@@ -39758,7 +39983,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -39909,7 +40135,8 @@
    "area": {
     "cine13": "Ciencias Sociales, Periodismo e Información",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -40092,7 +40319,8 @@
    "area": {
     "cine13": "Agricultura, Silvicultura, Pesca y Veterinaria",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Agropecuaria"
    },
    "marcas": {
     "representativo": true,
@@ -40243,7 +40471,8 @@
    "area": {
     "cine13": "Educación",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -40412,7 +40641,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -40595,7 +40825,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -40746,7 +40977,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -40897,7 +41129,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": false,
@@ -41029,7 +41262,8 @@
    "area": {
     "cine13": "Tecnología de la Información y la Comunicación (TIC)",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -41180,7 +41414,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -41349,7 +41584,8 @@
    "area": {
     "cine13": "Servicios",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Educación"
    },
    "marcas": {
     "representativo": true,
@@ -41509,7 +41745,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -41660,7 +41897,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -41797,7 +42035,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -41980,7 +42219,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -42131,7 +42371,8 @@
    "area": {
     "cine13": "Administración de Empresas y Derecho",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Administración y Comercio"
    },
    "marcas": {
     "representativo": true,
@@ -42282,7 +42523,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -42433,7 +42675,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": false,
@@ -42570,7 +42813,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -42721,7 +42965,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -42872,7 +43117,8 @@
    "area": {
     "cine13": "Ingeniería, Industria y Construcción",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Tecnología"
    },
    "marcas": {
     "representativo": true,
@@ -43023,7 +43269,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": false,
@@ -43160,7 +43407,8 @@
    "area": {
     "cine13": "Ciencias naturales, matemáticas y estadística",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Básicas"
    },
    "marcas": {
     "representativo": true,
@@ -43311,7 +43559,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -43494,7 +43743,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Salud"
    },
    "marcas": {
     "representativo": true,
@@ -43677,7 +43927,8 @@
    "area": {
     "cine13": "Salud y Bienestar",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Ciencias Sociales"
    },
    "marcas": {
     "representativo": true,
@@ -43860,7 +44111,8 @@
    "area": {
     "cine13": "Artes y Humanidades",
     "pct_dominante": 100.0,
-    "asignable": true
+    "asignable": true,
+    "mineduc": "Humanidades"
    },
    "marcas": {
     "representativo": true,

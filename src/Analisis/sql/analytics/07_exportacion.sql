@@ -41,7 +41,11 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
     'tipo', p.tipo_institucion,
     'nivel', p.nivel_carrera,
     'area', json_build_object('cine13', p.area_cine13, 'pct_dominante', round(100 * p.share_area, 1),
-                              'asignable', p.area_asignable),
+                              'asignable', p.area_asignable,
+                              -- Área del conocimiento de MiFuturo (MINEDUC): la que ve quien busca carreras.
+                              -- Agrupa por interés en la ficha («Otras carreras de su área»); CINE separa,
+                              -- por ejemplo, Telecomunicaciones (ingeniería) de Informática (TIC).
+                              'mineduc', e.area_conocimiento_mineduc),
     'marcas', json_build_object(
         'representativo', p.representativo,
         'referencia', p.referencia,
