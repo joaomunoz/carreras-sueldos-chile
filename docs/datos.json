@@ -453,7 +453,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 68
+   "OK": 70
   },
   "controles": [
    {
@@ -686,6 +686,20 @@
     "estado": "OK",
     "umbral": "representativo ⇔ ingreso completo y n_inst_oferta ≥ min_inst_oferta",
     "detalle": "0 pares incoherentes; 210 representativos"
+   },
+   {
+    "control": "analytics_referencia",
+    "objeto": "area_ficha_motivo",
+    "estado": "OK",
+    "umbral": "motivo coherente con celda_valida, min_pares_celda y max_peso_dominante",
+    "detalle": "celda: 149, dominada: 18, pocas: 43"
+   },
+   {
+    "control": "analytics_referencia",
+    "objeto": "area_ficha_posicion",
+    "estado": "OK",
+    "umbral": "mas_que_p50_1 = rank() − 1 y n_area = count() en área (MiFuturo) × nivel; una fila por representativo",
+    "detalle": "0 filas distintas; 0 representativos sin fila"
    },
    {
     "control": "analytics_referencia",
@@ -2304,1482 +2318,6 @@
    "q75": 31.9
   }
  ],
- "grupos": {
-  "celda|Administración y Comercio|CFT|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN COMERCIO EXTERIOR",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN CONTABILIDAD GENERAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN LOGISTICA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TURISMO Y HOTELERIA",
-    "tipo": "CFT"
-   }
-  ],
-  "celda|Administración y Comercio|IP|Carreras Profesionales": [
-   {
-    "clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ADMINISTRACION GASTRONOMICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ADMINISTRACION TURISTICA Y HOTELERA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "CONTADOR AUDITOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN COMERCIO EXTERIOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN FINANZAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN LOGISTICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS HUMANOS",
-    "tipo": "IP"
-   }
-  ],
-  "celda|Administración y Comercio|IP|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION FINANCIERA Y FINANZAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN COMERCIO EXTERIOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN CONTABILIDAD GENERAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN LOGISTICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN TURISMO Y HOTELERIA",
-    "tipo": "IP"
-   }
-  ],
-  "celda|Arte y Arquitectura|IP|Carreras Profesionales": [
-   {
-    "clave": "ACTUACION Y TEATRO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ANIMACION DIGITAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "COMUNICACION AUDIOVISUAL Y/O MULTIMEDIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "DISENO DE VESTUARIO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "DISENO GRAFICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "MUSICA, CANTO O DANZA",
-    "tipo": "IP"
-   }
-  ],
-  "celda|Arte y Arquitectura|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ACTUACION Y TEATRO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ARQUITECTURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ARTES Y LICENCIATURA EN ARTES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "COMUNICACION AUDIOVISUAL Y/O MULTIMEDIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO GRAFICO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MUSICA, CANTO O DANZA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "REALIZADOR DE CINE Y TELEVISION",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Ciencias Básicas|Universidad|Carreras Profesionales": [
-   {
-    "clave": "BIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIOLOGIA MARINA Y ECOLOGIA MARINA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIOQUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "GEOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN GEOMENSURA Y CARTOGRAFIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MATEMATICA Y ESTADISTICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "QUIMICA, LICENCIADO EN QUIMICA",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Ciencias Sociales|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ADMINISTRACION PUBLICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ANTROPOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "CIENCIAS POLITICAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "GEOGRAFIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PERIODISMO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PSICOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PUBLICIDAD",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "RELACIONES PUBLICAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "SOCIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TRABAJO SOCIAL",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Educación|Universidad|Carreras Profesionales": [
-   {
-    "clave": "PEDAGOGIA EN ARTES Y MUSICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN CIENCIAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION BASICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION DE PARVULOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION DIFERENCIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION FISICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION TECNICO PROFESIONAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN FILOSOFIA Y RELIGION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN HISTORIA, GEOGRAFIA Y CIENCIAS SOCIALES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN IDIOMAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN LENGUAJE, COMUNICACION Y/O CASTELLANO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN MATEMATICAS Y COMPUTACION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PROGRAMAS DE FORMACION PEDAGOGICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PSICOPEDAGOGIA",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Salud|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ENFERMERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "FONOAUDIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "KINESIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MEDICINA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "NUTRICION Y DIETETICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "OBSTETRICIA Y PUERICULTURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ODONTOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "QUIMICA Y FARMACIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNOLOGIA MEDICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TERAPIA OCUPACIONAL",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Tecnología|CFT|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MECANICA AUTOMOTRIZ",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MECANICA INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN PREVENCION DE RIESGOS",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TELECOMUNICACIONES",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TOPOGRAFIA",
-    "tipo": "CFT"
-   }
-  ],
-  "celda|Tecnología|IP|Carreras Profesionales": [
-   {
-    "clave": "CONSTRUCCION CIVIL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN AUTOMATIZACION, INSTRUMENTACION Y CONTROL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN CONECTIVIDAD Y REDES",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN CONSTRUCCION",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRICIDAD",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN MECANICA AUTOMOTRIZ",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN MINAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN QUIMICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN SONIDO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA INDUSTRIAL",
-    "tipo": "IP"
-   }
-  ],
-  "celda|Tecnología|IP|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE REDES Y SOPORTE",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MECANICA AUTOMOTRIZ",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PREVENCION DE RIESGOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN SONIDO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN TOPOGRAFIA",
-    "tipo": "IP"
-   }
-  ],
-  "celda|Tecnología|Universidad|Carreras Profesionales": [
-   {
-    "clave": "CONSTRUCCION CIVIL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL AMBIENTAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL ELECTRICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL ELECTRONICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN MINAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN OBRAS CIVILES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL MECANICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL METALURGICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL, PLAN COMUN Y LICENCIATURA EN CIENCIAS DE LA INGENIERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL QUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ALIMENTOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN AUTOMATIZACION, INSTRUMENTACION Y CONTROL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN BIOTECNOLOGIA Y BIOINGENIERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN CONSTRUCCION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRICIDAD",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRONICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MEDIO AMBIENTE",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN METALURGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MINAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN QUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS RENOVABLES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA MECANICA",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Tecnología|Universidad|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN ALIMENTOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MECANICA INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN METALURGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "Universidad"
-   }
-  ],
-  "segmento|CFT|Carreras Técnicas": [
-   {
-    "clave": "TECNICO AGROPECUARIO",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO ASISTENTE DEL EDUCADOR DE PARVULOS",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO ASISTENTE DEL EDUCADOR DIFERENCIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO DENTAL Y ASISTENTE DE ODONTOLOGIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION PUBLICA O MUNICIPAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN COMERCIO EXTERIOR",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN CONTABILIDAD GENERAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN DEPORTE, RECREACION Y PREPARACION FISICA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN ENFERMERIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN FARMACIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN LABORATORIO CLINICO",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN LOGISTICA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MECANICA AUTOMOTRIZ",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MECANICA INDUSTRIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN PODOLOGIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN PREVENCION DE RIESGOS",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN SERVICIO SOCIAL",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TELECOMUNICACIONES",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TOPOGRAFIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO EN TURISMO Y HOTELERIA",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO JURIDICO",
-    "tipo": "CFT"
-   },
-   {
-    "clave": "TECNICO VETERINARIO",
-    "tipo": "CFT"
-   }
-  ],
-  "segmento|IP|Carreras Profesionales": [
-   {
-    "clave": "ACTUACION Y TEATRO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ADMINISTRACION GASTRONOMICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ADMINISTRACION TURISTICA Y HOTELERA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "ANIMACION DIGITAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "COMUNICACION AUDIOVISUAL Y/O MULTIMEDIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "CONSTRUCCION CIVIL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "CONTADOR AUDITOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "DISENO DE VESTUARIO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "DISENO GRAFICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA AGRICOLA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN AUTOMATIZACION, INSTRUMENTACION Y CONTROL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN COMERCIO EXTERIOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN CONECTIVIDAD Y REDES",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN CONSTRUCCION",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRICIDAD",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN FINANZAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN GEOMENSURA Y CARTOGRAFIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN GESTION PUBLICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN LOGISTICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN MECANICA AUTOMOTRIZ",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN MINAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN QUIMICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS HUMANOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA EN SONIDO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "INGENIERIA INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "MUSICA, CANTO O DANZA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "NUTRICION Y DIETETICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "PSICOPEDAGOGIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "PUBLICIDAD",
-    "tipo": "IP"
-   },
-   {
-    "clave": "RELACIONES PUBLICAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TRABAJO SOCIAL",
-    "tipo": "IP"
-   }
-  ],
-  "segmento|IP|Carreras Técnicas": [
-   {
-    "clave": "TECNICO AGROPECUARIO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO ASISTENTE DEL EDUCADOR DE PARVULOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO ASISTENTE DEL EDUCADOR DIFERENCIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO DENTAL Y ASISTENTE DE ODONTOLOGIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE REDES Y SOPORTE",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION FINANCIERA Y FINANZAS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION PUBLICA O MUNICIPAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN COMERCIO EXTERIOR",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN COMUNICACION AUDIOVISUAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN CONTABILIDAD GENERAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN DEPORTE, RECREACION Y PREPARACION FISICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN DIBUJO ARQUITECTONICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN DISENO GRAFICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN ENFERMERIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN GEOLOGIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN LABORATORIO CLINICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN LOGISTICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MASOTERAPIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MECANICA AUTOMOTRIZ",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PELUQUERIA Y ESTETICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PODOLOGIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PREVENCION DE RIESGOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN SERVICIO SOCIAL",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN SONIDO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN TOPOGRAFIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN TURISMO Y HOTELERIA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO JURIDICO",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO LABORATORISTA DENTAL",
-    "tipo": "IP"
-   }
-  ],
-  "segmento|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ACTUACION Y TEATRO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ADMINISTRACION PUBLICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ADMINISTRACION TURISTICA Y HOTELERA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "AGRONOMIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ANTROPOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ARQUITECTURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ARTES Y LICENCIATURA EN ARTES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIBLIOTECOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIOLOGIA MARINA Y ECOLOGIA MARINA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "BIOQUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "CIENCIAS POLITICAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "COMUNICACION AUDIOVISUAL Y/O MULTIMEDIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "CONSTRUCCION CIVIL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "CONTADOR AUDITOR",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DERECHO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO GRAFICO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DISENO INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ENFERMERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "FONOAUDIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "GEOGRAFIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "GEOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL AMBIENTAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL ELECTRICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL ELECTRONICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN MINAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL EN OBRAS CIVILES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL MECANICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL METALURGICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL, PLAN COMUN Y LICENCIATURA EN CIENCIAS DE LA INGENIERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA CIVIL QUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA COMERCIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ALIMENTOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN AUTOMATIZACION, INSTRUMENTACION Y CONTROL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN BIOTECNOLOGIA Y BIOINGENIERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN COMERCIO EXTERIOR",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN CONSTRUCCION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN CONTROL DE GESTION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRICIDAD",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN ELECTRONICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN GEOMENSURA Y CARTOGRAFIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MATEMATICA Y ESTADISTICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MEDIO AMBIENTE",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN METALURGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN MINAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN QUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS HUMANOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS RENOVABLES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA FORESTAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA MECANICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "KINESIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "LICENCIATURA EN LETRAS Y LITERATURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MEDICINA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MEDICINA VETERINARIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MUSICA, CANTO O DANZA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "NUTRICION Y DIETETICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "OBSTETRICIA Y PUERICULTURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ODONTOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN ARTES Y MUSICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN CIENCIAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION BASICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION DE PARVULOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION DIFERENCIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION FISICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN EDUCACION TECNICO PROFESIONAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN FILOSOFIA Y RELIGION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN HISTORIA, GEOGRAFIA Y CIENCIAS SOCIALES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN IDIOMAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN LENGUAJE, COMUNICACION Y/O CASTELLANO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PEDAGOGIA EN MATEMATICAS Y COMPUTACION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PERIODISMO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PROGRAMAS DE FORMACION PEDAGOGICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PSICOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PSICOPEDAGOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PUBLICIDAD",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "QUIMICA, LICENCIADO EN QUIMICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "QUIMICA Y FARMACIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "REALIZADOR DE CINE Y TELEVISION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "RELACIONES PUBLICAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "SOCIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNOLOGIA MEDICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TERAPIA OCUPACIONAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TRABAJO SOCIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TRADUCCION E INTERPRETACION",
-    "tipo": "Universidad"
-   }
-  ],
-  "segmento|Universidad|Carreras Técnicas": [
-   {
-    "clave": "TECNICO AGROPECUARIO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO ASISTENTE DEL EDUCADOR DE PARVULOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ALIMENTOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN DEPORTE, RECREACION Y PREPARACION FISICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN ENFERMERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN INSTRUMENTACION, AUTOMATIZACION Y CONTROL INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN LOGISTICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MANTENIMIENTO INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MECANICA INDUSTRIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN METALURGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN MINERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNICO EN QUIMICA (ANALISIS E INDUSTRIAL)",
-    "tipo": "Universidad"
-   }
-  ]
- },
  "hallazgos": {
   "edad": [
    {
@@ -4245,6 +2783,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     75.4,
     73.9
@@ -4396,6 +2935,14 @@
     "p50_anio_1": -73443,
     "p50_anio_5": -48307,
     "emp1_nacional": -13.8
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     48.3,
@@ -4557,6 +3104,14 @@
     "p50_anio_1": -210464,
     "p50_anio_5": -269375,
     "emp1_nacional": -27.1
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     35.0,
@@ -4742,6 +3297,14 @@
     "p50_anio_5": -308346,
     "emp1_nacional": -30.1
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     32.0,
     44.0
@@ -4903,6 +3466,14 @@
     "p50_anio_5": -215203,
     "emp1_nacional": -8.1
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 0,
+    "motivo": "dominada",
+    "n_celda": 5,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 73
+   },
    "empleabilidad_nacional": [
     54.0,
     59.0
@@ -5050,6 +3621,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     85.1,
     86.8
@@ -5196,6 +3768,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     61.8,
@@ -5381,6 +3961,14 @@
     "p50_anio_5": -105175,
     "emp1_nacional": 7.3
    },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     69.1,
     72.5
@@ -5519,6 +4107,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     80.9,
     79.7
@@ -5665,6 +4254,14 @@
     "p50_anio_1": 77360,
     "p50_anio_5": 215936,
     "emp1_nacional": 12.2
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     74.3,
@@ -5818,6 +4415,14 @@
     "p50_anio_5": 59543,
     "emp1_nacional": 12.8
    },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 13,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     74.6,
     76.3
@@ -5969,6 +4574,14 @@
     "p50_anio_1": -184631,
     "p50_anio_5": 172282,
     "emp1_nacional": -5.9
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     66.5,
@@ -6140,6 +4753,14 @@
     "p50_anio_5": -174055,
     "emp1_nacional": -8.0
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     64.4,
     66.9
@@ -6300,6 +4921,14 @@
     "p50_anio_1": -22442,
     "p50_anio_5": 55889,
     "emp1_nacional": 6.1
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     67.9,
@@ -6471,6 +5100,14 @@
     "p50_anio_5": -114149,
     "emp1_nacional": -24.2
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 6,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     37.9,
     43.6
@@ -6622,6 +5259,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 0,
     "emp1_nacional": 5.7
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 16,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     78.1,
@@ -6779,6 +5424,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     71.6,
     77.0
@@ -6930,6 +5576,14 @@
     "p50_anio_1": -112830,
     "p50_anio_5": -68830,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 5,
+    "motivo": "dominada",
+    "n_celda": 5,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 73
    },
    "empleabilidad_nacional": [
     62.1,
@@ -7115,6 +5769,14 @@
     "p50_anio_5": -58249,
     "emp1_nacional": 17.2
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 10,
+    "motivo": "dominada",
+    "n_celda": 5,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 73
+   },
    "empleabilidad_nacional": [
     79.3,
     80.4
@@ -7266,6 +5928,14 @@
     "p50_anio_1": -175602,
     "p50_anio_5": -295819,
     "emp1_nacional": -19.7
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     42.1,
@@ -7423,6 +6093,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     70.8,
     73.5
@@ -7569,6 +6240,14 @@
     "p50_anio_1": 18643,
     "p50_anio_5": 189664,
     "emp1_nacional": 7.7
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 17,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     80.1,
@@ -7731,6 +6410,14 @@
     "p50_anio_5": -118412,
     "emp1_nacional": -0.8
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 3,
+    "motivo": "dominada",
+    "n_celda": 5,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 73
+   },
    "empleabilidad_nacional": [
     61.3,
     70.8
@@ -7882,6 +6569,14 @@
     "p50_anio_1": 69179,
     "p50_anio_5": 175323,
     "emp1_nacional": 12.6
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     74.4,
@@ -8044,6 +6739,14 @@
     "p50_anio_5": 57053,
     "emp1_nacional": 8.3
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 18,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     80.7,
     84.4
@@ -8195,6 +6898,14 @@
     "p50_anio_1": -53938,
     "p50_anio_5": -100104,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     72.4,
@@ -8348,6 +7059,14 @@
     "p50_anio_5": 127281,
     "emp1_nacional": 15.6
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 27,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     88.0,
     87.0
@@ -8486,6 +7205,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     86.9,
     88.6
@@ -8637,6 +7357,14 @@
     "p50_anio_1": 207184,
     "p50_anio_5": 235994,
     "emp1_nacional": 8.6
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 26,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     81.0,
@@ -8790,6 +7518,14 @@
     "p50_anio_5": -122147,
     "emp1_nacional": -19.8
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 9,
+    "motivo": "dominada",
+    "n_celda": 5,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 73
+   },
    "empleabilidad_nacional": [
     42.3,
     50.5
@@ -8942,6 +7678,14 @@
     "p50_anio_5": -216324,
     "emp1_nacional": -1.6
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 22,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     70.8,
     68.0
@@ -9080,6 +7824,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     37.9,
     41.9
@@ -9218,6 +7963,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     75.7,
     81.2
@@ -9356,6 +8102,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     71.4,
     76.3
@@ -9494,6 +8241,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     73.0,
     83.5
@@ -9645,6 +8393,14 @@
     "p50_anio_1": -100395,
     "p50_anio_5": -149343,
     "emp1_nacional": -16.8
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     45.3,
@@ -9807,6 +8563,14 @@
     "p50_anio_5": -107694,
     "emp1_nacional": 2.0
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 13,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     74.4,
     80.7
@@ -9959,6 +8723,14 @@
     "p50_anio_5": 3719,
     "emp1_nacional": -8.5
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     63.9,
     70.2
@@ -10110,6 +8882,14 @@
     "p50_anio_1": -151003,
     "p50_anio_5": -275806,
     "emp1_nacional": -21.1
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     40.7,
@@ -10272,6 +9052,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": -11.8
    },
+   "area_ficha": {
+    "n_area": 2,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     50.3,
     58.8
@@ -10410,6 +9198,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     45.1,
     53.8
@@ -10561,6 +9350,14 @@
     "p50_anio_1": -152072,
     "p50_anio_5": -184115,
     "emp1_nacional": -19.0
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     43.1,
@@ -10714,6 +9511,14 @@
     "p50_anio_5": 2019,
     "emp1_nacional": -21.7
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     21.4,
     29.5
@@ -10860,6 +9665,14 @@
     "p50_anio_1": 128526,
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     81.1,
@@ -11045,6 +9858,14 @@
     "p50_anio_5": -571588,
     "emp1_nacional": -31.4
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     49.7,
     55.9
@@ -11183,6 +10004,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     98.2,
     98.8
@@ -11334,6 +10156,14 @@
     "p50_anio_1": -257894,
     "p50_anio_5": -445977,
     "emp1_nacional": -33.2
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     47.9,
@@ -11487,6 +10317,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": -8.8
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     34.3,
     46.0
@@ -11638,6 +10476,14 @@
     "p50_anio_1": 50405,
     "p50_anio_5": 75531,
     "emp1_nacional": 4.0
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     47.1,
@@ -11791,6 +10637,14 @@
     "p50_anio_5": 69551,
     "emp1_nacional": -7.7
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     74.0,
     77.8
@@ -11942,6 +10796,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 54613,
     "emp1_nacional": 2.9
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     84.0,
@@ -12113,6 +10975,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     44.9,
     52.4
@@ -12265,6 +11128,14 @@
     "p50_anio_5": 7907,
     "emp1_nacional": -6.2
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     36.9,
     48.1
@@ -12416,6 +11287,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": -14898,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     43.1,
@@ -12573,6 +11452,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     50.2,
     62.4
@@ -12711,6 +11591,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     44.9,
     61.0
@@ -12857,6 +11738,14 @@
     "p50_anio_1": -169202,
     "p50_anio_5": -315742,
     "emp1_nacional": -19.8
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     59.9,
@@ -13010,6 +11899,14 @@
     "p50_anio_5": 1261169,
     "emp1_nacional": 9.6
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 29,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     91.3,
     91.6
@@ -13162,6 +12059,14 @@
     "p50_anio_5": 4688,
     "emp1_nacional": 0.5
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     81.6,
     85.5
@@ -13313,6 +12218,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 514815,
     "emp1_nacional": 0.4
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 14,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     82.1,
@@ -13498,6 +12411,14 @@
     "p50_anio_5": 208312,
     "emp1_nacional": 4.5
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     86.2,
     91.4
@@ -13650,6 +12571,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": -13.5
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     68.2,
     74.3
@@ -13801,6 +12730,14 @@
     "p50_anio_1": 16096,
     "p50_anio_5": 308180,
     "emp1_nacional": 4.3
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 16,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     86.0,
@@ -13972,6 +12909,14 @@
     "p50_anio_5": 281695,
     "emp1_nacional": -2.8
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     78.3,
     82.6
@@ -14123,6 +13068,14 @@
     "p50_anio_1": 366129,
     "p50_anio_5": 224208,
     "emp1_nacional": 0.4
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 6,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     80.1,
@@ -14276,6 +13229,14 @@
     "p50_anio_5": 256875,
     "emp1_nacional": 12.4
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 13,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     92.1,
     92.6
@@ -14428,6 +13389,14 @@
     "p50_anio_5": 232607,
     "emp1_nacional": 3.7
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     84.8,
     89.1
@@ -14566,6 +13535,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     62.2,
     73.0
@@ -14718,6 +13688,14 @@
     "p50_anio_5": -19508,
     "emp1_nacional": -2.0
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     79.7,
     83.8
@@ -14856,6 +13834,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     60.0,
     74.6
@@ -14994,6 +13973,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     82.2,
     86.9
@@ -15146,6 +14126,14 @@
     "p50_anio_5": 381775,
     "emp1_nacional": -2.7
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 21,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     79.0,
     83.8
@@ -15297,6 +14285,14 @@
     "p50_anio_1": 195943,
     "p50_anio_5": -34696,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 27,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     81.7,
@@ -15482,6 +14478,14 @@
     "p50_anio_5": 59698,
     "emp1_nacional": -2.1
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     79.6,
     84.6
@@ -15634,6 +14638,14 @@
     "p50_anio_5": -39545,
     "emp1_nacional": -2.3
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     78.8,
     83.1
@@ -15772,6 +14784,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     79.6,
     86.4
@@ -15910,6 +14923,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     99.3,
     99.1
@@ -16062,6 +15076,14 @@
     "p50_anio_5": -455671,
     "emp1_nacional": -37.4
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     44.3,
     55.6
@@ -16200,6 +15222,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     86.0,
     88.8
@@ -16352,6 +15375,14 @@
     "p50_anio_5": 1216817,
     "emp1_nacional": 13.7
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 39,
+    "motivo": "celda",
+    "n_celda": 12,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     95.4,
     95.1
@@ -16490,6 +15521,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     86.6,
     90.9
@@ -16628,6 +15660,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     42.6,
     55.0
@@ -16779,6 +15812,14 @@
     "p50_anio_1": 79090,
     "p50_anio_5": 65816,
     "emp1_nacional": -13.2
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 6,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     29.9,
@@ -16932,6 +15973,14 @@
     "p50_anio_5": -401486,
     "emp1_nacional": -42.5
    },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     37.2,
     50.3
@@ -17083,6 +16132,14 @@
     "p50_anio_1": -217367,
     "p50_anio_5": -345829,
     "emp1_nacional": -20.3
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     59.4,
@@ -17254,6 +16311,14 @@
     "p50_anio_5": -388161,
     "emp1_nacional": -22.9
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     56.8,
     67.4
@@ -17405,6 +16470,14 @@
     "p50_anio_1": -206637,
     "p50_anio_5": -278936,
     "emp1_nacional": -30.2
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     49.5,
@@ -17558,6 +16631,14 @@
     "p50_anio_5": 48516,
     "emp1_nacional": -10.8
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     55.0,
     65.1
@@ -17709,6 +16790,14 @@
     "p50_anio_1": -160559,
     "p50_anio_5": -153580,
     "emp1_nacional": -18.5
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 5,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     47.3,
@@ -17894,6 +16983,14 @@
     "p50_anio_5": -232076,
     "emp1_nacional": -21.0
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 3,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     44.8,
     51.1
@@ -18064,6 +17161,14 @@
     "p50_anio_5": -126153,
     "emp1_nacional": -8.0
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 2,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
+   },
    "empleabilidad_nacional": [
     57.8,
     62.1
@@ -18215,6 +17320,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 15,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     76.3,
@@ -18400,6 +17513,14 @@
     "p50_anio_5": -74409,
     "emp1_nacional": -4.6
    },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     71.7,
     76.5
@@ -18570,6 +17691,14 @@
     "p50_anio_5": 13655,
     "emp1_nacional": 12.3
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 25,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     87.0,
     85.5
@@ -18721,6 +17850,14 @@
     "p50_anio_1": 47532,
     "p50_anio_5": 113027,
     "emp1_nacional": -8.2
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 17,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     68.1,
@@ -18874,6 +18011,14 @@
     "p50_anio_5": 424143,
     "emp1_nacional": 17.2
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 3,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     83.0,
     87.6
@@ -19012,6 +18157,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     63.0,
     73.0
@@ -19164,6 +18310,14 @@
     "p50_anio_5": -40347,
     "emp1_nacional": 2.0
    },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     78.3,
     82.6
@@ -19315,6 +18469,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 314493,
     "emp1_nacional": -0.8
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     73.9,
@@ -19486,6 +18648,14 @@
     "p50_anio_5": -85414,
     "emp1_nacional": -23.9
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     41.9,
     47.7
@@ -19637,6 +18807,14 @@
     "p50_anio_1": -49464,
     "p50_anio_5": 0,
     "emp1_nacional": -6.5
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     68.2,
@@ -19798,6 +18976,14 @@
     "p50_anio_1": -111929,
     "p50_anio_5": 21048,
     "emp1_nacional": -5.2
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     71.1,
@@ -19983,6 +19169,14 @@
     "p50_anio_5": -66833,
     "emp1_nacional": -25.5
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 7,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     40.3,
     45.7
@@ -20134,6 +19328,14 @@
     "p50_anio_1": -408,
     "p50_anio_5": 89672,
     "emp1_nacional": -6.9
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 3,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     58.9,
@@ -20287,6 +19489,14 @@
     "p50_anio_5": -50927,
     "emp1_nacional": -18.3
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     47.5,
     45.9
@@ -20438,6 +19648,14 @@
     "p50_anio_1": 19047,
     "p50_anio_5": 254979,
     "emp1_nacional": 3.8
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 15,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     78.5,
@@ -20609,6 +19827,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     80.6,
     82.6
@@ -20747,6 +19966,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     66.8,
     69.7
@@ -20893,6 +20113,14 @@
     "p50_anio_1": -47306,
     "p50_anio_5": -28249,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 6,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
    },
    "empleabilidad_nacional": [
     65.8,
@@ -21064,6 +20292,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     76.5,
     80.9
@@ -21215,6 +20444,14 @@
     "p50_anio_1": -361609,
     "p50_anio_5": -365968,
     "emp1_nacional": -30.6
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     45.7,
@@ -21368,6 +20605,14 @@
     "p50_anio_5": -10239,
     "emp1_nacional": -7.8
    },
+   "area_ficha": {
+    "n_area": 2,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     58.0,
     62.3
@@ -21519,6 +20764,14 @@
     "p50_anio_1": 851448,
     "p50_anio_5": 654694,
     "emp1_nacional": 20.9
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 30,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     95.6,
@@ -21672,6 +20925,14 @@
     "p50_anio_5": -78706,
     "emp1_nacional": -13.9
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 1,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
+   },
    "empleabilidad_nacional": [
     51.9,
     64.9
@@ -21823,6 +21084,14 @@
     "p50_anio_1": 46204,
     "p50_anio_5": 74603,
     "emp1_nacional": 7.8
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 16,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     84.1,
@@ -21985,6 +21254,14 @@
     "p50_anio_5": 159261,
     "emp1_nacional": 5.7
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 23,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     80.4,
     85.2
@@ -22136,6 +21413,14 @@
     "p50_anio_1": -141224,
     "p50_anio_5": -88083,
     "emp1_nacional": -34.8
+   },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 4,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
    },
    "empleabilidad_nacional": [
     31.0,
@@ -22289,6 +21574,14 @@
     "p50_anio_5": -22095,
     "emp1_nacional": -7.9
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     66.8,
     73.4
@@ -22440,6 +21733,14 @@
     "p50_anio_1": 717654,
     "p50_anio_5": 257300,
     "emp1_nacional": 9.0
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 29,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     83.7,
@@ -22593,6 +21894,14 @@
     "p50_anio_5": -106908,
     "emp1_nacional": -37.9
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     27.9,
     34.9
@@ -22744,6 +22053,14 @@
     "p50_anio_1": 114517,
     "p50_anio_5": 82114,
     "emp1_nacional": -0.3
+   },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 11,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
    },
    "empleabilidad_nacional": [
     65.5,
@@ -22897,6 +22214,14 @@
     "p50_anio_5": -19556,
     "emp1_nacional": 0.0
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 19,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     74.7,
     76.5
@@ -23035,6 +22360,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     67.2,
     78.8
@@ -23186,6 +22512,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 0,
     "emp1_nacional": -14.0
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     51.8,
@@ -23357,6 +22691,14 @@
     "p50_anio_5": -221993,
     "emp1_nacional": -41.7
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     33.0,
     46.5
@@ -23495,6 +22837,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     73.6,
     79.8
@@ -23647,6 +22990,14 @@
     "p50_anio_5": 212086,
     "emp1_nacional": 4.2
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 11,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     78.9,
     77.4
@@ -23785,6 +23136,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     34.7,
     54.1
@@ -23936,6 +23288,14 @@
     "p50_anio_1": -328535,
     "p50_anio_5": -237677,
     "emp1_nacional": -31.5
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     44.8,
@@ -24107,6 +23467,14 @@
     "p50_anio_5": 31581,
     "emp1_nacional": 1.7
    },
+   "area_ficha": {
+    "n_area": 2,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     67.5,
     69.2
@@ -24259,6 +23627,14 @@
     "p50_anio_5": -29430,
     "emp1_nacional": -13.9
    },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 8,
+    "motivo": "dominada",
+    "n_celda": 6,
+    "domina": "TECNICO EN ENFERMERIA",
+    "domina_pct": 75
+   },
    "empleabilidad_nacional": [
     51.9,
     66.5
@@ -24397,6 +23773,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     43.6,
     50.6
@@ -24535,6 +23912,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     46.8,
     61.7
@@ -24686,6 +24064,14 @@
     "p50_anio_1": -17529,
     "p50_anio_5": -189896,
     "emp1_nacional": -12.2
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 9,
+    "motivo": "pocas",
+    "n_celda": 4,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     67.5,
@@ -24871,6 +24257,14 @@
     "p50_anio_5": -520188,
     "emp1_nacional": -33.1
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     26.7,
     33.5
@@ -25022,6 +24416,14 @@
     "p50_anio_1": 80127,
     "p50_anio_5": -95576,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 10,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
    },
    "empleabilidad_nacional": [
     78.0,
@@ -25207,6 +24609,14 @@
     "p50_anio_5": 679909,
     "emp1_nacional": 16.1
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     77.7,
     88.1
@@ -25391,6 +24801,14 @@
     "p50_anio_5": -573083,
     "emp1_nacional": -30.9
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 2,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
+   },
    "empleabilidad_nacional": [
     47.1,
     58.3
@@ -25560,6 +24978,14 @@
     "p50_anio_1": 17079,
     "p50_anio_5": 96222,
     "emp1_nacional": -9.8
+   },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     68.2,
@@ -25745,6 +25171,14 @@
     "p50_anio_5": 284462,
     "emp1_nacional": -0.3
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     61.3,
     77.2
@@ -25914,6 +25348,14 @@
     "p50_anio_1": 84231,
     "p50_anio_5": 137372,
     "emp1_nacional": 1.7
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 13,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     61.5,
@@ -26099,6 +25541,14 @@
     "p50_anio_5": -332100,
     "emp1_nacional": -28.2
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     31.6,
     43.9
@@ -26269,6 +25719,14 @@
     "p50_anio_5": -240333,
     "emp1_nacional": -3.0
    },
+   "area_ficha": {
+    "n_area": 3,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     75.0,
     81.3
@@ -26415,6 +25873,14 @@
     "p50_anio_1": -47124,
     "p50_anio_5": -98429,
     "emp1_nacional": -9.5
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     54.8,
@@ -26568,6 +26034,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": -4.4
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 0,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     59.9,
     72.6
@@ -26714,6 +26188,14 @@
     "p50_anio_1": -30928,
     "p50_anio_5": -66181,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     64.3,
@@ -26885,6 +26367,14 @@
     "p50_anio_5": 282836,
     "emp1_nacional": -3.4
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     58.2,
     75.7
@@ -27055,6 +26545,14 @@
     "p50_anio_5": -120971,
     "emp1_nacional": -13.1
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     46.7,
     56.4
@@ -27206,6 +26704,14 @@
     "p50_anio_1": -387199,
     "p50_anio_5": -289497,
     "emp1_nacional": -4.1
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 13,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     83.0,
@@ -27391,6 +26897,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": 7.3
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 7,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
+   },
    "empleabilidad_nacional": [
     85.3,
     89.6
@@ -27574,6 +27088,14 @@
     "p50_anio_1": 414925,
     "p50_anio_5": 481230,
     "emp1_nacional": -2.9
+   },
+   "area_ficha": {
+    "n_area": 1,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     75.1,
@@ -27759,6 +27281,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     59.8,
     71.7
@@ -27943,6 +27473,14 @@
     "p50_anio_5": -282312,
     "emp1_nacional": -16.2
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     43.6,
     53.4
@@ -28104,6 +27642,14 @@
     "p50_anio_5": -1175402,
     "emp1_nacional": -29.4
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     57.7,
     63.2
@@ -28255,6 +27801,14 @@
     "p50_anio_1": 73105,
     "p50_anio_5": 111237,
     "emp1_nacional": 9.2
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     78.6,
@@ -28440,6 +27994,14 @@
     "p50_anio_5": -631567,
     "emp1_nacional": -27.6
    },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     41.8,
     60.4
@@ -28624,6 +28186,14 @@
     "p50_anio_5": 327097,
     "emp1_nacional": 3.1
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     64.7,
     82.7
@@ -28793,6 +28363,14 @@
     "p50_anio_1": 366772,
     "p50_anio_5": 1162367,
     "emp1_nacional": 4.4
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     68.7,
@@ -28964,6 +28542,14 @@
     "p50_anio_5": -47797,
     "emp1_nacional": -2.9
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 28,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     84.2,
     90.1
@@ -29097,6 +28683,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     82.7,
     82.8
@@ -29243,6 +28830,14 @@
     "p50_anio_1": 108414,
     "p50_anio_5": 634655,
     "emp1_nacional": 4.9
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 34,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     92.0,
@@ -29428,6 +29023,14 @@
     "p50_anio_5": 11540,
     "emp1_nacional": -3.6
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 20,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     83.5,
     93.0
@@ -29566,6 +29169,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     94.4,
     90.7
@@ -29717,6 +29321,14 @@
     "p50_anio_1": -69986,
     "p50_anio_5": 365260,
     "emp1_nacional": 1.4
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 31,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     88.5,
@@ -29902,6 +29514,14 @@
     "p50_anio_5": 581043,
     "emp1_nacional": -5.1
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 33,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     82.0,
     89.6
@@ -30085,6 +29705,14 @@
     "p50_anio_1": -219497,
     "p50_anio_5": -169343,
     "emp1_nacional": -2.4
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 23,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     84.7,
@@ -30270,6 +29898,14 @@
     "p50_anio_5": 230773,
     "emp1_nacional": 2.2
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 36,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     89.3,
     93.4
@@ -30453,6 +30089,14 @@
     "p50_anio_1": -90316,
     "p50_anio_5": 277210,
     "emp1_nacional": -0.3
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 30,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     86.8,
@@ -30638,6 +30282,14 @@
     "p50_anio_5": 567669,
     "emp1_nacional": -6.6
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 25,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     80.5,
     91.6
@@ -30821,6 +30473,14 @@
     "p50_anio_1": -194625,
     "p50_anio_5": 0,
     "emp1_nacional": -1.0
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 26,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     86.1,
@@ -31006,6 +30666,14 @@
     "p50_anio_5": 206572,
     "emp1_nacional": -5.3
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 24,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     81.8,
     90.9
@@ -31189,6 +30857,14 @@
     "p50_anio_1": 270979,
     "p50_anio_5": 432790,
     "emp1_nacional": 4.0
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 13,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
    },
    "empleabilidad_nacional": [
     82.0,
@@ -31374,6 +31050,14 @@
     "p50_anio_5": -752483,
     "emp1_nacional": -13.1
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     74.0,
     80.9
@@ -31526,6 +31210,14 @@
     "p50_anio_5": -216035,
     "emp1_nacional": 2.7
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 22,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     89.8,
     92.6
@@ -31677,6 +31369,14 @@
     "p50_anio_1": -695973,
     "p50_anio_5": -988259,
     "emp1_nacional": -24.2
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     62.9,
@@ -31848,6 +31548,14 @@
     "p50_anio_5": -60178,
     "emp1_nacional": 2.8
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 12,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
+   },
    "empleabilidad_nacional": [
     80.8,
     84.9
@@ -31999,6 +31707,14 @@
     "p50_anio_1": -357579,
     "p50_anio_5": -213403,
     "emp1_nacional": -4.2
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 17,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     82.9,
@@ -32184,6 +31900,14 @@
     "p50_anio_5": -687905,
     "emp1_nacional": -9.7
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     77.4,
     82.6
@@ -32368,6 +32092,14 @@
     "p50_anio_5": 345165,
     "emp1_nacional": 9.3
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 14,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
+   },
    "empleabilidad_nacional": [
     87.3,
     90.6
@@ -32538,6 +32270,14 @@
     "p50_anio_5": -353685,
     "emp1_nacional": 0.0
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 37,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     87.1,
     90.5
@@ -32689,6 +32429,14 @@
     "p50_anio_1": -343695,
     "p50_anio_5": -311800,
     "emp1_nacional": -4.9
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 18,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     82.2,
@@ -32842,6 +32590,14 @@
     "p50_anio_5": 469515,
     "emp1_nacional": 23.5
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     87.8,
     89.5
@@ -32980,6 +32736,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     92.1,
     97.7
@@ -33118,6 +32875,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     96.0,
     94.5
@@ -33270,6 +33028,14 @@
     "p50_anio_5": 928222,
     "emp1_nacional": 25.4
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     89.7,
     92.9
@@ -33416,6 +33182,14 @@
     "p50_anio_1": -504974,
     "p50_anio_5": -534132,
     "emp1_nacional": -14.0
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     73.1,
@@ -33569,6 +33343,14 @@
     "p50_anio_5": -329785,
     "emp1_nacional": -12.1
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 15,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     75.0,
     89.0
@@ -33720,6 +33502,14 @@
     "p50_anio_1": 125294,
     "p50_anio_5": 34361,
     "emp1_nacional": -3.5
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 35,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     83.6,
@@ -33882,6 +33672,14 @@
     "p50_anio_5": -609695,
     "emp1_nacional": -0.6
    },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 32,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     86.5,
     88.4
@@ -34033,6 +33831,14 @@
     "p50_anio_1": -399941,
     "p50_anio_5": -718098,
     "emp1_nacional": -3.6
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     83.5,
@@ -34186,6 +33992,14 @@
     "p50_anio_5": -282855,
     "emp1_nacional": -8.6
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 4,
+    "motivo": "dominada",
+    "n_celda": 7,
+    "domina": "INGENIERIA COMERCIAL",
+    "domina_pct": 53
+   },
    "empleabilidad_nacional": [
     69.4,
     73.4
@@ -34332,6 +34146,14 @@
     "p50_anio_1": -553810,
     "p50_anio_5": -749320,
     "emp1_nacional": -18.7
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     68.4,
@@ -34485,6 +34307,14 @@
     "p50_anio_5": -122630,
     "emp1_nacional": 6.6
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 3,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     84.6,
     88.6
@@ -34636,6 +34466,14 @@
     "p50_anio_1": 222181,
     "p50_anio_5": -280387,
     "emp1_nacional": 1.0
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 38,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     88.1,
@@ -34807,6 +34645,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     78.9,
     90.4
@@ -34953,6 +34792,14 @@
     "p50_anio_1": -290799,
     "p50_anio_5": -385575,
     "emp1_nacional": -5.1
+   },
+   "area_ficha": {
+    "n_area": 40,
+    "mas_que": 19,
+    "motivo": "celda",
+    "n_celda": 28,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     82.0,
@@ -35114,6 +34961,14 @@
     "p50_anio_1": -211643,
     "p50_anio_5": -318409,
     "emp1_nacional": -16.9
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     52.5,
@@ -35299,6 +35154,14 @@
     "p50_anio_5": -401292,
     "emp1_nacional": -43.2
    },
+   "area_ficha": {
+    "n_area": 3,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     34.8,
     58.8
@@ -35468,6 +35331,14 @@
     "p50_anio_1": 1487337,
     "p50_anio_5": 2406548,
     "emp1_nacional": 21.5
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     90.9,
@@ -35653,6 +35524,14 @@
     "p50_anio_5": -304774,
     "emp1_nacional": -12.1
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 1,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     65.9,
     73.9
@@ -35837,6 +35716,14 @@
     "p50_anio_5": -123229,
     "emp1_nacional": -14.8
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     45.0,
     53.7
@@ -36006,6 +35893,14 @@
     "p50_anio_1": -208823,
     "p50_anio_5": -548441,
     "emp1_nacional": -23.5
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     45.9,
@@ -36191,6 +36086,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
    },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     69.4,
     86.2
@@ -36374,6 +36277,14 @@
     "p50_anio_1": 18131,
     "p50_anio_5": -132593,
     "emp1_nacional": -6.7
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     62.7,
@@ -36559,6 +36470,14 @@
     "p50_anio_5": -98213,
     "emp1_nacional": -8.2
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     75.1,
     81.5
@@ -36742,6 +36661,14 @@
     "p50_anio_1": 96877,
     "p50_anio_5": 107408,
     "emp1_nacional": 6.6
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 10,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     89.9,
@@ -36927,6 +36854,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": 7.5
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     90.8,
     91.5
@@ -37110,6 +37045,14 @@
     "p50_anio_1": -173637,
     "p50_anio_5": -97663,
     "emp1_nacional": -11.9
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     71.4,
@@ -37295,6 +37238,14 @@
     "p50_anio_5": 32291,
     "emp1_nacional": 7.9
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     91.2,
     92.5
@@ -37479,6 +37430,14 @@
     "p50_anio_5": -96365,
     "emp1_nacional": -26.7
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     56.6,
     67.0
@@ -37649,6 +37608,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     80.7,
     84.1
@@ -37801,6 +37761,14 @@
     "p50_anio_5": 390144,
     "emp1_nacional": 10.1
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 14,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     93.4,
     89.6
@@ -37947,6 +37915,14 @@
     "p50_anio_1": 205880,
     "p50_anio_5": -3930,
     "emp1_nacional": -4.4
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 13,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     78.9,
@@ -38099,6 +38075,14 @@
     "p50_anio_1": -61024,
     "p50_anio_5": -20833,
     "emp1_nacional": -9.5
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     73.8,
@@ -38284,6 +38268,14 @@
     "p50_anio_5": -116223,
     "emp1_nacional": -20.2
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     63.1,
     74.5
@@ -38467,6 +38459,14 @@
     "p50_anio_1": 7514,
     "p50_anio_5": 33946,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     83.3,
@@ -38652,6 +38652,14 @@
     "p50_anio_5": 110625,
     "emp1_nacional": 8.0
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 11,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     91.3,
     94.8
@@ -38835,6 +38843,14 @@
     "p50_anio_1": 70636,
     "p50_anio_5": 155089,
     "emp1_nacional": 8.0
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 8,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     69.6,
@@ -39020,6 +39036,14 @@
     "p50_anio_5": 94660,
     "emp1_nacional": 1.1
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     84.4,
     87.0
@@ -39180,6 +39204,14 @@
     "p50_anio_1": 0,
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     61.6,
@@ -39365,6 +39397,14 @@
     "p50_anio_5": -221360,
     "emp1_nacional": -24.5
    },
+   "area_ficha": {
+    "n_area": 15,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 14,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     58.8,
     68.9
@@ -39516,6 +39556,14 @@
     "p50_anio_1": -38552,
     "p50_anio_5": 182993,
     "emp1_nacional": 11.4
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     73.0,
@@ -39701,6 +39749,14 @@
     "p50_anio_5": -51739,
     "emp1_nacional": -2.9
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 7,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     61.4,
     66.3
@@ -39847,6 +39903,14 @@
     "p50_anio_1": 1019764,
     "p50_anio_5": 636078,
     "emp1_nacional": 29.1
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 9,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     98.5,
@@ -40032,6 +40096,14 @@
     "p50_anio_5": -202432,
     "emp1_nacional": -11.6
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 8,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     48.2,
     55.3
@@ -40193,6 +40265,14 @@
     "p50_anio_5": -99053,
     "emp1_nacional": -2.6
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 6,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     59.0,
     64.1
@@ -40344,6 +40424,14 @@
     "p50_anio_1": 40325,
     "p50_anio_5": 145714,
     "emp1_nacional": 0.7
+   },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 7,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     62.3,
@@ -40529,6 +40617,14 @@
     "p50_anio_5": -110124,
     "emp1_nacional": -13.0
    },
+   "area_ficha": {
+    "n_area": 4,
+    "mas_que": 3,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     50.3,
     56.6
@@ -40680,6 +40776,14 @@
     "p50_anio_1": -216726,
     "p50_anio_5": -351946,
     "emp1_nacional": -37.5
+   },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 2,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     25.8,
@@ -40850,6 +40954,14 @@
     "p50_anio_1": 135768,
     "p50_anio_5": 0,
     "emp1_nacional": 1.9
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 14,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     65.2,
@@ -41035,6 +41147,14 @@
     "p50_anio_5": 16967,
     "emp1_nacional": -0.6
    },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 5,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     62.7,
     72.2
@@ -41187,6 +41307,14 @@
     "p50_anio_5": -355111,
     "emp1_nacional": -9.2
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 2,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     59.6,
     66.0
@@ -41325,6 +41453,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     60.0,
     71.6
@@ -41471,6 +41600,14 @@
     "p50_anio_1": -217022,
     "p50_anio_5": 109435,
     "emp1_nacional": -17.4
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 1,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     51.4,
@@ -41623,6 +41760,14 @@
     "p50_anio_1": -195742,
     "p50_anio_5": -314868,
     "emp1_nacional": -14.7
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 3,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     54.1,
@@ -41794,6 +41939,14 @@
     "p50_anio_5": -283231,
     "emp1_nacional": -31.2
    },
+   "area_ficha": {
+    "n_area": 8,
+    "mas_que": 4,
+    "motivo": "pocas",
+    "n_celda": 2,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     32.1,
     40.1
@@ -41955,6 +42108,14 @@
     "p50_anio_5": 45124,
     "emp1_nacional": 6.6
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 14,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     75.4,
     81.0
@@ -42093,6 +42254,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     66.0,
     85.3
@@ -42244,6 +42406,14 @@
     "p50_anio_1": -53243,
     "p50_anio_5": -168738,
     "emp1_nacional": 0.0
+   },
+   "area_ficha": {
+    "n_area": 12,
+    "mas_que": 7,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     63.3,
@@ -42429,6 +42599,14 @@
     "p50_anio_5": -103826,
     "emp1_nacional": -0.2
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 20,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     68.6,
     74.8
@@ -42580,6 +42758,14 @@
     "p50_anio_1": -93647,
     "p50_anio_5": -193709,
     "emp1_nacional": -10.9
+   },
+   "area_ficha": {
+    "n_area": 18,
+    "mas_que": 4,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     52.4,
@@ -42733,6 +42919,14 @@
     "p50_anio_5": 447195,
     "emp1_nacional": 10.8
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 21,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     79.6,
     89.5
@@ -42871,6 +43065,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     53.7,
     69.5
@@ -43022,6 +43217,14 @@
     "p50_anio_1": 567773,
     "p50_anio_5": 367898,
     "emp1_nacional": 8.3
+   },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 28,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     77.1,
@@ -43175,6 +43378,14 @@
     "p50_anio_5": 204807,
     "emp1_nacional": 7.9
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 24,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     76.7,
     82.3
@@ -43327,6 +43538,14 @@
     "p50_anio_5": 0,
     "emp1_nacional": 0.0
    },
+   "area_ficha": {
+    "n_area": 31,
+    "mas_que": 12,
+    "motivo": "celda",
+    "n_celda": 9,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     68.8,
     72.4
@@ -43465,6 +43684,7 @@
    },
    "posicion": null,
    "dif_grupo": null,
+   "area_ficha": null,
    "empleabilidad_nacional": [
     63.4,
     56.1
@@ -43617,6 +43837,14 @@
     "p50_anio_5": 114565,
     "emp1_nacional": 10.1
    },
+   "area_ficha": {
+    "n_area": 2,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 1,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     73.4,
     79.4
@@ -43768,6 +43996,14 @@
     "p50_anio_1": -22918,
     "p50_anio_5": 5073,
     "emp1_nacional": 2.0
+   },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     71.4,
@@ -43953,6 +44189,14 @@
     "p50_anio_5": -431953,
     "emp1_nacional": -19.8
    },
+   "area_ficha": {
+    "n_area": 11,
+    "mas_que": 4,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     49.6,
     71.9
@@ -44137,6 +44381,14 @@
     "p50_anio_5": -19641,
     "emp1_nacional": 5.3
    },
+   "area_ficha": {
+    "n_area": 14,
+    "mas_que": 5,
+    "motivo": "celda",
+    "n_celda": 10,
+    "domina": null,
+    "domina_pct": null
+   },
    "empleabilidad_nacional": [
     66.9,
     78.4
@@ -44320,6 +44572,14 @@
     "p50_anio_1": -324081,
     "p50_anio_5": -703542,
     "emp1_nacional": -36.5
+   },
+   "area_ficha": {
+    "n_area": 3,
+    "mas_que": 0,
+    "motivo": "pocas",
+    "n_celda": 3,
+    "domina": null,
+    "domina_pct": null
    },
    "empleabilidad_nacional": [
     41.5,

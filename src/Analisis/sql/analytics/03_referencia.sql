@@ -343,3 +343,87 @@ SELECT 'analytics_referencia', 'referencia_completa', CASE WHEN n = 0 THEN 'OK' 
 FROM (SELECT count(*) AS n
       FROM analytics.posicion po
       WHERE (SELECT count(*) FROM analytics.referencia r WHERE r.grupo_id = po.grupo_id) <> 5) x;
+
+-- --------------------------------------------------------------------------
+-- Posición en su área, para la ficha (18-11-26)
+-- --------------------------------------------------------------------------
+-- Las franjas de la ficha muestran las mismas carreras que la tabla «Otras carreras de su área»:
+-- comparables del mismo nivel y área de MiFuturo, de TODOS los tipos. Como mezclan tipos, no llevan
+-- «típica» (sería una mediana entre universidades, IP y CFT); el título dice la posición dentro del
+-- área. La típica del grupo estadístico (celda o segmento, la de los cuadrantes) se informa aparte,
+-- y cuando no hay celda se dice por qué: pocas carreras o una que domina el peso.
+-- Antes las franjas mostraban el grupo estadístico, y con celda inválida eso era todo el tipo × nivel:
+-- junto a Ingeniería Comercial aparecían Fonoaudiología y Traducción.
+CREATE TABLE analytics.area_ficha (
+    clave_carrera_generica  text     NOT NULL,
+    tipo_institucion        text     NOT NULL,
+    n_area                  integer  NOT NULL,   -- comparables del área × nivel (todos los tipos), incluida ella
+    mas_que_p50_1           integer  NOT NULL,   -- de las otras, cuántas tienen un P50 del 1er año MENOR
+    motivo                  text     NOT NULL CHECK (motivo IN ('celda', 'pocas', 'dominada')),
+    n_celda                 integer  NOT NULL,   -- comparables de su área × tipo × nivel
+    domina_clave            text,                -- la de más peso en la celda (si motivo = 'dominada')
+    domina_pct              numeric,             -- su % del peso de la celda
+    PRIMARY KEY (clave_carrera_generica, tipo_institucion),
+    FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par,
+    CHECK (mas_que_p50_1 BETWEEN 0 AND n_area - 1),
+    CHECK ((motivo = 'dominada') = (domina_clave IS NOT NULL))
+);
+
+INSERT INTO analytics.area_ficha
+WITH r AS (
+    SELECT p.clave_carrera_generica, p.tipo_institucion, p.area, p.nivel_carrera, p.peso, p.celda_valida,
+           e.percentil_50_anio_1 AS p50
+    FROM analytics.par p
+    JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+    WHERE p.representativo
+), celda AS (
+    SELECT area, tipo_institucion, nivel_carrera, count(*) AS n,
+           max(peso)::numeric / sum(peso) AS share_max,
+           (array_agg(clave_carrera_generica ORDER BY peso DESC, clave_carrera_generica))[1] AS mayor
+    FROM r GROUP BY 1, 2, 3
+)
+SELECT a.clave_carrera_generica, a.tipo_institucion,
+       (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera),
+       (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera AND b.p50 < a.p50),
+       CASE WHEN a.celda_valida THEN 'celda'
+            WHEN c.n < analytics.param('min_pares_celda') THEN 'pocas'
+            ELSE 'dominada' END,
+       c.n,
+       CASE WHEN NOT a.celda_valida AND c.n >= analytics.param('min_pares_celda') THEN c.mayor END,
+       CASE WHEN NOT a.celda_valida AND c.n >= analytics.param('min_pares_celda') THEN 100 * c.share_max END
+FROM r a
+JOIN celda c USING (area, tipo_institucion, nivel_carrera);
+
+INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
+-- 9. La posición por otro camino: rank() sobre el área × nivel (rank − 1 = cuántas tienen un P50
+--    estrictamente menor, también con empates) y n_area = tamaño de la partición.
+SELECT 'analytics_referencia', 'area_ficha_posicion', CASE WHEN n = 0 AND faltan = 0 THEN 'OK' ELSE 'FALLA' END,
+       n + faltan, 'mas_que_p50_1 = rank() − 1 y n_area = count() en área (MiFuturo) × nivel; una fila por representativo',
+       format('%s filas distintas; %s representativos sin fila', n, faltan)
+FROM (SELECT (SELECT count(*) FROM analytics.area_ficha f
+              JOIN (SELECT p.clave_carrera_generica, p.tipo_institucion,
+                           rank() OVER w - 1 AS mas_que, count(*) OVER (PARTITION BY p.area, p.nivel_carrera) AS n
+                    FROM analytics.par p
+                    JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+                    WHERE p.representativo
+                    WINDOW w AS (PARTITION BY p.area, p.nivel_carrera ORDER BY e.percentil_50_anio_1)) k
+                USING (clave_carrera_generica, tipo_institucion)
+              WHERE f.mas_que_p50_1 <> k.mas_que OR f.n_area <> k.n) AS n,
+             (SELECT count(*) FROM analytics.par p WHERE p.representativo
+                AND NOT EXISTS (SELECT 1 FROM analytics.area_ficha f
+                                WHERE f.clave_carrera_generica = p.clave_carrera_generica
+                                  AND f.tipo_institucion = p.tipo_institucion)) AS faltan) x
+UNION ALL
+-- 10. El motivo que dice la ficha es el de la regla de celda (01_par.sql): 'celda' ⇔ celda válida;
+--     'pocas' ⇔ < min_pares_celda; 'dominada' ⇔ suficientes pero la mayor pesa > max_peso_dominante.
+SELECT 'analytics_referencia', 'area_ficha_motivo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'motivo coherente con celda_valida, min_pares_celda y max_peso_dominante',
+       (SELECT string_agg(format('%s: %s', motivo, k), ', ' ORDER BY motivo)
+        FROM (SELECT motivo, count(*) AS k FROM analytics.area_ficha GROUP BY 1) t)
+FROM (SELECT count(*) AS n
+      FROM analytics.area_ficha f
+      JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+      WHERE (f.motivo = 'celda') <> p.celda_valida
+         OR (f.motivo = 'pocas') <> (NOT p.celda_valida AND f.n_celda < analytics.param('min_pares_celda'))
+         OR (f.motivo = 'dominada') <> (NOT p.celda_valida AND f.n_celda >= analytics.param('min_pares_celda')
+                                         AND f.domina_pct > 100 * analytics.param('max_peso_dominante'))) x;

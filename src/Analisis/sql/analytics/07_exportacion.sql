@@ -92,6 +92,13 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
                                  'emp1_nacional', round(dg.emp1_nacional, 1))
         FROM analytics.v_dif_grupo dg
         WHERE dg.clave_carrera_generica = p.clave_carrera_generica AND dg.tipo_institucion = p.tipo_institucion) END,
+    -- Posición en su área de MiFuturo (todas las carreras del nivel, todos los tipos) y, si no tiene
+    -- celda propia, por qué (03_referencia.sql, analytics.area_ficha).
+    'area_ficha', (SELECT json_build_object('n_area', af.n_area, 'mas_que', af.mas_que_p50_1, 'motivo', af.motivo,
+                                            'n_celda', af.n_celda, 'domina', af.domina_clave,
+                                            'domina_pct', round(af.domina_pct))
+                   FROM analytics.area_ficha af
+                   WHERE af.clave_carrera_generica = p.clave_carrera_generica AND af.tipo_institucion = p.tipo_institucion),
     'empleabilidad_nacional', json_build_array(e.empleabilidad_1er_anio, e.empleabilidad_2do_anio),
     'duracion', json_build_object('formal', e.duracion_formal_semestres, 'real', e.duracion_real_semestres),
     'titulados_2024', json_build_object('total', sx.total, 'mujeres', sx.mujeres, 'hombres', sx.hombres,
@@ -217,16 +224,6 @@ SELECT json_build_object(
                         'q75', round(q75, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END))
                         ORDER BY grupo_id, metrica)
                     FROM analytics.referencia),
-    -- Miembros de cada grupo de comparación (las "vecinas" de la ficha). Salen de
-    -- miembro_referencia y no se deducen en la web: un segmento incluye también a las carreras
-    -- que se comparan con su celda (Universidad profesionales: 91 miembros, 14 lo usan).
-    'grupos', (SELECT json_object_agg(grupo_id, miembros ORDER BY grupo_id)
-               FROM (SELECT grupo_id,
-                            json_agg(json_build_object('clave', clave_carrera_generica, 'tipo', tipo_institucion)
-                                     ORDER BY clave_carrera_generica, tipo_institucion) AS miembros
-                     FROM (SELECT DISTINCT grupo_id, clave_carrera_generica, tipo_institucion
-                           FROM analytics.miembro_referencia) d
-                     GROUP BY grupo_id) g),
     -- Cifras y ejemplos de los hallazgos de portada (06_hallazgos.sql): la web y el README solo redactan.
     'hallazgos', json_build_object(
         -- Un objeto por nivel (técnicas, profesionales): nunca una mediana que mezcle ambos.
