@@ -100,9 +100,15 @@ CREATE TABLE analytics.par (
     tipo_institucion        text     NOT NULL,
     nombre                  text     NOT NULL,
     nivel_carrera           text     NOT NULL,
-    area_cine13             text     NOT NULL,   -- área dominante de la genérica
-    share_area              numeric  NOT NULL,   -- proporción 0-1 del área dominante
-    area_asignable          boolean  NOT NULL,
+    -- Área de REFERENCIA: el área del conocimiento de MiFuturo (MINEDUC), la que ve quien busca
+    -- carreras. Define la celda área × tipo × nivel (ADR-002, 18-11-26): la CINE separaba, p. ej.,
+    -- Telecomunicaciones (ingeniería) de Informática (TIC), y las carreras de un área chica se
+    -- comparaban con todas las de su tipo × nivel. Misma área en todos los tipos (control qa).
+    area                    text     NOT NULL,
+    -- Área CINE-F 2013 dominante por titulaciones SIES: solo contexto desde el ADR-002.
+    area_cine13             text     NOT NULL,
+    share_area              numeric  NOT NULL,   -- proporción 0-1 del área CINE dominante
+    area_asignable          boolean  NOT NULL,   -- área CINE dominante ≥ min_share_area
     ingreso_completo        boolean  NOT NULL,   -- media 1°-5° y percentiles años 1 y 5
     n_inst_oferta           integer  NOT NULL,   -- con titulaciones SIES en ambas ventanas
     n_pub_emp1              integer  NOT NULL,   -- instituciones publicadas con el dato
@@ -112,7 +118,7 @@ CREATE TABLE analytics.par (
     tit_ventana_5           integer  NOT NULL,
     peso                    integer  NOT NULL,   -- tit_ventana_1 + tit_ventana_5 (decisión aprobada)
     representativo          boolean  NOT NULL,   -- entra en rankings, referencias y cuadrantes
-    celda_valida            boolean  NOT NULL,   -- su celda área × tipo × nivel es referencia
+    celda_valida            boolean  NOT NULL,   -- su celda área (MiFuturo) × tipo × nivel es referencia
     referencia              text     CHECK (referencia IN ('celda', 'segmento')),  -- NULL = no comparable
     baja_cobertura          boolean  NOT NULL,   -- heredada del segmento
     es_derecho              boolean  NOT NULL,   -- cohortes desplazadas +1 año
@@ -171,6 +177,7 @@ publicadas AS (
 ),
 base AS (
     SELECT e.clave_carrera_generica, e.tipo_institucion, g.nombre, g.nivel_carrera,
+           e.area_conocimiento_mineduc AS area_mf,
            a.area, a.share, a.share >= analytics.param('min_share_area') AS area_asignable,
            num_nonnulls(e.ingreso_medio_1er_anio, e.ingreso_medio_2do_anio, e.ingreso_medio_3er_anio,
                         e.ingreso_medio_4to_anio, e.ingreso_medio_5to_anio,
@@ -198,22 +205,21 @@ marcado AS (
     FROM base b
 ),
 celda AS (
-    -- Pares representativos con área asignable en la celda (los no asignables no forman celda).
+    -- Celda = área de MiFuturo × tipo × nivel (ADR-002). Toda carrera tiene área de MiFuturo, así
+    -- que ya no se exige área asignable (eso era de la CINE, dominante por titulaciones).
     -- Una celda es referencia si tiene suficientes pares Y ninguna carrera domina su peso: con
     -- más de la mitad del peso, la mediana ponderada ES el valor de esa carrera y el resto de la
     -- celda se compararía con ella, no con su área (A3).
     SELECT m.*,
-           m.area_asignable
-           AND count(*) FILTER (WHERE m.representativo AND m.area_asignable) OVER w
-               >= analytics.param('min_pares_celda')
-           AND max(m.peso) FILTER (WHERE m.representativo AND m.area_asignable) OVER w
+           count(*) FILTER (WHERE m.representativo) OVER w >= analytics.param('min_pares_celda')
+           AND max(m.peso) FILTER (WHERE m.representativo) OVER w
                <= analytics.param('max_peso_dominante')
-                  * sum(m.peso) FILTER (WHERE m.representativo AND m.area_asignable) OVER w AS celda_valida
+                  * sum(m.peso) FILTER (WHERE m.representativo) OVER w AS celda_valida
     FROM (SELECT b.*, (b.tit_1 + b.tit_5) AS peso FROM marcado b) m
-    WINDOW w AS (PARTITION BY m.area, m.tipo_institucion, m.nivel_carrera)
+    WINDOW w AS (PARTITION BY m.area_mf, m.tipo_institucion, m.nivel_carrera)
 )
 SELECT clave_carrera_generica, tipo_institucion, nombre, nivel_carrera,
-       area, share, area_asignable, ingreso_completo, n_inst_oferta,
+       area_mf, area, share, area_asignable, ingreso_completo, n_inst_oferta,
        n_emp1, n_emp2, n_tramo, tit_1, tit_5, tit_1 + tit_5,
        representativo, celda_valida,
        CASE WHEN NOT representativo THEN NULL
@@ -245,19 +251,32 @@ FROM (SELECT count(*) AS n FROM analytics.par
 UNION ALL
 -- Recuento por GROUP BY, independiente de la función de ventana usada al poblar.
 SELECT 'analytics_par', 'celda_valida', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
-       n, 'celda válida ⇔ ≥ min_pares_celda pares representativos con área asignable y ninguno con > max_peso_dominante del peso',
+       n, 'celda válida ⇔ ≥ min_pares_celda pares representativos en su área (MiFuturo) × tipo × nivel y ninguno con > max_peso_dominante del peso',
        format('%s pares incoherentes; %s celdas válidas', n,
-              (SELECT count(DISTINCT (area_cine13, tipo_institucion, nivel_carrera))
+              (SELECT count(DISTINCT (area, tipo_institucion, nivel_carrera))
                FROM analytics.par WHERE celda_valida))
 FROM (SELECT count(*) AS n
       FROM analytics.par p
-      LEFT JOIN (SELECT area_cine13, tipo_institucion, nivel_carrera, count(*) AS n_repr,
+      LEFT JOIN (SELECT area, tipo_institucion, nivel_carrera, count(*) AS n_repr,
                         max(peso)::numeric / sum(peso) AS share_max
-                 FROM analytics.par WHERE representativo AND area_asignable
-                 GROUP BY 1, 2, 3) c USING (area_cine13, tipo_institucion, nivel_carrera)
+                 FROM analytics.par WHERE representativo
+                 GROUP BY 1, 2, 3) c USING (area, tipo_institucion, nivel_carrera)
       WHERE p.celda_valida IS DISTINCT FROM
-            (p.area_asignable AND coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda')
+            (coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda')
              AND coalesce(c.share_max, 1) <= analytics.param('max_peso_dominante'))) x
+UNION ALL
+-- ADR-002: el área de MiFuturo es de la carrera, no del tipo. Si MiFuturo clasificara una carrera
+-- distinto en universidades, IP o CFT, la lista «Otras carreras de su área» y los grupos se
+-- partirían sin aviso; además, el área de cada par debe ser la de su fila en MiFuturo.
+SELECT 'analytics_par', 'area_mifuturo', CASE WHEN n_varias + n_distinta = 0 THEN 'OK' ELSE 'FALLA' END,
+       n_varias + n_distinta, 'cada carrera tiene una sola área de MiFuturo y el par usa la de su fila',
+       format('%s carreras con más de un área; %s pares con un área distinta a la de MiFuturo; %s áreas',
+              n_varias, n_distinta, (SELECT count(DISTINCT area) FROM analytics.par))
+FROM (SELECT (SELECT count(*) FROM (SELECT clave_carrera_generica FROM analytics.par
+                                    GROUP BY 1 HAVING count(DISTINCT area) > 1) v) AS n_varias,
+             (SELECT count(*) FROM analytics.par p
+              JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+              WHERE p.area IS DISTINCT FROM e.area_conocimiento_mineduc) AS n_distinta) x
 UNION ALL
 SELECT 'analytics_par', 'referencia', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
        n, 'referencia NULL ⇔ no representativo; celda ⇔ representativo y celda válida',

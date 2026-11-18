@@ -220,11 +220,11 @@
   var TIPO_PLURAL = { Universidad: "universidades", IP: "IP", CFT: "CFT" };
   var TIPO_ADJ = { Universidad: "universitarias", IP: "de IP", CFT: "de CFT" };
 
-  // Grupo de comparación del hallazgo (b), en palabras: «las carreras universitarias de su área
-  // (ingeniería, industria y construcción)» o, sin área, «las carreras profesionales universitarias».
+  // Grupo de comparación del hallazgo (b), en palabras: «las carreras universitarias del área
+  // Tecnología» (área de MiFuturo, ADR-002) o, sin área, «las carreras profesionales universitarias».
   function grupoEnPalabras(g) {
     if (g.tipo_grupo === "celda") {
-      return "las carreras " + TIPO_ADJ[g.tipo] + " de su área (" + g.area.toLowerCase() + ")";
+      return "las carreras " + TIPO_ADJ[g.tipo] + " del área " + g.area;
     }
     return "las carreras " + nivelCorto({ nivel: g.nivel }) + " " + TIPO_ADJ[g.tipo];
   }
@@ -1660,8 +1660,8 @@
 
     // Encabezado y veredicto
     art.appendChild(el("h4", "ficha__nombre", p.nombre)).id = "ficha-nombre";
-    art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · " + p.area.cine13 +
-      " (" + fmtEntero.format(p.area.pct_dominante) + " % de sus titulados)"));
+    // Área de MiFuturo: la de referencia de los grupos y de «Otras carreras de su área» (ADR-002).
+    art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · área " + p.area.mineduc + " (MiFuturo)"));
     var t = el("div", "timbres");
     TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });
     if (t.childNodes.length) art.appendChild(t);
@@ -2278,7 +2278,7 @@
     var q = datos.que_no_dice, ul = document.getElementById("limites");
     function item(titulo, partes) { var li = el("li"); textoConCifras(li, titulo, partes); ul.appendChild(li); }
     var anomalos = q.hitos_con_anomalia.map(function (a) { return a + "°"; });
-    var atipSalud = pares.filter(function (p) { return p.marcas.cohorte_atipica && p.area.cine13 === "Salud y Bienestar"; }).length;
+    var atipSalud = pares.filter(function (p) { return p.marcas.cohorte_atipica && p.area.mineduc === "Salud"; }).length;
     // Números de analytics.brecha_nacional (antes se sacaban con un regex del texto del control qa).
     var brecha = q.brecha_nacional_instituciones || {};
 
@@ -2326,7 +2326,7 @@
   function pintarMetodo() {
     var div = document.getElementById("metodo");
     div.appendChild(el("p", null, "Fuentes: " + datos.meta.fuentes.join("; ") + ". Montos en " + datos.meta.unidad_ingresos.replace(">=", "≥") + "."));
-    div.appendChild(el("p", null, "Una carrera es una carrera genérica de MiFuturo dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel."));
+    div.appendChild(el("p", null, "Una carrera es una carrera genérica de MiFuturo dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel. El área es la del conocimiento que usa MiFuturo (por ejemplo, «Tecnología» junta Informática y Telecomunicaciones); la clasificación internacional CINE de cada carrera se guarda como contexto."));
     div.appendChild(el("p", null, "Cómo se construye, de los archivos públicos a esta página (se reproduce con un solo comando, make todo):"));
     div.appendChild(el("p", "metodo__flujo", "CSV de MiFuturo y SIES → base PostgreSQL (raw → modelo → analytics) → " +
       fmtEntero.format(datos.qa.controles.length) + " controles de calidad → datos.json → esta página, un solo archivo sin dependencias"));

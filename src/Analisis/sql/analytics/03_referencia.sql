@@ -41,7 +41,7 @@ INSERT INTO analytics.parametro VALUES
 -- --------------------------------------------------------------------------
 CREATE VIEW analytics.miembro_referencia AS
 WITH valores AS (
-    SELECT p.clave_carrera_generica, p.tipo_institucion, p.nivel_carrera, p.area_cine13,
+    SELECT p.clave_carrera_generica, p.tipo_institucion, p.nivel_carrera, p.area,
            p.peso, p.celda_valida, m.metrica, m.valor
     FROM analytics.par p
     JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
@@ -56,12 +56,12 @@ WITH valores AS (
     WHERE p.representativo
 )
 SELECT 'segmento|' || tipo_institucion || '|' || nivel_carrera AS grupo_id,
-       'segmento' AS tipo_grupo, NULL::text AS area_cine13, tipo_institucion, nivel_carrera,
+       'segmento' AS tipo_grupo, NULL::text AS area, tipo_institucion, nivel_carrera,
        clave_carrera_generica, peso, metrica, valor
 FROM valores
 UNION ALL
-SELECT 'celda|' || area_cine13 || '|' || tipo_institucion || '|' || nivel_carrera,
-       'celda', area_cine13, tipo_institucion, nivel_carrera,
+SELECT 'celda|' || area || '|' || tipo_institucion || '|' || nivel_carrera,
+       'celda', area, tipo_institucion, nivel_carrera,
        clave_carrera_generica, peso, metrica, valor
 FROM valores
 WHERE celda_valida;
@@ -73,7 +73,7 @@ CREATE TABLE analytics.referencia (
     grupo_id          text    NOT NULL,
     metrica           text    NOT NULL CHECK (metrica IN ('p50_anio_1', 'p50_pct_1_5', 'p50_delta_1_5', 'p50_anio_5', 'emp1_nacional')),
     tipo_grupo        text    NOT NULL CHECK (tipo_grupo IN ('celda', 'segmento')),
-    area_cine13       text,                       -- NULL en los segmentos
+    area              text,                       -- área de MiFuturo (ADR-002); NULL en los segmentos
     tipo_institucion  text    NOT NULL,
     nivel_carrera     text    NOT NULL,
     n_pares           integer NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE analytics.referencia (
     q50               numeric NOT NULL,
     q75               numeric NOT NULL,
     PRIMARY KEY (grupo_id, metrica),
-    CHECK ((tipo_grupo = 'celda') = (area_cine13 IS NOT NULL)),
+    CHECK ((tipo_grupo = 'celda') = (area IS NOT NULL)),
     CHECK (q25 <= q50 AND q50 <= q75)
 );
 COMMENT ON COLUMN analytics.referencia.peso_max_share IS
@@ -98,13 +98,13 @@ WITH acum AS (
            sum(peso) OVER (PARTITION BY grupo_id, metrica) AS peso_total
     FROM analytics.miembro_referencia m
 )
-SELECT grupo_id, metrica, tipo_grupo, area_cine13, tipo_institucion, nivel_carrera,
+SELECT grupo_id, metrica, tipo_grupo, area, tipo_institucion, nivel_carrera,
        count(*), max(peso_total), max(peso)::numeric / max(peso_total),
        min(valor) FILTER (WHERE peso_acum >= 0.25 * peso_total),
        min(valor) FILTER (WHERE peso_acum >= 0.50 * peso_total),
        min(valor) FILTER (WHERE peso_acum >= 0.75 * peso_total)
 FROM acum
-GROUP BY grupo_id, metrica, tipo_grupo, area_cine13, tipo_institucion, nivel_carrera;
+GROUP BY grupo_id, metrica, tipo_grupo, area, tipo_institucion, nivel_carrera;
 
 -- --------------------------------------------------------------------------
 -- Posición de cada par representativo en su referencia
@@ -137,7 +137,7 @@ INSERT INTO analytics.posicion
 WITH par_ref AS (
     SELECT p.clave_carrera_generica, p.tipo_institucion,
            CASE p.referencia
-               WHEN 'celda' THEN 'celda|' || p.area_cine13 || '|' || p.tipo_institucion || '|' || p.nivel_carrera
+               WHEN 'celda' THEN 'celda|' || p.area || '|' || p.tipo_institucion || '|' || p.nivel_carrera
                ELSE 'segmento|' || p.tipo_institucion || '|' || p.nivel_carrera
            END AS grupo_id
     FROM analytics.par p

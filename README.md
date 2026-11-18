@@ -14,7 +14,7 @@
 
 <!-- HALLAZGOS:INICIO · generado por src/Web/construir.py desde docs/datos.json; no editar a mano -->
 1. **Al quinto año no siempre se gana más.** El sueldo típico (P50) sube 15,7 % entre el primer y el quinto año en las carreras técnicas y 43,2 % en las profesionales (medianas de cada nivel), pero baja en 7 de 85 técnicas y en 2 de 125 profesionales. No es que caigan los sueldos: en 6 de esas 7 técnicas, quienes se titularon hace poco son mucho mayores (los de 30 años o más pasan de 32,3 % a 55,6 %, mediana de esas 6), y muchos ya trabajaban antes de titularse.
-2. **Crecer más en porcentaje no es crecer más.** 10 carreras profesionales (ninguna técnica) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje (sin contar las que quedan a ±2 pp o ±$20.000 de la carrera típica de su grupo). Ingeniería en Alimentos (Universidad) sube 66,5 %, pero eso son +$592.205, frente a +$805.627 de la carrera típica de su grupo (mediana ponderada por titulados).
+2. **Crecer más en porcentaje no es crecer más.** 13 carreras profesionales (ninguna técnica) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje (sin contar las que quedan a ±2 pp o ±$20.000 de la carrera típica de su grupo). Ingeniería en Alimentos (Universidad) sube 66,5 %, pero eso son +$592.205, frente a +$805.627 de la carrera típica de su grupo (mediana ponderada por titulados).
 3. **El promedio nacional esconde diferencias entre instituciones.** En 19 carreras las instituciones difieren 15 puntos o más en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo. En Trabajo Social (Universidad, 32 instituciones) la mitad central va de 52,5 % a 74,2 %, con una cifra nacional de 66,9 %.
 4. **Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue estudiando el 21,7 % de los titulados de carreras técnicas y el 4,2 % de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: 37,4 % en Técnico en Administración de Empresas (IP) y 6,8 % en Técnico en Enfermería (IP). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.
 <!-- HALLAZGOS:FIN -->
@@ -22,16 +22,18 @@
 > **Corrección (16-11-26).** La versión anterior decía que, en las carreras con cambio de edad, los titulados de 30 años o más pasaban de 28 % a 55 %. Esa mediana se calculaba sobre las 9 carreras que bajan y no sobre las 7 que nombraba la frase; la cifra correcta es 32,5 % → 56,6 %. Desde esta versión, las cifras de los hallazgos se calculan en SQL y tienen sus propios controles de calidad.
 >
 > **Corrección (17-11-26).** El hallazgo 1 daba una sola mediana de crecimiento para las 210 carreras comparables (+29,3 %), que mezclaba técnicas y profesionales y no describía a ninguno de los dos niveles. Ahora se informa por nivel.
+>
+> **Cambio de método (18-11-26).** Los grupos de comparación usan ahora el área del conocimiento de MiFuturo en vez del área CINE ([ADR-002](src/BD/ADR-002-area-de-referencia.md)): quien busca una carrera piensa por interés, y la CINE separaba, por ejemplo, Telecomunicaciones de Informática. Siguen siendo 14 grupos con área propia; 27 carreras ganan uno y 17 pasan a compararse con todas las de su tipo y nivel. El hallazgo 2 pasó de 10 a 13 carreras profesionales; su ejemplo, Ingeniería en Alimentos, conserva sus cifras.
 
 ---
 
 ## Por qué confiar en las cifras
 
 - **Cuatro capas en PostgreSQL:** `raw` (copia fiel de los CSV) → `modelo` (relacional, con PK, FK y `CHECK`) → `analytics` (métricas) → `qa` (controles). Todo se construye en **una sola transacción**: si algo falla, la base queda como estaba.
-- <!-- CONTROLES:INICIO -->**70 controles de calidad**: 67 hacen fallar el build y 3 están exentos por diseño (documentados)<!-- CONTROLES:FIN -->. Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
+- <!-- CONTROLES:INICIO -->**71 controles de calidad**: 68 hacen fallar el build y 3 están exentos por diseño (documentados)<!-- CONTROLES:FIN -->. Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
 - **Determinista:** reconstruir la base y volver a exportar da el mismo archivo, con el mismo SHA-256.
 - **Los datos corrigieron dos decisiones del plan** y quedaron documentadas:
-  - Con la ponderación, 4 grupos de área estaban dominados por una sola carrera (Psicología pesaba el 70 % de su grupo). Se agregó una regla: un grupo deja de ser referencia si una carrera supera el 50 % de su peso.
+  - Con la ponderación, algunos grupos de área quedaban dominados por una sola carrera (con el área CINE, Psicología pesaba el 70 % de su grupo; con la de MiFuturo, Técnico en Enfermería pesa el 73–75 % de Salud técnica e Ingeniería Comercial el 53 % de Administración universitaria). Se agregó una regla: un grupo deja de ser referencia si una carrera supera el 50 % de su peso.
   - La cifra nacional queda sistemáticamente sobre el promedio de las instituciones publicadas (<!-- BRECHA:INICIO -->+1,7 puntos de empleabilidad y +6,2 % en el tramo de ingreso<!-- BRECHA:FIN -->). Por eso cada institución se compara con la institución típica de su carrera, no con la cifra nacional.
 - **Ninguna cifra de la web está escrita a mano:** textos, umbrales y ejemplos se calculan desde los datos, y los ejemplos se eligen por una regla, no a dedo.
 
@@ -85,7 +87,7 @@ src/
 docs/                  index.html (la web), datos.json y captura.png
 ```
 
-- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md) · [ADR del modelo relacional](src/BD/ADR-001-modelo-relacional.md).
+- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md) · [ADR del modelo relacional](src/BD/ADR-001-modelo-relacional.md) · [ADR del área de referencia](src/BD/ADR-002-area-de-referencia.md).
 - La web es HTML, CSS, JavaScript y SVG sin librerías: modo claro y oscuro, usable con teclado y lector de pantalla, sin desplazamiento horizontal a 320 px, con contraste ≥ 4,5:1 en todo el texto.
 
 ---
@@ -96,6 +98,7 @@ docs/                  index.html (la web), datos.json y captura.png
 |---|---|---|
 | **La media y los percentiles nunca se combinan** | La media de cada año junta tres cohortes con ingresos 2022–2024; los percentiles usan una sola cohorte con ingresos 2024. Son poblaciones distintas | `Media / P50` (mezclaría poblaciones) |
 | **Comparable = 3 o más instituciones la ofrecen** | Con 1 o 2, la "cifra nacional" es en realidad la de una institución | Comparar todas (42 de 252 carreras serían anécdotas) |
+| **El área de cada grupo es la de MiFuturo, no la CINE** | Quien busca una carrera piensa por interés y ve esa clasificación en MiFuturo; la CINE separaba Telecomunicaciones de Informática | Mantener la CINE (dejaba Informática contra las 91 profesionales universitarias); usar ambas en cascada (dos clasificaciones en una misma página) |
 | **Un grupo de área deja de ser referencia si una carrera pesa más del 50 %** | Con pesos por titulados, la mediana del grupo sería el valor de esa carrera | Avisarlo sin cambiar la referencia; mediana sin ponderar (mezcla criterios) |
 | **Cada institución se compara con la institución típica de su carrera** | La cifra nacional queda <!-- BRECHA:INICIO -->+1,7 puntos de empleabilidad y +6,2 % en el tramo de ingreso<!-- BRECHA:FIN --> sobre las instituciones publicadas: describe una población más amplia | Compararla con la cifra nacional (inflaba "bajo el promedio": 715 contra 131) |
 | **Cuadrantes con ejes relativos al grupo de cada carrera** | Cada carrera se clasifica contra su propio grupo; con ejes absolutos el gráfico contradiría la clasificación | Ejes absolutos por segmento |

@@ -42,10 +42,9 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
     'nivel', p.nivel_carrera,
     'area', json_build_object('cine13', p.area_cine13, 'pct_dominante', round(100 * p.share_area, 1),
                               'asignable', p.area_asignable,
-                              -- Área del conocimiento de MiFuturo (MINEDUC): la que ve quien busca carreras.
-                              -- Agrupa por interés en la ficha («Otras carreras de su área»); CINE separa,
-                              -- por ejemplo, Telecomunicaciones (ingeniería) de Informática (TIC).
-                              'mineduc', e.area_conocimiento_mineduc),
+                              -- Área del conocimiento de MiFuturo (MINEDUC): la de referencia de los grupos
+                              -- y de «Otras carreras de su área» (ADR-002); cine13 queda como contexto.
+                              'mineduc', p.area),
     'marcas', json_build_object(
         'representativo', p.representativo,
         'referencia', p.referencia,
@@ -210,7 +209,7 @@ SELECT json_build_object(
                       ORDER BY s.tipo_institucion, s.nivel_carrera)
                   FROM analytics.segmento s JOIN analytics.dispersion_segmento ds USING (tipo_institucion, nivel_carrera)),
     'referencias', (SELECT json_agg(json_build_object(
-                        'grupo', grupo_id, 'metrica', metrica, 'tipo_grupo', tipo_grupo, 'area', area_cine13,
+                        'grupo', grupo_id, 'metrica', metrica, 'tipo_grupo', tipo_grupo, 'area', area,
                         'tipo', tipo_institucion, 'nivel', nivel_carrera, 'n_pares', n_pares,
                         'peso_max_pct', round(100 * peso_max_share, 1),
                         'q25', round(q25, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
@@ -253,7 +252,7 @@ SELECT json_build_object(
                          'p50_delta_1_5', round(h.p50_delta_1_5), 'ref_delta_q50', round(h.ref_delta_q50),
                          'p50_anio_5', h.p50_anio_5, 'ref_pct_q50', round(h.ref_pct_q50, 1),
                          -- El grupo con el que se compara, para nombrarlo en la tarjeta.
-                         'grupo', (SELECT json_build_object('tipo_grupo', r.tipo_grupo, 'area', r.area_cine13,
+                         'grupo', (SELECT json_build_object('tipo_grupo', r.tipo_grupo, 'area', r.area,
                                                             'tipo', r.tipo_institucion, 'nivel', r.nivel_carrera,
                                                             'n_pares', r.n_pares)
                                    FROM analytics.referencia r
@@ -330,7 +329,7 @@ SELECT json_build_object(
                                      FROM analytics.segmento WHERE baja_cobertura),
         'pares_no_representativos', (SELECT count(*) FROM analytics.par WHERE NOT representativo),
         'pares_total', (SELECT count(*) FROM analytics.par),
-        'celdas_validas', (SELECT count(DISTINCT (area_cine13, tipo_institucion, nivel_carrera)) FROM analytics.par WHERE celda_valida),
+        'celdas_validas', (SELECT count(DISTINCT (area, tipo_institucion, nivel_carrera)) FROM analytics.par WHERE celda_valida),
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
         'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto WHERE composicion_edad),

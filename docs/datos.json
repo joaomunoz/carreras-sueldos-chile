@@ -9,7 +9,7 @@
   "comparacion": "transversal: el 1er y el 5° año son cohortes distintas, no las mismas personas",
   "rotulo_empleabilidad": "% con ingreso >= sueldo mínimo entre titulados con registro en el SII",
   "ficha_ejemplo": {
-   "clave": "ENFERMERIA",
+   "clave": "INGENIERIA COMERCIAL",
    "tipo": "Universidad"
   }
  },
@@ -453,7 +453,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 67
+   "OK": 68
   },
   "controles": [
    {
@@ -573,7 +573,7 @@
     "objeto": "ficha_ejemplo",
     "estado": "OK",
     "umbral": "ficha de ejemplo = representativa de mayor peso que no es la mediana de su grupo en ninguna de las 3 cifras",
-    "detalle": "0 problemas; ejemplo: ENFERMERIA (Universidad), peso 38760"
+    "detalle": "0 problemas; ejemplo: INGENIERIA COMERCIAL (Universidad), peso 47316"
    },
    {
     "control": "analytics_exportacion",
@@ -643,13 +643,20 @@
     "objeto": "ejemplo_pct_pesos_cifras",
     "estado": "OK",
     "umbral": "p50_anio_1 + p50_delta_1_5 = p50_anio_5 y ref_pct_q50 = referencia p50_pct_1_5 del grupo",
-    "detalle": "891077 + 592205 = 1483282; grupo celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales: 48.5 %"
+    "detalle": "891077 + 592205 = 1483282; grupo celda|Tecnología|Universidad|Carreras Profesionales: 48.5 %"
+   },
+   {
+    "control": "analytics_par",
+    "objeto": "area_mifuturo",
+    "estado": "OK",
+    "umbral": "cada carrera tiene una sola área de MiFuturo y el par usa la de su fila",
+    "detalle": "0 carreras con más de un área; 0 pares con un área distinta a la de MiFuturo; 10 áreas"
    },
    {
     "control": "analytics_par",
     "objeto": "celda_valida",
     "estado": "OK",
-    "umbral": "celda válida ⇔ ≥ min_pares_celda pares representativos con área asignable y ninguno con > max_peso_dominante del peso",
+    "umbral": "celda válida ⇔ ≥ min_pares_celda pares representativos en su área (MiFuturo) × tipo × nivel y ninguno con > max_peso_dominante del peso",
     "detalle": "0 pares incoherentes; 14 celdas válidas"
    },
    {
@@ -671,7 +678,7 @@
     "objeto": "referencia",
     "estado": "OK",
     "umbral": "referencia NULL ⇔ no representativo; celda ⇔ representativo y celda válida",
-    "detalle": "0 pares incoherentes; celda 139, segmento 71, sin referencia 42"
+    "detalle": "0 pares incoherentes; celda 149, segmento 61, sin referencia 42"
    },
    {
     "control": "analytics_par",
@@ -720,7 +727,7 @@
     "objeto": "progreso_por_margen",
     "estado": "OK",
     "umbral": "progreso = más / típico / menos según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas",
-    "detalle": "0 carreras con progreso o cambio distinto del recálculo; 10 cambian (margen ±2 pp / ±$20000)"
+    "detalle": "0 carreras con progreso o cambio distinto del recálculo; 13 cambian (margen ±2 pp / ±$20000)"
    },
    {
     "control": "analytics_referencia",
@@ -1062,205 +1069,205 @@
  ],
  "referencias": [
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+   "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "IP",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 42.3,
-   "q25": 78.8,
-   "q50": 81.1,
-   "q75": 84.0
+   "area": "Administración y Comercio",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 7,
+   "peso_max_pct": 40.0,
+   "q25": 42.1,
+   "q50": 61.8,
+   "q75": 67.9
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+   "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 7,
+   "peso_max_pct": 40.0,
+   "q25": 700121,
+   "q50": 851124,
+   "q75": 851124
+  },
+  {
+   "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
+   "metrica": "p50_anio_5",
+   "tipo_grupo": "celda",
+   "area": "Administración y Comercio",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 7,
+   "peso_max_pct": 40.0,
+   "q25": 786544,
+   "q50": 1062350,
+   "q75": 1062350
+  },
+  {
+   "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
+   "metrica": "p50_delta_1_5",
+   "tipo_grupo": "celda",
+   "area": "Administración y Comercio",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 7,
+   "peso_max_pct": 40.0,
+   "q25": 91009,
+   "q50": 211226,
+   "q75": 211226
+  },
+  {
+   "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
+   "metrica": "p50_pct_1_5",
+   "tipo_grupo": "celda",
+   "area": "Administración y Comercio",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 7,
+   "peso_max_pct": 40.0,
+   "q25": 13.5,
+   "q50": 24.8,
+   "q75": 24.8
+  },
+  {
+   "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
+   "metrica": "emp1_nacional",
+   "tipo_grupo": "celda",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 42.3,
+   "n_pares": 8,
+   "peso_max_pct": 39.6,
+   "q25": 78.8,
+   "q50": 81.1,
+   "q75": 81.6
+  },
+  {
+   "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
+   "metrica": "p50_anio_1",
+   "tipo_grupo": "celda",
+   "area": "Administración y Comercio",
+   "tipo": "IP",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 8,
+   "peso_max_pct": 39.6,
    "q25": 960832,
    "q50": 999393,
    "q75": 1127919
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 42.3,
-   "q25": 1377977,
+   "n_pares": 8,
+   "peso_max_pct": 39.6,
+   "q25": 1338432,
    "q50": 1377977,
    "q75": 1432590
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 42.3,
+   "n_pares": 8,
+   "peso_max_pct": 39.6,
    "q25": 250058,
-   "q50": 291588,
+   "q50": 250058,
    "q75": 433197
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 42.3,
+   "n_pares": 8,
+   "peso_max_pct": 39.6,
    "q25": 22.2,
-   "q50": 39.3,
+   "q50": 25.7,
    "q75": 43.3
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
    "n_pares": 8,
-   "peso_max_pct": 46.4,
+   "peso_max_pct": 45.0,
    "q25": 71.1,
    "q50": 76.3,
    "q75": 76.3
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
    "n_pares": 8,
-   "peso_max_pct": 46.4,
-   "q25": 957561,
+   "peso_max_pct": 45.0,
+   "q25": 942116,
    "q50": 1054045,
    "q75": 1054045
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
    "n_pares": 8,
-   "peso_max_pct": 46.4,
+   "peso_max_pct": 45.0,
    "q25": 1122752,
    "q50": 1122752,
    "q75": 1143800
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
    "n_pares": 8,
-   "peso_max_pct": 46.4,
+   "peso_max_pct": 45.0,
    "q25": 68707,
-   "q50": 68707,
-   "q75": 134202
+   "q50": 90782,
+   "q75": 149345
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+   "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
+   "area": "Administración y Comercio",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
    "n_pares": 8,
-   "peso_max_pct": 46.4,
+   "peso_max_pct": 45.0,
    "q25": 6.5,
-   "q50": 6.5,
-   "q75": 12.2
+   "q50": 8.8,
+   "q75": 16.0
   },
   {
-   "grupo": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 10,
-   "peso_max_pct": 39.8,
-   "q25": 77.7,
-   "q50": 82.0,
-   "q75": 82.0
-  },
-  {
-   "grupo": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_1",
-   "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 10,
-   "peso_max_pct": 39.8,
-   "q25": 1127008,
-   "q50": 1317860,
-   "q75": 1317860
-  },
-  {
-   "grupo": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_5",
-   "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 10,
-   "peso_max_pct": 39.8,
-   "q25": 1576091,
-   "q50": 2008881,
-   "q75": 2008881
-  },
-  {
-   "grupo": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
-   "metrica": "p50_delta_1_5",
-   "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 10,
-   "peso_max_pct": 39.8,
-   "q25": 590362,
-   "q50": 595515,
-   "q75": 691021
-  },
-  {
-   "grupo": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
-   "metrica": "p50_pct_1_5",
-   "tipo_grupo": "celda",
-   "area": "Administración de Empresas y Derecho",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 10,
-   "peso_max_pct": 39.8,
-   "q25": 40.7,
-   "q50": 52.4,
-   "q75": 52.4
-  },
-  {
-   "grupo": "celda|Artes y Humanidades|IP|Carreras Profesionales",
-   "metrica": "emp1_nacional",
-   "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
+   "area": "Arte y Arquitectura",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
    "n_pares": 6,
@@ -1270,10 +1277,10 @@
    "q75": 43.1
   },
   {
-   "grupo": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
+   "area": "Arte y Arquitectura",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
    "n_pares": 6,
@@ -1283,10 +1290,10 @@
    "q75": 772729
   },
   {
-   "grupo": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
+   "area": "Arte y Arquitectura",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
    "n_pares": 6,
@@ -1296,10 +1303,10 @@
    "q75": 978592
   },
   {
-   "grupo": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
+   "area": "Arte y Arquitectura",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
    "n_pares": 6,
@@ -1309,10 +1316,10 @@
    "q75": 215578
   },
   {
-   "grupo": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
+   "area": "Arte y Arquitectura",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
    "n_pares": 6,
@@ -1322,134 +1329,199 @@
    "q75": 27.9
   },
   {
-   "grupo": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+   "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 20.8,
-   "q25": 34.8,
-   "q50": 41.5,
-   "q75": 48.2
-  },
-  {
-   "grupo": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_1",
-   "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 20.8,
-   "q25": 734556,
-   "q50": 786662,
-   "q75": 808121
-  },
-  {
-   "grupo": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_5",
-   "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 20.8,
-   "q25": 977491,
-   "q50": 1107159,
-   "q75": 1188620
-  },
-  {
-   "grupo": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
-   "metrica": "p50_delta_1_5",
-   "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 20.8,
-   "q25": 242935,
-   "q50": 274076,
-   "q75": 428250
-  },
-  {
-   "grupo": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
-   "metrica": "p50_pct_1_5",
-   "tipo_grupo": "celda",
-   "area": "Artes y Humanidades",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 20.8,
-   "q25": 30.9,
-   "q50": 36.4,
-   "q75": 56.3
-  },
-  {
-   "grupo": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
-   "metrica": "emp1_nacional",
-   "tipo_grupo": "celda",
-   "area": "Ciencias naturales, matemáticas y estadística",
+   "area": "Arte y Arquitectura",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
    "n_pares": 8,
-   "peso_max_pct": 30.5,
+   "peso_max_pct": 42.7,
+   "q25": 45.0,
+   "q50": 59.8,
+   "q75": 61.5
+  },
+  {
+   "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
+   "metrica": "p50_anio_1",
+   "tipo_grupo": "celda",
+   "area": "Arte y Arquitectura",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 8,
+   "peso_max_pct": 42.7,
+   "q25": 791416,
+   "q50": 832615,
+   "q75": 916846
+  },
+  {
+   "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
+   "metrica": "p50_anio_5",
+   "tipo_grupo": "celda",
+   "area": "Arte y Arquitectura",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 8,
+   "peso_max_pct": 42.7,
+   "q25": 1107159,
+   "q50": 1309591,
+   "q75": 1446963
+  },
+  {
+   "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
+   "metrica": "p50_delta_1_5",
+   "tipo_grupo": "celda",
+   "area": "Arte y Arquitectura",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 8,
+   "peso_max_pct": 42.7,
+   "q25": 274076,
+   "q50": 501470,
+   "q75": 530117
+  },
+  {
+   "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
+   "metrica": "p50_pct_1_5",
+   "tipo_grupo": "celda",
+   "area": "Arte y Arquitectura",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 8,
+   "peso_max_pct": 42.7,
+   "q25": 36.4,
+   "q50": 57.8,
+   "q75": 57.8
+  },
+  {
+   "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
+   "metrica": "emp1_nacional",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Básicas",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 7,
+   "peso_max_pct": 34.2,
    "q25": 61.4,
-   "q50": 68.4,
+   "q50": 64.3,
    "q75": 68.7
   },
   {
-   "grupo": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+   "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ciencias naturales, matemáticas y estadística",
+   "area": "Ciencias Básicas",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 8,
-   "peso_max_pct": 30.5,
+   "n_pares": 7,
+   "peso_max_pct": 34.2,
    "q25": 932599,
-   "q50": 980878,
+   "q50": 963527,
    "q75": 1330299
   },
   {
-   "grupo": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+   "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ciencias naturales, matemáticas y estadística",
+   "area": "Ciencias Básicas",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 8,
-   "peso_max_pct": 30.5,
+   "n_pares": 7,
+   "peso_max_pct": 34.2,
    "q25": 1363713,
-   "q50": 1486445,
+   "q50": 1429894,
    "q75": 2592261
   },
   {
-   "grupo": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+   "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ciencias naturales, matemáticas y estadística",
+   "area": "Ciencias Básicas",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 8,
-   "peso_max_pct": 30.5,
+   "n_pares": 7,
+   "peso_max_pct": 34.2,
    "q25": 431114,
    "q50": 528494,
    "q75": 1261962
   },
   {
-   "grupo": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+   "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ciencias naturales, matemáticas y estadística",
+   "area": "Ciencias Básicas",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 8,
-   "peso_max_pct": 30.5,
+   "n_pares": 7,
+   "peso_max_pct": 34.2,
    "q25": 46.2,
-   "q50": 51.5,
+   "q50": 58.6,
    "q75": 94.9
+  },
+  {
+   "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
+   "metrica": "emp1_nacional",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Sociales",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 45.6,
+   "q25": 61.6,
+   "q50": 61.6,
+   "q75": 66.9
+  },
+  {
+   "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
+   "metrica": "p50_anio_1",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Sociales",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 45.6,
+   "q25": 880598,
+   "q50": 880598,
+   "q75": 920922
+  },
+  {
+   "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
+   "metrica": "p50_anio_5",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Sociales",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 45.6,
+   "q25": 1220001,
+   "q50": 1220001,
+   "q75": 1375090
+  },
+  {
+   "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
+   "metrica": "p50_delta_1_5",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Sociales",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 45.6,
+   "q25": 339403,
+   "q50": 339403,
+   "q75": 423856
+  },
+  {
+   "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
+   "metrica": "p50_pct_1_5",
+   "tipo_grupo": "celda",
+   "area": "Ciencias Sociales",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 45.6,
+   "q25": 38.5,
+   "q50": 38.5,
+   "q75": 44.6
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1517,459 +1589,394 @@
    "q75": 35.0
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+   "grupo": "celda|Salud|Universidad|Carreras Profesionales",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
-   "tipo": "CFT",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 9,
-   "peso_max_pct": 27.4,
-   "q25": 72.4,
-   "q50": 74.4,
-   "q75": 80.7
+   "area": "Salud",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 28.1,
+   "q25": 49.6,
+   "q50": 69.4,
+   "q75": 78.6
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+   "grupo": "celda|Salud|Universidad|Carreras Profesionales",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Salud",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 28.1,
+   "q25": 782180,
+   "q50": 991003,
+   "q75": 1064108
+  },
+  {
+   "grupo": "celda|Salud|Universidad|Carreras Profesionales",
+   "metrica": "p50_anio_5",
+   "tipo_grupo": "celda",
+   "area": "Salud",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 28.1,
+   "q25": 1283240,
+   "q50": 1715193,
+   "q75": 1826430
+  },
+  {
+   "grupo": "celda|Salud|Universidad|Carreras Profesionales",
+   "metrica": "p50_delta_1_5",
+   "tipo_grupo": "celda",
+   "area": "Salud",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 28.1,
+   "q25": 500762,
+   "q50": 724190,
+   "q75": 762322
+  },
+  {
+   "grupo": "celda|Salud|Universidad|Carreras Profesionales",
+   "metrica": "p50_pct_1_5",
+   "tipo_grupo": "celda",
+   "area": "Salud",
+   "tipo": "Universidad",
+   "nivel": "Carreras Profesionales",
+   "n_pares": 10,
+   "peso_max_pct": 28.1,
+   "q25": 56.8,
+   "q50": 71.6,
+   "q75": 73.1
+  },
+  {
+   "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
+   "metrica": "emp1_nacional",
+   "tipo_grupo": "celda",
+   "area": "Tecnología",
    "tipo": "CFT",
    "nivel": "Carreras Técnicas",
-   "n_pares": 9,
-   "peso_max_pct": 27.4,
+   "n_pares": 11,
+   "peso_max_pct": 21.4,
+   "q25": 70.8,
+   "q50": 72.4,
+   "q75": 80.1
+  },
+  {
+   "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
+   "metrica": "p50_anio_1",
+   "tipo_grupo": "celda",
+   "area": "Tecnología",
+   "tipo": "CFT",
+   "nivel": "Carreras Técnicas",
+   "n_pares": 11,
+   "peso_max_pct": 21.4,
    "q25": 1015229,
-   "q50": 1044339,
+   "q50": 1069167,
    "q75": 1093048
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+   "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "CFT",
    "nivel": "Carreras Técnicas",
-   "n_pares": 9,
-   "peso_max_pct": 27.4,
-   "q25": 1174129,
+   "n_pares": 11,
+   "peso_max_pct": 21.4,
+   "q25": 1166539,
    "q50": 1274233,
    "q75": 1331286
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+   "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "CFT",
    "nivel": "Carreras Técnicas",
-   "n_pares": 9,
-   "peso_max_pct": 27.4,
-   "q25": 158900,
-   "q50": 205066,
+   "n_pares": 11,
+   "peso_max_pct": 21.4,
+   "q25": 111339,
+   "q50": 158900,
    "q75": 238238
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+   "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "CFT",
    "nivel": "Carreras Técnicas",
-   "n_pares": 9,
-   "peso_max_pct": 27.4,
-   "q25": 15.7,
-   "q50": 18.3,
+   "n_pares": 11,
+   "peso_max_pct": 21.4,
+   "q25": 11.3,
+   "q50": 15.7,
    "q75": 21.8
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+   "grupo": "celda|Tecnología|IP|Carreras Profesionales",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 32.0,
-   "q25": 74.0,
-   "q50": 79.7,
-   "q75": 79.7
+   "n_pares": 12,
+   "peso_max_pct": 28.3,
+   "q25": 79.0,
+   "q50": 81.7,
+   "q75": 82.1
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+   "grupo": "celda|Tecnología|IP|Carreras Profesionales",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 32.0,
+   "n_pares": 12,
+   "peso_max_pct": 28.3,
    "q25": 969116,
-   "q50": 969116,
-   "q75": 1164776
+   "q50": 1148680,
+   "q75": 1344623
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+   "grupo": "celda|Tecnología|IP|Carreras Profesionales",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 32.0,
-   "q25": 1354409,
-   "q50": 1433615,
+   "n_pares": 12,
+   "peso_max_pct": 28.3,
+   "q25": 1339221,
+   "q50": 1373917,
    "q75": 1682097
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+   "grupo": "celda|Tecnología|IP|Carreras Profesionales",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 32.0,
-   "q25": 385293,
-   "q50": 419915,
-   "q75": 468836
+   "n_pares": 12,
+   "peso_max_pct": 28.3,
+   "q25": -5402,
+   "q50": 385293,
+   "q75": 517321
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+   "grupo": "celda|Tecnología|IP|Carreras Profesionales",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Profesionales",
-   "n_pares": 9,
-   "peso_max_pct": 32.0,
-   "q25": 39.8,
-   "q50": 41.0,
-   "q75": 44.4
+   "n_pares": 12,
+   "peso_max_pct": 28.3,
+   "q25": -0.4,
+   "q50": 39.8,
+   "q75": 51.8
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+   "grupo": "celda|Tecnología|IP|Carreras Técnicas",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 27.8,
+   "n_pares": 11,
+   "peso_max_pct": 18.2,
    "q25": 68.2,
-   "q50": 68.2,
-   "q75": 78.9
+   "q50": 74.7,
+   "q75": 78.5
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+   "grupo": "celda|Tecnología|IP|Carreras Técnicas",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 27.8,
-   "q25": 980815,
-   "q50": 986828,
-   "q75": 1055339
+   "n_pares": 11,
+   "peso_max_pct": 18.2,
+   "q25": 986828,
+   "q50": 1036292,
+   "q75": 1095419
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+   "grupo": "celda|Tecnología|IP|Carreras Técnicas",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 27.8,
-   "q25": 1059423,
+   "n_pares": 11,
+   "peso_max_pct": 18.2,
+   "q25": 1039867,
    "q50": 1059423,
-   "q75": 1314402
+   "q75": 1316723
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+   "grupo": "celda|Tecnología|IP|Carreras Técnicas",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 27.8,
-   "q25": 72595,
+   "n_pares": 11,
+   "peso_max_pct": 18.2,
+   "q25": -55552,
    "q50": 72595,
-   "q75": 181769
+   "q75": 259063
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+   "grupo": "celda|Tecnología|IP|Carreras Técnicas",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "IP",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 27.8,
-   "q25": 7.4,
+   "n_pares": 11,
+   "peso_max_pct": 18.2,
+   "q25": -5.1,
    "q50": 7.4,
-   "q75": 21.2
+   "q75": 24.5
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+   "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 25,
-   "peso_max_pct": 31.7,
-   "q25": 82.0,
+   "n_pares": 28,
+   "peso_max_pct": 28.4,
+   "q25": 82.9,
    "q50": 87.1,
    "q75": 89.3
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+   "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 25,
-   "peso_max_pct": 31.7,
-   "q25": 1190993,
-   "q50": 1616794,
+   "n_pares": 28,
+   "peso_max_pct": 28.4,
+   "q25": 1243889,
+   "q50": 1534688,
    "q75": 1660911
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+   "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 25,
-   "peso_max_pct": 31.7,
-   "q25": 1882080,
+   "n_pares": 28,
+   "peso_max_pct": 28.4,
+   "q25": 1946268,
    "q50": 2235765,
    "q75": 2466538
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+   "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 25,
-   "peso_max_pct": 31.7,
-   "q25": 530117,
+   "n_pares": 28,
+   "peso_max_pct": 28.4,
+   "q25": 500979,
    "q50": 805627,
-   "q75": 805627
+   "q75": 845253
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+   "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Profesionales",
-   "n_pares": 25,
-   "peso_max_pct": 31.7,
-   "q25": 48.5,
+   "n_pares": 28,
+   "peso_max_pct": 28.4,
+   "q25": 47.9,
    "q50": 48.5,
-   "q75": 61.5
+   "q75": 71.8
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+   "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
    "metrica": "emp1_nacional",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 25.7,
+   "n_pares": 9,
+   "peso_max_pct": 23.3,
    "q25": 54.1,
    "q50": 68.8,
-   "q75": 76.7
+   "q75": 75.4
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+   "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
    "metrica": "p50_anio_1",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 25.7,
+   "n_pares": 9,
+   "peso_max_pct": 23.3,
    "q25": 845287,
    "q50": 1041029,
-   "q75": 1152449
+   "q75": 1129019
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+   "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
    "metrica": "p50_anio_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 25.7,
+   "n_pares": 9,
+   "peso_max_pct": 23.3,
    "q25": 1114979,
    "q50": 1429847,
-   "q75": 1634654
+   "q75": 1539282
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+   "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
    "metrica": "p50_delta_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 25.7,
-   "q25": 239513,
-   "q50": 269692,
-   "q75": 415185
+   "n_pares": 9,
+   "peso_max_pct": 23.3,
+   "q25": 269692,
+   "q50": 388818,
+   "q75": 422556
   },
   {
-   "grupo": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+   "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
    "metrica": "p50_pct_1_5",
    "tipo_grupo": "celda",
-   "area": "Ingeniería, Industria y Construcción",
+   "area": "Tecnología",
    "tipo": "Universidad",
    "nivel": "Carreras Técnicas",
-   "n_pares": 8,
-   "peso_max_pct": 25.7,
-   "q25": 28.7,
-   "q50": 31.9,
-   "q75": 37.3
-  },
-  {
-   "grupo": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
-   "metrica": "emp1_nacional",
-   "tipo_grupo": "celda",
-   "area": "Salud y Bienestar",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 11,
-   "peso_max_pct": 25.0,
-   "q25": 52.5,
-   "q50": 66.9,
-   "q75": 78.6
-  },
-  {
-   "grupo": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_1",
-   "tipo_grupo": "celda",
-   "area": "Salud y Bienestar",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 11,
-   "peso_max_pct": 25.0,
-   "q25": 782180,
-   "q50": 968085,
-   "q75": 1064108
-  },
-  {
-   "grupo": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
-   "metrica": "p50_anio_5",
-   "tipo_grupo": "celda",
-   "area": "Salud y Bienestar",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 11,
-   "peso_max_pct": 25.0,
-   "q25": 1200360,
-   "q50": 1582600,
-   "q75": 1826430
-  },
-  {
-   "grupo": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
-   "metrica": "p50_delta_1_5",
-   "tipo_grupo": "celda",
-   "area": "Salud y Bienestar",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 11,
-   "peso_max_pct": 25.0,
-   "q25": 384572,
-   "q50": 617424,
-   "q75": 762322
-  },
-  {
-   "grupo": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
-   "metrica": "p50_pct_1_5",
-   "tipo_grupo": "celda",
-   "area": "Salud y Bienestar",
-   "tipo": "Universidad",
-   "nivel": "Carreras Profesionales",
-   "n_pares": 11,
-   "peso_max_pct": 25.0,
-   "q25": 50.5,
-   "q50": 66.3,
-   "q75": 71.6
-  },
-  {
-   "grupo": "celda|Servicios|IP|Carreras Técnicas",
-   "metrica": "emp1_nacional",
-   "tipo_grupo": "celda",
-   "area": "Servicios",
-   "tipo": "IP",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 5,
-   "peso_max_pct": 33.2,
-   "q25": 40.3,
-   "q50": 44.8,
-   "q75": 74.7
-  },
-  {
-   "grupo": "celda|Servicios|IP|Carreras Técnicas",
-   "metrica": "p50_anio_1",
-   "tipo_grupo": "celda",
-   "area": "Servicios",
-   "tipo": "IP",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 5,
-   "peso_max_pct": 33.2,
-   "q25": 692436,
-   "q50": 767136,
-   "q75": 1095419
-  },
-  {
-   "grupo": "celda|Servicios|IP|Carreras Técnicas",
-   "metrica": "p50_anio_5",
-   "tipo_grupo": "celda",
-   "area": "Servicios",
-   "tipo": "IP",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 5,
-   "peso_max_pct": 33.2,
-   "q25": 783666,
-   "q50": 823741,
-   "q75": 1039867
-  },
-  {
-   "grupo": "celda|Servicios|IP|Carreras Técnicas",
-   "metrica": "p50_delta_1_5",
-   "tipo_grupo": "celda",
-   "area": "Servicios",
-   "tipo": "IP",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 5,
-   "peso_max_pct": 33.2,
-   "q25": -55552,
-   "q50": 56605,
-   "q75": 102957
-  },
-  {
-   "grupo": "celda|Servicios|IP|Carreras Técnicas",
-   "metrica": "p50_pct_1_5",
-   "tipo_grupo": "celda",
-   "area": "Servicios",
-   "tipo": "IP",
-   "nivel": "Carreras Técnicas",
-   "n_pares": 5,
-   "peso_max_pct": 33.2,
-   "q25": -5.1,
-   "q50": 7.4,
-   "q75": 15.1
+   "n_pares": 9,
+   "peso_max_pct": 23.3,
+   "q25": 31.9,
+   "q50": 34.0,
+   "q75": 40.2
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2298,9 +2305,47 @@
   }
  ],
  "grupos": {
-  "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales": [
+  "celda|Administración y Comercio|CFT|Carreras Técnicas": [
+   {
+    "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN COMERCIO EXTERIOR",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN CONTABILIDAD GENERAL",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN LOGISTICA",
+    "tipo": "CFT"
+   },
+   {
+    "clave": "TECNICO EN TURISMO Y HOTELERIA",
+    "tipo": "CFT"
+   }
+  ],
+  "celda|Administración y Comercio|IP|Carreras Profesionales": [
    {
     "clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS",
+    "tipo": "IP"
+   },
+   {
+    "clave": "ADMINISTRACION GASTRONOMICA",
+    "tipo": "IP"
+   },
+   {
+    "clave": "ADMINISTRACION TURISTICA Y HOTELERA",
     "tipo": "IP"
    },
    {
@@ -2316,27 +2361,15 @@
     "tipo": "IP"
    },
    {
-    "clave": "INGENIERIA EN GESTION PUBLICA",
-    "tipo": "IP"
-   },
-   {
     "clave": "INGENIERIA EN LOGISTICA",
     "tipo": "IP"
    },
    {
     "clave": "INGENIERIA EN RECURSOS HUMANOS",
     "tipo": "IP"
-   },
-   {
-    "clave": "PUBLICIDAD",
-    "tipo": "IP"
-   },
-   {
-    "clave": "RELACIONES PUBLICAS",
-    "tipo": "IP"
    }
   ],
-  "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas": [
+  "celda|Administración y Comercio|IP|Carreras Técnicas": [
    {
     "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
     "tipo": "IP"
@@ -2350,10 +2383,6 @@
     "tipo": "IP"
    },
    {
-    "clave": "TECNICO EN ADMINISTRACION PUBLICA O MUNICIPAL",
-    "tipo": "IP"
-   },
-   {
     "clave": "TECNICO EN COMERCIO EXTERIOR",
     "tipo": "IP"
    },
@@ -2362,57 +2391,19 @@
     "tipo": "IP"
    },
    {
+    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
+    "tipo": "IP"
+   },
+   {
     "clave": "TECNICO EN LOGISTICA",
     "tipo": "IP"
    },
    {
-    "clave": "TECNICO JURIDICO",
+    "clave": "TECNICO EN TURISMO Y HOTELERIA",
     "tipo": "IP"
    }
   ],
-  "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ADMINISTRACION PUBLICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "CONTADOR AUDITOR",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "DERECHO",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA COMERCIAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN COMERCIO EXTERIOR",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN CONTROL DE GESTION",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "INGENIERIA EN RECURSOS HUMANOS",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "PUBLICIDAD",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "RELACIONES PUBLICAS",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Artes y Humanidades|IP|Carreras Profesionales": [
+  "celda|Arte y Arquitectura|IP|Carreras Profesionales": [
    {
     "clave": "ACTUACION Y TEATRO",
     "tipo": "IP"
@@ -2438,9 +2429,13 @@
     "tipo": "IP"
    }
   ],
-  "celda|Artes y Humanidades|Universidad|Carreras Profesionales": [
+  "celda|Arte y Arquitectura|Universidad|Carreras Profesionales": [
    {
     "clave": "ACTUACION Y TEATRO",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "ARQUITECTURA",
     "tipo": "Universidad"
    },
    {
@@ -2460,23 +2455,15 @@
     "tipo": "Universidad"
    },
    {
-    "clave": "LICENCIATURA EN LETRAS Y LITERATURA",
-    "tipo": "Universidad"
-   },
-   {
     "clave": "MUSICA, CANTO O DANZA",
     "tipo": "Universidad"
    },
    {
     "clave": "REALIZADOR DE CINE Y TELEVISION",
     "tipo": "Universidad"
-   },
-   {
-    "clave": "TRADUCCION E INTERPRETACION",
-    "tipo": "Universidad"
    }
   ],
-  "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales": [
+  "celda|Ciencias Básicas|Universidad|Carreras Profesionales": [
    {
     "clave": "BIOLOGIA",
     "tipo": "Universidad"
@@ -2502,11 +2489,49 @@
     "tipo": "Universidad"
    },
    {
-    "clave": "INGENIERIA EN RECURSOS RENOVABLES",
+    "clave": "QUIMICA, LICENCIADO EN QUIMICA",
+    "tipo": "Universidad"
+   }
+  ],
+  "celda|Ciencias Sociales|Universidad|Carreras Profesionales": [
+   {
+    "clave": "ADMINISTRACION PUBLICA",
     "tipo": "Universidad"
    },
    {
-    "clave": "QUIMICA, LICENCIADO EN QUIMICA",
+    "clave": "ANTROPOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "CIENCIAS POLITICAS",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "GEOGRAFIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "PERIODISMO",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "PSICOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "PUBLICIDAD",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "RELACIONES PUBLICAS",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "SOCIOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "TRABAJO SOCIAL",
     "tipo": "Universidad"
    }
   ],
@@ -2568,7 +2593,53 @@
     "tipo": "Universidad"
    }
   ],
-  "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas": [
+  "celda|Salud|Universidad|Carreras Profesionales": [
+   {
+    "clave": "ENFERMERIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "FONOAUDIOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "KINESIOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "MEDICINA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "NUTRICION Y DIETETICA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "OBSTETRICIA Y PUERICULTURA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "ODONTOLOGIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "QUIMICA Y FARMACIA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "TECNOLOGIA MEDICA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "TERAPIA OCUPACIONAL",
+    "tipo": "Universidad"
+   }
+  ],
+  "celda|Tecnología|CFT|Carreras Técnicas": [
+   {
+    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
+    "tipo": "CFT"
+   },
    {
     "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
     "tipo": "CFT"
@@ -2598,6 +2669,10 @@
     "tipo": "CFT"
    },
    {
+    "clave": "TECNICO EN PREVENCION DE RIESGOS",
+    "tipo": "CFT"
+   },
+   {
     "clave": "TECNICO EN TELECOMUNICACIONES",
     "tipo": "CFT"
    },
@@ -2606,13 +2681,21 @@
     "tipo": "CFT"
    }
   ],
-  "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales": [
+  "celda|Tecnología|IP|Carreras Profesionales": [
    {
     "clave": "CONSTRUCCION CIVIL",
     "tipo": "IP"
    },
    {
     "clave": "INGENIERIA EN AUTOMATIZACION, INSTRUMENTACION Y CONTROL",
+    "tipo": "IP"
+   },
+   {
+    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
+    "tipo": "IP"
+   },
+   {
+    "clave": "INGENIERIA EN CONECTIVIDAD Y REDES",
     "tipo": "IP"
    },
    {
@@ -2632,6 +2715,10 @@
     "tipo": "IP"
    },
    {
+    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
+    "tipo": "IP"
+   },
+   {
     "clave": "INGENIERIA EN QUIMICA",
     "tipo": "IP"
    },
@@ -2644,13 +2731,17 @@
     "tipo": "IP"
    }
   ],
-  "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas": [
+  "celda|Tecnología|IP|Carreras Técnicas": [
    {
-    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
+    "clave": "TECNICO EN ADMINISTRACION DE REDES Y SOPORTE",
     "tipo": "IP"
    },
    {
-    "clave": "TECNICO EN DIBUJO ARQUITECTONICO",
+    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
+    "tipo": "IP"
+   },
+   {
+    "clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES",
     "tipo": "IP"
    },
    {
@@ -2674,15 +2765,19 @@
     "tipo": "IP"
    },
    {
+    "clave": "TECNICO EN PREVENCION DE RIESGOS",
+    "tipo": "IP"
+   },
+   {
+    "clave": "TECNICO EN SONIDO",
+    "tipo": "IP"
+   },
+   {
     "clave": "TECNICO EN TOPOGRAFIA",
     "tipo": "IP"
    }
   ],
-  "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ARQUITECTURA",
-    "tipo": "Universidad"
-   },
+  "celda|Tecnología|Universidad|Carreras Profesionales": [
    {
     "clave": "CONSTRUCCION CIVIL",
     "tipo": "Universidad"
@@ -2701,6 +2796,10 @@
    },
    {
     "clave": "INGENIERIA CIVIL ELECTRONICA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "INGENIERIA CIVIL EN COMPUTACION E INFORMATICA",
     "tipo": "Universidad"
    },
    {
@@ -2744,6 +2843,10 @@
     "tipo": "Universidad"
    },
    {
+    "clave": "INGENIERIA EN COMPUTACION E INFORMATICA",
+    "tipo": "Universidad"
+   },
+   {
     "clave": "INGENIERIA EN CONSTRUCCION",
     "tipo": "Universidad"
    },
@@ -2768,7 +2871,15 @@
     "tipo": "Universidad"
    },
    {
+    "clave": "INGENIERIA EN PREVENCION DE RIESGOS",
+    "tipo": "Universidad"
+   },
+   {
     "clave": "INGENIERIA EN QUIMICA",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "INGENIERIA EN RECURSOS RENOVABLES",
     "tipo": "Universidad"
    },
    {
@@ -2780,9 +2891,13 @@
     "tipo": "Universidad"
    }
   ],
-  "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas": [
+  "celda|Tecnología|Universidad|Carreras Técnicas": [
    {
     "clave": "TECNICO EN ALIMENTOS",
+    "tipo": "Universidad"
+   },
+   {
+    "clave": "TECNICO EN COMPUTACION E INFORMATICA",
     "tipo": "Universidad"
    },
    {
@@ -2812,74 +2927,6 @@
    {
     "clave": "TECNICO EN MINERIA",
     "tipo": "Universidad"
-   }
-  ],
-  "celda|Salud y Bienestar|Universidad|Carreras Profesionales": [
-   {
-    "clave": "ENFERMERIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "FONOAUDIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "KINESIOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "MEDICINA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "NUTRICION Y DIETETICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "OBSTETRICIA Y PUERICULTURA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "ODONTOLOGIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "QUIMICA Y FARMACIA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TECNOLOGIA MEDICA",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TERAPIA OCUPACIONAL",
-    "tipo": "Universidad"
-   },
-   {
-    "clave": "TRABAJO SOCIAL",
-    "tipo": "Universidad"
-   }
-  ],
-  "celda|Servicios|IP|Carreras Técnicas": [
-   {
-    "clave": "TECNICO EN DEPORTE, RECREACION Y PREPARACION FISICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN GASTRONOMIA Y COCINA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PELUQUERIA Y ESTETICA",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN PREVENCION DE RIESGOS",
-    "tipo": "IP"
-   },
-   {
-    "clave": "TECNICO EN TURISMO Y HOTELERIA",
-    "tipo": "IP"
    }
   ],
   "segmento|CFT|Carreras Técnicas": [
@@ -3775,7 +3822,7 @@
   ],
   "pct_pesos": {
    "n_cambian_tec": 0,
-   "n_cambian_pro": 10,
+   "n_cambian_pro": 13,
    "margen_pp": 2,
    "margen_pesos": 20000,
    "conteos": [
@@ -3783,89 +3830,89 @@
      "nivel": "Carreras Profesionales",
      "medida": "pct",
      "zona": "entrada alta · progresa más",
-     "n": 17
+     "n": 15
     },
     {
      "nivel": "Carreras Profesionales",
      "medida": "pct",
      "zona": "entrada alta · progresa menos",
-     "n": 24
+     "n": 27
     },
     {
      "nivel": "Carreras Profesionales",
      "medida": "pct",
      "zona": "entrada baja · progresa más",
+     "n": 39
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "entrada baja · progresa menos",
+     "n": 21
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pct",
+     "zona": "progreso típico",
+     "n": 23
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa más",
+     "n": 22
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada alta · progresa menos",
+     "n": 20
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa más",
+     "n": 27
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "medida": "pesos",
+     "zona": "entrada baja · progresa menos",
      "n": 38
     },
     {
      "nivel": "Carreras Profesionales",
-     "medida": "pct",
-     "zona": "entrada baja · progresa menos",
-     "n": 25
-    },
-    {
-     "nivel": "Carreras Profesionales",
-     "medida": "pct",
+     "medida": "pesos",
      "zona": "progreso típico",
-     "n": 21
+     "n": 18
     },
     {
-     "nivel": "Carreras Profesionales",
-     "medida": "pesos",
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
      "zona": "entrada alta · progresa más",
-     "n": 19
+     "n": 10
     },
     {
-     "nivel": "Carreras Profesionales",
-     "medida": "pesos",
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
      "zona": "entrada alta · progresa menos",
-     "n": 19
+     "n": 18
     },
     {
-     "nivel": "Carreras Profesionales",
-     "medida": "pesos",
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
      "zona": "entrada baja · progresa más",
-     "n": 24
+     "n": 26
     },
     {
-     "nivel": "Carreras Profesionales",
-     "medida": "pesos",
+     "nivel": "Carreras Técnicas",
+     "medida": "pct",
      "zona": "entrada baja · progresa menos",
-     "n": 42
-    },
-    {
-     "nivel": "Carreras Profesionales",
-     "medida": "pesos",
-     "zona": "progreso típico",
-     "n": 21
-    },
-    {
-     "nivel": "Carreras Técnicas",
-     "medida": "pct",
-     "zona": "entrada alta · progresa más",
-     "n": 13
-    },
-    {
-     "nivel": "Carreras Técnicas",
-     "medida": "pct",
-     "zona": "entrada alta · progresa menos",
      "n": 17
     },
     {
      "nivel": "Carreras Técnicas",
      "medida": "pct",
-     "zona": "entrada baja · progresa más",
-     "n": 25
-    },
-    {
-     "nivel": "Carreras Técnicas",
-     "medida": "pct",
-     "zona": "entrada baja · progresa menos",
-     "n": 16
-    },
-    {
-     "nivel": "Carreras Técnicas",
-     "medida": "pct",
      "zona": "progreso típico",
      "n": 14
     },
@@ -3873,13 +3920,13 @@
      "nivel": "Carreras Técnicas",
      "medida": "pesos",
      "zona": "entrada alta · progresa más",
-     "n": 14
+     "n": 11
     },
     {
      "nivel": "Carreras Técnicas",
      "medida": "pesos",
      "zona": "entrada alta · progresa menos",
-     "n": 16
+     "n": 18
     },
     {
      "nivel": "Carreras Técnicas",
@@ -3891,13 +3938,13 @@
      "nivel": "Carreras Técnicas",
      "medida": "pesos",
      "zona": "entrada baja · progresa menos",
-     "n": 15
+     "n": 17
     },
     {
      "nivel": "Carreras Técnicas",
      "medida": "pesos",
      "zona": "progreso típico",
-     "n": 18
+     "n": 17
     }
    ],
    "ejemplo": {
@@ -3912,10 +3959,10 @@
     "ref_pct_q50": 48.5,
     "grupo": {
      "tipo_grupo": "celda",
-     "area": "Ingeniería, Industria y Construcción",
+     "area": "Tecnología",
      "tipo": "Universidad",
      "nivel": "Carreras Profesionales",
-     "n_pares": 25
+     "n_pares": 28
     }
    }
   },
@@ -5063,8 +5110,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -5135,20 +5182,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 3,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 22442,
-    "p50_anio_5": 106732,
-    "emp1_nacional": -0.3
+    "p50_anio_1": 0,
+    "p50_anio_5": 0,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     61.8,
@@ -5247,8 +5294,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -5319,7 +5366,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": true,
@@ -5330,9 +5377,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 66469,
-    "p50_anio_5": 1557,
-    "emp1_nacional": 7.0
+    "p50_anio_1": 44027,
+    "p50_anio_5": -105175,
+    "emp1_nacional": 7.3
    },
    "empleabilidad_nacional": [
     69.1,
@@ -5684,8 +5731,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -5756,20 +5803,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 137574,
-    "p50_anio_5": 166275,
-    "emp1_nacional": 12.5
+    "p50_anio_1": 115132,
+    "p50_anio_5": 59543,
+    "emp1_nacional": 12.8
    },
    "empleabilidad_nacional": [
     74.6,
@@ -5836,8 +5883,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -5908,20 +5955,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 55854,
-    "p50_anio_5": 490897,
-    "emp1_nacional": 4.4
+    "p50_anio_1": -184631,
+    "p50_anio_5": 172282,
+    "emp1_nacional": -5.9
    },
    "empleabilidad_nacional": [
     66.5,
@@ -6007,7 +6054,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -6089,9 +6136,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -55500,
+    "p50_anio_1": -80328,
     "p50_anio_5": -174055,
-    "emp1_nacional": -10.0
+    "emp1_nacional": -8.0
    },
    "empleabilidad_nacional": [
     64.4,
@@ -6167,8 +6214,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -6250,9 +6297,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 162621,
-    "emp1_nacional": 5.8
+    "p50_anio_1": -22442,
+    "p50_anio_5": 55889,
+    "emp1_nacional": 6.1
    },
    "empleabilidad_nacional": [
     67.9,
@@ -6490,7 +6537,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -6561,20 +6608,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 2,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progreso típico",
-    "cuadrante_pesos": "entrada alta · progreso típico",
-    "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "cuartil_p50_delta_1_5": 3,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 24828,
+    "p50_anio_1": 0,
     "p50_anio_5": 0,
-    "emp1_nacional": 3.7
+    "emp1_nacional": 5.7
    },
    "empleabilidad_nacional": [
     78.1,
@@ -7133,8 +7180,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -7206,7 +7253,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
@@ -7216,9 +7263,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -153160,
-    "p50_anio_5": -189087,
-    "emp1_nacional": -20.0
+    "p50_anio_1": -175602,
+    "p50_anio_5": -295819,
+    "emp1_nacional": -19.7
    },
    "empleabilidad_nacional": [
     42.1,
@@ -7437,7 +7484,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -7519,9 +7566,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 43471,
+    "p50_anio_1": 18643,
     "p50_anio_5": 189664,
-    "emp1_nacional": 5.7
+    "emp1_nacional": 7.7
    },
    "empleabilidad_nacional": [
     80.1,
@@ -7749,8 +7796,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -7821,7 +7868,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": true,
@@ -7832,9 +7879,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 91621,
-    "p50_anio_5": 282055,
-    "emp1_nacional": 12.3
+    "p50_anio_1": 69179,
+    "p50_anio_5": 175323,
+    "emp1_nacional": 12.6
    },
    "empleabilidad_nacional": [
     74.4,
@@ -7911,7 +7958,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -7993,9 +8040,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 48709,
+    "p50_anio_1": 23881,
     "p50_anio_5": 57053,
-    "emp1_nacional": 6.3
+    "emp1_nacional": 8.3
    },
    "empleabilidad_nacional": [
     80.7,
@@ -8063,7 +8110,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -8135,19 +8182,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "menos",
-    "progreso_pesos": "menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -29110,
+    "p50_anio_1": -53938,
     "p50_anio_5": -100104,
-    "emp1_nacional": -2.0
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     72.4,
@@ -8215,7 +8262,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -8297,9 +8344,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 352772,
+    "p50_anio_1": 327944,
     "p50_anio_5": 127281,
-    "emp1_nacional": 13.6
+    "emp1_nacional": 15.6
    },
    "empleabilidad_nacional": [
     88.0,
@@ -8505,7 +8552,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -8577,19 +8624,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "típico",
+    "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 232012,
+    "p50_anio_1": 207184,
     "p50_anio_5": 235994,
-    "emp1_nacional": 6.6
+    "emp1_nacional": 8.6
    },
    "empleabilidad_nacional": [
     81.0,
@@ -8808,8 +8855,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -8891,9 +8938,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 345967,
-    "p50_anio_5": 102291,
-    "emp1_nacional": 8.7
+    "p50_anio_1": 105482,
+    "p50_anio_5": -216324,
+    "emp1_nacional": -1.6
    },
    "empleabilidad_nacional": [
     70.8,
@@ -9674,7 +9721,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -9746,8 +9793,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
@@ -9756,9 +9803,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
+    "p50_anio_1": -24828,
     "p50_anio_5": -107694,
-    "emp1_nacional": 0.0
+    "emp1_nacional": 2.0
    },
    "empleabilidad_nacional": [
     74.4,
@@ -9826,7 +9873,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|CFT|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -9908,9 +9955,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -12465,
+    "p50_anio_1": -37293,
     "p50_anio_5": 3719,
-    "emp1_nacional": -10.5
+    "emp1_nacional": -8.5
    },
    "empleabilidad_nacional": [
     63.9,
@@ -9977,8 +10024,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|CFT|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -10050,7 +10097,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
@@ -10060,9 +10107,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -128561,
-    "p50_anio_5": -169074,
-    "emp1_nacional": -21.4
+    "p50_anio_1": -151003,
+    "p50_anio_5": -275806,
+    "emp1_nacional": -21.1
    },
    "empleabilidad_nacional": [
     40.7,
@@ -10581,7 +10628,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -10728,7 +10775,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -10804,9 +10851,9 @@
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progreso típico",
     "progreso_pct": "menos",
-    "progreso_pesos": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -10911,8 +10958,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -10995,8 +11042,8 @@
    },
    "dif_grupo": {
     "p50_anio_1": -317577,
-    "p50_anio_5": -548020,
-    "emp1_nacional": -30.0
+    "p50_anio_5": -571588,
+    "emp1_nacional": -31.4
    },
    "empleabilidad_nacional": [
     49.7,
@@ -11201,8 +11248,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -11275,18 +11322,18 @@
    "posicion": {
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "menos",
+    "progreso_pct": "típico",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
     "p50_anio_1": -257894,
-    "p50_anio_5": -422409,
-    "emp1_nacional": -31.8
+    "p50_anio_5": -445977,
+    "emp1_nacional": -33.2
    },
    "empleabilidad_nacional": [
     47.9,
@@ -11354,7 +11401,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -11506,7 +11553,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -11658,7 +11705,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -11729,20 +11776,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progreso típico",
-    "cuadrante_pesos": "entrada alta · progreso típico",
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 54437,
-    "p50_anio_5": 9853,
-    "emp1_nacional": -5.7
+    "p50_anio_1": -125127,
+    "p50_anio_5": 69551,
+    "emp1_nacional": -7.7
    },
    "empleabilidad_nacional": [
     74.0,
@@ -11810,7 +11857,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -12132,7 +12179,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -12284,7 +12331,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -12877,7 +12924,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -12959,9 +13006,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 424610,
-    "p50_anio_5": 1201471,
-    "emp1_nacional": 11.6
+    "p50_anio_1": 245046,
+    "p50_anio_5": 1261169,
+    "emp1_nacional": 9.6
    },
    "empleabilidad_nacional": [
     91.3,
@@ -13029,7 +13076,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -13180,8 +13227,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -13252,20 +13299,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 149287,
-    "p50_anio_5": 534323,
-    "emp1_nacional": 2.4
+    "p50_anio_1": 0,
+    "p50_anio_5": 514815,
+    "emp1_nacional": 0.4
    },
    "empleabilidad_nacional": [
     82.1,
@@ -13364,8 +13411,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -13436,20 +13483,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 32717,
-    "p50_anio_5": 227820,
-    "emp1_nacional": 6.5
+    "p50_anio_1": -116570,
+    "p50_anio_5": 208312,
+    "emp1_nacional": 4.5
    },
    "empleabilidad_nacional": [
     86.2,
@@ -13517,7 +13564,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -13589,7 +13636,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -13599,9 +13646,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -64035,
-    "p50_anio_5": -59698,
-    "emp1_nacional": -11.5
+    "p50_anio_1": -243599,
+    "p50_anio_5": 0,
+    "emp1_nacional": -13.5
    },
    "empleabilidad_nacional": [
     68.2,
@@ -13669,7 +13716,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -13742,7 +13789,7 @@
    "posicion": {
     "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
@@ -13751,9 +13798,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 195660,
-    "p50_anio_5": 248482,
-    "emp1_nacional": 6.3
+    "p50_anio_1": 16096,
+    "p50_anio_5": 308180,
+    "emp1_nacional": 4.3
    },
    "empleabilidad_nacional": [
     86.0,
@@ -13839,7 +13886,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -14142,8 +14189,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -14216,7 +14263,7 @@
    "posicion": {
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
@@ -14226,8 +14273,8 @@
    },
    "dif_grupo": {
     "p50_anio_1": 382963,
-    "p50_anio_5": 233307,
-    "emp1_nacional": 11.0
+    "p50_anio_5": 256875,
+    "emp1_nacional": 12.4
    },
    "empleabilidad_nacional": [
     92.1,
@@ -14295,7 +14342,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -14585,7 +14632,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -14657,19 +14704,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progreso típico",
     "progreso_pct": "típico",
-    "progreso_pesos": "menos",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": -79206,
-    "emp1_nacional": 0.0
+    "p50_anio_1": -179564,
+    "p50_anio_5": -19508,
+    "emp1_nacional": -2.0
    },
    "empleabilidad_nacional": [
     79.7,
@@ -15013,7 +15060,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -15084,8 +15131,8 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 1,
+    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
@@ -15095,9 +15142,9 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 320699,
-    "p50_anio_5": 322077,
-    "emp1_nacional": -0.7
+    "p50_anio_1": 141135,
+    "p50_anio_5": 381775,
+    "emp1_nacional": -2.7
    },
    "empleabilidad_nacional": [
     79.0,
@@ -15164,8 +15211,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -15236,7 +15283,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": true,
@@ -15247,9 +15294,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 345230,
-    "p50_anio_5": -15188,
-    "emp1_nacional": 2.0
+    "p50_anio_1": 195943,
+    "p50_anio_5": -34696,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     81.7,
@@ -15349,7 +15396,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -15431,9 +15478,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -57465,
-    "p50_anio_5": 0,
-    "emp1_nacional": -0.1
+    "p50_anio_1": -237029,
+    "p50_anio_5": 59698,
+    "emp1_nacional": -2.1
    },
    "empleabilidad_nacional": [
     79.6,
@@ -15501,7 +15548,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -15573,12 +15620,12 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
-    "progreso_pct": "típico",
+    "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
@@ -15929,7 +15976,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -16001,8 +16048,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
@@ -16011,9 +16058,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -244422,
-    "p50_anio_5": -515369,
-    "emp1_nacional": -35.4
+    "p50_anio_1": -423986,
+    "p50_anio_5": -455671,
+    "emp1_nacional": -37.4
    },
    "empleabilidad_nacional": [
     44.3,
@@ -16219,7 +16266,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -16291,8 +16338,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
@@ -16301,9 +16348,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 1405511,
-    "p50_anio_5": 1157119,
-    "emp1_nacional": 15.7
+    "p50_anio_1": 1225947,
+    "p50_anio_5": 1216817,
+    "emp1_nacional": 13.7
    },
    "empleabilidad_nacional": [
     95.4,
@@ -16647,7 +16694,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|IP|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -17120,8 +17167,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -17194,18 +17241,18 @@
    "posicion": {
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
     "p50_anio_1": -324733,
-    "p50_anio_5": -411729,
-    "emp1_nacional": -24.3
+    "p50_anio_5": -388161,
+    "emp1_nacional": -22.9
    },
    "empleabilidad_nacional": [
     56.8,
@@ -17272,8 +17319,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -17345,19 +17392,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "menos",
-    "progreso_pesos": "típico",
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
     "p50_anio_1": -206637,
-    "p50_anio_5": -302504,
-    "emp1_nacional": -31.6
+    "p50_anio_5": -278936,
+    "emp1_nacional": -30.2
    },
    "empleabilidad_nacional": [
     49.5,
@@ -18083,7 +18130,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -18158,10 +18205,10 @@
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -18267,7 +18314,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -18338,14 +18385,14 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -18436,8 +18483,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -18519,9 +18566,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 419033,
-    "p50_anio_5": 182504,
-    "emp1_nacional": 21.2
+    "p50_anio_1": 202206,
+    "p50_anio_5": 13655,
+    "emp1_nacional": 12.3
    },
    "empleabilidad_nacional": [
     87.0,
@@ -18589,7 +18636,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -18740,8 +18787,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -18812,20 +18859,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -4129,
-    "p50_anio_5": 191965,
-    "emp1_nacional": 6.7
+    "p50_anio_1": 230451,
+    "p50_anio_5": 424143,
+    "emp1_nacional": 17.2
    },
    "empleabilidad_nacional": [
     83.0,
@@ -19031,7 +19078,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -19103,8 +19150,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
@@ -19182,8 +19229,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -19254,20 +19301,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 216827,
-    "p50_anio_5": 483342,
-    "emp1_nacional": 8.1
+    "p50_anio_1": 0,
+    "p50_anio_5": 314493,
+    "emp1_nacional": -0.8
    },
    "empleabilidad_nacional": [
     73.9,
@@ -19505,7 +19552,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -19576,9 +19623,9 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progreso típico",
@@ -19587,9 +19634,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
+    "p50_anio_1": -49464,
     "p50_anio_5": 0,
-    "emp1_nacional": 0.0
+    "emp1_nacional": -6.5
    },
    "empleabilidad_nacional": [
     68.2,
@@ -19666,7 +19713,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -19849,8 +19896,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Servicios|IP|Carreras Técnicas",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -19921,20 +19968,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 0,
-    "emp1_nacional": -4.5
+    "p50_anio_1": -52329,
+    "p50_anio_5": -66833,
+    "emp1_nacional": -25.5
    },
    "empleabilidad_nacional": [
     40.3,
@@ -20001,8 +20048,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -20073,9 +20120,9 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
@@ -20084,9 +20131,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -167771,
-    "p50_anio_5": -79177,
-    "emp1_nacional": -9.3
+    "p50_anio_1": -408,
+    "p50_anio_5": 89672,
+    "emp1_nacional": -6.9
    },
    "empleabilidad_nacional": [
     58.9,
@@ -20306,7 +20353,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -20378,8 +20425,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
@@ -20388,9 +20435,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 68511,
+    "p50_anio_1": 19047,
     "p50_anio_5": 254979,
-    "emp1_nacional": 10.3
+    "emp1_nacional": 3.8
    },
    "empleabilidad_nacional": [
     78.5,
@@ -21083,7 +21130,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Servicios|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -21156,18 +21203,18 @@
    "posicion": {
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa menos",
     "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -74700,
-    "p50_anio_5": -66957,
-    "emp1_nacional": 0.9
+    "p50_anio_1": -361609,
+    "p50_anio_5": -365968,
+    "emp1_nacional": -30.6
    },
    "empleabilidad_nacional": [
     45.7,
@@ -21387,7 +21434,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -21469,9 +21516,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 900912,
+    "p50_anio_1": 851448,
     "p50_anio_5": 654694,
-    "emp1_nacional": 27.4
+    "emp1_nacional": 20.9
    },
    "empleabilidad_nacional": [
     95.6,
@@ -21691,7 +21738,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -21763,13 +21810,13 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -21852,7 +21899,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -21924,8 +21971,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa menos",
@@ -21934,9 +21981,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 188585,
+    "p50_anio_1": 139121,
     "p50_anio_5": 159261,
-    "emp1_nacional": 12.2
+    "emp1_nacional": 5.7
    },
    "empleabilidad_nacional": [
     80.4,
@@ -22156,7 +22203,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -22238,9 +22285,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -131269,
+    "p50_anio_1": -180733,
     "p50_anio_5": -22095,
-    "emp1_nacional": -1.4
+    "emp1_nacional": -7.9
    },
    "empleabilidad_nacional": [
     66.8,
@@ -22308,7 +22355,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -22390,9 +22437,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 767118,
+    "p50_anio_1": 717654,
     "p50_anio_5": 257300,
-    "emp1_nacional": 15.5
+    "emp1_nacional": 9.0
    },
    "empleabilidad_nacional": [
     83.7,
@@ -22459,8 +22506,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Servicios|IP|Carreras Técnicas",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -22542,9 +22589,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -86427,
-    "p50_anio_5": -40075,
-    "emp1_nacional": -16.9
+    "p50_anio_1": -138756,
+    "p50_anio_5": -106908,
+    "emp1_nacional": -37.9
    },
    "empleabilidad_nacional": [
     27.9,
@@ -22764,7 +22811,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Servicios|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -22846,9 +22893,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 328283,
-    "p50_anio_5": 216126,
-    "emp1_nacional": 29.9
+    "p50_anio_1": 59127,
+    "p50_anio_5": -19556,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     74.7,
@@ -23223,8 +23270,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|IP|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -23296,8 +23343,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
@@ -23306,9 +23353,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -131710,
-    "p50_anio_5": -53144,
-    "emp1_nacional": -32.8
+    "p50_anio_1": -348537,
+    "p50_anio_5": -221993,
+    "emp1_nacional": -41.7
    },
    "empleabilidad_nacional": [
     33.0,
@@ -23514,7 +23561,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -23596,9 +23643,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -6013,
+    "p50_anio_1": -55477,
     "p50_anio_5": 212086,
-    "emp1_nacional": 10.7
+    "emp1_nacional": 4.2
    },
    "empleabilidad_nacional": [
     78.9,
@@ -23804,7 +23851,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Servicios|IP|Carreras Técnicas",
+    "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -23875,7 +23922,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
@@ -23886,9 +23933,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -41626,
-    "p50_anio_5": 61334,
-    "emp1_nacional": 0.0
+    "p50_anio_1": -328535,
+    "p50_anio_5": -237677,
+    "emp1_nacional": -31.5
    },
    "empleabilidad_nacional": [
     44.8,
@@ -23973,8 +24020,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|IP|Carreras Técnicas",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -24045,20 +24092,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -48903,
-    "p50_anio_5": -200597,
-    "emp1_nacional": -8.8
+    "p50_anio_1": 185677,
+    "p50_anio_5": 31581,
+    "emp1_nacional": 1.7
    },
    "empleabilidad_nacional": [
     67.5,
@@ -24738,7 +24785,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -24809,20 +24856,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 4754,
-    "p50_anio_5": -317756,
-    "emp1_nacional": -14.8
+    "p50_anio_1": -41199,
+    "p50_anio_5": -520188,
+    "emp1_nacional": -33.1
    },
    "empleabilidad_nacional": [
     26.7,
@@ -24889,8 +24936,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -24961,20 +25008,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -190852,
-    "p50_anio_5": -528366,
-    "emp1_nacional": -4.0
+    "p50_anio_1": 80127,
+    "p50_anio_5": -95576,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     78.0,
@@ -25074,7 +25121,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -25145,20 +25192,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -126321,
-    "p50_anio_5": -108971,
-    "emp1_nacional": -4.3
+    "p50_anio_1": 310941,
+    "p50_anio_5": 679909,
+    "emp1_nacional": 16.1
    },
    "empleabilidad_nacional": [
     77.7,
@@ -25611,8 +25658,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -25683,20 +25730,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 4,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
-    "progreso_pct": "menos",
-    "progreso_pesos": "menos",
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 26149,
-    "p50_anio_5": -71628,
-    "emp1_nacional": -16.7
+    "p50_anio_1": 192432,
+    "p50_anio_5": 284462,
+    "emp1_nacional": -0.3
    },
    "empleabilidad_nacional": [
     61.3,
@@ -25782,7 +25829,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -25853,20 +25900,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "más",
-    "progreso_pesos": "menos",
-    "cambia_cuadrante": true
+    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 3,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "típico",
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -699948,
-    "p50_anio_5": -788802,
-    "emp1_nacional": -25.6
+    "p50_anio_1": 84231,
+    "p50_anio_5": 137372,
+    "emp1_nacional": 1.7
    },
    "empleabilidad_nacional": [
     61.5,
@@ -25966,7 +26013,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26038,7 +26085,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
@@ -26048,9 +26095,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -52106,
-    "p50_anio_5": -129668,
-    "emp1_nacional": -9.9
+    "p50_anio_1": -98059,
+    "p50_anio_5": -332100,
+    "emp1_nacional": -28.2
    },
    "empleabilidad_nacional": [
     31.6,
@@ -26283,7 +26330,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26365,9 +26412,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -64475,
-    "p50_anio_5": -154980,
-    "emp1_nacional": -13.6
+    "p50_anio_1": -47124,
+    "p50_anio_5": -98429,
+    "emp1_nacional": -9.5
    },
    "empleabilidad_nacional": [
     54.8,
@@ -26435,7 +26482,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26507,19 +26554,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pct": "entrada baja · progreso típico",
     "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "más",
+    "progreso_pct": "típico",
     "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -79478,
-    "p50_anio_5": -56551,
-    "emp1_nacional": -8.5
+    "p50_anio_1": -62127,
+    "p50_anio_5": 0,
+    "emp1_nacional": -4.4
    },
    "empleabilidad_nacional": [
     59.9,
@@ -26582,7 +26629,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26664,9 +26711,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -48279,
-    "p50_anio_5": -122732,
-    "emp1_nacional": -4.1
+    "p50_anio_1": -30928,
+    "p50_anio_5": -66181,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     64.3,
@@ -26751,8 +26798,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26823,20 +26870,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 2,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_delta_1_5": 4,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "más",
-    "progreso_pesos": "menos",
-    "cambia_cuadrante": true
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -48598,
-    "p50_anio_5": -73254,
-    "emp1_nacional": -19.8
+    "p50_anio_1": 117685,
+    "p50_anio_5": 282836,
+    "emp1_nacional": -3.4
    },
    "empleabilidad_nacional": [
     58.2,
@@ -26922,7 +26969,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -26993,20 +27040,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -26292,
-    "p50_anio_5": 81461,
-    "emp1_nacional": 5.2
+    "p50_anio_1": -72245,
+    "p50_anio_5": -120971,
+    "emp1_nacional": -13.1
    },
    "empleabilidad_nacional": [
     46.7,
@@ -27074,7 +27121,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -27146,7 +27193,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -27156,7 +27203,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -469305,
+    "p50_anio_1": -387199,
     "p50_anio_5": -289497,
     "emp1_nacional": -4.1
    },
@@ -27257,8 +27304,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -27329,9 +27376,9 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progreso típico",
@@ -27340,9 +27387,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -332131,
-    "p50_anio_5": -432790,
-    "emp1_nacional": 3.3
+    "p50_anio_1": -61152,
+    "p50_anio_5": 0,
+    "emp1_nacional": 7.3
    },
    "empleabilidad_nacional": [
     85.3,
@@ -27441,8 +27488,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": true,
     "cohorte_atipica": false,
@@ -27514,19 +27561,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "menos",
-    "progreso_pesos": "típico",
-    "cambia_cuadrante": false
+    "progreso_pesos": "más",
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 143946,
-    "p50_anio_5": 48440,
-    "emp1_nacional": -6.9
+    "p50_anio_1": 414925,
+    "p50_anio_5": 481230,
+    "emp1_nacional": -2.9
    },
    "empleabilidad_nacional": [
     75.1,
@@ -27626,7 +27673,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -27697,20 +27744,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
     "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 21459,
-    "p50_anio_5": 202432,
-    "emp1_nacional": 18.3
+    "p50_anio_1": -24494,
+    "p50_anio_5": 0,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     59.8,
@@ -27810,7 +27857,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -27881,20 +27928,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_pct_1_5": 1,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -33459,
-    "p50_anio_5": -79880,
-    "emp1_nacional": 2.1
+    "p50_anio_1": -79412,
+    "p50_anio_5": -282312,
+    "emp1_nacional": -16.2
    },
    "empleabilidad_nacional": [
     43.6,
@@ -27971,7 +28018,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -28053,7 +28100,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -801079,
+    "p50_anio_1": -718973,
     "p50_anio_5": -1175402,
     "emp1_nacional": -29.4
    },
@@ -28123,7 +28170,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -28195,19 +28242,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pct": "entrada alta · progreso típico",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
+    "progreso_pct": "típico",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 96023,
-    "p50_anio_5": 243830,
-    "emp1_nacional": 11.7
+    "p50_anio_1": 73105,
+    "p50_anio_5": 111237,
+    "emp1_nacional": 9.2
    },
    "empleabilidad_nacional": [
     78.6,
@@ -28307,7 +28354,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -28389,9 +28436,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -248121,
-    "p50_anio_5": -498974,
-    "emp1_nacional": -25.1
+    "p50_anio_1": -271039,
+    "p50_anio_5": -631567,
+    "emp1_nacional": -27.6
    },
    "empleabilidad_nacional": [
     41.8,
@@ -28490,8 +28537,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -28564,7 +28611,7 @@
    "posicion": {
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
@@ -28573,9 +28620,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -168507,
-    "p50_anio_5": -28993,
-    "emp1_nacional": -13.3
+    "p50_anio_1": -2224,
+    "p50_anio_5": 327097,
+    "emp1_nacional": 3.1
    },
    "empleabilidad_nacional": [
     64.7,
@@ -28661,7 +28708,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -28743,9 +28790,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 349421,
-    "p50_anio_5": 1105816,
-    "emp1_nacional": 0.3
+    "p50_anio_1": 366772,
+    "p50_anio_5": 1162367,
+    "emp1_nacional": 4.4
    },
    "empleabilidad_nacional": [
     68.7,
@@ -28831,7 +28878,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -28903,8 +28950,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa más",
@@ -28913,7 +28960,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -267689,
+    "p50_anio_1": -185583,
     "p50_anio_5": -47797,
     "emp1_nacional": -2.9
    },
@@ -29111,7 +29158,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -29193,7 +29240,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 26308,
+    "p50_anio_1": 108414,
     "p50_anio_5": 634655,
     "emp1_nacional": 4.9
    },
@@ -29295,7 +29342,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -29377,7 +29424,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -357529,
+    "p50_anio_1": -275423,
     "p50_anio_5": 11540,
     "emp1_nacional": -3.6
    },
@@ -29584,8 +29631,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -29656,20 +29703,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 417821,
-    "p50_anio_5": 1024934,
-    "emp1_nacional": 10.5
+    "p50_anio_1": -69986,
+    "p50_anio_5": 365260,
+    "emp1_nacional": 1.4
    },
    "empleabilidad_nacional": [
     88.5,
@@ -29769,7 +29816,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -29840,18 +29887,18 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
+    "p50_anio_1": 82106,
     "p50_anio_5": 581043,
     "emp1_nacional": -5.1
    },
@@ -29953,7 +30000,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30035,7 +30082,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -301603,
+    "p50_anio_1": -219497,
     "p50_anio_5": -169343,
     "emp1_nacional": -2.4
    },
@@ -30137,7 +30184,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30209,7 +30256,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 1,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progreso típico",
@@ -30219,7 +30266,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 44117,
+    "p50_anio_1": 126223,
     "p50_anio_5": 230773,
     "emp1_nacional": 2.2
    },
@@ -30321,7 +30368,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30403,7 +30450,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -172422,
+    "p50_anio_1": -90316,
     "p50_anio_5": 277210,
     "emp1_nacional": -0.3
    },
@@ -30505,7 +30552,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30587,7 +30634,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -280148,
+    "p50_anio_1": -198042,
     "p50_anio_5": 567669,
     "emp1_nacional": -6.6
    },
@@ -30689,7 +30736,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30761,7 +30808,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -30771,7 +30818,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -276731,
+    "p50_anio_1": -194625,
     "p50_anio_5": 0,
     "emp1_nacional": -1.0
    },
@@ -30873,7 +30920,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -30955,7 +31002,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -298514,
+    "p50_anio_1": -216408,
     "p50_anio_5": 206572,
     "emp1_nacional": -5.3
    },
@@ -31056,8 +31103,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31128,20 +31175,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 3,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progresa más",
-    "progreso_pct": "típico",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 0,
-    "emp1_nacional": 0.0
+    "p50_anio_1": 270979,
+    "p50_anio_5": 432790,
+    "emp1_nacional": 4.0
    },
    "empleabilidad_nacional": [
     82.0,
@@ -31241,7 +31288,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31313,7 +31360,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -31323,7 +31370,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -725717,
+    "p50_anio_1": -643611,
     "p50_anio_5": -752483,
     "emp1_nacional": -13.1
    },
@@ -31393,7 +31440,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31475,7 +31522,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -323992,
+    "p50_anio_1": -241886,
     "p50_anio_5": -216035,
     "emp1_nacional": 2.7
    },
@@ -31545,7 +31592,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31627,7 +31674,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -778079,
+    "p50_anio_1": -695973,
     "p50_anio_5": -988259,
     "emp1_nacional": -24.2
    },
@@ -31714,8 +31761,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31786,20 +31833,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -166581,
-    "p50_anio_5": -492968,
-    "emp1_nacional": -1.2
+    "p50_anio_1": 104398,
+    "p50_anio_5": -60178,
+    "emp1_nacional": 2.8
    },
    "empleabilidad_nacional": [
     80.8,
@@ -31866,8 +31913,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -31938,20 +31985,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
+    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 130228,
-    "p50_anio_5": 446271,
-    "emp1_nacional": 4.9
+    "p50_anio_1": -357579,
+    "p50_anio_5": -213403,
+    "emp1_nacional": -4.2
    },
    "empleabilidad_nacional": [
     82.9,
@@ -32051,7 +32098,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -32133,7 +32180,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -569913,
+    "p50_anio_1": -487807,
     "p50_anio_5": -687905,
     "emp1_nacional": -9.7
    },
@@ -32234,8 +32281,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -32308,18 +32355,18 @@
    "posicion": {
     "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa más",
     "progreso_pct": "menos",
-    "progreso_pesos": "típico",
-    "cambia_cuadrante": false
+    "progreso_pesos": "más",
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 8030,
-    "p50_anio_5": -87625,
-    "emp1_nacional": 5.3
+    "p50_anio_1": 279009,
+    "p50_anio_5": 345165,
+    "emp1_nacional": 9.3
    },
    "empleabilidad_nacional": [
     87.3,
@@ -32405,7 +32452,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -32487,7 +32534,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 46160,
+    "p50_anio_1": 128266,
     "p50_anio_5": -353685,
     "emp1_nacional": 0.0
    },
@@ -32557,7 +32604,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -32639,7 +32686,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -425801,
+    "p50_anio_1": -343695,
     "p50_anio_5": -311800,
     "emp1_nacional": -4.9
    },
@@ -32709,7 +32756,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -32791,9 +32838,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 156592,
-    "p50_anio_5": 412964,
-    "emp1_nacional": 19.4
+    "p50_anio_1": 173943,
+    "p50_anio_5": 469515,
+    "emp1_nacional": 23.5
    },
    "empleabilidad_nacional": [
     87.8,
@@ -33137,7 +33184,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33212,16 +33259,16 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "típico",
+    "progreso_pct": "menos",
     "progreso_pesos": "más",
-    "cambia_cuadrante": false
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 589512,
-    "p50_anio_5": 871671,
-    "emp1_nacional": 21.3
+    "p50_anio_1": 606863,
+    "p50_anio_5": 928222,
+    "emp1_nacional": 25.4
    },
    "empleabilidad_nacional": [
     89.7,
@@ -33284,7 +33331,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33356,7 +33403,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -33366,7 +33413,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -587080,
+    "p50_anio_1": -504974,
     "p50_anio_5": -534132,
     "emp1_nacional": -14.0
    },
@@ -33436,7 +33483,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33508,7 +33555,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
@@ -33518,7 +33565,7 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -459252,
+    "p50_anio_1": -377146,
     "p50_anio_5": -329785,
     "emp1_nacional": -12.1
    },
@@ -33588,7 +33635,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33670,7 +33717,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 43188,
+    "p50_anio_1": 125294,
     "p50_anio_5": 34361,
     "emp1_nacional": -3.5
    },
@@ -33748,8 +33795,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33820,20 +33867,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progresa menos",
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 487807,
-    "p50_anio_5": 49979,
-    "emp1_nacional": 8.5
+    "p50_anio_1": 0,
+    "p50_anio_5": -609695,
+    "emp1_nacional": -0.6
    },
    "empleabilidad_nacional": [
     86.5,
@@ -33901,7 +33948,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -33983,7 +34030,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -482047,
+    "p50_anio_1": -399941,
     "p50_anio_5": -718098,
     "emp1_nacional": -3.6
    },
@@ -34052,8 +34099,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -34124,8 +34171,8 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 1,
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
@@ -34135,9 +34182,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -362859,
-    "p50_anio_5": -715645,
-    "emp1_nacional": -12.6
+    "p50_anio_1": -91880,
+    "p50_anio_5": -282855,
+    "emp1_nacional": -8.6
    },
    "empleabilidad_nacional": [
     69.4,
@@ -34200,7 +34247,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -34271,20 +34318,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pct": "entrada baja · progresa más",
     "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "típico",
+    "progreso_pct": "más",
     "progreso_pesos": "menos",
-    "cambia_cuadrante": false
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 0,
-    "emp1_nacional": 0.0
+    "p50_anio_1": -553810,
+    "p50_anio_5": -749320,
+    "emp1_nacional": -18.7
    },
    "empleabilidad_nacional": [
     68.4,
@@ -34504,7 +34551,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -34586,7 +34633,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 140075,
+    "p50_anio_1": 222181,
     "p50_anio_5": -280387,
     "emp1_nacional": 1.0
    },
@@ -34821,7 +34868,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -34892,7 +34939,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
@@ -34903,7 +34950,7 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -372905,
+    "p50_anio_1": -290799,
     "p50_anio_5": -385575,
     "emp1_nacional": -5.1
    },
@@ -34982,7 +35029,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -35058,15 +35105,15 @@
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa menos",
     "progreso_pct": "más",
-    "progreso_pesos": "típico",
-    "cambia_cuadrante": false
+    "progreso_pesos": "menos",
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": -188725,
-    "p50_anio_5": -185816,
-    "emp1_nacional": -14.4
+    "p50_anio_1": -211643,
+    "p50_anio_5": -318409,
+    "emp1_nacional": -16.9
    },
    "empleabilidad_nacional": [
     52.5,
@@ -35165,8 +35212,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -35237,20 +35284,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 67640,
-    "emp1_nacional": -6.7
+    "p50_anio_1": -260219,
+    "p50_anio_5": -401292,
+    "emp1_nacional": -43.2
    },
    "empleabilidad_nacional": [
     34.8,
@@ -35336,7 +35383,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -35411,16 +35458,16 @@
     "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progreso típico",
+    "cuadrante_pct": "entrada alta · progresa menos",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "típico",
+    "progreso_pct": "menos",
     "progreso_pesos": "más",
-    "cambia_cuadrante": false
+    "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 1510255,
-    "p50_anio_5": 2539141,
-    "emp1_nacional": 24.0
+    "p50_anio_1": 1487337,
+    "p50_anio_5": 2406548,
+    "emp1_nacional": 21.5
    },
    "empleabilidad_nacional": [
     90.9,
@@ -35704,7 +35751,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -35775,20 +35822,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 45953,
-    "p50_anio_5": 79203,
-    "emp1_nacional": 3.5
+    "p50_anio_1": 0,
+    "p50_anio_5": -123229,
+    "emp1_nacional": -14.8
    },
    "empleabilidad_nacional": [
     45.0,
@@ -35874,7 +35921,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -35956,9 +36003,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -185905,
-    "p50_anio_5": -415848,
-    "emp1_nacional": -21.0
+    "p50_anio_1": -208823,
+    "p50_anio_5": -548441,
+    "emp1_nacional": -23.5
    },
    "empleabilidad_nacional": [
     45.9,
@@ -36058,7 +36105,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -36129,20 +36176,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 3,
-    "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
-    "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 2,
+    "entrada_alta": false,
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 22918,
-    "p50_anio_5": 132593,
-    "emp1_nacional": 2.5
+    "p50_anio_1": 0,
+    "p50_anio_5": 0,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     69.4,
@@ -36242,7 +36289,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -36314,7 +36361,7 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 2,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
@@ -36324,9 +36371,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 41049,
-    "p50_anio_5": 0,
-    "emp1_nacional": -4.2
+    "p50_anio_1": 18131,
+    "p50_anio_5": -132593,
+    "emp1_nacional": -6.7
    },
    "empleabilidad_nacional": [
     62.7,
@@ -38702,8 +38749,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -38774,20 +38821,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "menos",
-    "progreso_pesos": "menos",
+    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -95647,
-    "p50_anio_5": -201001,
-    "emp1_nacional": -8.4
+    "p50_anio_1": 70636,
+    "p50_anio_5": 155089,
+    "emp1_nacional": 8.0
    },
    "empleabilidad_nacional": [
     69.6,
@@ -39047,8 +39094,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -39120,19 +39167,19 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "menos",
-    "progreso_pesos": "menos",
+    "cuadrante_pct": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progreso típico",
+    "progreso_pct": "típico",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -166283,
-    "p50_anio_5": -356090,
-    "emp1_nacional": -16.4
+    "p50_anio_1": 0,
+    "p50_anio_5": 0,
+    "emp1_nacional": 0.0
    },
    "empleabilidad_nacional": [
     61.6,
@@ -39384,7 +39431,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -39457,18 +39504,18 @@
    "posicion": {
     "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 1,
+    "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
-    "progreso_pesos": "menos",
-    "cambia_cuadrante": true
+    "progreso_pesos": "más",
+    "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -475814,
-    "p50_anio_5": -605887,
-    "emp1_nacional": -9.0
+    "p50_anio_1": -38552,
+    "p50_anio_5": 182993,
+    "emp1_nacional": 11.4
    },
    "empleabilidad_nacional": [
     73.0,
@@ -39568,7 +39615,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ciencias naturales, matemáticas y estadística|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -39650,9 +39697,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -17351,
-    "p50_anio_5": -108290,
-    "emp1_nacional": -7.0
+    "p50_anio_1": 0,
+    "p50_anio_5": -51739,
+    "emp1_nacional": -2.9
    },
    "empleabilidad_nacional": [
     61.4,
@@ -39715,7 +39762,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -39797,9 +39844,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 1042682,
-    "p50_anio_5": 768671,
-    "emp1_nacional": 31.6
+    "p50_anio_1": 1019764,
+    "p50_anio_5": 636078,
+    "emp1_nacional": 29.1
    },
    "empleabilidad_nacional": [
     98.5,
@@ -39899,7 +39946,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -39970,20 +40017,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa menos",
-    "cuadrante_pesos": "entrada alta · progreso típico",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 59329,
-    "p50_anio_5": 0,
-    "emp1_nacional": 6.7
+    "p50_anio_1": 13376,
+    "p50_anio_5": -202432,
+    "emp1_nacional": -11.6
    },
    "empleabilidad_nacional": [
     48.2,
@@ -40060,7 +40107,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Administración de Empresas y Derecho|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -40131,20 +40178,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 1,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -396938,
-    "p50_anio_5": -887933,
-    "emp1_nacional": -23.0
+    "p50_anio_1": 40324,
+    "p50_anio_5": -99053,
+    "emp1_nacional": -2.6
    },
    "empleabilidad_nacional": [
     59.0,
@@ -40211,8 +40258,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -40283,20 +40330,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progresa menos",
-    "progreso_pct": "típico",
-    "progreso_pesos": "menos",
+    "cuartil_p50_anio_1": 4,
+    "cuartil_p50_pct_1_5": 4,
+    "cuartil_p50_delta_1_5": 4,
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pesos": "entrada alta · progresa más",
+    "progreso_pct": "más",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -125958,
-    "p50_anio_5": -210376,
-    "emp1_nacional": -15.7
+    "p50_anio_1": 40325,
+    "p50_anio_5": 145714,
+    "emp1_nacional": 0.7
    },
    "empleabilidad_nacional": [
     62.3,
@@ -41054,7 +41101,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -41338,8 +41385,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "segmento",
-    "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
+    "referencia": "celda",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -41410,7 +41457,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 1,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": false,
@@ -41421,9 +41468,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -21280,
-    "p50_anio_5": 477751,
-    "emp1_nacional": -11.9
+    "p50_anio_1": -217022,
+    "p50_anio_5": 109435,
+    "emp1_nacional": -17.4
    },
    "empleabilidad_nacional": [
     51.4,
@@ -41491,7 +41538,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -41563,13 +41610,13 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 1,
-    "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_pct_1_5": 1,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progreso típico",
-    "cuadrante_pesos": "entrada baja · progreso típico",
-    "progreso_pct": "típico",
-    "progreso_pesos": "típico",
+    "cuadrante_pct": "entrada baja · progresa menos",
+    "cuadrante_pesos": "entrada baja · progresa menos",
+    "progreso_pct": "menos",
+    "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -41822,7 +41869,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -41894,8 +41941,8 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 3,
-    "cuartil_p50_pct_1_5": 4,
-    "cuartil_p50_delta_1_5": 4,
+    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
     "cuadrante_pct": "entrada alta · progresa más",
     "cuadrante_pesos": "entrada alta · progresa más",
@@ -42296,7 +42343,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -42600,7 +42647,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -42671,7 +42718,7 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 3,
+    "cuartil_p50_anio_1": 4,
     "cuartil_p50_pct_1_5": 4,
     "cuartil_p50_delta_1_5": 4,
     "entrada_alta": true,
@@ -42890,7 +42937,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -43042,7 +43089,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -43114,12 +43161,12 @@
    },
    "posicion": {
     "cuartil_p50_anio_1": 4,
-    "cuartil_p50_pct_1_5": 3,
+    "cuartil_p50_pct_1_5": 2,
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": true,
-    "cuadrante_pct": "entrada alta · progresa más",
+    "cuadrante_pct": "entrada alta · progreso típico",
     "cuadrante_pesos": "entrada alta · progresa más",
-    "progreso_pct": "más",
+    "progreso_pct": "típico",
     "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
@@ -43194,7 +43241,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Ingeniería, Industria y Construcción|Universidad|Carreras Técnicas",
+    "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -43267,12 +43314,12 @@
    "posicion": {
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 3,
-    "cuartil_p50_delta_1_5": 3,
+    "cuartil_p50_delta_1_5": 2,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progresa más",
+    "cuadrante_pesos": "entrada baja · progreso típico",
     "progreso_pct": "más",
-    "progreso_pesos": "más",
+    "progreso_pesos": "típico",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
@@ -43636,7 +43683,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": true,
@@ -43718,9 +43765,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 0,
-    "p50_anio_5": 137666,
-    "emp1_nacional": 4.5
+    "p50_anio_1": -22918,
+    "p50_anio_5": 5073,
+    "emp1_nacional": 2.0
    },
    "empleabilidad_nacional": [
     71.4,
@@ -43820,7 +43867,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -43893,7 +43940,7 @@
    "posicion": {
     "cuartil_p50_anio_1": 2,
     "cuartil_p50_pct_1_5": 2,
-    "cuartil_p50_delta_1_5": 2,
+    "cuartil_p50_delta_1_5": 1,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa menos",
     "cuadrante_pesos": "entrada baja · progresa menos",
@@ -43902,9 +43949,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -185607,
-    "p50_anio_5": -299360,
-    "emp1_nacional": -17.3
+    "p50_anio_1": -208525,
+    "p50_anio_5": -431953,
+    "emp1_nacional": -19.8
    },
    "empleabilidad_nacional": [
     49.6,
@@ -44004,7 +44051,7 @@
    "marcas": {
     "representativo": true,
     "referencia": "celda",
-    "grupo_referencia": "celda|Salud y Bienestar|Universidad|Carreras Profesionales",
+    "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -44075,20 +44122,20 @@
     ]
    },
    "posicion": {
-    "cuartil_p50_anio_1": 2,
+    "cuartil_p50_anio_1": 3,
     "cuartil_p50_pct_1_5": 1,
     "cuartil_p50_delta_1_5": 1,
-    "entrada_alta": false,
-    "cuadrante_pct": "entrada baja · progresa menos",
-    "cuadrante_pesos": "entrada baja · progresa menos",
+    "entrada_alta": true,
+    "cuadrante_pct": "entrada alta · progresa menos",
+    "cuadrante_pesos": "entrada alta · progresa menos",
     "progreso_pct": "menos",
     "progreso_pesos": "menos",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -66224,
-    "p50_anio_5": -382240,
-    "emp1_nacional": 0.0
+    "p50_anio_1": 21263,
+    "p50_anio_5": -19641,
+    "emp1_nacional": 5.3
    },
    "empleabilidad_nacional": [
     66.9,
@@ -44187,8 +44234,8 @@
    },
    "marcas": {
     "representativo": true,
-    "referencia": "celda",
-    "grupo_referencia": "celda|Artes y Humanidades|Universidad|Carreras Profesionales",
+    "referencia": "segmento",
+    "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
     "cohorte_atipica": false,
@@ -44270,9 +44317,9 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -63862,
-    "p50_anio_5": -234610,
-    "emp1_nacional": 0.0
+    "p50_anio_1": -324081,
+    "p50_anio_5": -703542,
+    "emp1_nacional": -36.5
    },
    "empleabilidad_nacional": [
     41.5,
