@@ -57,6 +57,12 @@
    "origen": "A3: celdas dominadas (aprobada por el usuario)"
   },
   {
+   "nombre": "max_t_continuidad",
+   "valor": 2.6,
+   "descripcion": "Hallazgo (d): |t| máximo de la correlación continuidad–empleabilidad dentro de cada carrera para afirmar que no la explica (0,05 / 5 pruebas, dos colas)",
+   "origen": "Hallazgo (d), 18-11-26"
+  },
+  {
    "nombre": "min_cambio_edad_pp",
    "valor": 15,
    "descripcion": "Aumento (puntos) de titulados de 30+ entre la cohorte de los percentiles del 5° año y la del 1er año para marcar la comparación 1°→5° como sesgada por composición",
@@ -103,6 +109,18 @@
    "valor": 20,
    "descripcion": "Pares con dispersión de tramo necesarios para resumir el tramo por segmento",
    "origen": "T5, decisión 1"
+  },
+  {
+   "nombre": "min_prog_ejemplo_cont",
+   "valor": 5,
+   "descripcion": "Hallazgo (d): programas mínimos de una carrera técnica para servir de ejemplo de continuidad",
+   "origen": "Hallazgo (d), 18-11-26"
+  },
+  {
+   "nombre": "min_prog_par_cont",
+   "valor": 5,
+   "descripcion": "Hallazgo (d): programas mínimos de un par para entrar en la prueba dentro de cada carrera",
+   "origen": "Hallazgo (d), 18-11-26"
   },
   {
    "nombre": "min_share_area",
@@ -435,7 +453,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 64
+   "OK": 67
   },
   "controles": [
    {
@@ -570,6 +588,27 @@
     "estado": "OK",
     "umbral": "un objeto JSON por par",
     "detalle": "252 objetos en v_par_json; 252 pares"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "continuidad_ejemplos",
+    "estado": "OK",
+    "umbral": "alto > promedio técnicas > bajo; técnicas comparables con >= min_prog_ejemplo_cont programas",
+    "detalle": "alto: TECNICO EN ADMINISTRACION DE EMPRESAS (IP) 37.4 de cada 100; bajo: TECNICO EN ENFERMERIA (IP) 6.8 de cada 100"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "continuidad_pesos",
+    "estado": "OK",
+    "umbral": "peso_total por nivel = tit_publicadas_1 de analytics.segmento; ventana de continuidad = la del 1er año",
+    "detalle": "Carreras Profesionales: 4.2 de cada 100 (1256 programas); Carreras Técnicas: 21.7 de cada 100 (434 programas)"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "continuidad_sin_relacion",
+    "estado": "OK",
+    "umbral": "|t| dentro de cada carrera < max_t_continuidad en todos los segmentos",
+    "detalle": "CFT Carreras Técnicas: r 0.13, t 1.3 (n 103); IP Carreras Profesionales: r 0.11, t 0.8 (n 60); IP Carreras Técnicas: r -0.22, t -2.1 (n 91); Universidad Carreras Profesionales: r 0.01, t 0.2 (n 1017); Universidad Carreras Técnicas: r -0.33, t -2.2 (n 40)"
    },
    {
     "control": "analytics_hallazgos",
@@ -3892,6 +3931,38 @@
     "q3": 74.2,
     "iqr": 21.7,
     "nacional": 66.9
+   }
+  },
+  "continuidad": {
+   "niveles": [
+    {
+     "nivel": "Carreras Técnicas",
+     "pct": 21.7,
+     "de_cada_100": 22,
+     "n_programas": 434
+    },
+    {
+     "nivel": "Carreras Profesionales",
+     "pct": 4.2,
+     "de_cada_100": 4,
+     "n_programas": 1256
+    }
+   ],
+   "ejemplos": {
+    "alto": {
+     "clave": "TECNICO EN ADMINISTRACION DE EMPRESAS",
+     "tipo": "IP",
+     "nombre": "Técnico en Administración de Empresas",
+     "pct": 37.4,
+     "de_cada_100": 37
+    },
+    "bajo": {
+     "clave": "TECNICO EN ENFERMERIA",
+     "tipo": "IP",
+     "nombre": "Técnico en Enfermería",
+     "pct": 6.8,
+     "de_cada_100": 7
+    }
    }
   }
  },
@@ -72165,6 +72236,10 @@
   ],
   "cohortes_atipicas": 15,
   "pares_composicion_edad": 27,
+  "continuidad_sin_relacion": {
+   "max_t": 2.2,
+   "umbral_t": 2.6
+  },
   "brecha_nacional_instituciones": {
    "emp_pp": 1.7,
    "tramo_pct": 6.2,

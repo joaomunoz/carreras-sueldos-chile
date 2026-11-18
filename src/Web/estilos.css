@@ -364,7 +364,8 @@ p { margin: 0; }
 }
 
 /* ---------------------------------------------------------------- hallazgos */
-/* Grilla de hallazgos (N2): tres columnas que se comparan de un vistazo; una sola en celular.
+/* Grilla de hallazgos (N2): 2 × 2 desde el hallazgo (d) (con 4 columnas cada tarjeta quedaba de
+   ≈ 16 rem y la de Alimentos muy alta); una sola columna en celular.
    Sin cajas: cada tarjeta es una columna de papel con su regla superior, como la cabecera.
    Cada tarjeta se lee cifra → resultado → ejemplo → enlace. Sin «Parece que» tachado ni cifras
    en monoespaciada dentro del texto: ambas cosas entrecortaban la lectura (revisión design-is). */
@@ -374,8 +375,8 @@ p { margin: 0; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2.25rem 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.25rem 2.5rem;
 }
 /* subgrid: las cuatro filas de cada tarjeta (cifra, resultado, ejemplo, enlace) se alinean entre
    columnas, así los ejemplos y los enlaces quedan a la misma altura. */

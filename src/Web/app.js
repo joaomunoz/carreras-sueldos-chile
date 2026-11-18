@@ -119,7 +119,7 @@
       var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
       parrafoEn(tesis, ["Compara a quienes se titularon hace un año con quienes se titularon hace cinco (MiFuturo y SIES). " +
         "En la técnica típica, los segundos ganan ", dt[0], dt[1] + "; en la profesional, ",
-        dp[0], dp[1] + ". Hay tres resultados que conviene conocer antes de comparar carreras, y "]);
+        dp[0], dp[1] + ". Hay cuatro resultados que conviene conocer antes de comparar carreras, y "]);
       // Termina en una acción: la Parte II, donde el lector busca su carrera.
       var ir = el("a", null, "puedes revisar tu carrera");
       ir.href = "#parte-carrera";
@@ -158,7 +158,7 @@
     }
   }
 
-  // Cierre de la Parte I: los tres resultados traducidos a cómo comparar. Sin cifras: ya están en
+  // Cierre de la Parte I: los resultados traducidos a cómo comparar (el (d) no da consejo: no hay relación que aconsejar). Sin cifras: ya están en
   // las tarjetas, y repetirlas una tercera vez solo alargaba la lectura (revisión design-is).
   function pintarCierre() {
     var ul = document.getElementById("llevar");
@@ -281,6 +281,26 @@
         nodos: [parrafo(["En " + ec.nombre + ", la mitad de las " + TIPO_PLURAL[ec.tipo] + " está entre ",
           pct(ec.q1), " y ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."])],
         accion: "Ver " + ec.nombre + " →", par: pc
+      }));
+    }
+
+    // (d) continuidad por nivel, ponderada por titulados, con dos técnicas de ejemplo (regla en SQL).
+    // Sin afirmar relación con la empleabilidad: dentro de cada carrera no la hay (control
+    // continuidad_sin_relacion); eso va en «Qué no dice».
+    var d = h.continuidad || {};
+    var nivD = {};
+    (d.niveles || []).forEach(function (x) { nivD[x.nivel] = x; });
+    var ej = d.ejemplos || {}, pAlto = ej.alto && parPorClave[ej.alto.clave + "|" + ej.alto.tipo];
+    var dt = nivD["Carreras Técnicas"], dp = nivD["Carreras Profesionales"];
+    if (dt && dp && pAlto && ej.bajo) {
+      ul.appendChild(hallazgo({
+        cifra: fmtEntero.format(dt.de_cada_100) + " de cada 100",
+        resultado: "titulados de carreras técnicas siguen estudiando al año siguiente; en las profesionales, " +
+          fmtEntero.format(dp.de_cada_100) + " de cada 100.",
+        nodos: [parrafo(["Depende de la carrera: en " + ej.alto.nombre + " (" + ej.alto.tipo + ") son ",
+          fmtEntero.format(ej.alto.de_cada_100), " de cada 100; en " + ej.bajo.nombre + " (" + ej.bajo.tipo + "), ",
+          fmtEntero.format(ej.bajo.de_cada_100), "."])],
+        accion: "Ver " + ej.alto.nombre + " →", par: pAlto
       }));
     }
   }
@@ -2283,6 +2303,11 @@
     }
     item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),
       " de las titulaciones recientes; entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);
+    var cs = q.continuidad_sin_relacion;
+    if (cs) {
+      item("La continuidad de estudios no explica la empleabilidad.", ["Entre instituciones de una misma carrera, las que tienen más titulados que siguen estudiando no tienen una empleabilidad distinta (la relación más fuerte da t = ",
+        fmtUno.format(cs.max_t), ", bajo el umbral de " + fmtUno.format(cs.umbral_t) + " para 5 pruebas). En bruto parece haber relación, pero viene de comparar carreras distintas."]);
+    }
     item("No tiene márgenes de error.", ["Son registros administrativos completos, no una muestra: las diferencias chicas entre carreras pueden ser reales y aun así poco relevantes."]);
   }
 

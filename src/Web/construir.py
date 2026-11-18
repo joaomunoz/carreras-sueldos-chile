@@ -133,6 +133,17 @@ def _hallazgos_readme(h: dict) -> str:
                      f"cuarto más alto y al cuarto más bajo. En {e['nombre']} ({e['tipo']}, {e['n_inst']} instituciones) "
                      f"la mitad central va de {_num(e['q1'], 1)} % a {_num(e['q3'], 1)} %, con una cifra nacional de "
                      f"{_num(e['nacional'], 1)} %.")
+    # (d) continuidad de estudios por nivel, ponderada por titulados (06_hallazgos.sql).
+    d = h.get("continuidad") or {}
+    niv = {x["nivel"]: x for x in d.get("niveles") or []}
+    ej = d.get("ejemplos") or {}
+    if "Carreras Técnicas" in niv and "Carreras Profesionales" in niv and "alto" in ej and "bajo" in ej:
+        t, p, a, b_ = niv["Carreras Técnicas"], niv["Carreras Profesionales"], ej["alto"], ej["bajo"]
+        items.append(f"**Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue "
+                     f"estudiando el {_num(t['pct'], 1)} % de los titulados de carreras técnicas y el {_num(p['pct'], 1)} % "
+                     f"de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: "
+                     f"{_num(a['pct'], 1)} % en {a['nombre']} ({a['tipo']}) y {_num(b_['pct'], 1)} % en {b_['nombre']} "
+                     f"({b_['tipo']}). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.")
     return "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
 
 

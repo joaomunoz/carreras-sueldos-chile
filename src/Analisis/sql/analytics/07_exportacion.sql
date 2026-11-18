@@ -267,7 +267,18 @@ SELECT json_build_object(
                          'n_inst', h.n_inst, 'q1', round(h.q1, 1), 'q3', round(h.q3, 1),
                          'iqr', round(h.iqr, 1), 'nacional', h.nacional) END)
                  FROM analytics.hallazgo_dispersion h
-                 LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion))),
+                 LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)),
+        -- (d) continuidad de estudios por nivel, ponderada por titulados, y sus dos ejemplos.
+        'continuidad', json_build_object(
+            'niveles', (SELECT json_agg(json_build_object('nivel', nivel_carrera, 'pct', round(pct_pond, 1),
+                                                          'de_cada_100', de_cada_100, 'n_programas', n_programas)
+                                        ORDER BY nivel_carrera DESC)
+                        FROM analytics.hallazgo_continuidad),
+            'ejemplos', (SELECT json_object_agg(e.lado, json_build_object('clave', e.clave_carrera_generica,
+                                    'tipo', e.tipo_institucion, 'nombre', p.nombre, 'pct', round(e.pct_pond, 1),
+                                    'de_cada_100', e.de_cada_100))
+                         FROM analytics.hallazgo_continuidad_ejemplo e
+                         JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)))),
     -- A quiénes mira el análisis (06b_universo.sql): serie anual del SIES y embudo de las dos ventanas.
     'universo', json_build_object(
         -- Una fila por año con el total ya sumado: la web no suma cifras que publica.
@@ -323,6 +334,10 @@ SELECT json_build_object(
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
         'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto WHERE composicion_edad),
+        -- Vigilada por el control continuidad_sin_relacion: si fallara, el build no llega aquí.
+        'continuidad_sin_relacion', json_build_object(
+            'max_t', (SELECT round(max(abs(t)), 1) FROM analytics.continuidad_relacion),
+            'umbral_t', analytics.param('max_t_continuidad')),
         'brecha_nacional_instituciones', (SELECT json_build_object(
                                               -- Un decimal desde el valor exacto: redondear a 2 y luego a 1 daba 1,65 → «1,6» en
                                               -- Python y «1,7» en la web (el exacto es 1,652…).
