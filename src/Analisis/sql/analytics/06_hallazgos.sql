@@ -82,17 +82,24 @@ CREATE TABLE analytics.hallazgo_pct_pesos (
     p50_pct_1_5             numeric,
     p50_delta_1_5           numeric,
     ref_delta_q50           numeric,            -- mediana PONDERADA del aumento en pesos de su grupo
+    -- La tarjeta da los dos sueldos y el % del grupo: sin ellos, «sube 66,5 %» no decía desde dónde
+    -- ni contra qué (revisión design-is del 18-11-26). Solo el aumento del grupo, no su 1er y 5° año:
+    -- esas medianas se calculan por separado y su resta no da ref_delta_q50.
+    p50_anio_5              integer,
+    ref_pct_q50             numeric,            -- mediana PONDERADA del crecimiento en % de su grupo
+    grupo_id                text,               -- para nombrar el grupo (área, tipo y nivel)
     FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par
 );
 
 INSERT INTO analytics.hallazgo_pct_pesos
 WITH cand AS (
     SELECT po.clave_carrera_generica, po.tipo_institucion, e.percentil_50_anio_1,
-           b.p50_pct_1_5, b.p50_delta_1_5, r.q50
+           b.p50_pct_1_5, b.p50_delta_1_5, r.q50, e.percentil_50_anio_5, rp.q50 AS q50_pct, po.grupo_id
     FROM analytics.posicion po
     JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
     JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
     JOIN analytics.referencia r ON r.grupo_id = po.grupo_id AND r.metrica = 'p50_delta_1_5'
+    JOIN analytics.referencia rp ON rp.grupo_id = po.grupo_id AND rp.metrica = 'p50_pct_1_5'
     WHERE po.cambia_cuadrante AND po.progreso_pct = 'más'
       AND b.p50_delta_1_5 <= (1 - analytics.param('margen_ejemplo_pesos')) * r.q50
 )
@@ -101,7 +108,7 @@ SELECT (SELECT count(*) FROM analytics.posicion po JOIN analytics.par p USING (c
        (SELECT count(*) FROM analytics.posicion po JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
         WHERE po.cambia_cuadrante AND p.nivel_carrera = 'Carreras Profesionales'),
        ej.clave_carrera_generica, ej.tipo_institucion, ej.percentil_50_anio_1,
-       ej.p50_pct_1_5, ej.p50_delta_1_5, ej.q50
+       ej.p50_pct_1_5, ej.p50_delta_1_5, ej.q50, ej.percentil_50_anio_5, ej.q50_pct, ej.grupo_id
 FROM (VALUES (1)) AS uno (x)
 LEFT JOIN LATERAL (SELECT * FROM cand
                    ORDER BY p50_pct_1_5 DESC, tipo_institucion, clave_carrera_generica
@@ -193,6 +200,22 @@ FROM (SELECT count(*) AS n
       WHERE NOT (po.cambia_cuadrante AND po.progreso_pct = 'más'
                  AND h.p50_delta_1_5 <= (1 - analytics.param('margen_ejemplo_pesos')) * r.q50)
          OR h.ref_delta_q50 <> r.q50) x
+UNION ALL
+-- 2b. (b) las cifras nuevas de la tarjeta cuadran: 1er año + aumento = 5° año (desde modelo, no desde
+--     brecha) y el % citado del grupo es el de SU grupo, el mismo de su referencia en pesos.
+SELECT 'analytics_hallazgos', 'ejemplo_pct_pesos_cifras', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'p50_anio_1 + p50_delta_1_5 = p50_anio_5 y ref_pct_q50 = referencia p50_pct_1_5 del grupo',
+       (SELECT coalesce(format('%s + %s = %s; grupo %s: %s %%', p50_anio_1, round(p50_delta_1_5), p50_anio_5,
+                               grupo_id, round(ref_pct_q50, 1)), 'sin ejemplo')
+        FROM analytics.hallazgo_pct_pesos)
+FROM (SELECT count(*) AS n
+      FROM analytics.hallazgo_pct_pesos h
+      JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+      JOIN analytics.posicion po USING (clave_carrera_generica, tipo_institucion)
+      JOIN analytics.referencia rp ON rp.grupo_id = po.grupo_id AND rp.metrica = 'p50_pct_1_5'
+      WHERE round(h.p50_anio_1 + h.p50_delta_1_5) <> e.percentil_50_anio_5
+         OR h.p50_anio_5 <> e.percentil_50_anio_5
+         OR h.ref_pct_q50 <> rp.q50 OR h.grupo_id <> po.grupo_id) x
 UNION ALL
 -- 3. (c) el ejemplo cumple el criterio que enuncia la frase: lo citado (q1–q3) ES el IQR del umbral.
 SELECT 'analytics_hallazgos', 'ejemplo_dispersion', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,

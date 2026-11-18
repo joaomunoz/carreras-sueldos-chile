@@ -435,7 +435,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 58
+   "OK": 64
   },
   "controles": [
    {
@@ -600,6 +600,13 @@
     "detalle": "INGENIERIA EN ALIMENTOS (Universidad): 66.5 % y 592205 pesos frente a 805627"
    },
    {
+    "control": "analytics_hallazgos",
+    "objeto": "ejemplo_pct_pesos_cifras",
+    "estado": "OK",
+    "umbral": "p50_anio_1 + p50_delta_1_5 = p50_anio_5 y ref_pct_q50 = referencia p50_pct_1_5 del grupo",
+    "detalle": "891077 + 592205 = 1483282; grupo celda|Ingeniería, Industria y Construcción|Universidad|Carreras Profesionales: 48.5 %"
+   },
+   {
     "control": "analytics_par",
     "objeto": "celda_valida",
     "estado": "OK",
@@ -689,6 +696,41 @@
     "estado": "OK",
     "umbral": "ninguna carrera con > max_peso_dominante del peso de su segmento",
     "detalle": "0 segmentos dominados; máximo 26.1 % del peso"
+   },
+   {
+    "control": "analytics_universo",
+    "objeto": "embudo_anidado",
+    "estado": "OK",
+    "umbral": "tit_sies >= tit_con_estadistica >= tit_comparables en las 4 filas",
+    "detalle": "1er Carreras Profesionales: 434938 ≥ 422046 ≥ 407234; 1er Carreras Técnicas: 252293 ≥ 238680 ≥ 231114; 5to Carreras Profesionales: 364283 ≥ 351112 ≥ 340521; 5to Carreras Técnicas: 250963 ≥ 235985 ≥ 228851"
+   },
+   {
+    "control": "analytics_universo",
+    "objeto": "embudo_comparables",
+    "estado": "OK",
+    "umbral": "suma de n_comparables del embudo (una ventana) = pares representativos",
+    "detalle": "embudo 210, par 210, niveles 2"
+   },
+   {
+    "control": "analytics_universo",
+    "objeto": "serie_completa",
+    "estado": "OK",
+    "umbral": "por año, suma de niveles = suma de modelo.titulacion",
+    "detalle": "años con diferencia: 0"
+   },
+   {
+    "control": "analytics_universo",
+    "objeto": "serie_vs_embudo",
+    "estado": "OK",
+    "umbral": "barras de la ventana − Derecho del año calendario + Derecho corrido = paso 1 del embudo",
+    "detalle": "diferencias por ventana y nivel distintas de 0: 0"
+   },
+   {
+    "control": "analytics_universo",
+    "objeto": "sexo_cuadra",
+    "estado": "OK",
+    "umbral": "mujeres + hombres + otro = tit_sies en las 4 filas",
+    "detalle": "1er Carreras Profesionales: 55 % mujeres, 1 otro; 1er Carreras Técnicas: 60 % mujeres, 0 otro; 5to Carreras Profesionales: 55 % mujeres, 0 otro; 5to Carreras Técnicas: 59 % mujeres, 0 otro"
    },
    {
     "control": "cohorte_en_sies",
@@ -3826,7 +3868,16 @@
     "p50_anio_1": 891077,
     "p50_pct_1_5": 66.5,
     "p50_delta_1_5": 592205,
-    "ref_delta_q50": 805627
+    "ref_delta_q50": 805627,
+    "p50_anio_5": 1483282,
+    "ref_pct_q50": 48.5,
+    "grupo": {
+     "tipo_grupo": "celda",
+     "area": "Ingeniería, Industria y Construcción",
+     "tipo": "Universidad",
+     "nivel": "Carreras Profesionales",
+     "n_pares": 25
+    }
    }
   },
   "dispersion": {
@@ -3843,6 +3894,151 @@
     "nacional": 66.9
    }
   }
+ },
+ "universo": {
+  "anual": [
+   {
+    "anio": 2017,
+    "ventana": "5to",
+    "tecnicas": 83575,
+    "profesionales": 122979,
+    "total": 206554
+   },
+   {
+    "anio": 2018,
+    "ventana": "5to",
+    "tecnicas": 85669,
+    "profesionales": 123353,
+    "total": 209022
+   },
+   {
+    "anio": 2019,
+    "ventana": "5to",
+    "tecnicas": 81719,
+    "profesionales": 119423,
+    "total": 201142
+   },
+   {
+    "anio": 2020,
+    "ventana": null,
+    "tecnicas": 64483,
+    "profesionales": 96408,
+    "total": 160891
+   },
+   {
+    "anio": 2021,
+    "ventana": "1er",
+    "tecnicas": 86617,
+    "profesionales": 142076,
+    "total": 228693
+   },
+   {
+    "anio": 2022,
+    "ventana": "1er",
+    "tecnicas": 81536,
+    "profesionales": 144406,
+    "total": 225942
+   },
+   {
+    "anio": 2023,
+    "ventana": "1er",
+    "tecnicas": 84140,
+    "profesionales": 147063,
+    "total": 231203
+   },
+   {
+    "anio": 2024,
+    "ventana": null,
+    "tecnicas": 82600,
+    "profesionales": 143741,
+    "total": 226341
+   },
+   {
+    "anio": 2025,
+    "ventana": null,
+    "tecnicas": 87067,
+    "profesionales": 151649,
+    "total": 238716
+   }
+  ],
+  "totales": [
+   {
+    "ventana": "1er",
+    "sies": 687231,
+    "comparables": 638348,
+    "pct_comparables": 92.9
+   },
+   {
+    "ventana": "5to",
+    "sies": 615246,
+    "comparables": 569372,
+    "pct_comparables": 92.5
+   }
+  ],
+  "ventanas": {
+   "1er": [
+    2021,
+    2023
+   ],
+   "5to": [
+    2017,
+    2019
+   ]
+  },
+  "embudo": [
+   {
+    "ventana": "1er",
+    "nivel": "Carreras Técnicas",
+    "sies": 252293,
+    "con_estadistica": 238680,
+    "comparables": 231114,
+    "n_comparables": 85,
+    "mujeres": 151853,
+    "hombres": 100440,
+    "otro": 0,
+    "pct_mujeres": 60,
+    "pct_hombres": 40
+   },
+   {
+    "ventana": "1er",
+    "nivel": "Carreras Profesionales",
+    "sies": 434938,
+    "con_estadistica": 422046,
+    "comparables": 407234,
+    "n_comparables": 125,
+    "mujeres": 240386,
+    "hombres": 194551,
+    "otro": 1,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
+   },
+   {
+    "ventana": "5to",
+    "nivel": "Carreras Técnicas",
+    "sies": 250963,
+    "con_estadistica": 235985,
+    "comparables": 228851,
+    "n_comparables": 85,
+    "mujeres": 147806,
+    "hombres": 103157,
+    "otro": 0,
+    "pct_mujeres": 59,
+    "pct_hombres": 41
+   },
+   {
+    "ventana": "5to",
+    "nivel": "Carreras Profesionales",
+    "sies": 364283,
+    "con_estadistica": 351112,
+    "comparables": 340521,
+    "n_comparables": 125,
+    "mujeres": 200733,
+    "hombres": 163550,
+    "otro": 0,
+    "pct_mujeres": 55,
+    "pct_hombres": 45
+   }
+  ]
  },
  "pares": [
   {

@@ -152,9 +152,10 @@ p { margin: 0; }
   margin-bottom: 2.5rem;
 }
 
+/* 20ch: el título dice el tema completo (más largo que el anterior) y así queda en 3 líneas. */
 .portada__titulo {
   font-size: var(--t-4);
-  max-width: 14ch;
+  max-width: 20ch;
 }
 
 .portada__bajada {
@@ -279,7 +280,7 @@ p { margin: 0; }
   margin-top: 1.75rem;
   padding-top: 0.6rem;
   border-top: 2px solid var(--tinta);
-  max-width: 64ch;
+  max-width: 80ch; /* mismo ancho que los límites: ninguna de las dos líneas deja una palabra sola */
   font-size: var(--t-0);
   color: var(--tinta-suave);
 }
@@ -289,9 +290,10 @@ p { margin: 0; }
   font-weight: 600;
   color: var(--tinta);
 }
-.portada__limites { margin-top: 0.4rem; max-width: 64ch; font-size: var(--t-0); color: var(--tinta-suave); }
+.portada__limites { margin-top: 0.4rem; max-width: 80ch; font-size: var(--t-0); color: var(--tinta-suave); }
 .portada__limites a { color: var(--tinta); white-space: nowrap; }
 .portada__bajada strong { color: var(--tinta); font-weight: 600; white-space: nowrap; }
+.portada__bajada a { color: var(--tinta); }
 
 /* ---------------------------------------------------------------- bloques */
 .bloque { padding-block: 3rem 1rem; }
@@ -329,8 +331,10 @@ p { margin: 0; }
   white-space: nowrap;
 }
 .tabla tbody tr:last-child td { border-bottom: 0; }
+/* Columnas de cifras centradas, encabezado y valor (pedido del usuario). La primera columna
+   (nombres) sigue a la izquierda: centrados, los nombres largos se leen mal. */
 .tabla .num {
-  text-align: right;
+  text-align: center;
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -360,10 +364,10 @@ p { margin: 0; }
 }
 
 /* ---------------------------------------------------------------- hallazgos */
-/* "Parece que… / Pero…": cada hallazgo corrige una lectura ingenua. La columna izquierda
-   va apagada (es la lectura que se descarta); la derecha lleva el peso. */
 /* Grilla de hallazgos (N2): tres columnas que se comparan de un vistazo; una sola en celular.
-   Sin cajas: cada tarjeta es una columna de papel con su regla superior, como la cabecera. */
+   Sin cajas: cada tarjeta es una columna de papel con su regla superior, como la cabecera.
+   Cada tarjeta se lee cifra → resultado → ejemplo → enlace. Sin «Parece que» tachado ni cifras
+   en monoespaciada dentro del texto: ambas cosas entrecortaban la lectura (revisión design-is). */
 .bloque--hallazgos { padding-top: 1.75rem; }
 .hallazgos {
   list-style: none;
@@ -373,75 +377,88 @@ p { margin: 0; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2.25rem 2rem;
 }
-/* subgrid: las seis filas de cada tarjeta (rótulo, lectura, rótulo, cifra, texto, enlace) se
-   alinean entre columnas, así los «Pero» y las cifras quedan a la misma altura. */
+/* subgrid: las cuatro filas de cada tarjeta (cifra, resultado, ejemplo, enlace) se alinean entre
+   columnas, así los ejemplos y los enlaces quedan a la misma altura. */
 .hallazgo {
   display: grid;
-  grid-row: span 6;
+  grid-row: span 4;
   grid-template-rows: subgrid;
   row-gap: 0;
   align-content: start;
   border-top: 2px solid var(--tinta);
   padding-top: 0.75rem;
 }
-.hallazgo__rotulo {
+.hallazgo__cifra {
   font-family: var(--f-titulo);
-  font-size: var(--t-0);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--tinta-suave);
-  margin-bottom: 0.3rem;
-}
-/* El tachado es la seña de la grilla: va en tinta (no en --timbre, reservado a advertencias). */
-.hallazgo__parece {
-  font-family: var(--f-titulo);
-  font-size: var(--t-2);
-  line-height: 1.25;
-  color: var(--tinta-suave);
-  margin-bottom: 1.1rem;
-}
-.hallazgo__parece s {
-  text-decoration-line: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: var(--tinta);
-}
-.hallazgo__cifra { margin-bottom: 0.75rem; }
-.hallazgo__cifra strong {
-  display: block;
-  font-family: var(--f-cifra);
-  font-variant-numeric: tabular-nums;
   font-weight: 600;
-  font-size: var(--t-3);
-  line-height: 1.1;
+  font-size: var(--t-4-cifra, 2.75rem);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
-.hallazgo__cifra span { display: block; margin-top: 0.2rem; font-weight: 600; line-height: 1.35; }
-.hallazgo__pero { color: var(--tinta-suave); }
-.hallazgo__pero p + p { margin-top: 0.5rem; }
-.hallazgo__pero strong {
-  font-family: var(--f-cifra);
-  font-variant-numeric: tabular-nums;
+.hallazgo__resultado {
   font-weight: 600;
+  line-height: 1.35;
+  margin: 0.4rem 0 0.75rem;
+}
+.hallazgo__ejemplo { color: var(--tinta-suave); line-height: 1.5; }
+.hallazgo__ejemplo strong {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--tinta);
   white-space: nowrap;
 }
-/* align-self end: los enlaces quedan alineados al pie de las tres columnas. */
-.hallazgo__accion { padding-top: 1rem; align-self: end; justify-self: start; }
+/* align-self end: los enlaces quedan alineados al pie de las tres columnas. Margen y no padding:
+   .enlace-ficha (los botones «Ver …») anula el padding y los dejaba pegados al texto en celular. */
+.hallazgo__accion { margin-top: 1rem; align-self: end; justify-self: start; }
 a.hallazgo__accion { color: var(--tinta); }
 @media (max-width: 60rem) {
   .hallazgos { grid-template-columns: 1fr; }
   .hallazgo { grid-row: auto; grid-template-rows: none; }
-  .hallazgo__parece, .hallazgo__pero, .hallazgo__cifra { max-width: 60ch; }
+  .hallazgo__resultado, .hallazgo__ejemplo { max-width: 60ch; }
 }
 
-/* Mini franja del hallazgo (c): rango, mitad central y cifra nacional de una carrera. */
-.franja { margin-top: 0.9rem; max-width: 30rem; }
-.franja svg { display: block; width: 100%; height: 2.25rem; overflow: visible; }
-.franja__rango { stroke: var(--tinta-suave); stroke-width: 1.5; }
-.franja__caja { fill: var(--anio1); }
-.franja__mediana { stroke: var(--papel); stroke-width: 2; }
-.franja__nacional { fill: var(--tinta); }
-.franja__texto { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); }
-.franja__leyenda { font-size: var(--t-0); color: var(--tinta-suave); margin-top: 0.25rem; max-width: 30rem; }
+/* ---------------------------------------------------------------- a quiénes mira el análisis */
+/* Columnas por año: verde oscuro = titulados medidos al 5° año, verde claro = al 1er año (los mismos
+   --anio5 / --anio1 de todo el sitio), gris = fuera del análisis (el gris de contexto de la ficha).
+   Las técnicas llevan trama de líneas del color del papel: se distinguen sin un color nuevo. */
+.u-col--5 { fill: var(--anio5); }
+.u-col--1 { fill: var(--anio1); }
+.u-col--fuera { fill: var(--tinta-suave); fill-opacity: 0.55; }
+.u-trama-linea { stroke: var(--papel); stroke-width: 2; }
+.u-nota-anio { fill: var(--tinta-suave); font: italic 0.6875rem var(--f-texto); }
+.muestra-col { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 2px; background: var(--anio1); }
+.muestra-col--trama {
+  background: repeating-linear-gradient(45deg, var(--anio1) 0 2.5px, var(--papel) 2.5px 4px);
+}
+.muestra-col--fuera { background: var(--tinta-suave); opacity: 0.55; }
+#universo-embudo strong { font-variant-numeric: tabular-nums; }
+/* Resumen por nivel y sexo: un grupo por columna (1er año a la izquierda, como en la lectura de la
+   bajada), apilados en celular. Cifras en la tipografía de títulos, como la cifra de las tarjetas. */
+.universo-resumen { margin-top: 1.75rem; }
+.universo-resumen__grupos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2.5rem;
+  margin-top: 0.75rem;
+}
+.u-grupo { border-top: 1px solid var(--regla); padding-top: 0.6rem; }
+.u-grupo__titulo { font-size: var(--t-0); color: var(--tinta-suave); }
+.u-grupo__titulo strong { color: var(--tinta); font-weight: 600; }
+.u-grupo__total {
+  font-family: var(--f-titulo);
+  font-weight: 600;
+  font-size: var(--t-3);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1.1;
+  margin: 0.2rem 0 0.5rem;
+}
+.u-fila { margin-top: 0.6rem; }
+.u-fila__cabeza { display: flex; justify-content: space-between; gap: 1rem; font-weight: 600; }
+.u-fila__n { font-variant-numeric: tabular-nums; }
+@media (max-width: 40rem) {
+  .universo-resumen__grupos { grid-template-columns: 1fr; }
+}
 
 /* ---------------------------------------------------------------- filtros */
 .filtros {
@@ -455,8 +472,8 @@ a.hallazgo__accion { color: var(--tinta); }
 .filtro__rotulo { color: var(--tinta-suave); }
 .filtro--busqueda { flex: 1 1 14rem; }
 /* Buscador de la ficha: lista propia pegada bajo el campo, con los colores del proyecto. Una
-   fila por carrera y sus tipos como opciones; el texto que coincide va en negrita (no en color:
-   el ocre es solo para «esta carrera»). */
+   fila por ficha («Carrera — Tipo»); el texto que coincide va en negrita (no en color: el ocre
+   es solo para «esta carrera»). */
 .buscador { position: relative; }
 .sugerencias {
   position: absolute;
@@ -478,25 +495,22 @@ a.hallazgo__accion { color: var(--tinta); }
 @media (max-width: 40rem) {
   .ficha__buscar .buscador { flex-basis: 100%; }
 }
-.sugerencia { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--regla); }
-.sugerencia:last-of-type { border-bottom: 0; }
+.sugerencia {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--regla);
+  cursor: pointer;
+}
+.sugerencia:hover { background: var(--papel); }
+.sugerencia[aria-selected="true"] { background: var(--tinta); }
+.sugerencia[aria-selected="true"] .sugerencia__nombre,
+.sugerencia[aria-selected="true"] .sugerencia__meta { color: var(--papel); }
 .sugerencia__nombre { color: var(--tinta); line-height: 1.3; }
 .sugerencia__nombre b { font-weight: 700; }
-.sugerencia__tipos { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.35rem; }
-.sugerencia__nivel { font-size: var(--t-0); color: var(--tinta-suave); margin-right: 0.15rem; }
-.sugerencia__tipo {
-  font-size: 0.8125rem;
-  color: var(--tinta);
-  border: 1px solid var(--regla);
-  border-radius: 999px;
-  padding: 0.2rem 0.65rem;
-  cursor: pointer;
-  white-space: nowrap;
-  background: var(--papel);
-}
-.sugerencia__tipo:hover { border-color: var(--tinta-suave); }
-.sugerencia__tipo[aria-selected="true"] { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
-.sugerencia__tipo small { color: inherit; opacity: 0.75; margin-left: 0.25rem; }
+.sugerencia__meta { flex: 0 0 auto; font-size: var(--t-0); color: var(--tinta-suave); white-space: nowrap; }
 .sugerencias__pie { position: sticky; bottom: 0; padding: 0.4rem 0.75rem; font-size: 0.75rem; color: var(--tinta-suave); background: var(--papel-alto); border-top: 1px solid var(--regla); }
 .sugerencias__vacio { padding: 0.75rem; color: var(--tinta-suave); }
 .filtro input[type="search"], .filtro select {
@@ -712,6 +726,11 @@ a.hallazgo__accion { color: var(--tinta); }
 .muestra-franja { width: 1.25rem; height: 0.6rem; background: var(--tinta-suave); opacity: 0.16; display: inline-block; }
 /* Dos conmutadores (nivel y medida) en una fila; en celular bajan uno bajo el otro. */
 .controles-grafico { display: flex; flex-wrap: wrap; gap: 0 0.75rem; }
+/* Título de cada gráfico: más chico que el título de acción de la sección, pero en tinta plena para
+   que se lea como encabezado del trazado y no como nota. */
+.grafico__titulo { margin: 0 0 0.5rem; font: 600 0.875rem/1.35 var(--f-texto); color: var(--tinta); }
+.ficha__bloque .grafico__titulo { margin-top: 1rem; }
+.franja .grafico__titulo { margin-bottom: 0.25rem; font-size: 0.8125rem; }
 .grafico__eje-y { margin: 0 0 0.25rem; font-size: 0.75rem; color: var(--tinta-suave); }
 .punto--anillo { background: transparent; box-shadow: inset 0 0 0 2px var(--timbre); width: 0.75rem; height: 0.75rem; }
 .c-punto { transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -878,6 +897,23 @@ a.hallazgo__accion { color: var(--tinta); }
 .tabla--ficha tr.fila--actual td { background: var(--papel); font-weight: 600; }
 .tabla--ficha tr.fila--actual td:first-child { box-shadow: inset 3px 0 0 var(--acento); }
 .marca-actual { color: var(--acento); }
+
+/* Instituciones de la ficha: el punto bajo el puntero (o el de la fila bajo el puntero) toma el
+   único acento, con anillo de tinta para distinguirlo también sin color. */
+.ficha__grafico--inst { position: relative; }
+.ficha__grafico--inst:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; }
+.g-inst { transition: r 0.12s; }
+.g-inst--activa { fill: var(--acento); fill-opacity: 1; stroke: var(--tinta); stroke-width: 1.5; r: 6.5px; }
+@media (prefers-reduced-motion: reduce) { .g-inst { transition: none; } }
+.tabla--ficha tr.fila--marcada td { background: var(--papel); }
+.tabla--ficha tr.fila--marcada td:first-child { box-shadow: inset 3px 0 0 var(--acento); font-weight: 600; }
+/* Encabezados largos ("Dif. con la institución típica (78,8 %)") en dos líneas, no a lo ancho. */
+.tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 6.5rem; }
+.tabla--inst thead th:first-child { min-width: 0; }
+/* Nombres en 1-2 líneas: sin mínimo, con 7 columnas quedaban de 3-4 líneas por fila. */
+.ficha .tabla--inst td.td--titulo { min-width: 13rem; }
+@media (max-width: 40rem) { .ficha .tabla--inst td.td--titulo { min-width: 8.5rem; } }
+.td__nota { display: block; font-family: var(--f-texto); font-size: 0.75rem; color: var(--tinta-suave); white-space: normal; }
 
 /* ---------------------------------------------------------------- bloques finales (W6) */
 .pie a { color: var(--tinta); text-decoration-color: var(--regla); text-underline-offset: 3px; }

@@ -8,8 +8,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Del primer al quinto año · carreras en Chile</title>
-<meta name="description" content="Cuánto progresa el ingreso de cada carrera en Chile entre el primer y el quinto año de titulación, y dónde el promedio engaña. Datos de MiFuturo y SIES.">
+<title>Cuánto gana cada carrera al primer y al quinto año de titularse · Chile</title>
+<meta name="description" content="Sueldos de las carreras de universidades, IP y CFT en Chile al primer y al quinto año de titularse, y dónde el promedio engaña. Datos de MiFuturo y SIES.">
 <style>
 /*@FUENTE@*/
 /*@ESTILOS@*/
@@ -22,7 +22,7 @@
      portada y se perdía) y el tema se cambia desde cualquier punto. -->
 <div class="barra">
   <div class="envoltorio barra__dentro">
-    <a class="barra__marca" href="#inicio">Del 1er al 5° año</a>
+    <a class="barra__marca" href="#inicio">Sueldos por carrera</a>
     <nav class="barra__nav" aria-label="Partes de la página">
       <ul class="barra__partes">
         <li><a href="#parte-hallazgos" data-parte="parte-hallazgos"><span class="barra__largo">Lo que encontré</span><span class="barra__corto" aria-hidden="true">Hallazgos</span></a></li>
@@ -36,13 +36,15 @@
 
 <header class="portada" id="inicio">
   <div class="envoltorio">
-    <p class="portada__eyebrow">Ingresos de titulados · Chile</p>
-    <h1 class="portada__titulo">Del primer al quinto año</h1>
-    <!-- N2: portada mínima. Tesis, línea técnica y límites se redactan en app.js desde datos.json
-         (cifras calculadas en SQL); el detalle de cada hallazgo vive en la grilla de la Parte I. -->
+    <!-- Cada pieza cumple una función: antetítulo = universo, título = tema, bajada = qué compara,
+         la tesis y qué puede hacer el lector; la línea técnica da respaldo y la de límites, honestidad.
+         Antetítulo, bajada y línea técnica se redactan en app.js con cifras del SQL. "Evolución" o
+         "trayectoria" quedan fuera del título: se comparan dos cohortes, no las mismas personas. -->
+    <p class="portada__eyebrow" id="portada-eyebrow">Universidades, IP y CFT · Chile</p>
+    <h1 class="portada__titulo">Cuánto gana cada carrera al primer y al quinto año de titularse</h1>
     <p class="portada__bajada" id="portada-tesis"></p>
     <p class="portada__tecnica" id="portada-tecnica"></p>
-    <p class="portada__limites">Compara a quienes se titularon hace uno y hace cinco años, no a las mismas personas en el tiempo, y no explica causas. <a href="#t-limites">Qué no dice →</a></p>
+    <p class="portada__limites">No sigue a las mismas personas en el tiempo ni explica causas. <a href="#t-limites">Qué no dice →</a></p>
   </div>
 </header>
 
@@ -51,15 +53,58 @@
     <header class="parte__cabecera">
       <p class="parte__numero">Parte I</p>
       <h2 id="t-parte-hallazgos" class="parte__titulo">Lo que encontré</h2>
-      <p class="parte__bajada">Tres lecturas que parecen obvias sobre los sueldos de los titulados, y lo que los datos dicen en cada caso.</p>
+      <p class="parte__bajada">Tres resultados sobre sueldos y empleabilidad, cada uno con la carrera que mejor lo muestra. El <strong>sueldo típico</strong> es el del medio: la mitad de los titulados gana más y la otra mitad, menos.</p>
     </header>
 
-    <!-- La grilla abre la Parte I: las tres ideas se leen de un vistazo y cada tarjeta lleva al
-         gráfico o a la ficha que la respalda. El título queda solo para lectores de pantalla (la
-         cabecera de la parte ya lo dice) y también da el rótulo de «Volver» desde la ficha. -->
+    <!-- La grilla abre la Parte I: cada tarjeta enuncia un resultado (cifra con su unidad), da un
+         ejemplo verificable y lleva al gráfico o a la ficha que lo respalda. Sin «Parece que…»: el
+         contraste con una creencia supuesta restaba objetividad (revisión design-is del 18-11-26).
+         El título queda solo para lectores de pantalla y da el rótulo de «Volver» desde la ficha. -->
     <section class="bloque bloque--hallazgos" aria-labelledby="t-hallazgos">
-      <h3 id="t-hallazgos" class="bloque__titulo solo-lectores">Tres lecturas que los datos corrigen</h3>
+      <h3 id="t-hallazgos" class="bloque__titulo solo-lectores">Tres resultados del análisis</h3>
       <ul class="hallazgos" id="hallazgos"></ul>
+    </section>
+
+    <!-- A quiénes mira el análisis: va después de las tarjetas (los resultados se leen primero) y
+         antes de los gráficos de sueldos, como base de todos ellos. Cifras de 06b_universo.sql. -->
+    <section class="bloque universo" aria-labelledby="t-universo">
+      <h3 id="t-universo" class="bloque__titulo">A quiénes mira este análisis</h3>
+      <figure class="grafico" id="universo">
+        <p class="grafico__titulo" id="universo-titulo"></p>
+        <div class="grafico__lienzo" id="universo-lienzo"></div>
+        <div class="tooltip" id="universo-tooltip" hidden></div>
+        <figcaption class="grafico__leyenda">
+          <span class="leyenda-item"><span class="muestra-col" aria-hidden="true"></span>Profesionales</span>
+          <span class="leyenda-item"><span class="muestra-col muestra-col--trama" aria-hidden="true"></span>Técnicas</span>
+          <span class="leyenda-item"><span class="muestra-col muestra-col--fuera" aria-hidden="true"></span>Años fuera del análisis</span>
+        </figcaption>
+      </figure>
+      <!-- Total por nivel y sexo de cada grupo, bajo el gráfico y no dentro: el gráfico ya usa el
+           color para el grupo y la trama para el nivel; un tercer código no se leería. -->
+      <div class="universo-resumen">
+        <p class="grafico__titulo" id="universo-resumen-titulo"></p>
+        <div class="universo-resumen__grupos" id="universo-resumen"></div>
+      </div>
+      <p class="bloque__texto" id="universo-embudo"></p>
+      <p class="nota" id="universo-nota"></p>
+      <details class="leyenda">
+        <summary>Ver las cifras por año</summary>
+        <div class="tabla-desplazable">
+          <table class="tabla tabla--tarjetas" id="universo-tabla">
+            <caption class="solo-lectores">Titulaciones de pregrado por año y nivel, SIES</caption>
+            <thead>
+              <tr>
+                <th scope="col">Año</th>
+                <th scope="col" class="num">Técnicas</th>
+                <th scope="col" class="num">Profesionales</th>
+                <th scope="col" class="num">Total</th>
+                <th scope="col">En el análisis</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
     </section>
 
     <section class="bloque peine" aria-labelledby="t-peine">
@@ -72,6 +117,8 @@
       </div>
       <p class="bloque__texto" id="peine-bajada" aria-live="polite"></p>
       <figure class="grafico" id="peine">
+        <!-- Título del gráfico (qué se mide, unidad y universo) pegado al trazado; el h3 lleva la conclusión. -->
+        <p class="grafico__titulo" id="peine-titulo"></p>
         <div class="grafico__lienzo" id="peine-lienzo"></div>
         <div class="tooltip" id="peine-tooltip" hidden></div>
         <figcaption class="grafico__leyenda">
@@ -102,6 +149,7 @@
         </div>
       </div>
       <figure class="grafico" id="cuadrantes">
+        <p class="grafico__titulo" id="c-titulo"></p>
         <!-- Título del eje Y fuera del SVG y sin rotar: así se lee igual en un celular. -->
         <p class="grafico__eje-y" id="c-titulo-y"></p>
         <div class="grafico__lienzo" id="cuadrantes-lienzo"></div>
@@ -133,12 +181,12 @@
         </div>
       </details>
     </section>
-    <!-- N5: cierre de la Parte I. Cumple lo que promete la portada («tres lecturas fallan»):
-         qué hacer con eso al comparar, y lleva a la Parte II. Texto armado en app.js (pintarCierre). -->
+    <!-- N5: cierre de la Parte I. Los tres resultados convertidos en consejos para comparar, sin
+         repetir sus cifras (ya están en las tarjetas), y lleva a la Parte II (pintarCierre). -->
     <section class="bloque cierre" aria-labelledby="t-llevar">
       <h3 id="t-llevar" class="bloque__titulo">Al comparar carreras</h3>
       <ul class="cierre__lista" id="llevar"></ul>
-      <p class="cierre__accion"><a href="#parte-carrera">Busca tu carrera y tu institución →</a></p>
+      <p class="cierre__accion"><a href="#parte-carrera">Busca tu carrera →</a></p>
     </section>
   </section>
 

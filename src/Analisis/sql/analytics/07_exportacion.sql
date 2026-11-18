@@ -246,7 +246,14 @@ SELECT json_build_object(
                      'ejemplo', CASE WHEN h.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(
                          'clave', h.clave_carrera_generica, 'tipo', h.tipo_institucion, 'nombre', p.nombre,
                          'p50_anio_1', h.p50_anio_1, 'p50_pct_1_5', round(h.p50_pct_1_5, 1),
-                         'p50_delta_1_5', round(h.p50_delta_1_5), 'ref_delta_q50', round(h.ref_delta_q50)) END)
+                         'p50_delta_1_5', round(h.p50_delta_1_5), 'ref_delta_q50', round(h.ref_delta_q50),
+                         'p50_anio_5', h.p50_anio_5, 'ref_pct_q50', round(h.ref_pct_q50, 1),
+                         -- El grupo con el que se compara, para nombrarlo en la tarjeta.
+                         'grupo', (SELECT json_build_object('tipo_grupo', r.tipo_grupo, 'area', r.area_cine13,
+                                                            'tipo', r.tipo_institucion, 'nivel', r.nivel_carrera,
+                                                            'n_pares', r.n_pares)
+                                   FROM analytics.referencia r
+                                   WHERE r.grupo_id = h.grupo_id AND r.metrica = 'p50_pct_1_5')) END)
                  FROM analytics.hallazgo_pct_pesos h
                  LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)),
         'dispersion', (SELECT json_build_object(
@@ -257,6 +264,34 @@ SELECT json_build_object(
                          'iqr', round(h.iqr, 1), 'nacional', h.nacional) END)
                  FROM analytics.hallazgo_dispersion h
                  LEFT JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion))),
+    -- A quiénes mira el análisis (06b_universo.sql): serie anual del SIES y embudo de las dos ventanas.
+    'universo', json_build_object(
+        -- Una fila por año con el total ya sumado: la web no suma cifras que publica.
+        'anual', (SELECT json_agg(json_build_object('anio', anio, 'ventana', ventana,
+                                                    'tecnicas', tec, 'profesionales', pro, 'total', tec + pro)
+                                  ORDER BY anio)
+                  FROM (SELECT anio, max(ventana) AS ventana,
+                               coalesce(sum(titulaciones) FILTER (WHERE nivel_carrera = 'Carreras Técnicas'), 0) AS tec,
+                               coalesce(sum(titulaciones) FILTER (WHERE nivel_carrera = 'Carreras Profesionales'), 0) AS pro
+                        FROM analytics.universo_anual GROUP BY anio) a),
+        -- Embudo por ventana, ambos niveles sumados (son conteos de títulos, no medianas de sueldo).
+        'totales', (SELECT json_agg(json_build_object('ventana', ventana, 'sies', sies, 'comparables', comp,
+                                                      'pct_comparables', round(100.0 * comp / sies, 1))
+                                    ORDER BY ventana)
+                    FROM (SELECT ventana, sum(tit_sies) AS sies, sum(tit_comparables) AS comp
+                          FROM analytics.universo_embudo GROUP BY ventana) t),
+        'ventanas', (SELECT json_object_agg(ventana, json_build_array(desde, hasta))
+                     FROM (SELECT CASE indicador WHEN 'ingreso_medio_1er_anio' THEN '1er' ELSE '5to' END AS ventana,
+                                  cohorte_desde AS desde, cohorte_hasta AS hasta
+                           FROM modelo.cohorte
+                           WHERE indicador IN ('ingreso_medio_1er_anio', 'ingreso_medio_5to_anio')) c),
+        'embudo', (SELECT json_agg(json_build_object('ventana', ventana, 'nivel', nivel_carrera,
+                                                     'sies', tit_sies, 'con_estadistica', tit_con_estadistica,
+                                                     'comparables', tit_comparables, 'n_comparables', n_comparables,
+                                                     'mujeres', mujeres, 'hombres', hombres, 'otro', otro,
+                                                     'pct_mujeres', pct_mujeres, 'pct_hombres', pct_hombres)
+                                   ORDER BY ventana, nivel_carrera DESC)
+                   FROM analytics.universo_embudo)),
     'pares', (SELECT json_agg(datos ORDER BY tipo_institucion, clave_carrera_generica) FROM analytics.v_par_json),
     'programas', (SELECT json_agg(json_build_object(
                       'institucion', i.nombre, 'codigo_institucion', pv.codigo_institucion,
