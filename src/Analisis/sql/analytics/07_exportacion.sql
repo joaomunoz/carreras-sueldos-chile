@@ -95,6 +95,7 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
     -- Posición en su área de MiFuturo (todas las carreras del nivel, todos los tipos) y, si no tiene
     -- celda propia, por qué (03_referencia.sql, analytics.area_ficha).
     'area_ficha', (SELECT json_build_object('n_area', af.n_area, 'mas_que', af.mas_que_p50_1, 'motivo', af.motivo,
+                                            'mas_que_pct', af.mas_que_pct, 'mas_que_pesos', af.mas_que_pesos,
                                             'n_celda', af.n_celda, 'domina', af.domina_clave,
                                             'domina_pct', round(af.domina_pct))
                    FROM analytics.area_ficha af
@@ -153,7 +154,8 @@ LEFT JOIN analytics.dispersion_empleabilidad de1
 
 -- --------------------------------------------------------------------------
 -- Ficha de ejemplo de la Parte II: la carrera representativa con más titulados (peso SIES de
--- ambas ventanas) que NO es la mediana de su grupo en ninguna de las tres cifras de la ficha.
+-- ambas ventanas), con típica propia en su área (celda válida), que NO es la mediana de su grupo
+-- en ninguna de las tres cifras de la ficha.
 -- Si fuera la mediana (Ingeniería Comercial pesa el 40 % de su grupo), la primera ficha que se
 -- ve diría "es la típica" tres veces y no mostraría ninguna comparación.
 -- Desempate por clave y tipo: determinista.
@@ -163,6 +165,9 @@ SELECT p.clave_carrera_generica, p.tipo_institucion, p.peso
 FROM analytics.par p
 JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
 WHERE p.representativo
+  -- Con típica propia en su área (celda válida): la primera ficha que se ve debe mostrar la
+  -- comparación completa; sin ella la ficha solo da la posición en el área (18-11-26).
+  AND p.celda_valida
   AND d.p50_anio_1 <> 0 AND d.p50_anio_5 <> 0 AND d.emp1_nacional <> 0
 ORDER BY p.peso DESC, p.clave_carrera_generica, p.tipo_institucion
 LIMIT 1;
@@ -360,9 +365,10 @@ FROM (SELECT (SELECT count(*) FROM analytics.v_par_json) AS n_json,
              (SELECT count(*) FROM analytics.par) AS n_par) x
 UNION ALL
 -- La ficha de ejemplo cumple su regla, recalculada sin ORDER BY/LIMIT y sin v_dif_grupo:
--- representativa, distinta de la mediana en las tres cifras y sin otra así con más titulados.
+-- representativa con típica propia en su área (celda válida), distinta de la mediana en las tres
+-- cifras y sin otra así con más titulados.
 SELECT 'analytics_exportacion', 'ficha_ejemplo', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
-       n, 'ficha de ejemplo = representativa de mayor peso que no es la mediana de su grupo en ninguna de las 3 cifras',
+       n, 'ficha de ejemplo = representativa con celda válida, de mayor peso, que no es la mediana de su grupo en ninguna de las 3 cifras',
        format('%s problemas; ejemplo: %s (%s), peso %s', n,
               (SELECT clave_carrera_generica FROM analytics.v_ficha_ejemplo),
               (SELECT tipo_institucion FROM analytics.v_ficha_ejemplo),
@@ -381,7 +387,7 @@ FROM (
     ),
     candidatas AS (
         SELECT p.* FROM analytics.par p JOIN es_mediana e USING (clave_carrera_generica, tipo_institucion)
-        WHERE p.representativo AND NOT e.alguna
+        WHERE p.representativo AND p.celda_valida AND NOT e.alguna
     )
     SELECT (SELECT count(*) FROM analytics.v_ficha_ejemplo f
             WHERE NOT EXISTS (SELECT 1 FROM candidatas c

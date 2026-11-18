@@ -359,6 +359,10 @@ CREATE TABLE analytics.area_ficha (
     tipo_institucion        text     NOT NULL,
     n_area                  integer  NOT NULL,   -- comparables del área × nivel (todos los tipos), incluida ella
     mas_que_p50_1           integer  NOT NULL,   -- de las otras, cuántas tienen un P50 del 1er año MENOR
+    -- Ídem con el crecimiento del P50 del 1er al 5° año, en % y en pesos: el veredicto de las fichas
+    -- sin típica propia dice cuánto crece frente a su área (antes, frente a todas las áreas).
+    mas_que_pct             integer  NOT NULL,
+    mas_que_pesos           integer  NOT NULL,
     motivo                  text     NOT NULL CHECK (motivo IN ('celda', 'pocas', 'dominada')),
     n_celda                 integer  NOT NULL,   -- comparables de su área × tipo × nivel
     domina_clave            text,                -- la de más peso en la celda (si motivo = 'dominada')
@@ -366,15 +370,18 @@ CREATE TABLE analytics.area_ficha (
     PRIMARY KEY (clave_carrera_generica, tipo_institucion),
     FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES analytics.par,
     CHECK (mas_que_p50_1 BETWEEN 0 AND n_area - 1),
+    CHECK (mas_que_pct BETWEEN 0 AND n_area - 1),
+    CHECK (mas_que_pesos BETWEEN 0 AND n_area - 1),
     CHECK ((motivo = 'dominada') = (domina_clave IS NOT NULL))
 );
 
 INSERT INTO analytics.area_ficha
 WITH r AS (
     SELECT p.clave_carrera_generica, p.tipo_institucion, p.area, p.nivel_carrera, p.peso, p.celda_valida,
-           e.percentil_50_anio_1 AS p50
+           e.percentil_50_anio_1 AS p50, br.p50_pct_1_5 AS pct, br.p50_delta_1_5 AS delta
     FROM analytics.par p
     JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+    JOIN analytics.brecha br USING (clave_carrera_generica, tipo_institucion)
     WHERE p.representativo
 ), celda AS (
     SELECT area, tipo_institucion, nivel_carrera, count(*) AS n,
@@ -385,6 +392,8 @@ WITH r AS (
 SELECT a.clave_carrera_generica, a.tipo_institucion,
        (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera),
        (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera AND b.p50 < a.p50),
+       (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera AND b.pct < a.pct),
+       (SELECT count(*) FROM r b WHERE b.area = a.area AND b.nivel_carrera = a.nivel_carrera AND b.delta < a.delta),
        CASE WHEN a.celda_valida THEN 'celda'
             WHEN c.n < analytics.param('min_pares_celda') THEN 'pocas'
             ELSE 'dominada' END,
@@ -398,17 +407,22 @@ INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
 -- 9. La posición por otro camino: rank() sobre el área × nivel (rank − 1 = cuántas tienen un P50
 --    estrictamente menor, también con empates) y n_area = tamaño de la partición.
 SELECT 'analytics_referencia', 'area_ficha_posicion', CASE WHEN n = 0 AND faltan = 0 THEN 'OK' ELSE 'FALLA' END,
-       n + faltan, 'mas_que_p50_1 = rank() − 1 y n_area = count() en área (MiFuturo) × nivel; una fila por representativo',
+       n + faltan, 'mas_que_* = rank() − 1 (P50 1er año, crecimiento en % y en pesos) y n_area = count() en área (MiFuturo) × nivel; una fila por representativo',
        format('%s filas distintas; %s representativos sin fila', n, faltan)
 FROM (SELECT (SELECT count(*) FROM analytics.area_ficha f
               JOIN (SELECT p.clave_carrera_generica, p.tipo_institucion,
-                           rank() OVER w - 1 AS mas_que, count(*) OVER (PARTITION BY p.area, p.nivel_carrera) AS n
+                           rank() OVER w - 1 AS mas_que, count(*) OVER (PARTITION BY p.area, p.nivel_carrera) AS n,
+                           rank() OVER wp - 1 AS mas_pct, rank() OVER wd - 1 AS mas_delta
                     FROM analytics.par p
                     JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+                    JOIN analytics.brecha br USING (clave_carrera_generica, tipo_institucion)
                     WHERE p.representativo
-                    WINDOW w AS (PARTITION BY p.area, p.nivel_carrera ORDER BY e.percentil_50_anio_1)) k
+                    WINDOW w AS (PARTITION BY p.area, p.nivel_carrera ORDER BY e.percentil_50_anio_1),
+                           wp AS (PARTITION BY p.area, p.nivel_carrera ORDER BY br.p50_pct_1_5),
+                           wd AS (PARTITION BY p.area, p.nivel_carrera ORDER BY br.p50_delta_1_5)) k
                 USING (clave_carrera_generica, tipo_institucion)
-              WHERE f.mas_que_p50_1 <> k.mas_que OR f.n_area <> k.n) AS n,
+              WHERE f.mas_que_p50_1 <> k.mas_que OR f.n_area <> k.n
+                 OR f.mas_que_pct <> k.mas_pct OR f.mas_que_pesos <> k.mas_delta) AS n,
              (SELECT count(*) FROM analytics.par p WHERE p.representativo
                 AND NOT EXISTS (SELECT 1 FROM analytics.area_ficha f
                                 WHERE f.clave_carrera_generica = p.clave_carrera_generica

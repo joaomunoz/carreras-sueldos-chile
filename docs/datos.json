@@ -9,7 +9,7 @@
   "comparacion": "transversal: el 1er y el 5° año son cohortes distintas, no las mismas personas",
   "rotulo_empleabilidad": "% con ingreso >= sueldo mínimo entre titulados con registro en el SII",
   "ficha_ejemplo": {
-   "clave": "INGENIERIA COMERCIAL",
+   "clave": "ENFERMERIA",
    "tipo": "Universidad"
   }
  },
@@ -572,8 +572,8 @@
     "control": "analytics_exportacion",
     "objeto": "ficha_ejemplo",
     "estado": "OK",
-    "umbral": "ficha de ejemplo = representativa de mayor peso que no es la mediana de su grupo en ninguna de las 3 cifras",
-    "detalle": "0 problemas; ejemplo: INGENIERIA COMERCIAL (Universidad), peso 47316"
+    "umbral": "ficha de ejemplo = representativa con celda válida, de mayor peso, que no es la mediana de su grupo en ninguna de las 3 cifras",
+    "detalle": "0 problemas; ejemplo: ENFERMERIA (Universidad), peso 38760"
    },
    {
     "control": "analytics_exportacion",
@@ -698,7 +698,7 @@
     "control": "analytics_referencia",
     "objeto": "area_ficha_posicion",
     "estado": "OK",
-    "umbral": "mas_que_p50_1 = rank() − 1 y n_area = count() en área (MiFuturo) × nivel; una fila por representativo",
+    "umbral": "mas_que_* = rank() − 1 (P50 1er año, crecimiento en % y en pesos) y n_area = count() en área (MiFuturo) × nivel; una fila por representativo",
     "detalle": "0 filas distintas; 0 representativos sin fila"
    },
    {
@@ -2940,6 +2940,8 @@
     "n_area": 4,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -3109,6 +3111,8 @@
     "n_area": 8,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -3301,6 +3305,8 @@
     "n_area": 8,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -3470,6 +3476,8 @@
     "n_area": 12,
     "mas_que": 0,
     "motivo": "dominada",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 7,
     "n_celda": 5,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 73
@@ -3773,6 +3781,8 @@
     "n_area": 18,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 14,
+    "mas_que_pesos": 14,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -3965,6 +3975,8 @@
     "n_area": 18,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 0,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -4259,6 +4271,8 @@
     "n_area": 4,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -4419,6 +4433,8 @@
     "n_area": 18,
     "mas_que": 13,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 11,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -4579,6 +4595,8 @@
     "n_area": 31,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 29,
+    "mas_que_pesos": 28,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -4757,6 +4775,8 @@
     "n_area": 31,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 8,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -4926,6 +4946,8 @@
     "n_area": 18,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 16,
+    "mas_que_pesos": 15,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -5104,6 +5126,8 @@
     "n_area": 8,
     "mas_que": 6,
     "motivo": "pocas",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 6,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -5264,6 +5288,8 @@
     "n_area": 31,
     "mas_que": 16,
     "motivo": "celda",
+    "mas_que_pct": 14,
+    "mas_que_pesos": 15,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -5581,6 +5607,8 @@
     "n_area": 12,
     "mas_que": 5,
     "motivo": "dominada",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 10,
     "n_celda": 5,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 73
@@ -5773,6 +5801,8 @@
     "n_area": 12,
     "mas_que": 10,
     "motivo": "dominada",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 5,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 73
@@ -5933,6 +5963,8 @@
     "n_area": 18,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 6,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -6245,6 +6277,8 @@
     "n_area": 31,
     "mas_que": 17,
     "motivo": "celda",
+    "mas_que_pct": 25,
+    "mas_que_pesos": 24,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -6414,6 +6448,8 @@
     "n_area": 12,
     "mas_que": 3,
     "motivo": "dominada",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 11,
     "n_celda": 5,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 73
@@ -6574,6 +6610,8 @@
     "n_area": 18,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 15,
+    "mas_que_pesos": 17,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -6743,6 +6781,8 @@
     "n_area": 31,
     "mas_que": 18,
     "motivo": "celda",
+    "mas_que_pct": 17,
+    "mas_que_pesos": 17,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -6903,6 +6943,8 @@
     "n_area": 31,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 11,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -7063,6 +7105,8 @@
     "n_area": 31,
     "mas_que": 27,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 5,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -7362,6 +7406,8 @@
     "n_area": 31,
     "mas_que": 26,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 16,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -7522,6 +7568,8 @@
     "n_area": 12,
     "mas_que": 9,
     "motivo": "dominada",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 5,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 73
@@ -7682,6 +7730,8 @@
     "n_area": 31,
     "mas_que": 22,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -8398,6 +8448,8 @@
     "n_area": 4,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -8567,6 +8619,8 @@
     "n_area": 31,
     "mas_que": 13,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 9,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -8727,6 +8781,8 @@
     "n_area": 31,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 18,
+    "mas_que_pesos": 19,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -8887,6 +8943,8 @@
     "n_area": 18,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 4,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -9056,6 +9114,8 @@
     "n_area": 2,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -9355,6 +9415,8 @@
     "n_area": 4,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -9515,6 +9577,8 @@
     "n_area": 14,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 9,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -9670,6 +9734,8 @@
     "n_area": 15,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 3,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -9862,6 +9928,8 @@
     "n_area": 15,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -10161,6 +10229,8 @@
     "n_area": 15,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 1,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -10321,6 +10391,8 @@
     "n_area": 14,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -10481,6 +10553,8 @@
     "n_area": 14,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 5,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -10641,6 +10715,8 @@
     "n_area": 40,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 10,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -10801,6 +10877,8 @@
     "n_area": 15,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 8,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -11132,6 +11210,8 @@
     "n_area": 14,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 4,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -11292,6 +11372,8 @@
     "n_area": 14,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 2,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -11743,6 +11825,8 @@
     "n_area": 4,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -11903,6 +11987,8 @@
     "n_area": 40,
     "mas_que": 29,
     "motivo": "celda",
+    "mas_que_pct": 38,
+    "mas_que_pesos": 38,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -12063,6 +12149,8 @@
     "n_area": 15,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 9,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -12223,6 +12311,8 @@
     "n_area": 40,
     "mas_que": 14,
     "motivo": "celda",
+    "mas_que_pct": 25,
+    "mas_que_pesos": 24,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -12415,6 +12505,8 @@
     "n_area": 40,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 19,
+    "mas_que_pesos": 17,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -12575,6 +12667,8 @@
     "n_area": 40,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 18,
+    "mas_que_pesos": 12,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -12735,6 +12829,8 @@
     "n_area": 40,
     "mas_que": 16,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 15,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -12913,6 +13009,8 @@
     "n_area": 15,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 14,
+    "mas_que_pesos": 13,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -13073,6 +13171,8 @@
     "n_area": 8,
     "mas_que": 6,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -13233,6 +13333,8 @@
     "n_area": 14,
     "mas_que": 13,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 2,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -13393,6 +13495,8 @@
     "n_area": 15,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 10,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -13692,6 +13796,8 @@
     "n_area": 40,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 8,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -14130,6 +14236,8 @@
     "n_area": 40,
     "mas_que": 21,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 11,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -14290,6 +14398,8 @@
     "n_area": 40,
     "mas_que": 27,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -14482,6 +14592,8 @@
     "n_area": 40,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 22,
+    "mas_que_pesos": 16,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -14642,6 +14754,8 @@
     "n_area": 15,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 7,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -15080,6 +15194,8 @@
     "n_area": 40,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 2,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -15379,6 +15495,8 @@
     "n_area": 40,
     "mas_que": 39,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 4,
     "n_celda": 12,
     "domina": null,
     "domina_pct": null
@@ -15817,6 +15935,8 @@
     "n_area": 14,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 6,
     "domina": null,
     "domina_pct": null
@@ -15977,6 +16097,8 @@
     "n_area": 11,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -16137,6 +16259,8 @@
     "n_area": 15,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 5,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -16315,6 +16439,8 @@
     "n_area": 14,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 4,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -16475,6 +16601,8 @@
     "n_area": 14,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 3,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -16635,6 +16763,8 @@
     "n_area": 4,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -16795,6 +16925,8 @@
     "n_area": 8,
     "mas_que": 5,
     "motivo": "pocas",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 4,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -16987,6 +17119,8 @@
     "n_area": 8,
     "mas_que": 3,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -17165,6 +17299,8 @@
     "n_area": 12,
     "mas_que": 2,
     "motivo": "dominada",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 6,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -17325,6 +17461,8 @@
     "n_area": 18,
     "mas_que": 15,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 2,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -17517,6 +17655,8 @@
     "n_area": 18,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 5,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -17695,6 +17835,8 @@
     "n_area": 31,
     "mas_que": 25,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 2,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -17855,6 +17997,8 @@
     "n_area": 18,
     "mas_que": 17,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 9,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -18015,6 +18159,8 @@
     "n_area": 4,
     "mas_que": 3,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -18314,6 +18460,8 @@
     "n_area": 18,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 10,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -18474,6 +18622,8 @@
     "n_area": 31,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 23,
+    "mas_que_pesos": 23,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -18652,6 +18802,8 @@
     "n_area": 4,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -18812,6 +18964,8 @@
     "n_area": 31,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 7,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -18981,6 +19135,8 @@
     "n_area": 18,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 13,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -19173,6 +19329,8 @@
     "n_area": 8,
     "mas_que": 7,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -19333,6 +19491,8 @@
     "n_area": 4,
     "mas_que": 3,
     "motivo": "pocas",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -19493,6 +19653,8 @@
     "n_area": 4,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -19653,6 +19815,8 @@
     "n_area": 31,
     "mas_que": 15,
     "motivo": "celda",
+    "mas_que_pct": 19,
+    "mas_que_pesos": 20,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -20118,6 +20282,8 @@
     "n_area": 12,
     "mas_que": 6,
     "motivo": "dominada",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 4,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -20449,6 +20615,8 @@
     "n_area": 18,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 1,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -20609,6 +20777,8 @@
     "n_area": 2,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -20769,6 +20939,8 @@
     "n_area": 31,
     "mas_que": 30,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 1,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -20929,6 +21101,8 @@
     "n_area": 12,
     "mas_que": 1,
     "motivo": "dominada",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 9,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -21089,6 +21263,8 @@
     "n_area": 18,
     "mas_que": 16,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 7,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -21258,6 +21434,8 @@
     "n_area": 31,
     "mas_que": 23,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 6,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -21418,6 +21596,8 @@
     "n_area": 12,
     "mas_que": 4,
     "motivo": "dominada",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 8,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -21578,6 +21758,8 @@
     "n_area": 31,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 15,
+    "mas_que_pesos": 12,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -21738,6 +21920,8 @@
     "n_area": 31,
     "mas_que": 29,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -21898,6 +22082,8 @@
     "n_area": 4,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -22058,6 +22244,8 @@
     "n_area": 12,
     "mas_que": 11,
     "motivo": "dominada",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -22218,6 +22406,8 @@
     "n_area": 31,
     "mas_que": 19,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 4,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -22517,6 +22707,8 @@
     "n_area": 4,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -22695,6 +22887,8 @@
     "n_area": 31,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 16,
+    "mas_que_pesos": 10,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -22994,6 +23188,8 @@
     "n_area": 31,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 21,
+    "mas_que_pesos": 22,
     "n_celda": 11,
     "domina": null,
     "domina_pct": null
@@ -23293,6 +23489,8 @@
     "n_area": 18,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 12,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -23471,6 +23669,8 @@
     "n_area": 2,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -23631,6 +23831,8 @@
     "n_area": 12,
     "mas_que": 8,
     "motivo": "dominada",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 2,
     "n_celda": 6,
     "domina": "TECNICO EN ENFERMERIA",
     "domina_pct": 75
@@ -24069,6 +24271,8 @@
     "n_area": 14,
     "mas_que": 9,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 0,
     "n_celda": 4,
     "domina": null,
     "domina_pct": null
@@ -24261,6 +24465,8 @@
     "n_area": 14,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -24421,6 +24627,8 @@
     "n_area": 15,
     "mas_que": 10,
     "motivo": "dominada",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 5,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -24613,6 +24821,8 @@
     "n_area": 14,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 13,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -24805,6 +25015,8 @@
     "n_area": 15,
     "mas_que": 2,
     "motivo": "dominada",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 2,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -24983,6 +25195,8 @@
     "n_area": 4,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -25175,6 +25389,8 @@
     "n_area": 14,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 8,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -25353,6 +25569,8 @@
     "n_area": 14,
     "mas_que": 13,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 13,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -25545,6 +25763,8 @@
     "n_area": 14,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 6,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -25723,6 +25943,8 @@
     "n_area": 3,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -25878,6 +26100,8 @@
     "n_area": 8,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -26038,6 +26262,8 @@
     "n_area": 8,
     "mas_que": 0,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 4,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -26193,6 +26419,8 @@
     "n_area": 8,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -26371,6 +26599,8 @@
     "n_area": 14,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 10,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -26549,6 +26779,8 @@
     "n_area": 14,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 11,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -26709,6 +26941,8 @@
     "n_area": 40,
     "mas_que": 13,
     "motivo": "celda",
+    "mas_que_pct": 30,
+    "mas_que_pesos": 27,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -26901,6 +27135,8 @@
     "n_area": 15,
     "mas_que": 7,
     "motivo": "dominada",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 11,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -27093,6 +27329,8 @@
     "n_area": 1,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -27285,6 +27523,8 @@
     "n_area": 14,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 12,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -27477,6 +27717,8 @@
     "n_area": 14,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 8,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -27646,6 +27888,8 @@
     "n_area": 40,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 6,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -27806,6 +28050,8 @@
     "n_area": 11,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 9,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -27998,6 +28244,8 @@
     "n_area": 11,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 2,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -28190,6 +28438,8 @@
     "n_area": 14,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 12,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -28368,6 +28618,8 @@
     "n_area": 8,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 7,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -28546,6 +28798,8 @@
     "n_area": 40,
     "mas_que": 28,
     "motivo": "celda",
+    "mas_que_pct": 24,
+    "mas_que_pesos": 29,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -28835,6 +29089,8 @@
     "n_area": 40,
     "mas_que": 34,
     "motivo": "celda",
+    "mas_que_pct": 34,
+    "mas_que_pesos": 37,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -29027,6 +29283,8 @@
     "n_area": 40,
     "mas_que": 20,
     "motivo": "celda",
+    "mas_que_pct": 36,
+    "mas_que_pesos": 32,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -29326,6 +29584,8 @@
     "n_area": 40,
     "mas_que": 31,
     "motivo": "celda",
+    "mas_que_pct": 35,
+    "mas_que_pesos": 35,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -29518,6 +29778,8 @@
     "n_area": 40,
     "mas_que": 33,
     "motivo": "celda",
+    "mas_que_pct": 33,
+    "mas_que_pesos": 36,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -29710,6 +29972,8 @@
     "n_area": 40,
     "mas_que": 23,
     "motivo": "celda",
+    "mas_que_pct": 21,
+    "mas_que_pesos": 26,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -29902,6 +30166,8 @@
     "n_area": 40,
     "mas_que": 36,
     "motivo": "celda",
+    "mas_que_pct": 14,
+    "mas_que_pesos": 28,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -30094,6 +30360,8 @@
     "n_area": 40,
     "mas_que": 30,
     "motivo": "celda",
+    "mas_que_pct": 32,
+    "mas_que_pesos": 33,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -30286,6 +30554,8 @@
     "n_area": 40,
     "mas_que": 25,
     "motivo": "celda",
+    "mas_que_pct": 39,
+    "mas_que_pesos": 39,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -30478,6 +30748,8 @@
     "n_area": 40,
     "mas_que": 26,
     "motivo": "celda",
+    "mas_que_pct": 29,
+    "mas_que_pesos": 31,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -30670,6 +30942,8 @@
     "n_area": 40,
     "mas_que": 24,
     "motivo": "celda",
+    "mas_que_pct": 37,
+    "mas_que_pesos": 34,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -30862,6 +31136,8 @@
     "n_area": 15,
     "mas_que": 13,
     "motivo": "dominada",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 14,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -31054,6 +31330,8 @@
     "n_area": 40,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 28,
+    "mas_que_pesos": 18,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -31214,6 +31492,8 @@
     "n_area": 40,
     "mas_que": 22,
     "motivo": "celda",
+    "mas_que_pct": 20,
+    "mas_que_pesos": 22,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -31374,6 +31654,8 @@
     "n_area": 40,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 15,
+    "mas_que_pesos": 9,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -31552,6 +31834,8 @@
     "n_area": 15,
     "mas_que": 12,
     "motivo": "dominada",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 6,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -31712,6 +31996,8 @@
     "n_area": 40,
     "mas_que": 17,
     "motivo": "celda",
+    "mas_que_pct": 31,
+    "mas_que_pesos": 30,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -31904,6 +32190,8 @@
     "n_area": 40,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 13,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -32096,6 +32384,8 @@
     "n_area": 15,
     "mas_que": 14,
     "motivo": "dominada",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 12,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -32274,6 +32564,8 @@
     "n_area": 40,
     "mas_que": 37,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 5,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -32434,6 +32726,8 @@
     "n_area": 40,
     "mas_que": 18,
     "motivo": "celda",
+    "mas_que_pct": 23,
+    "mas_que_pesos": 23,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -32594,6 +32888,8 @@
     "n_area": 8,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 5,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -33032,6 +33328,8 @@
     "n_area": 8,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 6,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -33187,6 +33485,8 @@
     "n_area": 40,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 27,
+    "mas_que_pesos": 21,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -33347,6 +33647,8 @@
     "n_area": 40,
     "mas_que": 15,
     "motivo": "celda",
+    "mas_que_pct": 26,
+    "mas_que_pesos": 25,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -33507,6 +33809,8 @@
     "n_area": 40,
     "mas_que": 35,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 20,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -33676,6 +33980,8 @@
     "n_area": 40,
     "mas_que": 32,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -33836,6 +34142,8 @@
     "n_area": 40,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 7,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -33996,6 +34304,8 @@
     "n_area": 15,
     "mas_que": 4,
     "motivo": "dominada",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 4,
     "n_celda": 7,
     "domina": "INGENIERIA COMERCIAL",
     "domina_pct": 53
@@ -34151,6 +34461,8 @@
     "n_area": 40,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 17,
+    "mas_que_pesos": 14,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -34311,6 +34623,8 @@
     "n_area": 4,
     "mas_que": 3,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -34471,6 +34785,8 @@
     "n_area": 40,
     "mas_que": 38,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 3,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -34797,6 +35113,8 @@
     "n_area": 40,
     "mas_que": 19,
     "motivo": "celda",
+    "mas_que_pct": 16,
+    "mas_que_pesos": 19,
     "n_celda": 28,
     "domina": null,
     "domina_pct": null
@@ -34966,6 +35284,8 @@
     "n_area": 11,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 6,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -35158,6 +35478,8 @@
     "n_area": 3,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -35336,6 +35658,8 @@
     "n_area": 11,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 10,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -35528,6 +35852,8 @@
     "n_area": 4,
     "mas_que": 1,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -35720,6 +36046,8 @@
     "n_area": 14,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 10,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -35898,6 +36226,8 @@
     "n_area": 11,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -36090,6 +36420,8 @@
     "n_area": 11,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 7,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -36282,6 +36614,8 @@
     "n_area": 11,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 5,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -36474,6 +36808,8 @@
     "n_area": 15,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 4,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -36666,6 +37002,8 @@
     "n_area": 15,
     "mas_que": 10,
     "motivo": "celda",
+    "mas_que_pct": 4,
+    "mas_que_pesos": 9,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -36858,6 +37196,8 @@
     "n_area": 15,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 7,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -37050,6 +37390,8 @@
     "n_area": 15,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 14,
+    "mas_que_pesos": 14,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -37242,6 +37584,8 @@
     "n_area": 15,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 6,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -37434,6 +37778,8 @@
     "n_area": 15,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 13,
+    "mas_que_pesos": 13,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -37765,6 +38111,8 @@
     "n_area": 15,
     "mas_que": 14,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -37920,6 +38268,8 @@
     "n_area": 15,
     "mas_que": 13,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -38080,6 +38430,8 @@
     "n_area": 15,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 12,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -38272,6 +38624,8 @@
     "n_area": 15,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 11,
+    "mas_que_pesos": 8,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -38464,6 +38818,8 @@
     "n_area": 15,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 11,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -38656,6 +39012,8 @@
     "n_area": 15,
     "mas_que": 11,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 10,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -38848,6 +39206,8 @@
     "n_area": 14,
     "mas_que": 8,
     "motivo": "celda",
+    "mas_que_pct": 8,
+    "mas_que_pesos": 7,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -39040,6 +39400,8 @@
     "n_area": 15,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -39209,6 +39571,8 @@
     "n_area": 14,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 6,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -39401,6 +39765,8 @@
     "n_area": 15,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 2,
     "n_celda": 14,
     "domina": null,
     "domina_pct": null
@@ -39561,6 +39927,8 @@
     "n_area": 14,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 11,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -39753,6 +40121,8 @@
     "n_area": 8,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 7,
     "domina": null,
     "domina_pct": null
@@ -39908,6 +40278,8 @@
     "n_area": 11,
     "mas_que": 9,
     "motivo": "celda",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 1,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -40100,6 +40472,8 @@
     "n_area": 14,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 7,
     "n_celda": 8,
     "domina": null,
     "domina_pct": null
@@ -40269,6 +40643,8 @@
     "n_area": 14,
     "mas_que": 6,
     "motivo": "celda",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 1,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -40429,6 +40805,8 @@
     "n_area": 14,
     "mas_que": 7,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 9,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -40621,6 +40999,8 @@
     "n_area": 4,
     "mas_que": 3,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 2,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -40781,6 +41161,8 @@
     "n_area": 8,
     "mas_que": 2,
     "motivo": "pocas",
+    "mas_que_pct": 6,
+    "mas_que_pesos": 5,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -40959,6 +41341,8 @@
     "n_area": 18,
     "mas_que": 14,
     "motivo": "pocas",
+    "mas_que_pct": 2,
+    "mas_que_pesos": 3,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -41151,6 +41535,8 @@
     "n_area": 18,
     "mas_que": 5,
     "motivo": "pocas",
+    "mas_que_pct": 17,
+    "mas_que_pesos": 16,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -41311,6 +41697,8 @@
     "n_area": 31,
     "mas_que": 2,
     "motivo": "celda",
+    "mas_que_pct": 20,
+    "mas_que_pesos": 18,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -41605,6 +41993,8 @@
     "n_area": 31,
     "mas_que": 1,
     "motivo": "celda",
+    "mas_que_pct": 30,
+    "mas_que_pesos": 29,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -41765,6 +42155,8 @@
     "n_area": 31,
     "mas_que": 3,
     "motivo": "celda",
+    "mas_que_pct": 22,
+    "mas_que_pesos": 21,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -41943,6 +42335,8 @@
     "n_area": 8,
     "mas_que": 4,
     "motivo": "pocas",
+    "mas_que_pct": 7,
+    "mas_que_pesos": 7,
     "n_celda": 2,
     "domina": null,
     "domina_pct": null
@@ -42112,6 +42506,8 @@
     "n_area": 31,
     "mas_que": 14,
     "motivo": "celda",
+    "mas_que_pct": 27,
+    "mas_que_pesos": 27,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -42411,6 +42807,8 @@
     "n_area": 12,
     "mas_que": 7,
     "motivo": "pocas",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 5,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -42603,6 +43001,8 @@
     "n_area": 31,
     "mas_que": 20,
     "motivo": "celda",
+    "mas_que_pct": 12,
+    "mas_que_pesos": 14,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -42763,6 +43163,8 @@
     "n_area": 18,
     "mas_que": 4,
     "motivo": "pocas",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 8,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null
@@ -42923,6 +43325,8 @@
     "n_area": 31,
     "mas_que": 21,
     "motivo": "celda",
+    "mas_que_pct": 28,
+    "mas_que_pesos": 30,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -43222,6 +43626,8 @@
     "n_area": 31,
     "mas_que": 28,
     "motivo": "celda",
+    "mas_que_pct": 10,
+    "mas_que_pesos": 13,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -43382,6 +43788,8 @@
     "n_area": 31,
     "mas_que": 24,
     "motivo": "celda",
+    "mas_que_pct": 24,
+    "mas_que_pesos": 26,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -43542,6 +43950,8 @@
     "n_area": 31,
     "mas_que": 12,
     "motivo": "celda",
+    "mas_que_pct": 26,
+    "mas_que_pesos": 25,
     "n_celda": 9,
     "domina": null,
     "domina_pct": null
@@ -43841,6 +44251,8 @@
     "n_area": 2,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 1,
+    "mas_que_pesos": 1,
     "n_celda": 1,
     "domina": null,
     "domina_pct": null
@@ -44001,6 +44413,8 @@
     "n_area": 11,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 9,
+    "mas_que_pesos": 8,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -44193,6 +44607,8 @@
     "n_area": 11,
     "mas_que": 4,
     "motivo": "celda",
+    "mas_que_pct": 5,
+    "mas_que_pesos": 4,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -44385,6 +44801,8 @@
     "n_area": 14,
     "mas_que": 5,
     "motivo": "celda",
+    "mas_que_pct": 3,
+    "mas_que_pesos": 5,
     "n_celda": 10,
     "domina": null,
     "domina_pct": null
@@ -44577,6 +44995,8 @@
     "n_area": 3,
     "mas_que": 0,
     "motivo": "pocas",
+    "mas_que_pct": 0,
+    "mas_que_pesos": 0,
     "n_celda": 3,
     "domina": null,
     "domina_pct": null

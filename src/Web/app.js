@@ -1200,7 +1200,43 @@
   // Veredicto: traduce a palabras la posición que calcula el SQL (entrada > mediana del grupo;
   // progreso más / típico / menos con ±margen). No agrega cifras.
   var COMO = { "más": "más", "típico": "lo mismo", "menos": "menos" };
+  // ¿Su área no tiene típica propia? (pocas carreras o una que domina: analytics.area_ficha). En esas
+  // 61 fichas no se nombra la típica del grupo estadístico, que es todo su tipo × nivel (otras áreas):
+  // la ficha habla solo de su área; los cuadrantes la conservan y la ficha lo dice (18-11-26).
+  function sinTipicaPropia(p) { return !!(p.area_ficha && p.area_ficha.motivo !== "celda"); }
+
+  // Por qué su área no tiene típica propia, en una frase (la misma en el veredicto y en el bloque).
+  function motivoSinTipica(p) {
+    var af = p.area_ficha, niv = nivelCorto(p), adj = TIPO_ADJ[p.tipo];
+    if (af.motivo === "pocas") {
+      return af.n_celda === 1 ? "su área no tiene otras carreras " + niv + " " + adj + " comparables"
+                              : "su área tiene solo " + fmtEntero.format(af.n_celda) + " carreras " + niv + " " + adj + " comparables, menos de " + parametro("min_pares_celda");
+    }
+    var dom = parPorClave[af.domina + "|" + p.tipo];
+    return (dom === p ? "esta carrera reúne" : (dom ? dom.nombre : "una carrera") + " reúne") + " el " + fmtEntero.format(af.domina_pct) +
+      " % de los titulados de las carreras " + adj + " de su área";
+  }
+
   function veredicto(p) {
+    if (p.posicion && sinTipicaPropia(p)) {
+      var af = p.area_ficha, niv = nivelCorto(p);
+      if (af.n_area === 1) return "Es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") +
+        " de su área en MiFuturo: no tiene con quién compararse dentro de ella.";
+      var m = motivoSinTipica(p), otras = af.n_area - 1;
+      // Crecimiento del sueldo típico (1er → 5° año) frente a su área, en % y en pesos (SQL:
+      // analytics.area_ficha). Reemplaza al «crece más o menos que su grupo», que era otras áreas.
+      var cuantas = function (k) {
+        return k === otras ? (otras === 1 ? "más que el de ella" : "más que el de todas") : k === 0 ? (otras === 1 ? "menos que el de ella" : "menos que el de todas")
+          : "más que el de " + fmtEntero.format(k) + " de ellas";
+      };
+      var crece = af.mas_que_pct === af.mas_que_pesos
+        ? cuantas(af.mas_que_pct) + ", en % y en pesos"
+        : cuantas(af.mas_que_pct) + " en %, y " + cuantas(af.mas_que_pesos) + " en pesos";
+      return "Sin típica propia en su área: " + m + ". Esta ficha la compara con " +
+        (otras === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "")
+                     : "las otras " + fmtEntero.format(otras) + " carreras " + niv) +
+        " del área " + p.area.mineduc + ", de todos los tipos de institución. Su sueldo típico crece del 1er al 5° año " + crece + ".";
+    }
     if (!p.posicion) {
       var n = p.conteos.n_inst_oferta, min = parametro("min_inst_oferta");
       return n < min
@@ -1251,21 +1287,15 @@
   // contra qué grupo se compara entonces (todas las de su tipo y nivel).
   function frenteATipica(cont, p, af) {
     var ref = referenciaDe(p, "p50_anio_1"), niv = nivelCorto(p), adj = TIPO_ADJ[p.tipo];
-    var grupo = "las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
-      (af.motivo === "celda" ? " del área " + p.area.mineduc : " de todas las áreas");
-    var texto;
-    if (af.motivo === "celda") {
-      texto = "La típica de " + grupo + ": la mediana ponderada por titulados, la misma de los cuadrantes.";
-    } else if (af.motivo === "pocas") {
-      texto = (af.n_celda === 1 ? "Su área no tiene otras carreras " + niv + " " + adj + " comparables"
-                                : "Su área tiene " + fmtEntero.format(af.n_celda) + " carreras " + niv + " " + adj + " comparables, menos de " + parametro("min_pares_celda")) +
-        ": no alcanza para una típica propia. Se compara con la típica de " + grupo + ", como en los cuadrantes.";
-    } else {
-      var dom = parPorClave[af.domina + "|" + p.tipo];
-      texto = (dom === p ? "Esta carrera reúne" : (dom ? dom.nombre : "Una carrera") + " reúne") + " el " + fmtEntero.format(af.domina_pct) +
-        " % de los titulados de las carreras " + adj + " de su área: la típica sería esa misma carrera. Se compara con la típica de " + grupo + ", como en los cuadrantes.";
+    if (af.motivo !== "celda") {
+      // Sin cifras de diferencia: serían frente a otras áreas. Solo el puente con los cuadrantes.
+      subbloque(cont, "En los cuadrantes de la Parte I",
+        "Se compara con la típica de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
+        " de todas las áreas, porque su área no tiene típica propia (" + motivoSinTipica(p) + ").");
+      return;
     }
-    subbloque(cont, "Frente a la típica de su grupo", texto);
+    subbloque(cont, "Frente a la típica de su grupo", "La típica de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
+      " del área " + p.area.mineduc + ": la mediana ponderada por titulados, la misma de los cuadrantes.");
     var dl = el("dl", "liq");
     var d = p.dif_grupo;
     liq(dl, "Sueldo al 1er año", d.p50_anio_1 === 0 ? "es la típica" : pesosSigno(d.p50_anio_1));
@@ -1450,7 +1480,8 @@
     var angosto = W < 520;
     var mIzq = 70, mDer = angosto ? 92 : 200, dentro = angosto ? 16 : 26;
     var a1 = p.percentiles.anio_1, a5 = p.percentiles.anio_5, v = p.media.anio;
-    var ref1 = referenciaDe(p, "p50_anio_1"), ref5 = referenciaDe(p, "p50_anio_5");
+    // Sin típica propia en su área, sin línea de típica: sería la de otras áreas.
+    var ref1 = sinTipicaPropia(p) ? null : referenciaDe(p, "p50_anio_1"), ref5 = ref1 ? referenciaDe(p, "p50_anio_5") : null;
     // Eje acotado a la mitad central, el promedio y la típica: con P10–P90 iba de $0 a $5.000
     // mil y aplastaba todo (P10–P90 queda en «Ver todas las cifras»).
     var todos = [a1.p25, a5.p25, a1.p75, a5.p75].concat(v);
@@ -2325,7 +2356,7 @@
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
     else document.getElementById("ficha-estado").textContent =
-      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados que no es la típica de su grupo. Escribe la tuya arriba.";
+      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados que tiene una típica en su área y no es ella. Escribe la tuya arriba.";
     prepararHistorial();
   }
 
