@@ -475,7 +475,10 @@ SELECT 'analytics_exportacion', 'totales_en_json', CASE WHEN n = 0 THEN 'OK' ELS
        n, 'que_no_dice del JSON = recuento desde modelo.* (comparables, estabilidad, cohortes atípicas y de salud, composición por edad, grupos de área, titulaciones sin estadística)',
        format('%s cifras del JSON distintas del recuento', n)
 FROM (
-    WITH ser AS (
+    -- MATERIALIZED: sin él, PostgreSQL integra esta subconsulta en la de abajo y arma el JSON
+    -- completo (~8 s) una vez por cada q->>…: el control tardaba 85 s (auditoría del 19-11-26).
+    WITH j AS MATERIALIZED (SELECT datos::jsonb -> 'que_no_dice' AS q FROM analytics.v_datos_json),
+    ser AS (
         SELECT a.clave_carrera_generica, a.tipo_institucion,
                abs(a.valor - pr.m) >= analytics.param('min_desvio_atipico_pp')
                AND abs(a.valor - pr.m) >= analytics.param('min_z_atipico') * coalesce(pr.sd, 0) AS atipica
@@ -530,5 +533,5 @@ FROM (
          + ((q->>'pct_titulaciones_sin_estadistica')::numeric <> round((SELECT pct FROM sin), 1))::int
          -- Lo que no publica MiFuturo es parte de lo que queda sin estadística, nunca más.
          + ((q->>'pct_titulaciones_genericas_no_publicadas')::numeric > (q->>'pct_titulaciones_sin_estadistica')::numeric)::int AS n
-    FROM (SELECT datos::jsonb -> 'que_no_dice' AS q FROM analytics.v_datos_json) j
+    FROM j
 ) x;

@@ -117,11 +117,27 @@ def _conectar() -> psycopg.Connection:
 
 
 def _ejecutar_sql(cur: psycopg.Cursor, nombre: str, directorio: Path = DIR_BD) -> None:
-    """Ejecuta un archivo .sql completo (varias sentencias, sin parámetros)."""
+    """Ejecuta un archivo .sql completo (varias sentencias, sin parámetros) y analiza lo que creó."""
     ruta = directorio / nombre
     t0 = time.perf_counter()
     cur.execute(ruta.read_text(encoding="utf-8"))
+    _analizar(cur)
     log.info("%-24s OK (%.1f s)", nombre, time.perf_counter() - t0)
+
+
+def _analizar(cur: psycopg.Cursor) -> None:
+    """Estadísticas de las tablas del proyecto, dentro de la misma transacción.
+
+    Las tablas se crean y se llenan en esta transacción, así que el autovacuum nunca alcanza a
+    analizarlas: sin estadísticas, el planificador supone tablas casi vacías y elige planes malos
+    para las consultas siguientes (07_exportacion.sql tardaba ~100 s; auditoría del 19-11-26).
+    ANALYZE sí ve las filas no confirmadas de su propia transacción. No cambia ningún resultado.
+    """
+    cur.execute("SELECT format('%I.%I', schemaname, tablename) FROM pg_tables "
+                "WHERE schemaname IN ('raw', 'modelo', 'analytics', 'qa')")
+    tablas = [t for (t,) in cur.fetchall()]
+    if tablas:
+        cur.execute("ANALYZE " + ", ".join(tablas))
 
 
 def _filas_csv(ruta: Path) -> int:

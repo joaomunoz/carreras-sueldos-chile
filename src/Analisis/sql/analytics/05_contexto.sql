@@ -80,7 +80,9 @@ WITH c AS (
 ),
 t AS (  -- cada fila SIES con la ventana a la que pertenece (Derecho corrido corrimiento_derecho años)
     SELECT i.tipo_institucion, x.*,
-           x.anio - (x.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int AS anio_ref,
+           -- (SELECT …): se evalúa una vez; llamado fila a fila, param() consultaba la tabla de
+           -- parámetros 94.579 veces y este INSERT tardaba 16 s (auditoría del 19-11-26).
+           x.anio - (x.clave_carrera_generica = 'DERECHO')::int * (SELECT analytics.param('corrimiento_derecho')::int) AS anio_ref,
            x.carrera_clasificacion_nivel_1 = 'Licenciatura No Conducente a Título' AS es_lnc,
            x.titulados_15_19 + x.titulados_20_24 + x.titulados_25_29 AS jovenes,
            x.titulados_35_39 + x.titulados_mayores_40 AS mayores35,
