@@ -125,13 +125,15 @@ def _hallazgos_readme(h: dict, margen: float) -> str:
     if b["ejemplo"]:
         e = b["ejemplo"]
         # Por nivel: el fenómeno es de las profesionales; con un total mezclado no se veía.
+        # Sin «sube» ni «crecer más» (sugieren a las mismas personas): la tercera evaluación (19-11-26)
+        # lo encontró aquí aunque el hallazgo (a) ya lo evitaba.
         tec_txt = ("ninguna técnica" if b["n_cambian_tec"] == 0 else
                    f"{b['n_cambian_tec']} técnica{'s' if b['n_cambian_tec'] > 1 else ''}")
-        items.append(f"**Crecer más en porcentaje no es crecer más.** {b['n_cambian_pro']} carreras profesionales "
+        items.append(f"**Un crecimiento mayor en porcentaje puede ser menor en pesos.** {b['n_cambian_pro']} carreras profesionales "
                      f"({tec_txt}) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje "
                      f"(sin contar las que quedan a ±{_num(b['margen_pp'])} pp o ±${_num(b['margen_pesos'])} de la "
-                     f"carrera del medio de su grupo). {e['nombre']} ({e['tipo']}) sube "
-                     f"{_num(e['p50_pct_1_5'], 1)} %, pero eso son +${_num(e['p50_delta_1_5'])}, frente a "
+                     f"carrera del medio de su grupo). En {e['nombre']} ({e['tipo']}), quienes llevan cinco años titulados "
+                     f"ganan {_num(e['p50_pct_1_5'], 1)} % más que quienes llevan uno, pero eso son +${_num(e['p50_delta_1_5'])}, frente a "
                      f"+${_num(e['ref_delta_q50'])} de la carrera del medio de su grupo (mediana ponderada por titulados).")
     if c["ejemplo"]:
         e = c["ejemplo"]

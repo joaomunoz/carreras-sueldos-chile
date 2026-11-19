@@ -94,6 +94,14 @@
     return (Math.abs(c) === 1 ? "un año" : Math.abs(c) + " años") + (c < 0 ? " antes" : " después");
   }
 
+  // Años del promedio con titulados de la pandemia en Derecho, desde SQL (marcas.anios_anomalos):
+  // con sus cohortes corridas no son los mismos que en las demás carreras.
+  function anomalosDerecho() {
+    var d = datos.pares.filter(function (p) { return p.clave === "DERECHO"; })[0];
+    if (!d) throw new Error("Sin el par de Derecho en datos.json");
+    return d.marcas.anios_anomalos.map(function (k) { return k + "°"; }).join(", ");
+  }
+
   function timbre(def) {
     var nodo = el("span", "timbre", def.texto);
     nodo.title = def.explica();
@@ -371,9 +379,16 @@
       return fmtEntero.format(e.otro) + (e.otro === 1 ? " título" : " títulos") + " de " + rangoAnios(v[e.ventana]) +
         " (" + nivelCorto({ nivel: e.nivel }) + ")" + (e.otro === 1 ? " está registrado" : " están registrados") + " como no binario";
     }).join("; ");
+    // Los conteos reales no se escalan (ADR-003): si la ventana corrida de Derecho empieza antes que
+    // el SIES, se dice qué años faltan; sin decirlo, 612.738 parecía incluir tres años de Derecho.
+    var corrD = parametro("corrimiento_derecho"), siesDesde = datos.cohortes.filter(function (c) { return c.indicador === "titulados_sies"; })[0].cohortes[0];
+    var faltaD = Object.keys(v).map(function (k) { return [v[k][0] + corrD, v[k][1] + corrD]; })
+      .filter(function (r) { return r[0] < siesDesde; })[0];
+    var notaFalta = faltaD ? " De Derecho al 5° año (titulados de " + rangoAnios(faltaD) + ") se cuentan solo los de " +
+      rangoAnios([siesDesde, faltaD[1]]) + ": el SIES empieza en " + siesDesde + " y estos conteos son títulos reales, no estimados." : "";
     document.getElementById("universo-nota").textContent =
       "Se cuentan títulos, no personas: quien obtiene dos títulos cuenta dos veces. " +
-      "Derecho se cuenta " + corrDerechoTexto() + ", como en el resto del análisis, porque así lo publica MiFuturo: su título se entrega meses después del último trámite." +
+      "Derecho se cuenta " + corrDerechoTexto() + ", como en el resto del análisis, porque así lo publica MiFuturo: su título se entrega meses después del último trámite." + notaFalta +
       (notaOtro ? " " + notaOtro.charAt(0).toUpperCase() + notaOtro.slice(1) + " y no entra en los porcentajes por sexo." : "");
 
     var cuerpo = document.querySelector("#universo-tabla tbody");
@@ -954,7 +969,7 @@
     var margen = "±" + fmtEntero.format(b.margen_pp) + " pp o ±" + pesos(b.margen_pesos);
     document.getElementById("cuadrantes-nota").textContent = n
       ? fmtEntero.format(n) + (n === 1 ? " carrera " + nombre + " cambia" : " carreras " + plural + " cambian") +
-        " de cuadrante (en color): crecen más que su grupo en porcentaje pero menos en pesos, o al revés. " +
+        " de cuadrante (en color): su crecimiento es mayor que el de la carrera del medio de su grupo en porcentaje, pero menor en pesos, o al revés. " +
         "No cuentan las que quedan en la franja de la carrera del medio (a " + margen + "): ahí la diferencia es un empate."
       : "Ninguna carrera " + nombre + " cambia de cuadrante: en este nivel, medir en porcentaje o en pesos da la " +
         "misma lectura. Los conteos de las esquinas varían solo porque algunas carreras entran o salen de la " +
@@ -1851,7 +1866,7 @@
     var ley = el("div", "grafico__leyenda grafico__leyenda--arriba");
     [["punto punto--neutro", "Una institución"],
      // Sin el número: con pocas (5) «la mitad de las 5» no se lee bien.
-     ["trazo-v", "Institución del medio: la mitad de las instituciones está sobre ella y la otra mitad, bajo"],
+     ["trazo-v", "Institución del medio: la que queda al centro al ordenarlas por empleabilidad"],
      ["trazo-v trazo-v--punteado", "Cifra nacional de MiFuturo: todos los titulados de la carrera"]].forEach(function (it) {
       var s = el("span", "leyenda-item");
       s.appendChild(el("span", it[0])).setAttribute("aria-hidden", "true");
@@ -2673,13 +2688,16 @@
     item("No ve a todos.", ["Los programas que publica MiFuturo reúnen el ", pct(q.cobertura_titulaciones[0]),
       " de los titulados recientes y el ", pct(q.cobertura_titulaciones[1]),
       " de los de hace cinco años (no confundir con el " + pct(datos.universo.totales[0].pct_comparables) +
-      " de la Parte I, que es la parte de los títulos que cae en carreras comparables). Faltan programas chicos y los que cerraron; la cobertura es baja en: " +
+      " de la Parte I, que es la parte de los títulos que cae en carreras comparables). Faltan programas chicos y los que cerraron; la cobertura es baja en " +
       q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return "las carreras " + x[1].replace("Carreras ", "").toLowerCase() + " de " + (TIPO_PLURAL[x[0]] || x[0]); }).join(", ") + "."]);
     item("No compara lo que no se puede comparar.", ["", fmtEntero.format(q.pares_no_representativos), " de " + fmtEntero.format(q.pares_total) +
       " carreras tienen menos de " + parametro("min_inst_oferta") + " instituciones y quedan fuera de rankings y gráficos de comparación; solo ",
       fmtEntero.format(q.celdas_validas), " grupos de área tienen carreras suficientes para servir de referencia."]);
+    // Con la excepción de Derecho: sus titulados son de un año antes, y su 4° año (2017–2019) no
+    // incluye la pandemia; la ficha ya lo mostraba, la Parte III no (tercera evaluación, 19-11-26).
     item("No limpia los años anómalos.", ["Los años ", anomalos.join(", "), " del ingreso promedio incluyen titulados de " +
-      parametro("anio_caida_titulacion") + " o " + parametro("anio_rebote_titulacion") + ". En ", fmtEntero.format(q.cohortes_atipicas),
+      parametro("anio_caida_titulacion") + " o " + parametro("anio_rebote_titulacion") +
+      " (en Derecho, que usa titulados de " + corrDerechoTexto() + ", solo los años " + anomalosDerecho() + "). En ", fmtEntero.format(q.cohortes_atipicas),
       " de las " + fmtEntero.format(q.pares_estabilidad) + " carreras con serie de empleabilidad, los titulados del sueldo al primer año tuvieron una empleabilidad atípica (" +
       fmtEntero.format(atipSalud) + " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " de las " + fmtEntero.format(q.pares_total) +
       " (" + fmtEntero.format(q.pares_composicion_edad_comparables) + " de las " + fmtEntero.format(q.pares_comparables) +
@@ -2717,6 +2735,14 @@
     div.appendChild(el("p", null, "Fuentes: " + datos.meta.fuentes.join("; ") + ". Montos en " + datos.meta.unidad_ingresos.replace(">=", "≥") + "."));
     div.appendChild(el("p", null, "Empleabilidad: " + datos.meta.rotulo_empleabilidad.replace(">=", "≥") + ". No es la tasa de desempleo."));
     div.appendChild(el("p", null, "Una carrera es un nombre de carrera de MiFuturo (por ejemplo, Enfermería) dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel. El área es la del conocimiento que usa MiFuturo (por ejemplo, «Tecnología» junta Informática y Telecomunicaciones); la clasificación internacional de carreras (CINE, de la UNESCO) se guarda como contexto."));
+    // Los tres «del medio» definidos en un solo lugar: las fichas los usaban y la Parte III no los
+    // explicaba (tercera evaluación, 19-11-26). Con un número par de instituciones, percentile_disc
+    // toma la más baja de las dos centrales (04_dispersion.sql): por eso no se dice «la mitad exacta».
+    div.appendChild(el("p", null, "Los tres «del medio»: la carrera del medio de un grupo es la que queda al centro al ordenar sus carreras, " +
+      "contando cuántos titulados tiene cada una (puede ser otra en cada cifra). La institución del medio es una institución real: la que queda " +
+      "al centro al ordenar por empleabilidad las instituciones que imparten la carrera (con un número par, la más baja de las dos centrales). " +
+      "El rango del medio es el rango de ingreso al 4° año que queda al centro entre las instituciones que lo publican, que pueden ser menos " +
+      "que las que publican empleabilidad."));
     div.appendChild(el("p", null, "Cómo se construye, de los archivos públicos a esta página (se reproduce con un solo comando, make todo):"));
     div.appendChild(el("p", "metodo__flujo", "CSV de MiFuturo y SIES → base PostgreSQL (raw → modelo → analytics) → " +
       fmtEntero.format(datos.qa.controles.length) + " controles de calidad → datos.json → esta página, un solo archivo sin dependencias"));

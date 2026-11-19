@@ -37,7 +37,7 @@ En la evaluación de navegación del 19-11-26, el revisor de datos notó que la 
 
 Ensayo con los mismos 74 controles en OK (sin el escalado de la ventana incompleta; ver la corrección al final):
 
-| | +1 (antes) | −1 (ahora) |
+| | +1 (antes) | −1 sin escalar (ensayo; superado por la corrección del final) |
 |---|---|---|
 | Derecho: titulaciones que lo pesan | 24.264 | 18.510 |
 | Derecho: instituciones en ambos períodos | 45 | 42 (sigue comparable) |
@@ -46,7 +46,7 @@ Ensayo con los mismos 74 controles en OK (sin el escalado de la ventana incomple
 | Carrera del medio de las 91 profesionales universitarias (1er año) | Ing. en Construcción, $1.046.881 | Ing. en Medio Ambiente, $1.029.714 |
 | Carrera del medio de las 91 profesionales universitarias (5° año) | Contador Auditor | Ing. en Construcción |
 | Titulaciones del análisis (1er / 5° año) | 687.231 / 615.246 | 683.985 / 612.738 |
-| Cuadrantes en pesos | — | Contador Auditor U: de «progreso típico» a «progresa más» |
+| Cuadrantes en pesos | — | Contador Auditor U: de crecimiento parecido a crecimiento mayor |
 
 **Sin cambios:**
 - las cuatro tarjetas de hallazgos;
@@ -79,7 +79,7 @@ La segunda evaluación (19-11-26) encontró un efecto que el ensayo no vio. Con 
 | Derecho: cohortes y edad, sexo y oferta joven | 2022–2024 | 2020–2022 (titulados menores de 30: −15,8 %, estimado) |
 | Las 91 profesionales universitarias: carrera del medio al 1er año / 5° año / en % | Ing. en Construcción / Contador Auditor / Ing. Civil Industrial | **iguales** |
 | Las 91: carrera del medio en el aumento en pesos | Odontología ($573.466) | Publicidad ($560.948) |
-| Contador Auditor U, en pesos | cerca de la del medio | progresa más que la del medio |
+| Contador Auditor U, en pesos | crecimiento parecido al de la del medio | crecimiento mayor que el de la del medio |
 | Titulaciones del análisis (1er / 5° año) | 687.231 / 615.246 | 683.985 / 612.738 (reales, sin escalar) |
 
 Los cambios de la carrera del medio al 1er y al 5° año que mostraba la tabla de «Consecuencias» venían del año faltante, no del corrimiento. Hallazgos, portada y conteos de cuadrantes: sin cambios.

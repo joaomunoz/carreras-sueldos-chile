@@ -35,7 +35,7 @@
   {
    "nombre": "margen_ejemplo_pesos",
    "valor": 0.2,
-   "descripcion": "Tarjeta 2: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo",
+   "descripcion": "Hallazgo de crecimiento en % y en pesos: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo",
    "origen": "W3; movido de app.js a SQL en la revisión del 16-11-26"
   },
   {
@@ -65,7 +65,7 @@
   {
    "nombre": "max_t_continuidad",
    "valor": 2.6,
-   "descripcion": "Tarjeta 4: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica",
+   "descripcion": "Hallazgo de la continuidad de estudios: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
@@ -89,7 +89,7 @@
   {
    "nombre": "min_inst_ejemplo",
    "valor": 20,
-   "descripcion": "Tarjeta 3: instituciones mínimas para que una carrera sirva de ejemplo",
+   "descripcion": "Hallazgo de la cifra nacional engañosa: instituciones mínimas para que una carrera sirva de ejemplo",
    "origen": "W3; ídem"
   },
   {
@@ -119,13 +119,13 @@
   {
    "nombre": "min_prog_ejemplo_cont",
    "valor": 5,
-   "descripcion": "Tarjeta 4: instituciones mínimas de una carrera técnica para servir de ejemplo",
+   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera técnica para servir de ejemplo",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
    "nombre": "min_prog_par_cont",
    "valor": 5,
-   "descripcion": "Tarjeta 4: instituciones mínimas de una carrera para entrar en la prueba de relación",
+   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera para entrar en la prueba de relación",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
@@ -669,7 +669,7 @@
     "control": "analytics_hallazgos",
     "objeto": "ejemplo_pct_pesos",
     "estado": "OK",
-    "umbral": "cambia de cuadrante, progresa más en % y crece en pesos ≤ (1 − margen) × mediana de su grupo",
+    "umbral": "cambia de cuadrante, crecimiento mayor en % y, en pesos, ≤ (1 − margen) × mediana de su grupo",
     "detalle": "INGENIERIA EN ALIMENTOS (Universidad): 66.5 % y 592205 pesos frente a 805627"
    },
    {
@@ -795,7 +795,7 @@
     "control": "analytics_referencia",
     "objeto": "progreso_por_margen",
     "estado": "OK",
-    "umbral": "progreso = más / típico / menos según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas",
+    "umbral": "crecimiento mayor / parecido / menor según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas",
     "detalle": "0 carreras con progreso o cambio distinto del recálculo; 13 cambian (margen ±2 pp / ±$20000)"
    },
    {

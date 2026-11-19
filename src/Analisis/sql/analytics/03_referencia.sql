@@ -299,7 +299,7 @@ UNION ALL
 -- 6. Progreso y cambio de cuadrante recalculados desde los valores y la referencia (no desde
 --    dif_*): la distancia a la mediana, el margen y el "típico" coinciden en cada carrera.
 SELECT 'analytics_referencia', 'progreso_por_margen', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
-       n, 'progreso = más / típico / menos según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas',
+       n, 'crecimiento mayor / parecido / menor según ±margen_tipico_pp y ±margen_tipico_pesos; cambia solo fuera del margen en ambas',
        format('%s carreras con progreso o cambio distinto del recálculo; %s cambian (margen ±%s pp / ±$%s)', n,
               (SELECT count(*) FROM analytics.posicion WHERE cambia_cuadrante),
               analytics.param('margen_tipico_pp'), analytics.param('margen_tipico_pesos'))

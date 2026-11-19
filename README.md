@@ -16,7 +16,7 @@
 
 <!-- HALLAZGOS:INICIO · generado por src/Web/construir.py desde docs/datos.json; no editar a mano -->
 1. **Al quinto año no siempre se gana más.** En la mitad de las carreras técnicas, quienes llevan cinco años titulados ganan al menos 15,7 % más que quienes llevan uno (sueldo típico, P50); en las profesionales, al menos 43,2 % más (mediana de las carreras de cada nivel, contando juntos los tipos de institución). Pero ganan más de 2 % menos en 7 de 85 técnicas y en ninguna de las 125 profesionales (diferencias menores se cuentan como empate). No es que caigan los sueldos: en 6 de esas 7 técnicas, quienes se titularon hace poco son mucho mayores (los de 30 años o más son el 32,3 % de los titulados de hace cinco años y el 55,6 % de los recientes, mediana de esas 6).
-2. **Crecer más en porcentaje no es crecer más.** 13 carreras profesionales (ninguna técnica) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje (sin contar las que quedan a ±2 pp o ±$20.000 de la carrera del medio de su grupo). Ingeniería en Alimentos (Universidad) sube 66,5 %, pero eso son +$592.205, frente a +$805.627 de la carrera del medio de su grupo (mediana ponderada por titulados).
+2. **Un crecimiento mayor en porcentaje puede ser menor en pesos.** 13 carreras profesionales (ninguna técnica) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje (sin contar las que quedan a ±2 pp o ±$20.000 de la carrera del medio de su grupo). En Ingeniería en Alimentos (Universidad), quienes llevan cinco años titulados ganan 66,5 % más que quienes llevan uno, pero eso son +$592.205, frente a +$805.627 de la carrera del medio de su grupo (mediana ponderada por titulados).
 3. **La cifra nacional esconde diferencias entre instituciones.** En 19 carreras las instituciones difieren 15 puntos o más en empleabilidad, aun dejando fuera al cuarto más alto y al cuarto más bajo. En Trabajo Social (Universidad, 32 instituciones) la mitad central va de 52,5 % a 74,2 %, con una cifra nacional de 66,9 %.
 4. **Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue estudiando el 21,7 % de los titulados de carreras técnicas y el 4,2 % de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: 37,4 % en Técnico en Administración de Empresas (IP) y 6,8 % en Técnico en Enfermería (IP). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.
 <!-- HALLAZGOS:FIN -->
@@ -27,7 +27,7 @@
 >
 > **Cambio de método (18-11-26).** Los grupos de comparación usan ahora el área del conocimiento de MiFuturo en vez del área CINE ([ADR-002](src/BD/ADR-002-area-de-referencia.md)): quien busca una carrera piensa por interés, y la CINE separaba, por ejemplo, Telecomunicaciones de Informática. Siguen siendo 14 grupos con área propia; 27 carreras ganan uno y 17 pasan a compararse con todas las de su tipo y nivel. El hallazgo 2 pasó de 10 a 13 carreras profesionales; su ejemplo, Ingeniería en Alimentos, conserva sus cifras.
 >
-> **Cambio de método (19-11-26).** Derecho se mide ahora con titulados de un año **antes** que las demás carreras (2020–2022 en vez de 2021–2023), como lo publica MiFuturo; antes se corría un año después ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)). Cambian el peso y los datos de contexto de Derecho y la carrera del medio de las profesionales universitarias sin área propia; los hallazgos no cambian.
+> **Cambio de método (19-11-26).** Derecho se mide ahora con titulados de un año **antes** que las demás carreras (2020–2022 en vez de 2021–2023), como lo publica MiFuturo; antes se corría un año después ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)). Cambian el peso y los datos de contexto de Derecho y la carrera del medio en el aumento en pesos de las profesionales universitarias (de Odontología a Publicidad); los hallazgos no cambian. Su ventana del 5° año (2016–2018) empieza antes que el SIES: en el peso y en la comparación de titulados jóvenes se lleva a tres años; los conteos de títulos quedan reales.
 
 ---
 
@@ -91,7 +91,7 @@ src/
 docs/                  index.html (la web), datos.json y captura.png
 ```
 
-- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md) · [ADR del modelo relacional](src/BD/ADR-001-modelo-relacional.md) · [ADR del área de referencia](src/BD/ADR-002-area-de-referencia.md).
+- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md) · [ADR del modelo relacional](src/BD/ADR-001-modelo-relacional.md) · [ADR del área de referencia](src/BD/ADR-002-area-de-referencia.md) · [ADR de las cohortes de Derecho](src/BD/ADR-003-cohortes-derecho.md).
 - La web es HTML, CSS, JavaScript y SVG sin librerías: modo claro y oscuro, usable con teclado y lector de pantalla, sin desplazamiento horizontal a 320 px, con contraste ≥ 4,5:1 en todo el texto.
 
 ---
@@ -117,7 +117,7 @@ Es una **comparación transversal**: el primer y el quinto año son grupos disti
 
 - MiFuturo cubre el 90,5 % de los titulados recientes y el 84,5 % de los de hace cinco años. Faltan programas chicos y programas cerrados.
 - Solo cuenta ingresos sobre el sueldo mínimo con registro en el SII; no hay datos por sexo, edad ni región.
-- Los años 1 a 4 del ingreso promedio incluyen titulados de 2020–2021 (pandemia), y en 15 carreras los titulados de 2023 tuvieron una empleabilidad atípica (6 de ellas de salud).
+- Los años 1 a 4 del ingreso promedio incluyen titulados de 2020–2021 (pandemia; en Derecho, que usa titulados de un año antes, solo los años 1 a 3), y en 15 carreras los titulados de 2023 tuvieron una empleabilidad atípica (6 de ellas de salud).
 
 La lista completa, con sus cifras, está en la sección **«Qué no dice este análisis»** de la web.
 
