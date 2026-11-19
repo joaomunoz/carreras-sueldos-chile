@@ -1599,7 +1599,8 @@
   function difPuntos(v) {
     return v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + fmtUno.format(Math.abs(v)) + (Math.abs(v) === 1 ? " punto" : " puntos");
   }
-  var TRAMO_VS = { sobre: "más alto que la típica", igual: "igual a la típica", bajo: "más bajo que la típica" };
+  // «Del medio» y no «típica»: el lector no tiene por qué saber qué es una mediana (18-11-26).
+  var TRAMO_VS = { sobre: "sobre la institución del medio", igual: "igual a la institución del medio", bajo: "bajo la institución del medio" };
 
   // Empleabilidad al 1er año por institución. Cada punto es una institución; la altura NO es un
   // eje: los puntos solo se apilan cuando se tocarían (enjambre), para que ninguno tape a otro sin
@@ -1612,6 +1613,21 @@
       (progs.length === 1 ? " institución" : " instituciones") + " con datos"));
     cont.appendChild(el("p", "ficha__subtitulo", "Cada punto es una institución; se apilan cuando tienen valores parecidos. " +
       "Pasa el puntero o usa las flechas ← → para ver su nombre; con clic o Enter, se marca en la tabla."));
+    // Leyenda sobre el gráfico: tres marcas y cada una dicha en palabras. Las dos líneas se
+    // distinguen por el trazo (continua / punteada), no por color: el violeta es de advertencias y
+    // el ocre de «lo que hay que mirar». Antes la nacional era un triángulo que, pegado a la línea,
+    // parecía una flecha sin texto.
+    var ley = el("div", "grafico__leyenda grafico__leyenda--arriba");
+    [["punto punto--neutro", "Una institución"],
+     // Sin el número: con pocas (5) «la mitad de las 5» no se lee bien.
+     ["trazo-v", "Institución del medio: la mitad de las instituciones está sobre ella y la otra mitad, bajo"],
+     ["trazo-v trazo-v--punteado", "Cifra nacional de MiFuturo: todos los titulados de la carrera"]].forEach(function (it) {
+      var s = el("span", "leyenda-item");
+      s.appendChild(el("span", it[0])).setAttribute("aria-hidden", "true");
+      s.appendChild(document.createTextNode(it[1]));
+      ley.appendChild(s);
+    });
+    cont.appendChild(ley);
     var caja = el("div", "ficha__grafico ficha__grafico--franja ficha__grafico--inst");
     cont.appendChild(caja);
     var tip = el("div", "tooltip");
@@ -1638,7 +1654,7 @@
     var H = abajoBanda + 44;
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
       "aria-label": "Empleabilidad al primer año de " + progs.length + " instituciones: de " + pct(d.min) + " a " + pct(d.max) +
-        "; institución típica " + pct(d.mediana) + "; cifra nacional " + pct(nacional) + ". La tabla siguiente tiene cada institución." });
+        "; institución del medio " + pct(d.mediana) + "; cifra nacional " + pct(nacional) + ". La tabla siguiente tiene cada institución." });
     var salto = (hi - lo) / 10 > 6 && W < 420 ? 2 : 1;
     for (var t = lo, k = 0; t <= hi; t += 10, k++) {
       svgEl("line", { x1: x(t), x2: x(t), y1: arriba - 4, y2: abajoBanda + 2 }, "g-grilla", svg);
@@ -1647,15 +1663,17 @@
         tx.textContent = fmtEntero.format(t) + " %";
       }
     }
+    // Las dos líneas antes que los puntos (quedan detrás). Rótulos uno arriba y otro abajo: no chocan
+    // aunque las dos cifras coincidan.
+    svgEl("line", { x1: x(nacional), x2: x(nacional), y1: arriba - 4, y2: abajoBanda + 12 }, "g-nacional", svg);
     svgEl("line", { x1: x(d.mediana), x2: x(d.mediana), y1: arriba - 6, y2: abajoBanda + 2 }, "g-tipica", svg);
-    textoEn(svg, x(d.mediana), 11, "institución típica " + pct(d.mediana), "g-rotulo-suave", W);
+    textoEn(svg, x(d.mediana), 11, "del medio " + pct(d.mediana), "g-rotulo-suave", W);
     var marcas = puestos.map(function (q) {
       q.y = centro - q.nivel * PASO;
       q.nodo = svgEl("circle", { cx: q.x, cy: q.y, r: r }, "g-contexto g-anillo g-inst", svg);
       return q;
     });
-    svgEl("path", { d: "M" + x(nacional) + " " + (abajoBanda + 4) + " l-5 8 h10 z" }, "franja__nacional", svg);
-    textoEn(svg, x(nacional), abajoBanda + 25, "▲ nacional " + pct(nacional), "g-rotulo-suave", W);
+    textoEn(svg, x(nacional), abajoBanda + 25, "nacional " + pct(nacional), "g-rotulo-suave", W);
     caja.appendChild(svg);
     caja.appendChild(tip);
     caja.appendChild(anuncio);
@@ -1669,7 +1687,7 @@
       q.nodo.classList.add("g-inst--activa");
       svg.appendChild(q.nodo);   // al frente
       var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Empleabilidad 2° año: " + pct(g.emp2),
-                    "Dif. 1er año con la institución típica: " + difPuntos(g.desvio_emp1),
+                    "Dif. 1er año con la institución del medio: " + difPuntos(g.desvio_emp1),
                     "Continuidad de estudios: " + pct(g.continuidad)];
       if (g.tramo) {
         lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
@@ -1862,7 +1880,7 @@
     var dl3 = el("dl", "liq");
     liq(dl3, "Empleabilidad nacional, 1er año", pct(p.empleabilidad_nacional[0]));
     liq(dl3, "Empleabilidad nacional, 2° año", pct(p.empleabilidad_nacional[1]));
-    if (d1) liq(dl3, "Institución típica, 1er año (mediana de " + d1.n_inst + ")", pct(d1.mediana));
+    if (d1) liq(dl3, "Institución del medio, 1er año (de " + d1.n_inst + ")", pct(d1.mediana));
     b3.appendChild(dl3);
     if (progs.length) {
       var grafI = null;
@@ -1873,13 +1891,12 @@
           marcarFila(g, true);
         }, p.media.anio[3]);
         // La explicación (población más amplia que las instituciones publicadas, A4) solo vale
-        // cuando la cifra nacional queda sobre la institución típica; si no, se dice sin explicar.
+        // cuando la cifra nacional queda sobre la institución del medio; si no, se dice sin explicar.
+        // Con menos de 1 punto no hay nota: las dos líneas rotuladas ya muestran que coinciden.
         var dif = d1.nacional_menos_mediana;
-        b3.appendChild(el("p", "ficha__nota", Math.abs(dif) < 1
-          ? "La cifra nacional y la institución típica casi coinciden (" + fmtUno.format(Math.abs(dif)) + " puntos de diferencia)."
-          : dif > 0
-            ? "La cifra nacional queda " + fmtUno.format(dif) + " puntos sobre la institución típica: incluye titulados que no aparecen en ninguna institución publicada."
-            : "La cifra nacional queda " + fmtUno.format(-dif) + " puntos bajo la institución típica: las instituciones más grandes de esta carrera tienen menor empleabilidad."));
+        if (Math.abs(dif) >= 1) b3.appendChild(el("p", "ficha__nota", dif > 0
+            ? "La cifra nacional queda " + fmtUno.format(dif) + " puntos sobre la institución del medio: incluye titulados que no aparecen en ninguna institución publicada."
+            : "La cifra nacional queda " + fmtUno.format(-dif) + " puntos bajo la institución del medio: las instituciones más grandes de esta carrera tienen menor empleabilidad."));
       } else {
         b3.appendChild(el("p", "ficha__nota", "Con menos de " + parametro("min_inst_dispersion") +
           " instituciones con el dato, no se comparan entre sí: se listan sin comparación."));
@@ -1906,7 +1923,7 @@
       var envolI = el("div");
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
-      var COL_DIF = d1 ? "Dif. 1er año con la institución típica (" + pct(d1.mediana) + ")" : null;
+      var COL_DIF = d1 ? "Dif. 1er año con la institución del medio (" + pct(d1.mediana) + ")" : null;
       var COL_RANGO = "Rango de ingreso al 4° año";
       function pintarInst() {
         envolI.replaceChildren();
@@ -1950,7 +1967,7 @@
       // Con 10 o menos no hay filas ocultas: el botón no haría nada.
       if (progs.length > MAX_INST) b3.appendChild(bI);
       b3.appendChild(el("p", "ficha__nota", "Rango de ingreso al 4° año: ingreso promedio que MiFuturo publica por institución como rango, no como cifra exacta" +
-        (conTramo ? "; se compara con el rango de la institución típica." : ".") +
+        (conTramo ? "; se compara con el rango de la institución del medio." : ".") +
         " Continuidad de estudios: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
     }
 
@@ -2406,7 +2423,7 @@
     if (brecha.emp_pp != null && brecha.tramo_pct != null) {
       item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha.emp_pp) + " puntos",
         " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
-        " sobre ellas en el rango de ingreso al 4° año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución típica de su carrera."]);
+        " sobre ellas en el rango de ingreso al 4° año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución del medio de su carrera."]);
     }
     item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),
       " de las titulaciones recientes; entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);

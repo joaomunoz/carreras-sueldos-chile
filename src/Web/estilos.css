@@ -644,12 +644,16 @@ a.hallazgo__accion { color: var(--tinta); }
 .grafico__eje-x { flex-basis: 100%; }
 .leyenda-item { display: inline-flex; align-items: center; gap: 0.4rem; }
 .leyenda-item[hidden] { display: none; }   /* sin esto, el display de arriba anula el atributo hidden */
-.punto { width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; }
+.punto { width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 .punto--anio1 { background: var(--anio1); }
 .punto--anio5 { background: var(--anio5); }
 .trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
 .trazo--timbre { border-top: 3px solid var(--timbre); }
 .trazo--fino { border-top: 1px solid var(--tinta-suave); }
+/* Muestras verticales: las líneas de referencia del gráfico de instituciones son verticales. */
+.trazo-v { display: inline-block; flex-shrink: 0; width: 0; height: 0.9rem; border-left: 2px solid var(--tinta); }
+.trazo-v--punteado { border-left: 2px dashed var(--tinta-suave); }
+.grafico__leyenda--arriba { margin: 0.5rem 0 0.75rem; }
 .barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
 
 /* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */
@@ -881,6 +885,8 @@ a.hallazgo__accion { color: var(--tinta); }
 .g-vecina { cursor: pointer; }
 .g-vecina:hover .g-contexto { fill-opacity: 1; }
 .g-tipica { stroke: var(--tinta); stroke-width: 2; }
+/* Cifra nacional: punteada y en tinta suave, para distinguirla de la institución del medio sin color. */
+.g-nacional { stroke: var(--tinta-suave); stroke-width: 2; stroke-dasharray: 4 3; }
 .g-rotulo-suave { fill: var(--tinta-suave); font: 0.75rem var(--f-texto); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--papel-alto); stroke-width: 4px; stroke-linejoin: round; }
 .ficha .g-rotulo { stroke: var(--papel-alto); font-variant-numeric: tabular-nums; }
 .f-caja { stroke: var(--acento); stroke-width: 8; stroke-linecap: round; stroke-opacity: 0.45; }
@@ -902,14 +908,14 @@ a.hallazgo__accion { color: var(--tinta); }
 
 /* Instituciones de la ficha: el punto bajo el puntero (o el de la fila bajo el puntero) toma el
    único acento, con anillo de tinta para distinguirlo también sin color. */
-.ficha__grafico--inst { position: relative; }
+.ficha__grafico--inst { position: relative; margin-bottom: 1rem; }   /* aire antes del bloque del 4° año */
 .ficha__grafico--inst:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; }
 .g-inst { transition: r 0.12s; }
 .g-inst--activa { fill: var(--acento); fill-opacity: 1; stroke: var(--tinta); stroke-width: 1.5; r: 6.5px; }
 @media (prefers-reduced-motion: reduce) { .g-inst { transition: none; } }
 .tabla--ficha tr.fila--marcada td { background: var(--papel); }
 .tabla--ficha tr.fila--marcada td:first-child { box-shadow: inset 3px 0 0 var(--acento); font-weight: 600; }
-/* Encabezados largos ("Dif. con la institución típica (78,8 %)") en dos líneas, no a lo ancho. */
+/* Encabezados largos ("Dif. con la institución del medio (78,8 %)") en dos líneas, no a lo ancho. */
 .tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 6.5rem; }
 /* th.num: sin esto ganaba `.tabla .num` (más específica, nowrap) y los encabezados de cifras iban en
    una línea: con 6 columnas la tabla medía 1.174 px en una caja de 884 a 1366 px de pantalla. */
