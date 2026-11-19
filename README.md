@@ -124,7 +124,7 @@ La lista completa, con sus cifras, está en la sección **«Qué no dice este an
 
 ## Fuentes y licencias
 
-- **Datos:** [MiFuturo](https://www.mifuturo.cl) (Buscador de Empleabilidad e Ingresos y Buscador de Estadísticas por Carrera, metodologías 2025–2026) y SIES (Titulados 2017–2025), ambos del Ministerio de Educación de Chile. Rigen las condiciones de uso de sus fuentes; este repositorio no los relicencia.
+- **Datos:** [MiFuturo](https://www.mifuturo.cl) (Buscador de Empleabilidad e Ingresos y Buscador de Estadísticas por Carrera, metodologías 2025–2026) y SIES ([bases de datos de titulados](https://www.mifuturo.cl/bases-de-datos-titulados/): base histórica 2007–2025, versión del 27-05-2026, con su [glosario](https://www.mifuturo.cl/wp-content/uploads/2026/05/GLOSARIO_DE_TITULADO_2007_2025_E.pdf); el análisis usa 2017–2025), ambos del Ministerio de Educación de Chile. `src/Scrapers/Titulados/obtener.py` busca en esa página el enlace vigente al Excel, cuyo nombre cambia con cada versión. Rigen las condiciones de uso de sus fuentes; este repositorio no los relicencia.
 - **Fuente tipográfica:** Archivo Narrow (SIL Open Font License 1.1, ver `src/Web/fuentes/`).
 - **Código:** licencia [MIT](LICENSE).
 
