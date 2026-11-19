@@ -839,7 +839,8 @@ a.hallazgo__accion { color: var(--tinta); }
 .liq__guia { flex: 1 1 1rem; border-bottom: 1px dotted var(--tinta-suave); opacity: 0.6; transform: translateY(-0.25em); min-width: 1rem; }
 .liq__linea dd {
   margin: 0;
-  flex: 0 0 auto;
+  flex: 0 1 auto;   /* puede encogerse: un valor largo («estimado: …» en Derecho) desbordaba la página */
+  min-width: 0;
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -991,6 +992,14 @@ a.hallazgo__accion { color: var(--tinta); }
   overflow-wrap: anywhere;
 }
 .metodo code { font-family: var(--f-cifra); font-size: 0.875em; }
+/* Advertencias en la Parte III: el mismo timbre de las fichas y su significado al lado. */
+.metodo__avisos { display: grid; grid-template-columns: max-content 1fr; gap: 0.5rem 1rem; margin: 0; }
+.metodo__avisos dt { margin: 0; }
+.metodo__avisos dd { margin: 0; color: var(--tinta-suave); }
+@media (max-width: 40rem) {
+  .metodo__avisos { grid-template-columns: 1fr; gap: 0.2rem; }
+  .metodo__avisos dd { margin-bottom: 0.5rem; }
+}
 
 /* Estado de controles: ícono + texto, nunca solo color (regla de estados de dataviz). */
 .qa-resumen { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.0625rem; }
@@ -3246,12 +3255,34 @@ a.hallazgo__accion { color: var(--tinta); }
 
   // Nombres de institución en formato título: la fuente los trae en mayúsculas ("UNIVERSIDAD DE
   // CHILE") y así no calzan con el resto de la ficha. Siglas, "de/del/y" y los artículos de
-  // sustantivos comunes ("de la Región") se tratan aparte; la fuente no trae tildes y no se inventan.
+  // sustantivos comunes ("de la Región") se tratan aparte. La fuente no trae tildes: se agregan solo
+  // a palabras completas de esta lista cerrada (ortografía estándar de palabras y nombres comunes);
+  // una palabra que no está en la lista queda como viene. Antes no se agregaban y nombres como
+  // «Universidad Catolica de la Santisima Concepcion» se leían mal escritos (evaluación final, 19-11-26).
   var SIGLAS = { CFT: 1, IP: 1, CEDUC: 1, UCN: 1, ENAC: 1, INACAP: 1, ICCE: 1, PUCV: 1, AIEP: 1, DUOC: 1, UC: 1,
                  EATRI: 1, ESUCOMEX: 1, IACC: 1, IPG: 1, IPLACEX: 1, UNIACC: 1, SEK: 1, CENCO: 1 };
   var MINUSCULA = { DE: 1, DEL: 1, Y: 1, E: 1 };
   var COMUNES = { REGION: 1, SANTISIMA: 1, EDUCACION: 1 };   // "de la Región", no "de La Región"
-  function nombreInst(s) {
+  var TILDES = {
+    ADMINISTRACION: "administración", AGUSTIN: "agustín", ALEMAN: "alemán", AMERICAS: "américas", ANDRES: "andrés",
+    ANGELES: "ángeles", ANTARTICA: "antártica", ARAUCANIA: "araucanía", AUTONOMA: "autónoma", AYSEN: "aysén", BIO: "bío",
+    BRITANICA: "británica", BRITANICO: "británico", CAPACITACION: "capacitación", CATEQUISTICO: "catequístico",
+    CATOLICA: "católica", CICERON: "cicerón", COMPUTACION: "computación", COMUNICACION: "comunicación",
+    CONCEPCION: "concepción", EDUCACION: "educación", ESCENICAS: "escénicas", FUTBOL: "fútbol", GOMEZ: "gómez",
+    GRAFICA: "gráfica", HENRIQUEZ: "henríquez", IBAÑEZ: "ibáñez", JURIDICOS: "jurídicos", MARIA: "maría", MUSICA: "música",
+    PACIFICO: "pacífico", RAUL: "raúl", REGION: "región", REPUBLICA: "república", RIOS: "ríos", SANTISIMA: "santísima",
+    SEBASTIAN: "sebastián", TARAPACA: "tarapacá", TECNICA: "técnica", TECNOLOGIA: "tecnología", TECNOLOGICA: "tecnológica",
+    TECNOLOGICO: "tecnológico", TOMAS: "tomás", VALPARAISO: "valparaíso"
+  };
+  function conTildes(texto) {
+    return texto.replace(/[A-Za-zÑñ]+/g, function (seg) {
+      var t = TILDES[seg.toUpperCase()];
+      if (!t) return seg;
+      return seg.charAt(0) === seg.charAt(0).toUpperCase() ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+    });
+  }
+  function nombreInst(s) { return conTildes(nombreInstSinTildes(s)); }
+  function nombreInstSinTildes(s) {
     var pal = s.split(" ");
     return pal.map(function (w, i) {
       if (SIGLAS[w.replace(/[^A-ZÑ]/g, "")] && /^[A-ZÑ]+$/.test(w)) return w;
@@ -4134,6 +4165,12 @@ a.hallazgo__accion { color: var(--tinta); }
     });
   }
 
+  function minCasos(indicador) {
+    var c = datos.cohortes.filter(function (x) { return x.indicador === indicador; })[0];
+    if (!c || c.min_casos == null) throw new Error("Sin mínimo de casos para " + indicador);
+    return c.min_casos;
+  }
+
   function pintarLimites() {
     var q = datos.que_no_dice, ul = document.getElementById("limites");
     function item(titulo, partes) { var li = el("li"); textoConCifras(li, titulo, partes); ul.appendChild(li); }
@@ -4142,15 +4179,27 @@ a.hallazgo__accion { color: var(--tinta); }
     // Números de analytics.brecha_nacional (antes se sacaban con un regex del texto del control qa).
     var brecha = q.brecha_nacional_instituciones || {};
 
-    item("No dice por qué.", ["Describe cuánto ganan los titulados de cada carrera; no prueba que estudiar esa carrera cause ese sueldo. Pueden influir quién entra a estudiarla, en qué institución y dónde trabaja después."]);
+    // La Parte III hace de preguntas frecuentes (decisión del 19-11-26): cada límite responde una
+    // pregunta de lector; la evaluación final encontró cuáles faltaban o quedaban a medias.
+    item("No dice por qué ni qué elegir.", ["Describe cuánto ganan los titulados de cada carrera; no prueba que estudiar esa carrera cause ese sueldo. Pueden influir quién entra a estudiarla, en qué institución y dónde trabaja después. " +
+      "Sirve para comparar con más información, no para decidir por ti: no mide la vocación, el costo de la carrera ni las condiciones de trabajo."]);
     item("No sigue a las mismas personas.", ["El primer y el quinto año son grupos distintos de titulados medidos con los mismos ingresos de 2024: es una foto, no una trayectoria. " +
       "El sueldo típico compara a los titulados de " + ventana("percentiles_anio_1") + " (1er año) con los de " + ventana("percentiles_anio_5") +
-      " (5° año); los promedios y la empleabilidad, a los de " + ventana("ingreso_medio_1er_anio") + " con los de " + ventana("ingreso_medio_5to_anio") + "."]);
+      " (5° año); los promedios y la empleabilidad, a los de " + ventana("ingreso_medio_1er_anio") + " con los de " + ventana("ingreso_medio_5to_anio") + "." +
+      (function () {
+        // «Ganan menos» se lee como «les bajó el sueldo»: se dice aquí qué significa, con las cifras del hallazgo.
+        var t = nivelEdad("Carreras Técnicas");
+        return t && t.n_negativos ? " Por eso, que los titulados de hace cinco años ganen menos que los recientes no quiere decir que a alguien le haya bajado el sueldo: en " +
+          fmtEntero.format(t.n_con_edad) + " de las " + fmtEntero.format(t.n_negativos) + " carreras técnicas donde pasa, los titulados recientes son bastante mayores." : "";
+      })()]);
     item("No ve a todos.", ["Los programas que publica MiFuturo reúnen el ", pct(q.cobertura_titulaciones[0]),
       " de los titulados recientes y el ", pct(q.cobertura_titulaciones[1]),
       " de los de hace cinco años (no confundir con el " + pct(datos.universo.totales[0].pct_comparables) +
       " de la Parte I, que es la parte de los títulos que cae en carreras comparables). Faltan programas chicos y los que cerraron; la cobertura es baja en " +
-      q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return "las carreras " + x[1].replace("Carreras ", "").toLowerCase() + " de " + (TIPO_PLURAL[x[0]] || x[0]); }).join(", ") + "."]);
+      q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return "las carreras " + x[1].replace("Carreras ", "").toLowerCase() + " de " + (TIPO_PLURAL[x[0]] || x[0]); }).join(", ") + ". " +
+      "Si tu institución no aparece en la ficha de una carrera, MiFuturo no publica ese programa; si aparece sin una cifra, esa cifra tenía menos casos que el mínimo que exige MiFuturo (" +
+      fmtEntero.format(minCasos("empleabilidad_1er_anio_institucion")) + " para la empleabilidad y " + fmtEntero.format(minCasos("tramo_ingreso_4to_anio_institucion")) +
+      " para el rango de ingreso al 4° año)."]);
     item("No compara lo que no se puede comparar.", ["", fmtEntero.format(q.pares_no_representativos), " de " + fmtEntero.format(q.pares_total) +
       " carreras tienen menos de " + parametro("min_inst_oferta") + " instituciones y quedan fuera de rankings y gráficos de comparación; solo ",
       fmtEntero.format(q.celdas_validas), " grupos de área tienen carreras suficientes para servir de referencia."]);
@@ -4197,6 +4246,8 @@ a.hallazgo__accion { color: var(--tinta); }
   function pintarMetodo() {
     var div = document.getElementById("metodo");
     div.appendChild(el("p", null, "Fuentes: " + datos.meta.fuentes.join("; ") + ". Montos en " + datos.meta.unidad_ingresos.replace(">=", "≥") + "."));
+    div.appendChild(el("p", null, "Sueldo típico (P50, la mediana): lo que gana el titulado del medio; la mitad gana más y la otra mitad, menos. " +
+      "Se usa en vez del promedio porque unos pocos sueldos muy altos suben el promedio y lo alejan de lo que gana la mayoría."));
     div.appendChild(el("p", null, "Empleabilidad: " + datos.meta.rotulo_empleabilidad.replace(">=", "≥") + ". No es la tasa de desempleo."));
     div.appendChild(el("p", null, "Una carrera es un nombre de carrera de MiFuturo (por ejemplo, Enfermería) dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel. El área es la del conocimiento que usa MiFuturo (por ejemplo, «Tecnología» junta Informática y Telecomunicaciones); la clasificación internacional de carreras (CINE, de la UNESCO) se guarda como contexto."));
     // Los tres «del medio» definidos en un solo lugar: las fichas los usaban y la Parte III no los
@@ -4207,6 +4258,15 @@ a.hallazgo__accion { color: var(--tinta); }
       "al centro al ordenar por empleabilidad las instituciones que imparten la carrera (con un número par, la más baja de las dos centrales). " +
       "El rango del medio es el rango de ingreso al 4° año que queda al centro entre las instituciones que lo publican, que pueden ser menos " +
       "que las que publican empleabilidad."));
+    // Las advertencias con el mismo texto que llevan en las fichas y tablas (TIMBRES, umbrales desde
+    // SQL): antes la Parte III solo mostraba sus umbrales, sin decir qué significa cada una.
+    div.appendChild(el("p", null, "Las advertencias que puede llevar una carrera:"));
+    var dl = el("dl", "metodo__avisos");
+    TIMBRES.forEach(function (def) {
+      var dt = el("dt"); dt.appendChild(timbre(def)); dl.appendChild(dt);
+      dl.appendChild(el("dd", null, def.explica()));
+    });
+    div.appendChild(dl);
     div.appendChild(el("p", null, "Cómo se construye, de los archivos públicos a esta página (se reproduce con un solo comando, make todo):"));
     div.appendChild(el("p", "metodo__flujo", "CSV de MiFuturo y SIES → base PostgreSQL (raw → modelo → analytics) → " +
       fmtEntero.format(datos.qa.controles.length) + " controles de calidad → datos.json → esta página, un solo archivo sin dependencias"));

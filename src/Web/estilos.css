@@ -825,7 +825,8 @@ a.hallazgo__accion { color: var(--tinta); }
 .liq__guia { flex: 1 1 1rem; border-bottom: 1px dotted var(--tinta-suave); opacity: 0.6; transform: translateY(-0.25em); min-width: 1rem; }
 .liq__linea dd {
   margin: 0;
-  flex: 0 0 auto;
+  flex: 0 1 auto;   /* puede encogerse: un valor largo («estimado: …» en Derecho) desbordaba la página */
+  min-width: 0;
   font-family: var(--f-cifra);
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -977,6 +978,14 @@ a.hallazgo__accion { color: var(--tinta); }
   overflow-wrap: anywhere;
 }
 .metodo code { font-family: var(--f-cifra); font-size: 0.875em; }
+/* Advertencias en la Parte III: el mismo timbre de las fichas y su significado al lado. */
+.metodo__avisos { display: grid; grid-template-columns: max-content 1fr; gap: 0.5rem 1rem; margin: 0; }
+.metodo__avisos dt { margin: 0; }
+.metodo__avisos dd { margin: 0; color: var(--tinta-suave); }
+@media (max-width: 40rem) {
+  .metodo__avisos { grid-template-columns: 1fr; gap: 0.2rem; }
+  .metodo__avisos dd { margin-bottom: 0.5rem; }
+}
 
 /* Estado de controles: ícono + texto, nunca solo color (regla de estados de dataviz). */
 .qa-resumen { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.0625rem; }
