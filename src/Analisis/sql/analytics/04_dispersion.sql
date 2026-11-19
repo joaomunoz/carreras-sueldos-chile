@@ -30,7 +30,7 @@
 -- Requiere 01_par.sql.
 
 INSERT INTO analytics.parametro VALUES
-    ('min_iqr_enganoso',        15, 'IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual el promedio nacional es engañoso', 'Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)'),
+    ('min_iqr_enganoso',        15, 'IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual la cifra nacional es engañosa', 'Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)'),
     ('min_pares_resumen_tramo', 20, 'Pares con dispersión de tramo necesarios para resumir el tramo por segmento',                                   'T5, decisión 1');
 
 -- --------------------------------------------------------------------------

@@ -95,7 +95,7 @@
   {
    "nombre": "min_iqr_enganoso",
    "valor": 15,
-   "descripcion": "IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual el promedio nacional es engañoso",
+   "descripcion": "IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual la cifra nacional es engañosa",
    "origen": "Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)"
   },
   {
@@ -453,7 +453,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 71
+   "OK": 72
   },
   "controles": [
    {
@@ -644,6 +644,13 @@
     "estado": "OK",
     "umbral": "p50_anio_1 + p50_delta_1_5 = p50_anio_5 y ref_pct_q50 = referencia p50_pct_1_5 del grupo",
     "detalle": "891077 + 592205 = 1483282; grupo celda|Tecnología|Universidad|Carreras Profesionales: 48.5 %"
+   },
+   {
+    "control": "analytics_hallazgos",
+    "objeto": "mediana_portada",
+    "estado": "OK",
+    "umbral": "mediana_p50_pct = valor central de las comparables del nivel ordenadas (recálculo sin percentile_cont)",
+    "detalle": "Carreras Profesionales: 43.2 %; Carreras Técnicas: 15.7 %"
    },
    {
     "control": "analytics_par",

@@ -105,15 +105,19 @@ def _hallazgos_readme(h: dict) -> str:
         raise SystemExit("datos.json no trae el hallazgo (a) para técnicas y profesionales: exportar de nuevo.")
     items = []
     if tec["n_negativos"] or pro["n_negativos"]:
-        t = (f"**Al quinto año no siempre se gana más.** El sueldo típico (P50) sube {_num(tec['mediana_p50_pct'], 1)} % "
-             f"entre el primer y el quinto año en las carreras técnicas y {_num(pro['mediana_p50_pct'], 1)} % en las "
-             f"profesionales (medianas de cada nivel), pero baja en {tec['n_negativos']} de {tec['n_comparables']} técnicas "
+        # Mediana simple de las carreras de cada nivel, con los tipos de institución juntos: se dice
+        # así (decisión del 19-11-26). Sin «sube ni pasa de… a…» (son grupos distintos) y sin
+        # «muchos ya trabajaban», que ningún dato respalda.
+        t = (f"**Al quinto año no siempre se gana más.** En la mitad de las carreras técnicas, quienes llevan cinco años "
+             f"titulados ganan al menos {_num(tec['mediana_p50_pct'], 1)} % más que quienes llevan uno (sueldo típico, P50); en las "
+             f"profesionales, al menos {_num(pro['mediana_p50_pct'], 1)} % más (mediana de las carreras de cada nivel, contando juntos "
+             f"los tipos de institución). Pero ganan menos en {tec['n_negativos']} de {tec['n_comparables']} técnicas "
              f"y en {pro['n_negativos']} de {pro['n_comparables']} profesionales.")
         if tec["n_con_edad"]:
             t += (f" No es que caigan los sueldos: en {tec['n_con_edad']} de esas {tec['n_negativos']} técnicas, quienes se "
-                  f"titularon hace poco son mucho mayores (los de 30 años o más pasan de {_num(tec['mayores30'][0], 1)} % "
-                  f"a {_num(tec['mayores30'][1], 1)} %, mediana de esas {tec['n_con_edad']}), y muchos ya trabajaban "
-                  f"antes de titularse.")
+                  f"titularon hace poco son mucho mayores (los de 30 años o más son el {_num(tec['mayores30'][0], 1)} % de "
+                  f"los titulados de hace cinco años y el {_num(tec['mayores30'][1], 1)} % de los recientes, mediana de esas "
+                  f"{tec['n_con_edad']}).")
         items.append(t)
     if b["ejemplo"]:
         e = b["ejemplo"]
@@ -128,7 +132,7 @@ def _hallazgos_readme(h: dict) -> str:
                      f"+${_num(e['ref_delta_q50'])} de la carrera del medio de su grupo (mediana ponderada por titulados).")
     if c["ejemplo"]:
         e = c["ejemplo"]
-        items.append(f"**El promedio nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras las "
+        items.append(f"**La cifra nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras las "
                      f"instituciones difieren {_num(c['umbral_pp'])} puntos o más en empleabilidad, aun dejando fuera al "
                      f"cuarto más alto y al cuarto más bajo. En {e['nombre']} ({e['tipo']}, {e['n_inst']} instituciones) "
                      f"la mitad central va de {_num(e['q1'], 1)} % a {_num(e['q3'], 1)} %, con una cifra nacional de "

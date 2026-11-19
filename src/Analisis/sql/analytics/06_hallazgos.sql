@@ -177,6 +177,29 @@ FROM (SELECT count(*) AS n
          OR h.mayores30_p5 IS DISTINCT FROM x.p5 OR h.mayores30_p1 IS DISTINCT FROM x.p1
          OR h.n_marca_edad IS DISTINCT FROM x.marca) x
 UNION ALL
+-- 1a. La cifra de portada (mediana SIMPLE del crecimiento del P50 de las carreras de cada nivel,
+--     con los tipos de institución juntos; así la rotula la web desde el 19-11-26) por otro camino:
+--     P50 desde modelo, carreras ordenadas y valor central (o promedio de los dos centrales), sin
+--     percentile_cont.
+SELECT 'analytics_hallazgos', 'mediana_portada', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'mediana_p50_pct = valor central de las comparables del nivel ordenadas (recálculo sin percentile_cont)',
+       (SELECT string_agg(format('%s: %s %%', nivel_carrera, round(mediana_p50_pct, 1)), '; ' ORDER BY nivel_carrera)
+        FROM analytics.hallazgo_edad)
+FROM (SELECT count(*) AS n
+      FROM analytics.hallazgo_edad h
+      FULL JOIN (SELECT nivel_carrera, avg(v) AS med
+                 FROM (SELECT p.nivel_carrera,
+                              100.0 * (e.percentil_50_anio_5 - e.percentil_50_anio_1) / e.percentil_50_anio_1 AS v,
+                              row_number() OVER (PARTITION BY p.nivel_carrera
+                                                 ORDER BY (e.percentil_50_anio_5::numeric / e.percentil_50_anio_1)) AS i,
+                              count(*) OVER (PARTITION BY p.nivel_carrera) AS n
+                       FROM analytics.par p
+                       JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+                       WHERE p.representativo) o
+                 WHERE i IN ((n + 1) / 2, (n + 2) / 2)
+                 GROUP BY nivel_carrera) x USING (nivel_carrera)
+      WHERE x.med IS NULL OR abs(h.mediana_p50_pct - x.med) > 0.0001) x
+UNION ALL
 -- 1b. Los niveles cubren a todas las comparables, sin perder ni repetir pares (p. ej. un nivel nuevo).
 SELECT 'analytics_hallazgos', 'edad_niveles',
        CASE WHEN n_niveles = 2 AND n_suma = n_rep THEN 'OK' ELSE 'FALLA' END,
