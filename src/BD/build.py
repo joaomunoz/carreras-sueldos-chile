@@ -14,7 +14,8 @@ supuesto roto), PostgreSQL revierte todo y la base queda como estaba antes del b
 Sin esto, un build fallido dejaría `raw` y `modelo` borrados o a medio cargar.
 
 Pasos:
-  1. src/BD/01_raw.sql          crea el esquema raw (vacío)
+  0. Base de este proyecto      vacía o de un build anterior; si no, se detiene sin borrar
+  1. src/BD/01_raw.sql         crea el esquema raw (vacío)
   2. src/BD/02_modelo.sql       crea el esquema modelo (vacío, salvo modelo.cohorte)
   3. COPY de los 3 CSV a raw    HEADER MATCH: el encabezado del CSV debe coincidir, en
                                 nombre y orden, con las columnas de la tabla
@@ -114,6 +115,47 @@ def _conectar() -> psycopg.Connection:
             "Sin ella libpq intenta una base con el nombre del usuario."
         )
     return psycopg.connect("")
+
+
+ESQUEMAS_PROPIOS = ("raw", "modelo", "analytics", "qa")
+
+
+def _verificar_base(cur: psycopg.Cursor) -> None:
+    """Se niega a construir en una base que no es de este proyecto.
+
+    El build hace DROP SCHEMA ... CASCADE de los 4 esquemas propios: con PGDATABASE apuntando
+    a otra base existente («raw» es un nombre común en proyectos de datos) borraría datos
+    ajenos. No se exige el nombre carreras_sueldos porque los ensayos de método usan una base
+    aparte (ADR-002, ADR-003). Una base es aceptable si está vacía o si es de un build anterior
+    (tiene qa.control y nada fuera de los 4 esquemas).
+    """
+    cur.execute("SELECT current_database()")
+    base = cur.fetchone()[0]
+    if base in ("postgres", "template0", "template1"):
+        raise RuntimeError(f"PGDATABASE={base} es una base del sistema; crea una propia: createdb carreras_sueldos")
+    cur.execute(
+        """SELECT n.nspname || '.' || c.relname
+             FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+            WHERE c.relkind IN ('r', 'p', 'v', 'm', 'f')
+              AND n.nspname <> ALL (%s)
+              AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+              AND n.nspname NOT LIKE 'pg\\_%%'
+            ORDER BY 1 LIMIT 5""",
+        (list(ESQUEMAS_PROPIOS),),
+    )
+    ajenas = [fila[0] for fila in cur.fetchall()]
+    cur.execute("SELECT array_agg(nspname ORDER BY nspname) FROM pg_namespace WHERE nspname = ANY (%s)",
+                (list(ESQUEMAS_PROPIOS),))
+    existentes = cur.fetchone()[0] or []
+    cur.execute("SELECT to_regclass('qa.control') IS NOT NULL")
+    de_un_build = cur.fetchone()[0]
+    if ajenas or (existentes and not de_un_build):
+        motivo = (f"tiene tablas fuera de {', '.join(ESQUEMAS_PROPIOS)} ({', '.join(ajenas)}…)" if ajenas
+                  else f"tiene los esquemas {', '.join(existentes)} sin la firma de un build (qa.control)")
+        raise RuntimeError(
+            f"La base «{base}» no parece de este proyecto: {motivo}. El build borra y recrea esos "
+            "esquemas; usa una base vacía (createdb carreras_sueldos) o revisa PGDATABASE."
+        )
 
 
 def _ejecutar_sql(cur: psycopg.Cursor, nombre: str, directorio: Path = DIR_BD) -> None:
@@ -240,6 +282,7 @@ def build() -> None:
         with conn.transaction(), conn.cursor() as cur:
             # Los avisos de DROP ... CASCADE no aportan; los errores siguen llegando como excepción.
             cur.execute("SET LOCAL client_min_messages = warning")
+            _verificar_base(cur)
             for nombre in SCRIPTS_ESTRUCTURA:
                 _ejecutar_sql(cur, nombre)
             for tabla, ruta in CARGAS.items():
