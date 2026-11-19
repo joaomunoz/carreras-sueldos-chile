@@ -911,6 +911,11 @@
     return !!e && p.clave === e.clave && p.tipo === e.tipo;
   }
 
+  // Nombre (corto) de la carrera del medio del grupo en una cifra; «esta misma» si es ella.
+  function medioCuad(p, metrica) {
+    return referenciaDe(p, metrica).q50_clave === p.clave ? "esta misma carrera" : nombreCorto(nombreMedio(p, metrica), 50);
+  }
+
   function prepararCuadrantes() {
     cuad.todos = comparables.map(function (p) {
       var r1 = refQ50(p, "p50_anio_1"), rp = refQ50(p, "p50_pct_1_5"), rd = refQ50(p, "p50_delta_1_5");
@@ -1174,12 +1179,17 @@
           ? " (es la carrera del medio de su grupo)"
           // En pesos y no como razón: «×1» con un decimal se mostraba en 33 carreras rotuladas
           // «entrada baja/alta» (0,96 → ×1). La diferencia viene de SQL (dif_grupo).
-          : " (" + pesos(Math.abs(p.dif_grupo.p50_anio_1)) + (p.dif_grupo.p50_anio_1 > 0 ? " más" : " menos") +
-            " que la del medio, " + pesos(q.ref1) + ")"),
-        "Crecimiento 1er → 5° año: " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
-        "Crecimiento de la del medio: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
-        nombreCuadrante(p.posicion[clave])
+          : " · " + pesos(Math.abs(p.dif_grupo.p50_anio_1)) + (p.dif_grupo.p50_anio_1 > 0 ? " más" : " menos") +
+            " que " + medioCuad(p, "p50_anio_1") + " (" + pesos(q.ref1) + "), la del medio en entrada"),
+        "Crecimiento 1er → 5° año: " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5)
       ];
+      // La del medio cambia según la cifra: en 11 de 19 grupos la del crecimiento en % no es la del
+      // crecimiento en pesos, y una sola línea «+X % / +$Y» hacía creer que era una misma carrera.
+      var mPct = medioCuad(p, "p50_pct_1_5"), mPesos = medioCuad(p, "p50_delta_1_5");
+      if (mPct === mPesos) lineas.push("Crecimiento de la del medio: " + mPct + ", " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta));
+      else lineas.push("Crecimiento de la del medio en %: " + mPct + ", " + pctSigno(q.refPct),
+                       "Crecimiento de la del medio en pesos: " + mPesos + ", " + pesosSigno(q.refDelta));
+      lineas.push(nombreCuadrante(p.posicion[clave]));
       if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + nombreCuadrante(p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]));
       llenarTooltip(caja, p, lineas);
       // Con el desfase del lienzo dentro de la figura (ver el peine): sin él, la ayuda tapaba el punto.

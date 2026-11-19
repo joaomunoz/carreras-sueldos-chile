@@ -686,6 +686,8 @@ a.hallazgo__accion { color: var(--tinta); }
 .tooltip__titulo { font-weight: 600; }
 .tooltip__sub { color: var(--tinta-suave); font-size: var(--t-0); }
 .tooltip__cifras { margin-top: 0.35rem; font-family: var(--f-cifra); font-variant-numeric: tabular-nums; font-size: var(--t-0); }
+/* Una línea por dato: con nombres largos cada una ocupa varias filas y sin aire se leían como un solo bloque. */
+.tooltip__cifras > div + div { margin-top: 0.3rem; }
 .tooltip .timbres { margin-top: 0.35rem; }
 
 /* Cuadrantes (W4) */
