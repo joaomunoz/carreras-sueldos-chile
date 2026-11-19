@@ -2459,6 +2459,10 @@
         try { history.replaceState(nav.actual, "", location.href); } catch (err) { /* sin historial */ }
         mostrarVolver(null);
         if (p) { mostrarFicha(p); despues(irAFicha); }
+        else if (carreraPedidaInexistente()) {
+          avisarCarreraInexistente(carreraPedidaInexistente(), "Se mantiene la ficha que estaba abierta");
+          despues(irAFicha);
+        }
         return;
       }
       nav.actual = destino;
@@ -2660,6 +2664,23 @@
     try { return parPorClave[decodeURIComponent(m[1])] || null; } catch (e) { return null; }
   }
 
+  // Lo que pedía un "#carrera=…" que no corresponde a ninguna carrera (enlace cortado o de otra
+  // versión de los datos); null si la dirección no pide carrera o si la pedida existe. Sin este
+  // aviso la ficha mostraba el ejemplo en silencio y el lector creía que el enlace era de esa carrera.
+  function carreraPedidaInexistente() {
+    var m = /#carrera=([^&]+)/.exec(location.hash);
+    if (!m || desdeDireccion()) return null;
+    var pedida;
+    try { pedida = decodeURIComponent(m[1]); } catch (e) { pedida = m[1]; }
+    pedida = pedida.split("|").join(" — ");
+    return pedida.length > 60 ? pedida.slice(0, 60) + "…" : pedida;
+  }
+  // textContent, no innerHTML: lo pedido viene de la dirección y puede traer cualquier texto.
+  function avisarCarreraInexistente(pedida, queSeMuestra) {
+    document.getElementById("ficha-estado").textContent = "El enlace pide «" + pedida + "», que no está entre las " +
+      fmtEntero.format(pares.length) + " carreras de estos datos. " + queSeMuestra + "; escribe el nombre arriba para buscarla.";
+  }
+
   function prepararFicha() {
     prepararBuscador();
     document.getElementById("ficha-form").addEventListener("submit", function (e) {
@@ -2685,8 +2706,10 @@
     if (!inicial) throw new Error("La ficha de ejemplo no está entre los pares: " + ej.clave + " / " + ej.tipo);
     pintarFicha(inicial);
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
-    if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
-    else document.getElementById("ficha-estado").textContent =
+    var pedida = carreraPedidaInexistente();
+    if (desdeDireccion() || pedida) document.getElementById("ficha").scrollIntoView();
+    if (pedida) avisarCarreraInexistente(pedida, "Se muestra un ejemplo, " + etiquetaPar(inicial));
+    else if (!desdeDireccion()) document.getElementById("ficha-estado").textContent =
       "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados entre las que se comparan con una carrera del medio de su área. Escribe la tuya arriba.";
     prepararHistorial();
   }
