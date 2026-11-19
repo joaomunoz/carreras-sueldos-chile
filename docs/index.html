@@ -959,8 +959,13 @@ a.hallazgo__accion { color: var(--tinta); }
 @media (prefers-reduced-motion: reduce) { .g-inst { transition: none; } }
 .tabla--ficha tr.fila--marcada td { background: var(--papel); }
 .tabla--ficha tr.fila--marcada td:first-child { box-shadow: inset 3px 0 0 var(--acento); font-weight: 600; }
-/* Encabezados largos ("Dif. con la institución del medio (78,8 %)") en dos líneas, no a lo ancho. */
-.tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 6.5rem; }
+/* Encabezados cortos en hasta dos líneas. La tabla, más junta (pedido del usuario, 19-11-26): título y
+   referencia pegados a ella, menos relleno por fila y la nota del rango pegada a la cifra. */
+.tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 5.5rem; }
+.tabla__titulo { margin: 1rem 0 0.15rem; }
+.ficha__nota.tabla__ref { margin: 0 0 0.5rem; }
+.ficha .tabla--inst td { padding-block: 0.3rem; line-height: 1.3; }
+.tabla--inst .td__nota { margin-top: 0.1rem; line-height: 1.2; white-space: nowrap; }   /* tres líneas justas: desde, hasta, comparación */
 /* th.num: sin esto ganaba `.tabla .num` (más específica, nowrap) y los encabezados de cifras iban en
    una línea: con 6 columnas la tabla medía 1.174 px en una caja de 884 a 1366 px de pantalla. */
 .tabla--inst thead th.num { white-space: normal; }
@@ -979,7 +984,6 @@ a.hallazgo__accion { color: var(--tinta); }
   .ficha .tabla--movil td:not(.td--titulo) { white-space: normal; text-align: left; }
   .ficha .tabla--movil td:not(.td--titulo)::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); font-weight: 400; color: var(--tinta-suave); }
   .ficha .tabla--inst td.td--tramo { grid-column: 1 / -1; }
-}
 }
 .ficha .tabla--inst td.td--tramo { white-space: normal; }   /* gana a `.ficha .tabla--compacta td.num` (nowrap) por orden */
 .td__nota { display: block; font-family: var(--f-texto); font-size: 0.75rem; color: var(--tinta-suave); white-space: normal; }
@@ -2688,12 +2692,19 @@ a.hallazgo__accion { color: var(--tinta); }
     var xp = med("p50_pct_1_5"), xd = med("p50_delta_1_5");
     var a = xp ? p.posicion.progreso_pct : null, b = xd ? p.posicion.progreso_pesos : null;
     var base = "Su crecimiento entre el 1er y el 5° año es ";
-    if (a == null && b == null) return "";
+    // Si ella misma es la del medio en una medida, se dice: antes esa medida desaparecía sin aviso
+    // (12 fichas, y en 8 la frase entera; tercera evaluación, 19-11-26).
+    if (a == null && b == null) return "En crecimiento entre el 1er y el 5° año, en % y en pesos, ella misma es la carrera del medio.";
+    var ella = a == null ? " En %, ella misma es la carrera del medio en crecimiento." : b == null ? " En pesos, ella misma es la carrera del medio en crecimiento." : "";
     if (a != null && b != null && xp === xd && a === b) return base + DIF[a] + " de " + xp + ", la carrera del medio en crecimiento, en % y en pesos.";
     var partes = [];
     if (a != null) partes.push(DIF[a] + " de " + xp + " en %");
     if (b != null) partes.push((a != null ? "y " : "") + DIF[b] + " de " + (xd === xp ? "esa misma carrera" : xd) + " en pesos");
-    return base + partes.join(", ") + " (" + (xp && xd && xp !== xd ? "las carreras del medio en cada medida" : "la carrera del medio en crecimiento") + ").";
+    // Con una sola medida se nombra cuál: «la carrera del medio en crecimiento» a secas hacía que
+    // Enfermería y Obstetricia se nombraran mutuamente como «la» del medio.
+    var cual = xp && xd ? (xp !== xd ? "las carreras del medio en cada medida" : "la carrera del medio en crecimiento")
+      : "la carrera del medio en crecimiento " + (xp ? "en %" : "en pesos");
+    return base + partes.join(", ") + " (" + cual + ")." + ella;
   }
 
   function veredicto(p) {
@@ -2711,7 +2722,8 @@ a.hallazgo__accion { color: var(--tinta); }
       // Primero el resultado y después el porqué (antes eran ~70 palabras que empezaban por el método).
       var cuantas = function (k) {
         return k === otras ? (otras === 1 ? "mayor que el de ella" : "mayor que el de todas") : k === 0 ? (otras === 1 ? "menor que el de ella" : "menor que el de todas")
-          : "mayor que el de " + fmtEntero.format(k);
+          // «de N de ellas»: tras «entre el 1er y el 5° año», «mayor que el de 1» sonaba a un año.
+          : "mayor que el de " + (k === 1 ? "una" : fmtEntero.format(k)) + " de ellas";
       };
       var crece = af.mas_que_pct === af.mas_que_pesos
         ? cuantas(af.mas_que_pct) + ", en % y en pesos"
@@ -2821,7 +2833,7 @@ a.hallazgo__accion { color: var(--tinta); }
         difTexto: function (d) { return pesos(Math.abs(d)) + (d > 0 ? " más" : " menos"); } },
       { rotulo: "Sueldo típico al 5° año", metrica: "p50_anio_5", propio: p.percentiles.anio_5.p50, dif: p.dif_grupo.p50_anio_5, f: pesos,
         difTexto: function (d) { return pesos(Math.abs(d)) + (d > 0 ? " más" : " menos"); } },
-      { rotulo: "Empleabilidad al 1er año", metrica: "emp1_nacional", propio: p.empleabilidad_nacional[0], dif: p.dif_grupo.emp1_nacional, f: pct,
+      { rotulo: "Empleabilidad nacional al 1er año", metrica: "emp1_nacional", propio: p.empleabilidad_nacional[0], dif: p.dif_grupo.emp1_nacional, f: pct,
         difTexto: function (d) { return fmtUno.format(Math.abs(d)) + (Math.abs(d) === 1 ? " punto" : " puntos") + (d > 0 ? " más" : " menos"); } }];
     FILAS.forEach(function (f) { f.medio = medioDe(p, f.metrica); });
     var claves = FILAS.map(function (f) { return f.medio.par.clave; });
@@ -3030,10 +3042,14 @@ a.hallazgo__accion { color: var(--tinta); }
       return;
     }
     var grande = orden.length > AREA_COMPLETA, todas = !grande;
+    // Una no comparable está en la tabla (marcada) pero no es una de las comparables: antes su ficha
+    // decía «las 19» y la de una comparable del mismo grupo, «las 18» (tercera evaluación, 19-11-26).
+    var nComp = orden.length - (p.marcas.representativo ? 0 : 1);
     subbloque(cont, "Otras carreras de su área", (grande
-      ? "Las " + AREA_CERCA * 2 + " más cercanas en sueldo de entrada, de las " + fmtEntero.format(orden.length)
-      : "Las " + fmtEntero.format(orden.length)) +
-      " carreras " + nivel + " del área «" + area + "» de MiFuturo, en todos los tipos de institución, de mayor a menor sueldo de entrada. Haz clic en una para ver su ficha.");
+      ? "Las " + AREA_CERCA * 2 + " más cercanas en sueldo de entrada, de las " + fmtEntero.format(nComp)
+      : "Las " + fmtEntero.format(nComp)) +
+      " carreras " + nivel + " comparables del área «" + area + "» de MiFuturo" + (p.marcas.representativo ? "" : " y esta, que no es comparable") +
+      ", en todos los tipos de institución, de mayor a menor sueldo de entrada. Haz clic en una para ver su ficha.");
     var cols = ["Carrera", "Tipo", "Sueldo 1er año", "Sueldo 5° año", "Empleabilidad 1er año"];
     var tb = tablaCon(cont, "Carreras " + nivel + " del área " + area + ", de mayor a menor sueldo típico al 1er año", cols);
     tb.parentNode.classList.add("tabla--movil");   // tarjetas en celular (estilos.css)
@@ -3299,8 +3315,8 @@ a.hallazgo__accion { color: var(--tinta); }
       q.nodo.classList.add("g-inst--activa");
       svg.appendChild(q.nodo);   // al frente
       var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Empleabilidad 2° año: " + pct(g.emp2),
-                    "Dif. 1er año con la institución del medio: " + (g.desvio_emp1 === 0 ? "igual a la del medio" : difPuntos(g.desvio_emp1)),
-                    "Continuidad de estudios: " + pct(g.continuidad)];
+                    "Frente a la del medio: " + difPuntos(g.desvio_emp1),
+                    "Siguen estudiando: " + pct(g.continuidad)];
       if (g.tramo) {
         lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
         if (nac4 != null) lineas.push("Promedio nacional al 4° año: " + pesos(nac4));
@@ -3553,33 +3569,47 @@ a.hallazgo__accion { color: var(--tinta); }
           aniosIngreso("ingreso_medio_4to_anio") + ")", pesos(p.media.anio[3]));
         b3.appendChild(dl4);
       }
-      b3.appendChild(el("p", "ficha__nota", "MiFuturo publica el ingreso por institución solo al 4° año y como rango. " +
-        "El 1er y el 5° año existen solo para la carrera completa (nacional), en el gráfico de sueldo por año."));
+      // La tabla con nombre visible y, sobre ella, UNA línea con los dos valores de referencia: antes
+      // iban dentro de los encabezados («Dif. 1er año con la institución del medio (78,8 %)», «…parte
+      // en $1.400.000»), que ocupaban tres líneas y se repetían en cada tarjeta del celular (pedido
+      // del usuario, 19-11-26). El título visible va aria-hidden: el <caption> ya lo dice a los lectores.
+      var tituloI = el("p", "grafico__titulo tabla__titulo", "Instituciones que imparten " + p.nombre + " (" + p.tipo + "), de mayor a menor empleabilidad al 1er año");
+      tituloI.setAttribute("aria-hidden", "true");
+      b3.appendChild(tituloI);
+      // El rango del medio se busca, no se calcula: es el de las instituciones cuyo piso es el del medio (SQL, mediana_min).
+      var gMedio = conTramo && p.dispersion.tramo.mediana_min != null
+        ? progs.filter(function (g) { return g.tramo && g.tramo[0] === p.dispersion.tramo.mediana_min; })[0] : null;
+      var refs = [];
+      if (d1) refs.push("institución del medio, " + pct(d1.mediana) + " de empleabilidad al 1er año");
+      if (gMedio) refs.push("rango del medio de ingreso al 4° año, " + tramoTexto(gMedio.tramo) + " (lo publican " +
+        fmtEntero.format(p.dispersion.tramo.n_inst) + " de " + fmtEntero.format(progs.length) + ")");
+      if (refs.length) b3.appendChild(el("p", "ficha__nota tabla__ref", "Para comparar: " + refs.join(" · ") + "."));
       var envolI = el("div");
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
-      var COL_DIF = d1 ? "Dif. 1er año con la institución del medio (" + pct(d1.mediana) + ")" : null;
-      // Con el valor de referencia: «bajo el rango del medio» no decía bajo qué cifra.
-      var COL_RANGO = "Rango de ingreso al 4° año" + (conTramo && p.dispersion.tramo.mediana_min != null
-        ? " (el rango del medio entre las instituciones que lo publican parte en " + pesos(p.dispersion.tramo.mediana_min) + ")" : "");
+      var COL_DIF = d1 ? "Frente a la del medio" : null;
+      var COL_RANGO = "Ingreso 4° año (rango)";
       function pintarInst() {
         envolI.replaceChildren();
         filasI = [];
         var cols = ["Institución", "Empleabilidad 1er año", "Empleabilidad 2° año"].concat(d1 ? [COL_DIF] : [])
-          .concat(["Continuidad de estudios", COL_RANGO]);
+          .concat(["Siguen estudiando", COL_RANGO]);
         var tbI = tablaCon(envolI, "Instituciones que publican " + p.nombre + " en MiFuturo, de mayor a menor empleabilidad", cols);
         tbI.parentNode.classList.add("tabla--inst", "tabla--movil");
         (todasInst ? progs : progs.slice(0, MAX_INST)).forEach(function (g) {
           var celdas = [["Institución", nombreInst(g.institucion), "td--titulo"], ["Empleabilidad 1er año", pct(g.emp1), "num"],
                         ["Empleabilidad 2° año", pct(g.emp2), "num"]];
-          // Con empate en la mediana puede haber más de una: «igual a la del medio», no «0,0 puntos».
-          if (d1) celdas.push([COL_DIF, g.desvio_emp1 === 0 ? "igual a la del medio" : difPuntos(g.desvio_emp1), "num"]);
-          celdas.push(["Continuidad de estudios", pct(g.continuidad), "num"]);
-          // Espacio de ancho cero tras el guion: el rango puede partirse en dos líneas en vez de ensanchar la tabla.
-          celdas.push([COL_RANGO, g.tramo ? tramoTexto(g.tramo).replace("–", "–\u200b") : "sin dato", "num td--tramo"]);
+          // «0,0 puntos» también en el empate (pedido del usuario, 19-11-26): la columna se lee pareja y
+          // la línea «Para comparar» ya dice cuál es el valor del medio.
+          if (d1) celdas.push([COL_DIF, difPuntos(g.desvio_emp1), "num"]);
+          celdas.push(["Siguen estudiando", pct(g.continuidad), "num"]);
+          celdas.push([COL_RANGO, g.tramo ? tramoTexto(g.tramo) : "sin dato", "num td--tramo"]);
           var tr = filaTabla(tbI, celdas, false, null);
-          // La comparación del tramo en palabras, bajo la cifra ("(sobre)" no decía sobre qué).
-          if (conTramo && g.tramo && g.tramo_vs_par) tr.querySelector(".td--tramo").appendChild(el("span", "td__nota", TRAMO_VS[g.tramo_vs_par]));
+          // Rango en tres líneas: desde, hasta y la comparación (pedido del usuario, 19-11-26). La
+          // columna queda angosta y la comparación en palabras dice frente a qué ("(sobre)" no lo decía).
+          var tdR = tr.querySelector(".td--tramo");
+          if (g.tramo && g.tramo[1] != null) tdR.replaceChildren(document.createTextNode(pesos(g.tramo[0]) + "–"), el("br"), document.createTextNode(pesos(g.tramo[1])));
+          if (conTramo && g.tramo && g.tramo_vs_par) tdR.appendChild(el("span", "td__nota", TRAMO_VS[g.tramo_vs_par]));
           if (grafI) {
             tr.addEventListener("pointerenter", function () { grafI.marcar(g); });
             tr.addEventListener("pointerleave", function () { grafI.marcar(null); });
@@ -3604,9 +3634,10 @@ a.hallazgo__accion { color: var(--tinta); }
       rotularInst();
       // Con 10 o menos no hay filas ocultas: el botón no haría nada.
       if (progs.length > MAX_INST) b3.appendChild(bI);
-      b3.appendChild(el("p", "ficha__nota", "Rango de ingreso al 4° año: ingreso promedio que MiFuturo publica por institución como rango, no como cifra exacta" +
-        (conTramo ? "; se compara con el rango del medio entre las instituciones que lo publican." : ".") +
-        " Continuidad de estudios: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
+      b3.appendChild(el("p", "ficha__nota", "Ingreso al 4° año: MiFuturo lo publica por institución solo ese año y como rango, no como cifra exacta" +
+        (conTramo ? "; se compara con el rango del medio entre las instituciones que lo publican" : "") +
+        ". El 1er y el 5° año existen solo para la carrera completa, en el gráfico de sueldo por año." +
+        " Siguen estudiando: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
     }
 
     // 4. Quiénes la estudian

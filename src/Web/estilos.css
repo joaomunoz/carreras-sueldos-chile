@@ -945,8 +945,13 @@ a.hallazgo__accion { color: var(--tinta); }
 @media (prefers-reduced-motion: reduce) { .g-inst { transition: none; } }
 .tabla--ficha tr.fila--marcada td { background: var(--papel); }
 .tabla--ficha tr.fila--marcada td:first-child { box-shadow: inset 3px 0 0 var(--acento); font-weight: 600; }
-/* Encabezados largos ("Dif. con la institución del medio (78,8 %)") en dos líneas, no a lo ancho. */
-.tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 6.5rem; }
+/* Encabezados cortos en hasta dos líneas. La tabla, más junta (pedido del usuario, 19-11-26): título y
+   referencia pegados a ella, menos relleno por fila y la nota del rango pegada a la cifra. */
+.tabla--inst thead th { white-space: normal; vertical-align: bottom; min-width: 5.5rem; }
+.tabla__titulo { margin: 1rem 0 0.15rem; }
+.ficha__nota.tabla__ref { margin: 0 0 0.5rem; }
+.ficha .tabla--inst td { padding-block: 0.3rem; line-height: 1.3; }
+.tabla--inst .td__nota { margin-top: 0.1rem; line-height: 1.2; white-space: nowrap; }   /* tres líneas justas: desde, hasta, comparación */
 /* th.num: sin esto ganaba `.tabla .num` (más específica, nowrap) y los encabezados de cifras iban en
    una línea: con 6 columnas la tabla medía 1.174 px en una caja de 884 a 1366 px de pantalla. */
 .tabla--inst thead th.num { white-space: normal; }
@@ -965,7 +970,6 @@ a.hallazgo__accion { color: var(--tinta); }
   .ficha .tabla--movil td:not(.td--titulo) { white-space: normal; text-align: left; }
   .ficha .tabla--movil td:not(.td--titulo)::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); font-weight: 400; color: var(--tinta-suave); }
   .ficha .tabla--inst td.td--tramo { grid-column: 1 / -1; }
-}
 }
 .ficha .tabla--inst td.td--tramo { white-space: normal; }   /* gana a `.ficha .tabla--compacta td.num` (nowrap) por orden */
 .td__nota { display: block; font-family: var(--f-texto); font-size: 0.75rem; color: var(--tinta-suave); white-space: normal; }
