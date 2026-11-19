@@ -2371,11 +2371,9 @@
 
     // 4. Quiénes la estudian
     var tt = p.titulados_2024, anioTit = ventana("titulados_y_duracion");
-    var b5 = bloque(art,
-      tt.total && tt.pct_mujeres != null
-        ? textoSexo(tt.pct_mujeres, tt.mujeres, tt.hombres).replace(/^m/, "M") + " de sus titulados " + anioTit + " son mujeres"
-        : "Quiénes la estudian y cuánto dura",
-      "Titulados por sexo y edad, y duración de la carrera.");
+    // Título neutro siempre: «X % de sus titulados son mujeres» repetía la barra por sexo de abajo
+    // y nombraba un solo lado (pedido del usuario, 19-11-26).
+    var b5 = bloque(art, "Quiénes la estudian y cuánto dura", "Titulados por sexo y edad, y duración de la carrera.");
     if (tt.total) {
       var dlT = el("dl", "liq");
       liq(dlT, "Titulados " + anioTit, fmtEntero.format(tt.total));
