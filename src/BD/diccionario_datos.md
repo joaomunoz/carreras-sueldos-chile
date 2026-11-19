@@ -132,17 +132,29 @@ Cohorte y año de ingreso están confundidos en cada punto (cada cohorte se mide
 
 ## Esquema `qa`
 
-### `qa.control` — resultado de los controles del último build
-**Grano:** un control × objeto evaluado. **Llave:** `(control, objeto)`. **Origen:** `src/BD/04_qa.sql` y `_controlar_esquemas()` de `src/BD/build.py`. Si algún control queda en `FALLA` el build se revierte, así que en la base solo hay resultados `OK` o `EXENTO`; las fallas se ven en el log del build.
+### `qa.familia` — familias de controles y lo que verifica cada una
+**Grano:** una familia de controles. **Llave:** `control`. **Origen:** `src/BD/04_qa.sql` (11 filas escritas a mano). La web la muestra como títulos de la tabla de controles («Qué verifica»), en el orden de `orden`.
 
 | Columna | Tipo | Nulo | Descripción |
 |---|---|---|---|
-| `control` | text | no | `contrato_esquema` \| `cohorte_en_sies` \| `origen_series` |
+| `control` | text | no | Nombre de la familia (el mismo de `qa.control.control`) |
+| `orden` | int | no | Posición en la tabla de la web, del archivo de entrada a la página (único) |
+| `titulo` | text | no | Nombre de la familia para el lector |
+| `verifica` | text | no | Qué verifica, en lenguaje llano |
+
+### `qa.control` — resultado de los controles del último build
+**Grano:** un control × objeto evaluado. **Llave:** `(control, objeto)`; `control` es FK a `qa.familia`, así que una familia nueva sin texto aborta el build. **Origen:** `src/BD/04_qa.sql`, `_controlar_esquemas()` de `src/BD/build.py` y cada `src/Analisis/sql/analytics/*.sql` (familias `analytics_*`). Si algún control queda en `FALLA` el build se revierte, así que en la base solo hay resultados `OK` o `EXENTO`; las fallas se ven en el log del build.
+
+| Columna | Tipo | Nulo | Descripción |
+|---|---|---|---|
+| `control` | text | no | Familia (FK a `qa.familia`): `contrato_esquema`, `cohorte_en_sies`, `origen_series` y las 8 `analytics_*` |
 | `objeto` | text | no | Tabla `raw`, indicador de `modelo.cohorte` o serie evaluada |
 | `estado` | text | no | `OK` \| `FALLA` \| `EXENTO` (no aplica, con el motivo en `detalle`) |
 | `metrica` | numeric | sí | Valor medido: n.º de problemas, años faltantes o mediana del error en % |
 | `umbral` | text | no | Criterio de aprobación, legible |
 | `detalle` | text | no | Evidencia (columnas, años faltantes, errores por desfase) |
+
+Criterio de las tres familias de `src/BD/` (los de `analytics_*` están en el `umbral` de cada fila):
 
 | Control | Aprueba si |
 |---|---|

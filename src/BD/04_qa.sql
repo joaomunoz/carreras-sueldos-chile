@@ -15,8 +15,42 @@
 DROP SCHEMA IF EXISTS qa CASCADE;
 CREATE SCHEMA qa;
 
+-- Familias de controles, con lo que verifica cada una en lenguaje llano: la web las muestra como
+-- títulos de la tabla de controles («Qué verifica»). La FK de qa.control obliga a que toda familia
+-- nueva traiga su texto: sin él, el primer INSERT de esa familia aborta el build. Una descripción
+-- por familia y no por control (81): el control individual se identifica por su nombre técnico.
+CREATE TABLE qa.familia (
+    control  text PRIMARY KEY,
+    orden    int  NOT NULL UNIQUE,   -- orden de la tabla: del archivo de entrada a la página
+    titulo   text NOT NULL,
+    verifica text NOT NULL
+);
+INSERT INTO qa.familia (control, orden, titulo, verifica) VALUES
+('contrato_esquema', 1, 'Forma de los archivos de entrada',
+ 'Que las columnas cargadas desde los archivos de MiFuturo y del SIES tengan el nombre, el orden y el tipo que espera el análisis.'),
+('cohorte_en_sies', 2, 'Años de titulación',
+ 'Que cada año de titulación que usa una cifra de MiFuturo exista en los registros de titulados del SIES, para poder pesar y comparar esa cifra con sus titulados. A las series de cinco años no se les aplica: solo sirven para revisar la estabilidad.'),
+('origen_series', 3, 'Series de cinco años',
+ 'Que cada serie de cinco años de MiFuturo esté asignada a los años de titulación correctos: comparada con el promedio que publica la misma fuente, el error debe ser menor con los años usados que corriéndolos uno o dos años.'),
+('analytics_par', 4, 'Carreras y grupos de comparación',
+ 'Que cada carrera tenga una sola área y su peso en titulados, y que solo las comparables (impartidas por suficientes instituciones) entren a un grupo de comparación.'),
+('analytics_brecha', 5, 'Sueldo al 1er y al 5° año',
+ 'Que el crecimiento entre el 1er y el 5° año se calcule para toda carrera con sueldos completos, que los pasos año a año reproduzcan ese crecimiento y que nunca se mezclen promedios con sueldos típicos.'),
+('analytics_referencia', 6, 'Carrera del medio y cuadrantes',
+ 'Que la carrera del medio de cada grupo sea una carrera real del grupo y deje a cada lado la mitad de los titulados, que ningún grupo dependa de una carrera dominante y que cada carrera quede en el cuadrante que le corresponde.'),
+('analytics_dispersion', 7, 'Diferencias entre instituciones',
+ 'Que cada institución se compare con la del medio de su propia carrera, que la institución del medio sea una institución real y que la cifra nacional se marque como engañosa solo cuando las instituciones difieren de verdad.'),
+('analytics_contexto', 8, 'Datos de contexto',
+ 'Que los datos de contexto de cada carrera (titulados por sexo, titulados jóvenes, cohortes atípicas) cuadren con sus fuentes.'),
+('analytics_universo', 9, 'A quiénes mira el análisis',
+ 'Que los titulados por año, nivel y sexo cuadren con la serie completa, y que cada paso del conteo de carreras (todas, con estadística, comparables) esté contenido en el anterior.'),
+('analytics_hallazgos', 10, 'Hallazgos',
+ 'Que cada cifra y cada ejemplo de las tarjetas de hallazgos, y la mediana de la portada, se recalculen por un camino independiente y cumplan la regla que dice su frase.'),
+('analytics_exportacion', 11, 'Archivo de datos de la página',
+ 'Que el archivo que lee esta página tenga una entrada por carrera y que sus totales, grupos y ficha de ejemplo coincidan con la base, recalculados desde cero.');
+
 CREATE TABLE qa.control (
-    control  text    NOT NULL,   -- nombre del control
+    control  text    NOT NULL REFERENCES qa.familia,   -- familia del control
     objeto   text    NOT NULL,   -- tabla, indicador o serie evaluada
     estado   text    NOT NULL CHECK (estado IN ('OK', 'FALLA', 'EXENTO')),
     metrica  numeric,            -- valor medido (NULL si el control es solo sí/no)

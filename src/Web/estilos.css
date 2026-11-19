@@ -980,6 +980,19 @@ a.hallazgo__accion { color: var(--tinta); }
 
 /* Estado de controles: ícono + texto, nunca solo color (regla de estados de dataviz). */
 .qa-resumen { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.0625rem; }
+/* Tabla de controles por familia: el título y «Qué verifica» en llano encabezan su grupo; cada
+   control va con su nombre técnico en letra de código (se lee como identificador, no como frase). */
+.tabla .qa-familia th { padding-top: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--tinta-suave); }
+.qa-familia__titulo { font-weight: 600; }
+.qa-familia__cuenta { color: var(--tinta-suave); font-size: var(--t-0); }
+.qa-familia__verifica { display: block; margin-top: 0.3rem; max-width: 72ch; color: var(--tinta-suave); font-size: var(--t-0); }
+.qa-nombre { font-family: var(--f-cifra); font-size: 0.875em; font-weight: 400; white-space: nowrap; }
+@media (max-width: 40rem) {
+  .qa-nombre { white-space: normal; overflow-wrap: anywhere; }   /* a 320 px el más largo no cabe */
+  .tabla--tarjetas tr.qa-familia, .tabla--tarjetas tr.qa-familia th { display: block; }
+  .tabla--tarjetas tr.qa-familia { padding-bottom: 0.4rem; }
+  .tabla--tarjetas tr.qa-familia th { padding: 0.75rem 0 0.4rem; }
+}
 .estado { display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
 .estado__icono {
   display: inline-grid;

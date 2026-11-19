@@ -440,6 +440,63 @@
    "EXENTO": 3,
    "OK": 78
   },
+  "familias": [
+   {
+    "control": "contrato_esquema",
+    "titulo": "Forma de los archivos de entrada",
+    "verifica": "Que las columnas cargadas desde los archivos de MiFuturo y del SIES tengan el nombre, el orden y el tipo que espera el análisis."
+   },
+   {
+    "control": "cohorte_en_sies",
+    "titulo": "Años de titulación",
+    "verifica": "Que cada año de titulación que usa una cifra de MiFuturo exista en los registros de titulados del SIES, para poder pesar y comparar esa cifra con sus titulados. A las series de cinco años no se les aplica: solo sirven para revisar la estabilidad."
+   },
+   {
+    "control": "origen_series",
+    "titulo": "Series de cinco años",
+    "verifica": "Que cada serie de cinco años de MiFuturo esté asignada a los años de titulación correctos: comparada con el promedio que publica la misma fuente, el error debe ser menor con los años usados que corriéndolos uno o dos años."
+   },
+   {
+    "control": "analytics_par",
+    "titulo": "Carreras y grupos de comparación",
+    "verifica": "Que cada carrera tenga una sola área y su peso en titulados, y que solo las comparables (impartidas por suficientes instituciones) entren a un grupo de comparación."
+   },
+   {
+    "control": "analytics_brecha",
+    "titulo": "Sueldo al 1er y al 5° año",
+    "verifica": "Que el crecimiento entre el 1er y el 5° año se calcule para toda carrera con sueldos completos, que los pasos año a año reproduzcan ese crecimiento y que nunca se mezclen promedios con sueldos típicos."
+   },
+   {
+    "control": "analytics_referencia",
+    "titulo": "Carrera del medio y cuadrantes",
+    "verifica": "Que la carrera del medio de cada grupo sea una carrera real del grupo y deje a cada lado la mitad de los titulados, que ningún grupo dependa de una carrera dominante y que cada carrera quede en el cuadrante que le corresponde."
+   },
+   {
+    "control": "analytics_dispersion",
+    "titulo": "Diferencias entre instituciones",
+    "verifica": "Que cada institución se compare con la del medio de su propia carrera, que la institución del medio sea una institución real y que la cifra nacional se marque como engañosa solo cuando las instituciones difieren de verdad."
+   },
+   {
+    "control": "analytics_contexto",
+    "titulo": "Datos de contexto",
+    "verifica": "Que los datos de contexto de cada carrera (titulados por sexo, titulados jóvenes, cohortes atípicas) cuadren con sus fuentes."
+   },
+   {
+    "control": "analytics_universo",
+    "titulo": "A quiénes mira el análisis",
+    "verifica": "Que los titulados por año, nivel y sexo cuadren con la serie completa, y que cada paso del conteo de carreras (todas, con estadística, comparables) esté contenido en el anterior."
+   },
+   {
+    "control": "analytics_hallazgos",
+    "titulo": "Hallazgos",
+    "verifica": "Que cada cifra y cada ejemplo de las tarjetas de hallazgos, y la mediana de la portada, se recalculen por un camino independiente y cumplan la regla que dice su frase."
+   },
+   {
+    "control": "analytics_exportacion",
+    "titulo": "Archivo de datos de la página",
+    "verifica": "Que el archivo que lee esta página tenga una entrada por carrera y que sus totales, grupos y ficha de ejemplo coincidan con la base, recalculados desde cero."
+   }
+  ],
   "controles": [
    {
     "control": "analytics_brecha",
@@ -502,7 +559,7 @@
     "objeto": "sexo_titulados",
     "estado": "OK",
     "umbral": "una fila por par; conteos = mifuturo_estadistica; |pct − 100 × parte / informados| ≤ 0,5",
-    "detalle": "0 filas incoherentes; 1 pares con titulados sin sexo informado"
+    "detalle": "0 filas incoherentes; 1 carrera con titulados sin sexo informado"
    },
    {
     "control": "analytics_contexto",

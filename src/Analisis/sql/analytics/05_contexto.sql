@@ -252,8 +252,9 @@ UNION ALL
 --    exacta (el CHECK ya obliga a que sumen 100).
 SELECT 'analytics_contexto', 'sexo_titulados', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
        n, 'una fila por par; conteos = mifuturo_estadistica; |pct − 100 × parte / informados| ≤ 0,5',
-       format('%s filas incoherentes; %s pares con titulados sin sexo informado', n,
-              (SELECT count(*) FROM analytics.sexo_titulados WHERE sin_dato > 0))
+       format('%s filas incoherentes; %s con titulados sin sexo informado', n,
+              (SELECT CASE WHEN count(*) = 1 THEN '1 carrera' ELSE count(*) || ' carreras' END
+               FROM analytics.sexo_titulados WHERE sin_dato > 0))
 FROM (SELECT (SELECT count(*) FROM analytics.par) - (SELECT count(*) FROM analytics.sexo_titulados)
            + (SELECT count(*) FROM analytics.sexo_titulados s
               JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)

@@ -2899,15 +2899,44 @@
     var r = datos.qa.resumen, p = document.getElementById("qa-resumen");
     ["OK", "EXENTO", "FALLA"].forEach(function (k) { p.appendChild(estadoNodo(k, r[k] || 0)); });
     var cuerpo = document.querySelector("#tabla-qa tbody");
+    // Por familia, en el orden de qa.familia (del archivo de entrada a la página): el título y
+    // «Qué verifica» en lenguaje llano, desde SQL; cada control con su nombre técnico en letra de
+    // código. Antes el nombre técnico se convertía en frase («institucion del medio real») y se
+    // leía como español sin tildes.
+    datos.qa.familias.forEach(function (f) {
+      var propios = datos.qa.controles.filter(function (c) { return c.control === f.control; });
+      var cuenta = {};
+      propios.forEach(function (c) { cuenta[c.estado] = (cuenta[c.estado] || 0) + 1; });
+      // Mismas palabras que la columna Estado y el resumen (ESTADO): «aprobado», no «OK».
+      var estados = Object.keys(cuenta).length === 1 && cuenta.OK
+        ? (propios.length === 1 ? ESTADO.OK.texto : "todos " + ESTADO.OK.plural)
+        : ["OK", "EXENTO", "FALLA"].filter(function (k) { return cuenta[k]; }).map(function (k) {
+            return fmtEntero.format(cuenta[k]) + " " + (cuenta[k] === 1 ? ESTADO[k].texto : ESTADO[k].plural); }).join(", ");
+      var cab = el("tr", "qa-familia");
+      var th = el("th", null);
+      th.colSpan = 3;
+      th.scope = "colgroup";
+      th.appendChild(el("span", "qa-familia__titulo", f.titulo));
+      th.appendChild(el("span", "qa-familia__cuenta", " · " + fmtEntero.format(propios.length) +
+        (propios.length === 1 ? " control, " : " controles, ") + estados));
+      th.appendChild(el("span", "qa-familia__verifica", "Qué verifica: " + f.verifica.charAt(0).toLowerCase() + f.verifica.slice(1)));
+      cab.appendChild(th);
+      cuerpo.appendChild(cab);
+      propios.forEach(function (c) {
+        var tr = el("tr");
+        var t1 = el("td", "td--titulo");
+        t1.appendChild(el("code", "qa-nombre", c.objeto));
+        t1.setAttribute("data-rotulo", "Control");
+        var t2 = el("td"); t2.setAttribute("data-rotulo", "Estado"); t2.appendChild(estadoNodo(c.estado));
+        var t3 = el("td", null, c.detalle); t3.setAttribute("data-rotulo", "Resultado");
+        t3.title = "Criterio: " + c.umbral;
+        tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
+        cuerpo.appendChild(tr);
+      });
+    });
+    // Toda familia con controles tiene su título (la FK en SQL lo garantiza; esto avisa si el JSON no).
     datos.qa.controles.forEach(function (c) {
-      var tr = el("tr");
-      var t1 = el("td", "td--titulo", c.control.replace(/_/g, " ") + " · " + c.objeto.replace(/_/g, " "));
-      t1.setAttribute("data-rotulo", "Control");
-      var t2 = el("td"); t2.setAttribute("data-rotulo", "Estado"); t2.appendChild(estadoNodo(c.estado));
-      var t3 = el("td", null, c.detalle); t3.setAttribute("data-rotulo", "Resultado");
-      t3.title = "Criterio: " + c.umbral;
-      tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
-      cuerpo.appendChild(tr);
+      if (!datos.qa.familias.some(function (f) { return f.control === c.control; })) throw new Error("Control sin familia: " + c.control);
     });
   }
 

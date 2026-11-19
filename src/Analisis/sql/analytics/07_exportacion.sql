@@ -214,6 +214,8 @@ SELECT json_build_object(
     'qa', json_build_object(
         'resumen', (SELECT json_object_agg(estado, n ORDER BY estado)
                     FROM (SELECT estado, count(*) AS n FROM qa.control GROUP BY 1) x),
+        'familias', (SELECT json_agg(json_build_object('control', control, 'titulo', titulo, 'verifica', verifica) ORDER BY orden)
+                     FROM qa.familia),
         'controles', (SELECT json_agg(json_build_object('control', control, 'objeto', objeto, 'estado', estado,
                                                         'umbral', umbral, 'detalle', detalle) ORDER BY control, objeto)
                       FROM qa.control)),
