@@ -308,6 +308,8 @@ p { margin: 0; }
 .portada__limites { margin-top: 0.4rem; max-width: 80ch; font-size: var(--t-0); color: var(--tinta-suave); }
 .portada__limites a { color: var(--tinta); white-space: nowrap; }
 .portada__bajada strong { color: var(--tinta); font-weight: 600; white-space: nowrap; }
+/* El resultado, un paso más chico que la introducción: primero se lee qué es, después qué muestra. */
+.portada__bajada--resultado { margin-top: 0.75rem; max-width: 64ch; font-size: var(--t-1); line-height: 1.5; }   /* 64ch ≈ el ancho de la introducción */
 .portada__bajada a { color: var(--tinta); }
 
 /* ---------------------------------------------------------------- bloques */
@@ -1024,7 +1026,10 @@ a.hallazgo__accion { color: var(--tinta); }
          "trayectoria" quedan fuera del título: se comparan dos cohortes, no las mismas personas. -->
     <p class="portada__eyebrow" id="portada-eyebrow">Universidades, IP y CFT</p>
     <h1 class="portada__titulo">Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación</h1>
-    <p class="portada__bajada" id="portada-tesis"></p>
+    <!-- Qué es el proyecto antes del resultado: quien llega no sabe si es un sitio oficial, una nota
+         de prensa o un análisis, ni de dónde salen los datos (18-11-26). Sin cifras: las da la tesis. -->
+    <p class="portada__bajada" id="portada-intro">Este proyecto es un análisis independiente de datos públicos del Ministerio de Educación. Reúne lo que MiFuturo publica sobre los titulados de universidades, institutos profesionales (IP) y centros de formación técnica (CFT) —sueldos y empleabilidad, a partir de registros del SII— con las titulaciones del SIES. Su propósito es que quien elige o compara carreras vea qué cambia entre el primer y el quinto año de titulación y cuándo la cifra nacional no basta para comparar. Cada cifra se calcula con reglas fijas y pasa controles de calidad.</p>
+    <p class="portada__bajada portada__bajada--resultado" id="portada-tesis"></p>
     <p class="portada__tecnica" id="portada-tecnica"></p>
     <p class="portada__limites">No sigue a las mismas personas en el tiempo ni explica causas. <a href="#t-limites">Qué no dice →</a></p>
   </div>
@@ -1438,10 +1443,10 @@ a.hallazgo__accion { color: var(--tinta); }
       var dif = function (v) { return [pct(Math.abs(v)), v < 0 ? " menos" : " más"]; };
       var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
       // «Dos grupos» y «quienes llevan»: son cohortes distintas, no las mismas personas.
+      // Las fuentes ya están en la introducción de la plantilla (#portada-intro).
       parrafoEn(tesis, ["Compara a dos grupos de titulados de cada carrera: quienes llevan un año titulados y " +
-        "quienes llevan cinco, con datos de MiFuturo (sueldos y empleabilidad) y del SIES (titulaciones). " +
-        "En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
-        dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta para comparar carreras, y "]);
+        "quienes llevan cinco. En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
+        dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta, y "]);
       // Termina en una acción: la Parte II, donde el lector busca su carrera.
       var ir = el("a", null, "la ficha de cada carrera");
       ir.href = "#parte-carrera";

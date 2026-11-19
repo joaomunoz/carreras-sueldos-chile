@@ -1,8 +1,10 @@
 # Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación
 
-> Compara a quienes llevan un año titulados con quienes llevan cinco (cohortes distintas, no las mismas personas) en cada carrera comparable, y muestra dónde la cifra nacional no basta para compararlas. Análisis en PostgreSQL y Python, con una web autónoma.
+> Este proyecto es un análisis independiente de datos públicos del Ministerio de Educación. Reúne lo que MiFuturo publica sobre los titulados de universidades, institutos profesionales (IP) y centros de formación técnica (CFT) —sueldos y empleabilidad, a partir de registros del SII— con las titulaciones del SIES. Su propósito es que quien elige o compara carreras vea qué cambia entre el primer y el quinto año de titulación y cuándo la cifra nacional no basta para comparar. Cada cifra se calcula con reglas fijas y pasa controles de calidad.
+>
+> Compara a quienes llevan un año titulados con quienes llevan cinco (cohortes distintas, no las mismas personas). Análisis en PostgreSQL y Python, con una web autónoma.
 
-![Portada de la web: título, introducción y las cuatro tarjetas de hallazgos](docs/captura.png)
+![Portada de la web: título, qué es el proyecto, qué muestra y las cuatro tarjetas de hallazgos](docs/captura.png)
 
 **Ver la web:** abre [`docs/index.html`](docs/index.html) con doble clic. Es un solo archivo (≈ 1,1 MB) con los datos incluidos, sin servidor ni conexión a internet.
 

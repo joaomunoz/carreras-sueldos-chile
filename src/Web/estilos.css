@@ -294,6 +294,8 @@ p { margin: 0; }
 .portada__limites { margin-top: 0.4rem; max-width: 80ch; font-size: var(--t-0); color: var(--tinta-suave); }
 .portada__limites a { color: var(--tinta); white-space: nowrap; }
 .portada__bajada strong { color: var(--tinta); font-weight: 600; white-space: nowrap; }
+/* El resultado, un paso más chico que la introducción: primero se lee qué es, después qué muestra. */
+.portada__bajada--resultado { margin-top: 0.75rem; max-width: 64ch; font-size: var(--t-1); line-height: 1.5; }   /* 64ch ≈ el ancho de la introducción */
 .portada__bajada a { color: var(--tinta); }
 
 /* ---------------------------------------------------------------- bloques */

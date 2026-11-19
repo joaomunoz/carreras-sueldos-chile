@@ -118,10 +118,10 @@
       var dif = function (v) { return [pct(Math.abs(v)), v < 0 ? " menos" : " más"]; };
       var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
       // «Dos grupos» y «quienes llevan»: son cohortes distintas, no las mismas personas.
+      // Las fuentes ya están en la introducción de la plantilla (#portada-intro).
       parrafoEn(tesis, ["Compara a dos grupos de titulados de cada carrera: quienes llevan un año titulados y " +
-        "quienes llevan cinco, con datos de MiFuturo (sueldos y empleabilidad) y del SIES (titulaciones). " +
-        "En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
-        dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta para comparar carreras, y "]);
+        "quienes llevan cinco. En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
+        dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta, y "]);
       // Termina en una acción: la Parte II, donde el lector busca su carrera.
       var ir = el("a", null, "la ficha de cada carrera");
       ir.href = "#parte-carrera";
