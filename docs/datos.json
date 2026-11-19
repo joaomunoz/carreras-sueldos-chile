@@ -459,7 +459,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 74
+   "OK": 75
   },
   "controles": [
    {
@@ -713,6 +713,13 @@
     "estado": "OK",
     "umbral": "representativo ⇔ ingreso completo y n_inst_oferta ≥ min_inst_oferta",
     "detalle": "0 pares incoherentes; 210 representativos"
+   },
+   {
+    "control": "analytics_par",
+    "objeto": "ventanas_en_sies",
+    "estado": "OK",
+    "umbral": "toda ventana tiene años en el SIES y peso = round(tit_1·f1 + tit_5·f5)",
+    "detalle": "DERECHO Universidad: ventana 5° año 2016–2018 escalada ×1.50"
    },
    {
     "control": "analytics_referencia",
@@ -2330,9 +2337,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 880598,
-   "q50": 1029714,
+   "q50": 1046881,
    "q75": 1317860,
-   "q50_clave": "INGENIERIA EN MEDIO AMBIENTE"
+   "q50_clave": "INGENIERIA EN CONSTRUCCION"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2344,9 +2351,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 1221325,
-   "q50": 1547860,
+   "q50": 1576091,
    "q75": 2008881,
-   "q50_clave": "INGENIERIA EN CONSTRUCCION"
+   "q50_clave": "CONTADOR AUDITOR"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2372,9 +2379,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 35.0,
-   "q50": 48.7,
+   "q50": 48.5,
    "q75": 64.0,
-   "q50_clave": "INGENIERIA EN BIOTECNOLOGIA Y BIOINGENIERIA"
+   "q50_clave": "INGENIERIA CIVIL INDUSTRIAL"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2941,6 +2948,7 @@
      114
     ],
     "var_oferta_joven_pct": -74.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.5,
      35.8
@@ -3104,6 +3112,7 @@
      2525
     ],
     "var_oferta_joven_pct": 18.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.4,
      12.1
@@ -3276,6 +3285,7 @@
      6115
     ],
     "var_oferta_joven_pct": 17.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      15.3,
      31.8
@@ -3471,6 +3481,7 @@
      3107
     ],
     "var_oferta_joven_pct": 14.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.7,
      14.5
@@ -3643,6 +3654,7 @@
      2187
     ],
     "var_oferta_joven_pct": 33.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.2,
      11.5
@@ -3791,6 +3803,7 @@
      120
     ],
     "var_oferta_joven_pct": 51.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      4.0
@@ -3949,6 +3962,7 @@
      7731
     ],
     "var_oferta_joven_pct": 8.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      17.3,
      31.2
@@ -4144,6 +4158,7 @@
      675
     ],
     "var_oferta_joven_pct": -31.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      28.2,
      46.4
@@ -4283,6 +4298,7 @@
      55
     ],
     "var_oferta_joven_pct": -71.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      26.7,
      42.7
@@ -4441,6 +4457,7 @@
      281
     ],
     "var_oferta_joven_pct": 51.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      61.9,
      75.7
@@ -4604,6 +4621,7 @@
      626
     ],
     "var_oferta_joven_pct": 4.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.1,
      24.5
@@ -4767,6 +4785,7 @@
      2661
     ],
     "var_oferta_joven_pct": 86.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.4,
      17.9
@@ -4948,6 +4967,7 @@
      1923
     ],
     "var_oferta_joven_pct": -3.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.8,
      33.5
@@ -5120,6 +5140,7 @@
      1671
     ],
     "var_oferta_joven_pct": 18.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.8,
      37.7
@@ -5301,6 +5322,7 @@
      2688
     ],
     "var_oferta_joven_pct": 48.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.7,
      9.8
@@ -5464,6 +5486,7 @@
      2064
     ],
     "var_oferta_joven_pct": 2.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.8,
      33.8
@@ -5621,6 +5644,7 @@
      291
     ],
     "var_oferta_joven_pct": -10.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.3,
      11.5
@@ -5784,6 +5808,7 @@
      11438
     ],
     "var_oferta_joven_pct": -0.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.4,
      21.0
@@ -5979,6 +6004,7 @@
      824
     ],
     "var_oferta_joven_pct": 241.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      24.3,
      31.5
@@ -6142,6 +6168,7 @@
      5905
     ],
     "var_oferta_joven_pct": -2.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.9,
      10.7
@@ -6299,6 +6326,7 @@
      97
     ],
     "var_oferta_joven_pct": -4.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.8,
      11.1
@@ -6457,6 +6485,7 @@
      2151
     ],
     "var_oferta_joven_pct": 30.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.5,
      26.2
@@ -6629,6 +6658,7 @@
      1143
     ],
     "var_oferta_joven_pct": 9.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.2,
      11.8
@@ -6792,6 +6822,7 @@
      1921
     ],
     "var_oferta_joven_pct": 58.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      17.4,
      33.3
@@ -6964,6 +6995,7 @@
      3202
     ],
     "var_oferta_joven_pct": -11.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.4,
      16.4
@@ -7127,6 +7159,7 @@
      5702
     ],
     "var_oferta_joven_pct": 0.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.2,
      8.3
@@ -7290,6 +7323,7 @@
      445
     ],
     "var_oferta_joven_pct": -28.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      13.3,
      25.5
@@ -7429,6 +7463,7 @@
      187
     ],
     "var_oferta_joven_pct": 64.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.9,
      21.7
@@ -7592,6 +7627,7 @@
      724
     ],
     "var_oferta_joven_pct": 10.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.7,
      22.7
@@ -7755,6 +7791,7 @@
      298
     ],
     "var_oferta_joven_pct": -20.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      49.6,
      60.6
@@ -7918,6 +7955,7 @@
      1052
     ],
     "var_oferta_joven_pct": -78.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.0,
      24.5
@@ -8057,6 +8095,7 @@
      520
     ],
     "var_oferta_joven_pct": 72.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.7,
      10.7
@@ -8196,6 +8235,7 @@
      314
     ],
     "var_oferta_joven_pct": -18.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.9,
      9.4
@@ -8335,6 +8375,7 @@
      177
     ],
     "var_oferta_joven_pct": 62.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.4,
      26.2
@@ -8474,6 +8515,7 @@
      211
     ],
     "var_oferta_joven_pct": -5.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.6,
      22.1
@@ -8637,6 +8679,7 @@
      1320
     ],
     "var_oferta_joven_pct": 56.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      26.2,
      40.0
@@ -8809,6 +8852,7 @@
      850
     ],
     "var_oferta_joven_pct": -5.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.7,
      17.3
@@ -8972,6 +9016,7 @@
      889
     ],
     "var_oferta_joven_pct": -9.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.4,
      22.3
@@ -9135,6 +9180,7 @@
      2066
     ],
     "var_oferta_joven_pct": 8.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.7,
      5.4
@@ -9307,6 +9353,7 @@
      599
     ],
     "var_oferta_joven_pct": 16.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.0,
      28.9
@@ -9446,6 +9493,7 @@
      391
     ],
     "var_oferta_joven_pct": 6.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.7,
      11.4
@@ -9609,6 +9657,7 @@
      1358
     ],
     "var_oferta_joven_pct": 138.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.9,
      10.1
@@ -9772,6 +9821,7 @@
      294
     ],
     "var_oferta_joven_pct": 1.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.1,
      9.1
@@ -9930,6 +9980,7 @@
      6409
     ],
     "var_oferta_joven_pct": 9.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      29.9,
      50.4
@@ -10125,6 +10176,7 @@
      3174
     ],
     "var_oferta_joven_pct": 71.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.5,
      7.1
@@ -10264,6 +10316,7 @@
      148
     ],
     "var_oferta_joven_pct": 27.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      78.1,
      94.4
@@ -10427,6 +10480,7 @@
      2115
     ],
     "var_oferta_joven_pct": 43.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.9,
      3.1
@@ -10590,6 +10644,7 @@
      438
     ],
     "var_oferta_joven_pct": 72.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.9,
      13.0
@@ -10753,6 +10808,7 @@
      1151
     ],
     "var_oferta_joven_pct": 17.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.4,
      11.4
@@ -10916,6 +10972,7 @@
      2746
     ],
     "var_oferta_joven_pct": 5.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      26.0,
      46.3
@@ -11079,6 +11136,7 @@
      3922
     ],
     "var_oferta_joven_pct": 12.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      25.0,
      41.6
@@ -11250,6 +11308,7 @@
      309
     ],
     "var_oferta_joven_pct": 13.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.9,
      12.0
@@ -11413,6 +11472,7 @@
      643
     ],
     "var_oferta_joven_pct": 18.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.8,
      8.5
@@ -11576,6 +11636,7 @@
      2234
     ],
     "var_oferta_joven_pct": 3.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.9,
      11.3
@@ -11733,6 +11794,7 @@
      307
     ],
     "var_oferta_joven_pct": -10.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.8,
      19.5
@@ -11872,6 +11934,7 @@
      390
     ],
     "var_oferta_joven_pct": 59.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.8,
      23.8
@@ -12030,6 +12093,7 @@
      1905
     ],
     "var_oferta_joven_pct": 43.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.3,
      10.6
@@ -12193,6 +12257,7 @@
      281
     ],
     "var_oferta_joven_pct": 208.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      39.5,
      69.8
@@ -12356,6 +12421,7 @@
      1140
     ],
     "var_oferta_joven_pct": 83.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.9,
      29.1
@@ -12519,6 +12585,7 @@
      4266
     ],
     "var_oferta_joven_pct": 42.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      17.3,
      34.2
@@ -12714,6 +12781,7 @@
      1399
     ],
     "var_oferta_joven_pct": 28.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      15.5,
      32.2
@@ -12877,6 +12945,7 @@
      2874
     ],
     "var_oferta_joven_pct": 31.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.8,
      24.9
@@ -13040,6 +13109,7 @@
      2302
     ],
     "var_oferta_joven_pct": 74.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.0,
      31.9
@@ -13221,6 +13291,7 @@
      981
     ],
     "var_oferta_joven_pct": 91.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      15.6,
      32.4
@@ -13384,6 +13455,7 @@
      471
     ],
     "var_oferta_joven_pct": 203.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      15.5,
      28.9
@@ -13547,6 +13619,7 @@
      184
     ],
     "var_oferta_joven_pct": 55.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      61.6,
      83.3
@@ -13710,6 +13783,7 @@
      1076
     ],
     "var_oferta_joven_pct": 218.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      31.7,
      48.6
@@ -13849,6 +13923,7 @@
      1587
     ],
     "var_oferta_joven_pct": 30.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.8,
      22.5
@@ -14012,6 +14087,7 @@
      7379
     ],
     "var_oferta_joven_pct": 44.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.2,
      15.0
@@ -14151,6 +14227,7 @@
      561
     ],
     "var_oferta_joven_pct": 101.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.8,
      8.1
@@ -14290,6 +14367,7 @@
      269
     ],
     "var_oferta_joven_pct": 44.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.0,
      21.0
@@ -14453,6 +14531,7 @@
      1340
     ],
     "var_oferta_joven_pct": -5.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.1,
      16.0
@@ -14616,6 +14695,7 @@
      3061
     ],
     "var_oferta_joven_pct": -73.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.4,
      32.5
@@ -14811,6 +14891,7 @@
      344
     ],
     "var_oferta_joven_pct": 76.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.2,
      15.8
@@ -14974,6 +15055,7 @@
      3082
     ],
     "var_oferta_joven_pct": 25.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      22.6,
      38.0
@@ -15113,6 +15195,7 @@
      189
     ],
     "var_oferta_joven_pct": 45.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.6,
      25.5
@@ -15252,6 +15335,7 @@
      623
     ],
     "var_oferta_joven_pct": 72.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      28.6,
      63.1
@@ -15415,6 +15499,7 @@
      507
     ],
     "var_oferta_joven_pct": 39.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      2.7
@@ -15554,6 +15639,7 @@
      748
     ],
     "var_oferta_joven_pct": 29.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.0,
      23.0
@@ -15717,6 +15803,7 @@
      246
     ],
     "var_oferta_joven_pct": 29.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      54.9,
      76.8
@@ -15856,6 +15943,7 @@
      2071
     ],
     "var_oferta_joven_pct": 37.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      13.6,
      28.3
@@ -15995,6 +16083,7 @@
      465
     ],
     "var_oferta_joven_pct": 26.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.8,
      20.9
@@ -16158,6 +16247,7 @@
      551
     ],
     "var_oferta_joven_pct": 87.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.3,
      9.9
@@ -16321,6 +16411,7 @@
      267
     ],
     "var_oferta_joven_pct": -7.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.6,
      21.9
@@ -16484,6 +16575,7 @@
      3118
     ],
     "var_oferta_joven_pct": -17.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      13.4,
      27.2
@@ -16665,6 +16757,7 @@
      1025
     ],
     "var_oferta_joven_pct": 2.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.0,
      8.6
@@ -16828,6 +16921,7 @@
      542
     ],
     "var_oferta_joven_pct": 7.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.2,
      14.4
@@ -16991,6 +17085,7 @@
      501
     ],
     "var_oferta_joven_pct": -16.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.0,
      21.7
@@ -17154,6 +17249,7 @@
      6081
     ],
     "var_oferta_joven_pct": -18.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.7,
      34.2
@@ -17349,6 +17445,7 @@
      2676
     ],
     "var_oferta_joven_pct": 3.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.5,
      27.9
@@ -17530,6 +17627,7 @@
      2701
     ],
     "var_oferta_joven_pct": -9.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.5,
      8.4
@@ -17693,6 +17791,7 @@
      5263
     ],
     "var_oferta_joven_pct": -42.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      26.2,
      46.2
@@ -17888,6 +17987,7 @@
      1158
     ],
     "var_oferta_joven_pct": -39.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      20.0,
      37.8
@@ -18069,6 +18169,7 @@
      408
     ],
     "var_oferta_joven_pct": -60.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      11.0,
      27.9
@@ -18232,6 +18333,7 @@
      1395
     ],
     "var_oferta_joven_pct": -29.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.1,
      32.4
@@ -18395,6 +18497,7 @@
      382
     ],
     "var_oferta_joven_pct": 349.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      62.8,
      84.7
@@ -18534,6 +18637,7 @@
      127
     ],
     "var_oferta_joven_pct": -32.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.9,
      9.6
@@ -18697,6 +18801,7 @@
      523
     ],
     "var_oferta_joven_pct": -13.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.7,
      25.5
@@ -18860,6 +18965,7 @@
      2465
     ],
     "var_oferta_joven_pct": 17.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.5,
      27.9
@@ -19041,6 +19147,7 @@
      649
     ],
     "var_oferta_joven_pct": -20.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.9,
      8.8
@@ -19204,6 +19311,7 @@
      1913
     ],
     "var_oferta_joven_pct": -42.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.1,
      34.2
@@ -19376,6 +19484,7 @@
      3133
     ],
     "var_oferta_joven_pct": 8.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      22.7,
      40.5
@@ -19571,6 +19680,7 @@
      2264
     ],
     "var_oferta_joven_pct": -32.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.7,
      12.3
@@ -19734,6 +19844,7 @@
      554
     ],
     "var_oferta_joven_pct": -22.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.8,
      18.9
@@ -19897,6 +20008,7 @@
      453
     ],
     "var_oferta_joven_pct": -40.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.9,
      16.5
@@ -20060,6 +20172,7 @@
      1868
     ],
     "var_oferta_joven_pct": -11.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.8,
      28.3
@@ -20231,6 +20344,7 @@
      415
     ],
     "var_oferta_joven_pct": -45.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      13.0,
      26.3
@@ -20370,6 +20484,7 @@
      270
     ],
     "var_oferta_joven_pct": 170.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      21.1,
      34.2
@@ -20528,6 +20643,7 @@
      13268
     ],
     "var_oferta_joven_pct": -16.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.7,
      17.1
@@ -20699,6 +20815,7 @@
      523
     ],
     "var_oferta_joven_pct": 209.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.8,
      22.3
@@ -20862,6 +20979,7 @@
      1184
     ],
     "var_oferta_joven_pct": -1.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.3,
      13.7
@@ -21025,6 +21143,7 @@
      179
     ],
     "var_oferta_joven_pct": -30.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.5,
      6.8
@@ -21188,6 +21307,7 @@
      386
     ],
     "var_oferta_joven_pct": 34.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      34.6,
      54.1
@@ -21351,6 +21471,7 @@
      882
     ],
     "var_oferta_joven_pct": 6.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.9,
      12.2
@@ -21514,6 +21635,7 @@
      1576
     ],
     "var_oferta_joven_pct": 100.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      21.0,
      42.0
@@ -21686,6 +21808,7 @@
      597
     ],
     "var_oferta_joven_pct": -18.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.7,
      22.8
@@ -21849,6 +21972,7 @@
      468
     ],
     "var_oferta_joven_pct": -46.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      11.0,
      20.9
@@ -22012,6 +22136,7 @@
      2255
     ],
     "var_oferta_joven_pct": -25.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.4,
      12.6
@@ -22175,6 +22300,7 @@
      683
     ],
     "var_oferta_joven_pct": -58.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      11.8,
      24.8
@@ -22338,6 +22464,7 @@
      2910
     ],
     "var_oferta_joven_pct": 55.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.6,
      10.0
@@ -22501,6 +22628,7 @@
      246
     ],
     "var_oferta_joven_pct": 66.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      50.0,
      64.5
@@ -22664,6 +22792,7 @@
      727
     ],
     "var_oferta_joven_pct": -84.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      22.6,
      38.3
@@ -22803,6 +22932,7 @@
      407
     ],
     "var_oferta_joven_pct": 16.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.3,
      12.4
@@ -22966,6 +23096,7 @@
      3985
     ],
     "var_oferta_joven_pct": -12.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      23.0,
      36.2
@@ -23147,6 +23278,7 @@
      699
     ],
     "var_oferta_joven_pct": -7.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.5,
      8.6
@@ -23286,6 +23418,7 @@
      433
     ],
     "var_oferta_joven_pct": 65.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.2,
      8.6
@@ -23449,6 +23582,7 @@
      329
     ],
     "var_oferta_joven_pct": -40.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      13.4,
      30.0
@@ -23588,6 +23722,7 @@
      287
     ],
     "var_oferta_joven_pct": 38.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.7,
      20.2
@@ -23751,6 +23886,7 @@
      1625
     ],
     "var_oferta_joven_pct": -5.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.9,
      9.9
@@ -23932,6 +24068,7 @@
      792
     ],
     "var_oferta_joven_pct": 27.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      24.5,
      36.8
@@ -24095,6 +24232,7 @@
      193
     ],
     "var_oferta_joven_pct": -26.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.8,
      33.6
@@ -24234,6 +24372,7 @@
      639
     ],
     "var_oferta_joven_pct": 37.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.4,
      6.6
@@ -24373,6 +24512,7 @@
      829
     ],
     "var_oferta_joven_pct": 117.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.1,
      9.8
@@ -24536,6 +24676,7 @@
      4300
     ],
     "var_oferta_joven_pct": 1.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      28.6,
      45.7
@@ -24731,6 +24872,7 @@
      492
     ],
     "var_oferta_joven_pct": 28.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.4,
      10.2
@@ -24848,10 +24990,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 97294,
-    "p50_anio_5": -67345,
+    "p50_anio_1": 80127,
+    "p50_anio_5": -95576,
     "emp1_nacional": 0.0,
-    "razon_entrada": 1.09
+    "razon_entrada": 1.08
    },
    "area_ficha": {
     "n_area": 15,
@@ -24894,6 +25036,7 @@
      6682
     ],
     "var_oferta_joven_pct": -3.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      20.3,
      35.8
@@ -25089,6 +25232,7 @@
      2636
     ],
     "var_oferta_joven_pct": 89.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.8,
      22.9
@@ -25238,10 +25382,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -233114,
-    "p50_anio_5": -544852,
+    "p50_anio_1": -250281,
+    "p50_anio_5": -573083,
     "emp1_nacional": -30.9,
-    "razon_entrada": 0.77
+    "razon_entrada": 0.76
    },
    "area_ficha": {
     "n_area": 15,
@@ -25284,6 +25428,7 @@
      1298
     ],
     "var_oferta_joven_pct": 51.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.9,
      6.7
@@ -25419,10 +25564,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 34246,
-    "p50_anio_5": 124453,
+    "p50_anio_1": 17079,
+    "p50_anio_5": 96222,
     "emp1_nacional": -9.8,
-    "razon_entrada": 1.03
+    "razon_entrada": 1.02
    },
    "area_ficha": {
     "n_area": 4,
@@ -25465,6 +25610,7 @@
      2394
     ],
     "var_oferta_joven_pct": 24.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.0,
      13.4
@@ -25660,6 +25806,7 @@
      596
     ],
     "var_oferta_joven_pct": 22.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.7,
      12.7
@@ -25841,6 +25988,7 @@
      3989
     ],
     "var_oferta_joven_pct": 29.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.0,
      15.8
@@ -26036,6 +26184,7 @@
      252
     ],
     "var_oferta_joven_pct": 21.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.1,
      13.4
@@ -26171,10 +26320,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 56661,
-    "p50_anio_5": -212102,
+    "p50_anio_1": 39494,
+    "p50_anio_5": -240333,
     "emp1_nacional": -3.0,
-    "razon_entrada": 1.06
+    "razon_entrada": 1.04
    },
    "area_ficha": {
     "n_area": 3,
@@ -26217,6 +26366,7 @@
      164
     ],
     "var_oferta_joven_pct": 82.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      32.7,
      47.3
@@ -26375,6 +26525,7 @@
      284
     ],
     "var_oferta_joven_pct": 42.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.4,
      22.9
@@ -26538,6 +26689,7 @@
      344
     ],
     "var_oferta_joven_pct": 42.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.6,
      16.9
@@ -26696,6 +26848,7 @@
      669
     ],
     "var_oferta_joven_pct": 17.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.9,
      9.5
@@ -26877,6 +27030,7 @@
      679
     ],
     "var_oferta_joven_pct": 6.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.6,
      6.7
@@ -27058,6 +27212,7 @@
      518
     ],
     "var_oferta_joven_pct": 74.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.9,
      7.1
@@ -27221,6 +27376,7 @@
      902
     ],
     "var_oferta_joven_pct": 3.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      21.0,
      37.9
@@ -27370,10 +27526,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -43985,
-    "p50_anio_5": 28231,
+    "p50_anio_1": -61152,
+    "p50_anio_5": 0,
     "emp1_nacional": 7.3,
-    "razon_entrada": 0.96
+    "razon_entrada": 0.94
    },
    "area_ficha": {
     "n_area": 15,
@@ -27416,6 +27572,7 @@
      5664
     ],
     "var_oferta_joven_pct": 39.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.1,
      23.7
@@ -27495,7 +27652,7 @@
     "n_pub_emp1": 31,
     "n_pub_emp2": 30,
     "n_pub_tramo": 26,
-    "peso": 18510
+    "peso": 22610
    },
    "media": {
     "anio": [
@@ -27565,10 +27722,10 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 432092,
-    "p50_anio_5": 509461,
+    "p50_anio_1": 414925,
+    "p50_anio_5": 481230,
     "emp1_nacional": -2.9,
-    "razon_entrada": 1.42
+    "razon_entrada": 1.4
    },
    "area_ficha": {
     "n_area": 1,
@@ -27607,10 +27764,11 @@
     ],
     "pct_plan_continuidad": null,
     "oferta_joven": [
-     5543,
+     8315,
      7002
     ],
-    "var_oferta_joven_pct": 26.3,
+    "var_oferta_joven_pct": -15.8,
+    "oferta_joven_estimada": true,
     "mayores30_cohorte_p5": [
      16.4,
      32.2
@@ -27806,6 +27964,7 @@
      1930
     ],
     "var_oferta_joven_pct": 61.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.3,
      5.8
@@ -28001,6 +28160,7 @@
      662
     ],
     "var_oferta_joven_pct": 7.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.8,
      12.4
@@ -28173,6 +28333,7 @@
      303
     ],
     "var_oferta_joven_pct": -2.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.9,
      13.6
@@ -28336,6 +28497,7 @@
      18425
     ],
     "var_oferta_joven_pct": 27.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.9,
      14.8
@@ -28531,6 +28693,7 @@
      5386
     ],
     "var_oferta_joven_pct": 15.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.8,
      8.0
@@ -28726,6 +28889,7 @@
      680
     ],
     "var_oferta_joven_pct": 23.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.5,
      9.7
@@ -28907,6 +29071,7 @@
      1149
     ],
     "var_oferta_joven_pct": 55.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.2,
      16.8
@@ -29088,6 +29253,7 @@
      274
     ],
     "var_oferta_joven_pct": 9.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.1,
      11.1
@@ -29222,6 +29388,7 @@
      88
     ],
     "var_oferta_joven_pct": 11.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      0.0
@@ -29380,6 +29547,7 @@
      1341
     ],
     "var_oferta_joven_pct": 80.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.2,
      9.7
@@ -29575,6 +29743,7 @@
      503
     ],
     "var_oferta_joven_pct": 47.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.3,
      16.7
@@ -29714,6 +29883,7 @@
      189
     ],
     "var_oferta_joven_pct": 31.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      5.3
@@ -29877,6 +30047,7 @@
      2675
     ],
     "var_oferta_joven_pct": 74.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.4,
      17.1
@@ -30072,6 +30243,7 @@
      1633
     ],
     "var_oferta_joven_pct": 31.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.6,
      15.2
@@ -30267,6 +30439,7 @@
      1003
     ],
     "var_oferta_joven_pct": 31.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.7,
      11.0
@@ -30462,6 +30635,7 @@
      12249
     ],
     "var_oferta_joven_pct": 25.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.5,
      22.6
@@ -30657,6 +30831,7 @@
      1638
     ],
     "var_oferta_joven_pct": 31.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.9,
      11.8
@@ -30852,6 +31027,7 @@
      642
     ],
     "var_oferta_joven_pct": 1.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.9,
      14.5
@@ -31047,6 +31223,7 @@
      1863
     ],
     "var_oferta_joven_pct": 24.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.6,
      10.9
@@ -31242,6 +31419,7 @@
      946
     ],
     "var_oferta_joven_pct": 17.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.5,
      7.7
@@ -31391,10 +31569,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 288146,
-    "p50_anio_5": 461021,
+    "p50_anio_1": 270979,
+    "p50_anio_5": 432790,
     "emp1_nacional": 4.0,
-    "razon_entrada": 1.28
+    "razon_entrada": 1.26
    },
    "area_ficha": {
     "n_area": 15,
@@ -31437,6 +31615,7 @@
      20484
     ],
     "var_oferta_joven_pct": 17.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.9,
      19.7
@@ -31632,6 +31811,7 @@
      326
     ],
     "var_oferta_joven_pct": 12.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.8,
      30.4
@@ -31795,6 +31975,7 @@
      1092
     ],
     "var_oferta_joven_pct": 21.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.3,
      23.2
@@ -31958,6 +32139,7 @@
      636
     ],
     "var_oferta_joven_pct": 5.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.5,
      8.6
@@ -32093,10 +32275,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 121565,
-    "p50_anio_5": -31947,
+    "p50_anio_1": 104398,
+    "p50_anio_5": -60178,
     "emp1_nacional": 2.8,
-    "razon_entrada": 1.12
+    "razon_entrada": 1.1
    },
    "area_ficha": {
     "n_area": 15,
@@ -32139,6 +32321,7 @@
      425
     ],
     "var_oferta_joven_pct": 132.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      15.0,
      29.9
@@ -32302,6 +32485,7 @@
      3158
     ],
     "var_oferta_joven_pct": 4.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.7,
      28.4
@@ -32497,6 +32681,7 @@
      3007
     ],
     "var_oferta_joven_pct": 18.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.7,
      22.0
@@ -32646,10 +32831,10 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 296176,
-    "p50_anio_5": 373396,
+    "p50_anio_1": 279009,
+    "p50_anio_5": 345165,
     "emp1_nacional": 9.3,
-    "razon_entrada": 1.29
+    "razon_entrada": 1.27
    },
    "area_ficha": {
     "n_area": 15,
@@ -32692,6 +32877,7 @@
      1313
     ],
     "var_oferta_joven_pct": 62.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      21.9,
      32.4
@@ -32873,6 +33059,7 @@
      1272
     ],
     "var_oferta_joven_pct": 13.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.5,
      30.5
@@ -33036,6 +33223,7 @@
      275
     ],
     "var_oferta_joven_pct": -29.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.6,
      41.8
@@ -33199,6 +33387,7 @@
      207
     ],
     "var_oferta_joven_pct": 4.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.6,
      29.9
@@ -33338,6 +33527,7 @@
      28
     ],
     "var_oferta_joven_pct": 0.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      55.3,
      78.7
@@ -33477,6 +33667,7 @@
      129
     ],
     "var_oferta_joven_pct": 61.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      53.0,
      72.3
@@ -33640,6 +33831,7 @@
      139
     ],
     "var_oferta_joven_pct": -26.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.8,
      9.9
@@ -33798,6 +33990,7 @@
      498
     ],
     "var_oferta_joven_pct": 8.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.9,
      11.0
@@ -33961,6 +34154,7 @@
      113
     ],
     "var_oferta_joven_pct": -9.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.0,
      34.7
@@ -34124,6 +34318,7 @@
      470
     ],
     "var_oferta_joven_pct": -2.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.0,
      35.6
@@ -34296,6 +34491,7 @@
      630
     ],
     "var_oferta_joven_pct": -64.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      29.3,
      46.5
@@ -34459,6 +34655,7 @@
      317
     ],
     "var_oferta_joven_pct": 53.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.1,
      33.3
@@ -34576,10 +34773,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -74713,
-    "p50_anio_5": -254624,
+    "p50_anio_1": -91880,
+    "p50_anio_5": -282855,
     "emp1_nacional": -8.6,
-    "razon_entrada": 0.93
+    "razon_entrada": 0.91
    },
    "area_ficha": {
     "n_area": 15,
@@ -34622,6 +34819,7 @@
      95
     ],
     "var_oferta_joven_pct": -44.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.7,
      26.7
@@ -34780,6 +34978,7 @@
      428
     ],
     "var_oferta_joven_pct": 56.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.6,
      11.2
@@ -34897,10 +35096,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 87876,
-    "p50_anio_5": -94399,
+    "p50_anio_1": 70709,
+    "p50_anio_5": -122630,
     "emp1_nacional": 6.6,
-    "razon_entrada": 1.09
+    "razon_entrada": 1.07
    },
    "area_ficha": {
     "n_area": 4,
@@ -34943,6 +35142,7 @@
      281
     ],
     "var_oferta_joven_pct": 35.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.4,
      31.9
@@ -35106,6 +35306,7 @@
      2390
     ],
     "var_oferta_joven_pct": 30.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      29.4,
      51.2
@@ -35277,6 +35478,7 @@
      94
     ],
     "var_oferta_joven_pct": -26.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      14.6
@@ -35435,6 +35637,7 @@
      722
     ],
     "var_oferta_joven_pct": -10.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.6,
      32.4
@@ -35607,6 +35810,7 @@
      8864
     ],
     "var_oferta_joven_pct": 17.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.1,
      10.1
@@ -35756,10 +35960,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -243052,
-    "p50_anio_5": -373061,
+    "p50_anio_1": -260219,
+    "p50_anio_5": -401292,
     "emp1_nacional": -43.2,
-    "razon_entrada": 0.76
+    "razon_entrada": 0.75
    },
    "area_ficha": {
     "n_area": 3,
@@ -35802,6 +36006,7 @@
      107
     ],
     "var_oferta_joven_pct": -7.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.1,
      3.4
@@ -35983,6 +36188,7 @@
      7134
     ],
     "var_oferta_joven_pct": 44.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.0,
      6.0
@@ -36132,10 +36338,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -137439,
-    "p50_anio_5": -276543,
+    "p50_anio_1": -154606,
+    "p50_anio_5": -304774,
     "emp1_nacional": -12.1,
-    "razon_entrada": 0.87
+    "razon_entrada": 0.85
    },
    "area_ficha": {
     "n_area": 4,
@@ -36178,6 +36384,7 @@
      2875
     ],
     "var_oferta_joven_pct": 53.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.6,
      19.7
@@ -36373,6 +36580,7 @@
      627
     ],
     "var_oferta_joven_pct": 80.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.2,
      24.6
@@ -36554,6 +36762,7 @@
      6764
     ],
     "var_oferta_joven_pct": 34.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.6,
      7.9
@@ -36749,6 +36958,7 @@
      4533
     ],
     "var_oferta_joven_pct": 75.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.5,
      2.1
@@ -36944,6 +37154,7 @@
      6039
     ],
     "var_oferta_joven_pct": 30.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.4,
      8.1
@@ -37139,6 +37350,7 @@
      1221
     ],
     "var_oferta_joven_pct": 19.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.0,
      17.1
@@ -37334,6 +37546,7 @@
      1185
     ],
     "var_oferta_joven_pct": 30.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      7.2,
      21.3
@@ -37529,6 +37742,7 @@
      3836
     ],
     "var_oferta_joven_pct": -0.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      9.7,
      18.2
@@ -37724,6 +37938,7 @@
      4585
     ],
     "var_oferta_joven_pct": 10.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      16.8,
      30.8
@@ -37919,6 +38134,7 @@
      5408
     ],
     "var_oferta_joven_pct": -27.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      17.4,
      40.0
@@ -38114,6 +38330,7 @@
      4496
     ],
     "var_oferta_joven_pct": -23.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.3,
      9.2
@@ -38285,6 +38502,7 @@
      256
     ],
     "var_oferta_joven_pct": 10.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.0,
      19.5
@@ -38448,6 +38666,7 @@
      25
     ],
     "var_oferta_joven_pct": -41.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      58.3,
      75.0
@@ -38606,6 +38825,7 @@
      232
     ],
     "var_oferta_joven_pct": 6.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      36.4,
      51.5
@@ -38769,6 +38989,7 @@
      1647
     ],
     "var_oferta_joven_pct": 11.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.5,
      12.0
@@ -38964,6 +39185,7 @@
      3194
     ],
     "var_oferta_joven_pct": -2.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      3.5,
      10.1
@@ -39159,6 +39381,7 @@
      1994
     ],
     "var_oferta_joven_pct": 35.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.2,
      12.7
@@ -39354,6 +39577,7 @@
      1456
     ],
     "var_oferta_joven_pct": 24.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.8,
      13.6
@@ -39549,6 +39773,7 @@
      3478
     ],
     "var_oferta_joven_pct": 36.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.5,
      11.5
@@ -39744,6 +39969,7 @@
      1108
     ],
     "var_oferta_joven_pct": -5.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      27.7,
      47.1
@@ -39916,6 +40142,7 @@
      16329
     ],
     "var_oferta_joven_pct": 45.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.7,
      15.4
@@ -40111,6 +40338,7 @@
      1137
     ],
     "var_oferta_joven_pct": -50.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.6,
      11.3
@@ -40274,6 +40502,7 @@
      1386
     ],
     "var_oferta_joven_pct": 42.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.4,
      1.8
@@ -40469,6 +40698,7 @@
      182
     ],
     "var_oferta_joven_pct": 17.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.3,
      12.0
@@ -40627,6 +40857,7 @@
      1903
     ],
     "var_oferta_joven_pct": 54.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.4,
      14.5
@@ -40822,6 +41053,7 @@
      503
     ],
     "var_oferta_joven_pct": 106.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      4.4,
      7.9
@@ -40994,6 +41226,7 @@
      271
     ],
     "var_oferta_joven_pct": -7.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      8.3,
      15.6
@@ -41157,6 +41390,7 @@
      1339
     ],
     "var_oferta_joven_pct": 34.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.0,
      13.4
@@ -41352,6 +41586,7 @@
      227
     ],
     "var_oferta_joven_pct": 19.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.9,
      25.9
@@ -41515,6 +41750,7 @@
      1520
     ],
     "var_oferta_joven_pct": 2.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.0,
      20.6
@@ -41696,6 +41932,7 @@
      2235
     ],
     "var_oferta_joven_pct": -6.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      27.1,
      43.6
@@ -41891,6 +42128,7 @@
      157
     ],
     "var_oferta_joven_pct": -4.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      34.7,
      50.8
@@ -42054,6 +42292,7 @@
      134
     ],
     "var_oferta_joven_pct": -27.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      19.4,
      25.8
@@ -42193,6 +42432,7 @@
      77
     ],
     "var_oferta_joven_pct": -34.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      11.7,
      25.0
@@ -42351,6 +42591,7 @@
      484
     ],
     "var_oferta_joven_pct": 29.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      6.3,
      13.1
@@ -42514,6 +42755,7 @@
      781
     ],
     "var_oferta_joven_pct": -21.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.9,
      21.9
@@ -42695,6 +42937,7 @@
      536
     ],
     "var_oferta_joven_pct": -6.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.8,
      11.6
@@ -42867,6 +43110,7 @@
      468
     ],
     "var_oferta_joven_pct": 14.4,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.5,
      24.5
@@ -43006,6 +43250,7 @@
      112
     ],
     "var_oferta_joven_pct": -14.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      10.4
@@ -43169,6 +43414,7 @@
      1765
     ],
     "var_oferta_joven_pct": 30.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.8,
      21.0
@@ -43364,6 +43610,7 @@
      360
     ],
     "var_oferta_joven_pct": -0.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.5,
      28.8
@@ -43527,6 +43774,7 @@
      294
     ],
     "var_oferta_joven_pct": 28.9,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      12.0,
      23.1
@@ -43690,6 +43938,7 @@
      395
     ],
     "var_oferta_joven_pct": 34.8,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      18.1,
      26.0
@@ -43829,6 +44078,7 @@
      246
     ],
     "var_oferta_joven_pct": 29.5,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      0.0,
      0.0
@@ -43992,6 +44242,7 @@
      284
     ],
     "var_oferta_joven_pct": -17.2,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.3,
      25.5
@@ -44155,6 +44406,7 @@
      199
     ],
     "var_oferta_joven_pct": -12.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.6,
      22.2
@@ -44318,6 +44570,7 @@
      483
     ],
     "var_oferta_joven_pct": -43.6,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      10.9,
      25.0
@@ -44457,6 +44710,7 @@
      36
     ],
     "var_oferta_joven_pct": -46.3,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      58.1,
      77.4
@@ -44620,6 +44874,7 @@
      257
     ],
     "var_oferta_joven_pct": -2.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      5.6,
      12.0
@@ -44783,6 +45038,7 @@
      6199
     ],
     "var_oferta_joven_pct": 72.1,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.0,
      7.6
@@ -44978,6 +45234,7 @@
      6780
     ],
     "var_oferta_joven_pct": 101.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      1.1,
      4.1
@@ -45173,6 +45430,7 @@
      6295
     ],
     "var_oferta_joven_pct": 43.7,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      14.7,
      26.9
@@ -45322,10 +45580,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -306914,
-    "p50_anio_5": -675311,
+    "p50_anio_1": -324081,
+    "p50_anio_5": -703542,
     "emp1_nacional": -36.5,
-    "razon_entrada": 0.7
+    "razon_entrada": 0.69
    },
    "area_ficha": {
     "n_area": 3,
@@ -45368,6 +45626,7 @@
      1335
     ],
     "var_oferta_joven_pct": -2.0,
+    "oferta_joven_estimada": false,
     "mayores30_cohorte_p5": [
      2.6,
      8.1

@@ -22,6 +22,17 @@ CREATE TABLE analytics.parametro (
     origen       text    NOT NULL      -- decisión que lo fija (pizarra / logfile)
 );
 
+-- Factor para llevar a 3 años una ventana que cae en parte fuera de los años del SIES: con Derecho
+-- un año antes (ADR-003), su ventana del 5° año es 2016–2018 y el SIES empieza en 2017; sumar solo
+-- 2 años la dejaba pesando 2/3 (evaluación del 19-11-26). NULL si ningún año de la ventana existe:
+-- el NOT NULL del peso hace fallar el build en vez de inventar un dato.
+CREATE FUNCTION analytics.factor_ventana(desde integer, hasta integer) RETURNS numeric
+LANGUAGE sql STABLE AS $$
+    SELECT (hasta - desde + 1)::numeric
+           / nullif(greatest(0, least(hasta, c.cohorte_hasta) - greatest(desde, c.cohorte_desde) + 1), 0)
+    FROM modelo.cohorte c WHERE c.indicador = 'titulados_sies'
+$$;
+
 INSERT INTO analytics.parametro VALUES
     -- Años que se corren las ventanas SIES de Derecho respecto de modelo.cohorte (MiFuturo usa otra
     -- cohorte para esta carrera: 2020–2022 en vez de 2021–2023). Un solo lugar: antes un +1, en sentido
@@ -65,7 +76,7 @@ CREATE TABLE analytics.segmento (
     PRIMARY KEY (tipo_institucion, nivel_carrera)
 );
 COMMENT ON TABLE analytics.segmento IS
-    'Cobertura por titulaciones de los programas publicados por MiFuturo. Ventanas = cohortes de la media del 1er y 5° año (modelo.cohorte; Derecho +1).';
+    'Cobertura por titulaciones de los programas publicados por MiFuturo. Ventanas = cohortes de la media del 1er y 5° año (modelo.cohorte; Derecho corrido según corrimiento_derecho, ADR-003).';
 
 INSERT INTO analytics.segmento
 WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
@@ -120,7 +131,7 @@ CREATE TABLE analytics.par (
     n_pub_tramo             integer  NOT NULL,
     tit_ventana_1           integer  NOT NULL,   -- titulaciones SIES del par (todas las instituciones)
     tit_ventana_5           integer  NOT NULL,
-    peso                    integer  NOT NULL,   -- tit_ventana_1 + tit_ventana_5 (decisión aprobada)
+    peso                    integer  NOT NULL,   -- tit_ventana_1 + tit_ventana_5, cada ventana llevada a 3 años si el SIES no la cubre entera (factor_ventana)
     representativo          boolean  NOT NULL,   -- entra en rankings, referencias y cuadrantes
     celda_valida            boolean  NOT NULL,   -- su celda área (MiFuturo) × tipo × nivel es referencia
     referencia              text     CHECK (referencia IN ('celda', 'segmento')),  -- NULL = no comparable
@@ -136,7 +147,7 @@ COMMENT ON COLUMN analytics.par.referencia IS
 INSERT INTO analytics.par
 WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
      c5 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_5to_anio'),
--- Titulaciones por institución × genérica en cada ventana (Derecho corrido +1).
+-- Titulaciones por institución × genérica en cada ventana (Derecho corrido corrimiento_derecho años, ADR-003).
 inst AS (
     SELECT i.tipo_institucion, t.clave_carrera_generica, t.codigo_institucion,
            coalesce(sum(t.total_titulaciones) FILTER (
@@ -219,12 +230,16 @@ celda AS (
            AND max(m.peso) FILTER (WHERE m.representativo) OVER w
                <= analytics.param('max_peso_dominante')
                   * sum(m.peso) FILTER (WHERE m.representativo) OVER w AS celda_valida
-    FROM (SELECT b.*, (b.tit_1 + b.tit_5) AS peso FROM marcado b) m
+    -- Peso = titulaciones de ambas ventanas; una ventana incompleta en el SIES se lleva a 3 años
+    -- (solo Derecho, 5° año: 2016–2018). tit_ventana_* quedan con los títulos reales (el embudo los suma).
+    FROM (SELECT b.*, round(b.tit_1 * (SELECT analytics.factor_ventana(c1.desde + (b.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int, c1.hasta + (b.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) FROM c1)
+                          + b.tit_5 * (SELECT analytics.factor_ventana(c5.desde + (b.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int, c5.hasta + (b.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) FROM c5))::integer AS peso
+          FROM marcado b) m
     WINDOW w AS (PARTITION BY m.area_mf, m.tipo_institucion, m.nivel_carrera)
 )
 SELECT clave_carrera_generica, tipo_institucion, nombre, nivel_carrera,
        area_mf, area, share, area_asignable, ingreso_completo, n_inst_oferta,
-       n_emp1, n_emp2, n_tramo, tit_1, tit_5, tit_1 + tit_5,
+       n_emp1, n_emp2, n_tramo, tit_1, tit_5, peso,
        representativo, celda_valida,
        CASE WHEN NOT representativo THEN NULL
             WHEN celda_valida THEN 'celda'
@@ -298,3 +313,27 @@ SELECT 'analytics_par', 'peso', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
        format('%s pares representativos sin titulaciones en alguna ventana', n)
 FROM (SELECT count(*) AS n FROM analytics.par
       WHERE representativo AND (tit_ventana_1 = 0 OR tit_ventana_5 = 0)) x;
+
+-- Ventanas fuera del SIES (19-11-26): ninguna ventana de titulaciones puede quedar sin años en el
+-- SIES (factor NULL), y el peso de cada par es exactamente sus títulos llevados a 3 años. El
+-- detalle nombra las ventanas que se escalan (hoy solo Derecho, 5° año).
+INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
+WITH c AS (SELECT indicador, cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte
+           WHERE indicador IN ('ingreso_medio_1er_anio', 'ingreso_medio_5to_anio')),
+v AS (
+    SELECT p.clave_carrera_generica, p.tipo_institucion, p.peso, p.tit_ventana_1, p.tit_ventana_5,
+           s.sh,
+           analytics.factor_ventana(c1.d + s.sh, c1.h + s.sh) AS f1,
+           analytics.factor_ventana(c5.d + s.sh, c5.h + s.sh) AS f5,
+           (c5.d + s.sh) || '–' || (c5.h + s.sh) AS v5
+    FROM analytics.par p
+    CROSS JOIN LATERAL (SELECT (p.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int AS sh) s
+    JOIN c c1 ON c1.indicador = 'ingreso_medio_1er_anio'
+    JOIN c c5 ON c5.indicador = 'ingreso_medio_5to_anio'
+)
+SELECT 'analytics_par', 'ventanas_en_sies', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END, n,
+       'toda ventana tiene años en el SIES y peso = round(tit_1·f1 + tit_5·f5)',
+       coalesce((SELECT string_agg(DISTINCT format('%s %s: ventana 5° año %s escalada ×%s', clave_carrera_generica, tipo_institucion, v5, round(f5, 2)), '; ')
+                 FROM v WHERE f5 <> 1 OR f1 <> 1), 'ninguna ventana escalada')
+FROM (SELECT count(*) AS n FROM v
+      WHERE f1 IS NULL OR f5 IS NULL OR peso <> round(tit_ventana_1 * f1 + tit_ventana_5 * f5)) x;

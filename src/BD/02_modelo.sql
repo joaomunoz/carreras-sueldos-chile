@@ -60,7 +60,7 @@ CREATE TABLE modelo.cohorte (
     CHECK ((anio_ingreso_desde IS NULL) = (anio_ingreso_hasta IS NULL))
 );
 COMMENT ON TABLE modelo.cohorte IS
-    'Derecho usa en todos los indicadores MiFuturo la cohorte de titulación + 1 año (metodologías 2025-2026).';
+    'Derecho usa en todos los indicadores MiFuturo cohortes de un año antes en años del SIES (MiFuturo lo describe como «cohorte de titulación + 1 año»; 1er año 2020–2022). Ver ADR-003.';
 
 INSERT INTO modelo.cohorte VALUES
     -- Buscador de Estadísticas por Carrera (nacional, carrera genérica × tipo)

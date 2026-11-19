@@ -350,7 +350,7 @@ SELECT tipo_institucion, nivel_carrera, n, r, r * sqrt((n - 2) / nullif(1 - r ^ 
 INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
 -- 4. (d) los pesos cubren lo mismo que la cobertura publicada por otro camino: la suma de pesos por
 --    nivel = titulaciones de programas publicados en analytics.segmento (misma ventana 2021-2023,
---    mismo Derecho +1; se exige que la cohorte de la continuidad sea la de la media del 1er año).
+--    mismo corrimiento de Derecho, ADR-003; se exige que la cohorte de la continuidad sea la de la media del 1er año).
 SELECT 'analytics_hallazgos', 'continuidad_pesos', CASE WHEN n = 0 AND misma_ventana THEN 'OK' ELSE 'FALLA' END,
        n, 'peso_total por nivel = tit_publicadas_1 de analytics.segmento; ventana de continuidad = la del 1er año',
        (SELECT string_agg(format('%s: %s de cada 100 (%s programas)', nivel_carrera, round(pct_pond, 1), n_programas),

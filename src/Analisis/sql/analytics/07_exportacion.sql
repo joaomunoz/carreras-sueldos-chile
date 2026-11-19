@@ -114,6 +114,7 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'pct_plan_continuidad', round(100 * c.pct_plan_continuidad_1, 1),
         'oferta_joven', json_build_array(c.jovenes_5, c.jovenes_1),
         'var_oferta_joven_pct', round(100 * c.var_oferta_joven, 1),
+        'oferta_joven_estimada', c.oferta_joven_estimada,
         'mayores30_cohorte_p5', json_build_array(round(100 * c.mayores30_min_p5, 1), round(100 * c.mayores30_max_p5, 1)),
         'mayores30_cohorte_p1', json_build_array(round(100 * c.mayores30_min_p1, 1), round(100 * c.mayores30_max_p1, 1))),
     'estabilidad', CASE WHEN es.clave_carrera_generica IS NULL THEN NULL ELSE json_build_object(

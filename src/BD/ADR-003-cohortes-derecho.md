@@ -1,7 +1,7 @@
 # ADR-003: Cohortes de Derecho, un año antes que las demás carreras
 
 **Fecha:** 2026-11-19
-**Estado:** Aceptado (corrige el +1 usado desde T4)
+**Estado:** Aceptado (corrige el +1 usado desde T4); corregido el mismo día por la ventana fuera del SIES (ver al final)
 **Archivos:**
 - `src/Analisis/sql/analytics/01_par.sql`: parámetro `corrimiento_derecho`.
 - `04_dispersion.sql`, `05_contexto.sql`, `06_hallazgos.sql` y `06b_universo.sql`: usan el parámetro.
@@ -35,7 +35,7 @@ En la evaluación de navegación del 19-11-26, el revisor de datos notó que la 
 
 ## Consecuencias
 
-Ensayo con los mismos 74 controles en OK:
+Ensayo con los mismos 74 controles en OK (sin el escalado de la ventana incompleta; ver la corrección al final):
 
 | | +1 (antes) | −1 (ahora) |
 |---|---|---|
@@ -58,8 +58,35 @@ En las 13 carreras que se comparan con el segmento de las 91 profesionales unive
 
 Las consultas de `src/Analisis/sql/auditoria/` son de solo lectura, del diagnóstico de T0–T5, y conservan el +1 de su época. No forman parte del build.
 
+## Corrección del mismo día: la ventana del 5° año queda fuera del SIES
+
+La segunda evaluación (19-11-26) encontró un efecto que el ensayo no vio. Con −1, la ventana del 5° año de Derecho es **2016–2018**, pero el SIES empieza en 2017. Esa ventana sumaba solo dos años:
+- Derecho pesaba 18.510 titulaciones en vez de unas 22.600.
+- La ficha comparaba dos años contra tres en «Titulados menores de 30»: decía +26,3 %, cuando el cambio por año es **−15,8 %**.
+
+**Decisión (aprobada por el usuario):** llevar a tres años toda ventana que el SIES no cubre entera.
+- La función `analytics.factor_ventana(desde, hasta)` calcula el factor: aquí, ×1,5.
+- Se aplica al peso del par (`analytics.par.peso`) y a la comparación de titulados jóvenes (`analytics.contexto`, con la marca `oferta_joven_estimada`, que la web muestra como «estimado»).
+- Los conteos reales de títulos (`tit_ventana_*`, universo y embudo) no se escalan: escalarlos inventaría títulos y rompería el embudo.
+- El control `ventanas_en_sies` falla si una ventana no tiene ningún año en el SIES y nombra las que se escalan.
+
+**Efecto real de pasar de +1 a −1, ya con el escalado:**
+
+| | +1 (antes) | −1 escalado (ahora) |
+|---|---|---|
+| Derecho: peso | 24.264 | 22.610 |
+| Derecho: instituciones en ambos períodos | 45 | 42 |
+| Derecho: cohortes y edad, sexo y oferta joven | 2022–2024 | 2020–2022 (titulados menores de 30: −15,8 %, estimado) |
+| Las 91 profesionales universitarias: carrera del medio al 1er año / 5° año / en % | Ing. en Construcción / Contador Auditor / Ing. Civil Industrial | **iguales** |
+| Las 91: carrera del medio en el aumento en pesos | Odontología ($573.466) | Publicidad ($560.948) |
+| Contador Auditor U, en pesos | cerca de la del medio | progresa más que la del medio |
+| Titulaciones del análisis (1er / 5° año) | 687.231 / 615.246 | 683.985 / 612.738 (reales, sin escalar) |
+
+Los cambios de la carrera del medio al 1er y al 5° año que mostraba la tabla de «Consecuencias» venían del año faltante, no del corrimiento. Hallazgos, portada y conteos de cuadrantes: sin cambios.
+
 ## Alternativas consideradas
 
 - **Mantener +1 y solo corregir los rótulos:** dejaba pesos, conteos y edades medidos con titulados de dos años más tarde que los que usa MiFuturo.
 - **Guardar el corrimiento en `modelo.cohorte`, con filas por carrera:** obligaba a unir esa tabla por carrera en todas las consultas. Un parámetro basta, porque Derecho es la única excepción.
 - **No corregir Derecho:** contradice la metodología de la fuente.
+- **Para la ventana incompleta, usar solo los años disponibles y decirlo:** dejaba a Derecho con 2/3 de su peso y una comparación de jóvenes de signo invertido.

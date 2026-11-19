@@ -1236,7 +1236,6 @@
 
   // Veredicto: traduce a palabras la posición que calcula el SQL (entrada > mediana del grupo;
   // progreso más / típico / menos con ±margen). No agrega cifras.
-  var COMO = { "más": "más", "típico": "lo mismo", "menos": "menos" };
   // ¿Su área no tiene típica propia? (pocas carreras o una que domina: analytics.area_ficha). En esas
   // 61 fichas no se nombra la típica del grupo estadístico, que es todo su tipo × nivel (otras áreas):
   // la ficha habla solo de su área; los cuadrantes la conservan y la ficha lo dice (18-11-26).
@@ -1252,6 +1251,29 @@
     var dom = parPorClave[af.domina + "|" + p.tipo];
     return (dom === p ? "esta carrera reúne" : (dom ? dom.nombre : "una carrera") + " reúne") + " el " + fmtEntero.format(af.domina_pct) +
       " % de los titulados de las carreras " + adj + " de su área";
+  }
+
+  // Nombre de la carrera del medio de su grupo en una cifra (analytics.referencia.q50_clave).
+  function nombreMedio(p, metrica) {
+    var m = parPorClave[referenciaDe(p, metrica).q50_clave + "|" + p.tipo];
+    return m ? m.nombre : "la carrera del medio";
+  }
+  // El crecimiento se compara con la carrera del medio EN CRECIMIENTO, que en 173 de 210 carreras no
+  // es la del sueldo de entrada: antes la frase decía «que el de esa carrera» y nombraba a la de
+  // entrada (69 afirmaciones falsas en 46 fichas, evaluación del 19-11-26). Se nombra cada una.
+  // Si ella misma es la del medio en una medida, esa medida se omite (no se compara consigo misma).
+  function fraseCrecimiento(p) {
+    var DIF = { "más": "mayor que el", "típico": "parecido al", "menos": "menor que el" };
+    var med = function (m) { return referenciaDe(p, m).q50_clave === p.clave ? null : nombreMedio(p, m); };
+    var xp = med("p50_pct_1_5"), xd = med("p50_delta_1_5");
+    var a = xp ? p.posicion.progreso_pct : null, b = xd ? p.posicion.progreso_pesos : null;
+    var base = "Su crecimiento entre el 1er y el 5° año es ";
+    if (a == null && b == null) return "";
+    if (a != null && b != null && xp === xd && a === b) return base + DIF[a] + " de " + xp + ", la carrera del medio en crecimiento, en % y en pesos.";
+    var partes = [];
+    if (a != null) partes.push(DIF[a] + " de " + xp + " en %");
+    if (b != null) partes.push((a != null ? "y " : "") + DIF[b] + " de " + (xd === xp ? "esa misma carrera" : xd) + " en pesos");
+    return base + partes.join(", ") + " (" + (xp && xd && xp !== xd ? "las carreras del medio en cada medida" : "la carrera del medio en crecimiento") + ").";
   }
 
   function veredicto(p) {
@@ -1287,16 +1309,10 @@
     var ref1 = referenciaDe(p, "p50_anio_1");
     var grupo = "las " + fmtEntero.format(ref1.n_pares) + " carreras " + nivelCorto(p) + " " + TIPO_ADJ[p.tipo] + " del área " + p.area.mineduc;
     var d = p.dif_grupo.p50_anio_1;
-    var texto = d === 0 ? "Al entrar, es la carrera del medio de " + grupo + " (la que queda al centro contando cuántos titulados tiene cada una, no por su puesto)"
-      : "Entra ganando " + (p.posicion.entrada_alta ? "más" : "menos") + " que la carrera del medio de " + grupo;
-    // Si ella misma es la del medio en el crecimiento, no se compara consigo misma.
-    var esMedio = function (m) { return referenciaDe(p, m).q50_clave === p.clave; };
-    var a = esMedio("p50_pct_1_5") ? null : p.posicion.progreso_pct, b = esMedio("p50_delta_1_5") ? null : p.posicion.progreso_pesos;
-    if (a == null && b == null) return texto + ".";
-    if (a === b) return texto + ", y su sueldo crece " + COMO[a] + " que el de esa carrera.";
-    if (a == null) return texto + ". En pesos, su sueldo crece " + COMO[b] + " que el de la carrera del medio.";
-    if (b == null) return texto + ". En %, su sueldo crece " + COMO[a] + " que el de la carrera del medio.";
-    return texto + ". Su sueldo crece " + COMO[a] + " que el de esa carrera en %, pero " + COMO[b] + " en pesos.";
+    var texto = d === 0 ? "Al entrar, es la carrera del medio de " + grupo + " (la que queda al centro contando cuántos titulados tiene cada una)."
+      : "Entra ganando " + (p.posicion.entrada_alta ? "más" : "menos") + " que " + nombreMedio(p, "p50_anio_1") + ", la carrera del medio de " + grupo + ".";
+    var fc = fraseCrecimiento(p);
+    return texto + (fc ? " " + fc : "");
   }
 
   // Bloque con título de acción (la conclusión, con su cifra del SQL) y subtítulo con la métrica
@@ -1347,14 +1363,11 @@
       // El resultado en palabras (antes el bloque prometía una comparación y no la daba). Sin cifras:
       // serían de otras áreas, y la ficha se lee solo por su área (criterio del 18-11-26).
       var po = p.posicion, igual = po.cuadrante_pct === po.cuadrante_pesos;
-      var DIF = { "más": "mayor", "típico": "parecida", "menos": "menor" };
       subbloque(cont, "En los cuadrantes de la Parte I queda en «" + po.cuadrante_pct + "»" +
           (igual ? "" : " en %, y en «" + po.cuadrante_pesos + "» en pesos"),
         "Ahí se compara con la carrera del medio de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
         " de todas las áreas, porque " + motivoSinTipica(p) + ". Entra ganando " +
-        (po.entrada_alta ? "más" : "menos") + " que ella, y la diferencia entre su sueldo típico al 1er y al 5° año es " +
-        (po.progreso_pct === po.progreso_pesos ? DIF[po.progreso_pct] + " que la de esa carrera"
-          : DIF[po.progreso_pct] + " en % y " + DIF[po.progreso_pesos] + " en pesos") + ".");
+        (po.entrada_alta ? "más" : "menos") + " que " + nombreMedio(p, "p50_anio_1") + ", la del medio en sueldo de entrada. " + fraseCrecimiento(p));
       return;
     }
     var FILAS = [
@@ -1663,7 +1676,8 @@
       { y: y(a5.p50), t: angosto ? "Sueldo típico" : "Sueldo típico " + pesos(a5.p50), c: "g-rotulo" },
       { y: y(v[4]), t: angosto ? "Promedio" : "Promedio " + pesos(v[4]), c: "g-rotulo-suave" }
     ];
-    if (ref5) rotulos.push({ y: y(ref5.q50), t: angosto ? "Del medio" : "Carrera del medio " + pesos(ref5.q50), c: "g-rotulo-suave" });
+    // Sin rótulo si ella misma es la del medio al 5° año (antes decía «Carrera del medio» con su propio valor).
+    if (ref5 && ref5.q50_clave !== p.clave) rotulos.push({ y: y(ref5.q50), t: angosto ? "Del medio" : "Carrera del medio " + pesos(ref5.q50), c: "g-rotulo-suave" });
     // La barra (P25–P75) no tenía rótulo: se nombra junto a su extremo alto del 5° año.
     rotulos.push({ y: y(a5.p75), t: angosto ? "Mitad central" : "Mitad central de los titulados", c: "g-rotulo-suave" });
     rotulos.forEach(function (r) { r.marca = r.y; });
@@ -2140,7 +2154,10 @@
     if (f30[0] != null) liq(dl5, "Con más de 30 años al titularse (titulados " + w1 + ")", "entre " + pct(f30[0]) + " y " + pct(f30[1]));
     var oj = p.contexto.oferta_joven;
     if (p.contexto.var_oferta_joven_pct != null) liq(dl5, "Titulados menores de 30 años",
-      fmtEntero.format(oj[0]) + " (" + w5 + ") → " + fmtEntero.format(oj[1]) + " (" + w1 + "), " + pctSigno(p.contexto.var_oferta_joven_pct));
+      fmtEntero.format(oj[0]) + " (" + w5 + ") → " + fmtEntero.format(oj[1]) + " (" + w1 + "), " + pctSigno(p.contexto.var_oferta_joven_pct) +
+        // Ventana que el SIES no cubre entera, llevada a 3 años en SQL (factor_ventana).
+        (p.contexto.oferta_joven_estimada ? " (estimado: el SIES empieza en " + datos.cohortes.filter(function (c) { return c.indicador === "titulados_sies"; })[0].cohortes[0] +
+          " y la cifra de " + w5 + " se lleva a tres años)" : ""));
     if (p.duracion.formal != null) liq(dl5, "Duración en semestres", fmtUno.format(p.duracion.formal) + " formal · " +
       (p.duracion.real != null ? fmtUno.format(p.duracion.real) : "—") + " real");
     b5.appendChild(dl5);

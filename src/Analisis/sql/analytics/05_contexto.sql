@@ -18,7 +18,7 @@
 --   2. analytics.estabilidad (D5): ¿la cohorte de los percentiles del 1er año (2023) fue atípica en
 --      su serie de empleabilidad del 1er año (cohortes 2019-2022)? Se marca, no se excluye.
 --
--- Ventanas desde modelo.cohorte (Derecho +1). La duración formal y real no se copia aquí: está
+-- Ventanas desde modelo.cohorte (Derecho corrido según corrimiento_derecho, ADR-003). La duración formal y real no se copia aquí: está
 -- en modelo.mifuturo_estadistica y la exportación (A6) la toma de ahí.
 -- Requiere 01_par.sql.
 
@@ -47,6 +47,9 @@ CREATE TABLE analytics.contexto (
     jovenes_5                integer NOT NULL,
     jovenes_1                integer NOT NULL,
     var_oferta_joven         numeric,            -- jovenes_1 / jovenes_5 − 1; NULL si jovenes_5 = 0
+    -- Una ventana que el SIES no cubre entera se lleva a 3 años (factor_ventana, 01_par.sql): sin
+    -- eso, Derecho comparaba 2 años contra 3 (+26,3 % en vez de −15,8 %). La web avisa «estimado».
+    oferta_joven_estimada    boolean  NOT NULL,
     -- edad de las cohortes de los percentiles (todas las titulaciones)
     mayores30_min_p1         numeric,            -- cohorte de los percentiles del 1er año (2023)
     mayores30_max_p1         numeric,
@@ -119,15 +122,21 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
        a.m35_1::numeric / nullif(a.edad_1, 0), (a.m35_1 + a.m30_1)::numeric / nullif(a.edad_1, 0),
        a.m35_5::numeric / nullif(a.edad_5, 0), (a.m35_5 + a.m30_5)::numeric / nullif(a.edad_5, 0),
        a.cont_1::numeric / nullif(a.tit_1, 0),
-       coalesce(a.jov_5, 0), coalesce(a.jov_1, 0),
-       a.jov_1::numeric / nullif(a.jov_5, 0) - 1,
+       round(coalesce(a.jov_5, 0) * f.f5)::integer, round(coalesce(a.jov_1, 0) * f.f1)::integer,
+       (a.jov_1 * f.f1) / nullif(a.jov_5 * f.f5, 0) - 1,
+       f.f1 <> 1 OR f.f5 <> 1,
        a.m35_p1::numeric / nullif(a.edad_p1, 0), (a.m35_p1 + a.m30_p1)::numeric / nullif(a.edad_p1, 0),
        a.m35_p5::numeric / nullif(a.edad_p5, 0), (a.m35_p5 + a.m30_p5)::numeric / nullif(a.edad_p5, 0),
        coalesce(((a.m35_p1 + a.m30_p1)::numeric / nullif(a.edad_p1, 0)
                  - (a.m35_p5 + a.m30_p5)::numeric / nullif(a.edad_p5, 0)) * 100
                 >= analytics.param('min_cambio_edad_pp'), false)
 FROM analytics.par p
-LEFT JOIN agg a USING (tipo_institucion, clave_carrera_generica);
+LEFT JOIN agg a USING (tipo_institucion, clave_carrera_generica)
+CROSS JOIN c
+-- anio_ref ya está en años de referencia: los años reales del SIES son anio_ref + corrimiento.
+CROSS JOIN LATERAL (SELECT (p.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int AS sh) s
+CROSS JOIN LATERAL (SELECT analytics.factor_ventana(c.d1 + s.sh, c.h1 + s.sh) AS f1,
+                           analytics.factor_ventana(c.d5 + s.sh, c.h5 + s.sh) AS f5) f;
 
 -- --------------------------------------------------------------------------
 -- 2. Estabilidad de la cohorte de los percentiles del 1er año (D5)

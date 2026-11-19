@@ -57,7 +57,7 @@ Copia fiel de los CSV de los scrapers. Columnas, orden y significado son los de 
 | `min_casos` | smallint | sí | Umbral de publicación declarado por la fuente |
 | `referencia` | text | no | Documento y líneas de `datos externos/` que respaldan la fila |
 
-Derecho usa en todos los indicadores de MiFuturo la cohorte de titulación + 1 año (comentario de la tabla).
+Derecho usa en todos los indicadores de MiFuturo cohortes de un año antes en años del SIES (MiFuturo lo describe como «cohorte de titulación + 1 año»; su 1er año usa 2020–2022). El análisis lo aplica con el parámetro `corrimiento_derecho` = −1 ([ADR-003](ADR-003-cohortes-derecho.md)).
 
 ### `modelo.titulacion` — hecho SIES
 **Grano:** un programa en un año. **Llave:** `(anio, codigo_programa)`. **Filas esperadas:** 94.579. **Origen:** `raw.titulados`. **Unidad:** titulaciones, no personas.
