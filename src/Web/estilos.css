@@ -652,10 +652,13 @@ a.hallazgo__accion { color: var(--tinta); }
 .trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
 .trazo--timbre { border-top: 3px solid var(--timbre); }
 .trazo--fino { border-top: 1px solid var(--tinta-suave); }
+/* Muestra del trazo discontinuo de la carrera del medio (.f-ref del gráfico de sueldo). */
+.trazo--ref { border-top: 2px dashed var(--tinta); }
 /* Muestras verticales: las líneas de referencia del gráfico de instituciones son verticales. */
 .trazo-v { display: inline-block; flex-shrink: 0; width: 0; height: 0.9rem; border-left: 2px solid var(--tinta); }
 .trazo-v--punteado { border-left: 2px dashed var(--tinta-suave); }
 .grafico__leyenda--arriba { margin: 0.5rem 0 0.75rem; }
+.grafico__leyenda[hidden] { display: none; }
 .barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
 
 /* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */

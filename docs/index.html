@@ -666,10 +666,13 @@ a.hallazgo__accion { color: var(--tinta); }
 .trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
 .trazo--timbre { border-top: 3px solid var(--timbre); }
 .trazo--fino { border-top: 1px solid var(--tinta-suave); }
+/* Muestra del trazo discontinuo de la carrera del medio (.f-ref del gráfico de sueldo). */
+.trazo--ref { border-top: 2px dashed var(--tinta); }
 /* Muestras verticales: las líneas de referencia del gráfico de instituciones son verticales. */
 .trazo-v { display: inline-block; flex-shrink: 0; width: 0; height: 0.9rem; border-left: 2px solid var(--tinta); }
 .trazo-v--punteado { border-left: 2px dashed var(--tinta-suave); }
 .grafico__leyenda--arriba { margin: 0.5rem 0 0.75rem; }
+.grafico__leyenda[hidden] { display: none; }
 .barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
 
 /* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */
@@ -2041,7 +2044,10 @@ a.hallazgo__accion { color: var(--tinta); }
         " titulados recientes mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
     }
     // Por qué esos dos rótulos: sin decirlo, «−4,4 %» parecía la mayor caída (hay mayores, con aviso).
-    texto += " Con nombre, la mayor y la menor diferencia entre las carreras sin avisos.";
+    // Los avisos se nombran: solo el de edad tiene color, y sin decirlo la línea más larga
+    // (+86,8 %, baja cobertura) quedaba sin nombre y sin explicación (evaluación del 19-11-26).
+    texto += " Con nombre, la mayor y la menor diferencia entre las carreras sin avisos (edades distintas, baja cobertura de MiFuturo " +
+      "o un año de titulados atípico); los avisos de cada carrera aparecen al pasar el puntero.";
     document.getElementById("peine-bajada").textContent = texto;
     document.getElementById("peine-titulo").textContent = "Sueldo típico (P50) al 1er y al 5° año de las " +
       fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel + " comparables · ingresos " + aniosIngreso("percentiles_anio_1") + ", en pesos de septiembre de 2025";
@@ -2099,6 +2105,7 @@ a.hallazgo__accion { color: var(--tinta); }
     // cruzan el texto. Antes se dibujaban encima y, si la carrera quedaba a la izquierda del final
     // del rótulo, la línea lo tachaba (evaluación del 19-11-26).
     var capaGuias = svgEl("g", {}, null, svg);
+    var rot = [];
     [masSube, masBaja].forEach(function (p, k) {
       var i = lista.indexOf(p);
       var yRot = m.arriba + 10 + k * 18;
@@ -2113,13 +2120,23 @@ a.hallazgo__accion { color: var(--tinta); }
         nombre = nombre.slice(0, -2);
         t.textContent = nombre.replace(/[\s,(]+$/, "") + "…" + cifra;
       }
-      var fin = m.izq + 8 + t.getComputedTextLength() + 6;
-      var yDot = k === 0 ? Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50))
-                         : Math.max(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50));
-      // Si la carrera queda bajo el rótulo, la guía baja directo desde su punto.
-      var pts = x(i) - 4 > fin
-        ? fin + "," + (yRot - 4) + " " + (x(i) - 4) + "," + (yRot - 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4))
-        : x(i) + "," + (yRot + 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4));
+      rot.push({ i: i, yRot: yRot, fin: m.izq + 8 + t.getComputedTextLength() + 6,
+                 yDot: k === 0 ? Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50))
+                               : Math.max(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50)) });
+    });
+    // Guías después de los dos rótulos, para saber dónde termina cada uno. Si la carrera queda bajo
+    // su rótulo, la guía baja directo desde su punto; pero la del rótulo de arriba no puede bajar
+    // atravesando el de abajo (a 390 px, la de Computación cruzaba «(IP)» de Geología y parecía de
+    // ella): entonces sale por la derecha, más allá del rótulo de abajo, y baja por ahí.
+    rot.forEach(function (r, k) {
+      var xi = x(r.i), yFin = r.yDot + (k === 0 ? -4 : 4);
+      var tapa = k === 0 && rot[1] && rot[1].yRot < yFin && xi <= rot[1].fin;
+      var desde = Math.max(r.fin, tapa ? rot[1].fin : 0);
+      var pts = xi - 4 > desde
+        ? r.fin + "," + (r.yRot - 4) + " " + (xi - 4) + "," + (r.yRot - 4) + " " + xi + "," + yFin
+        : tapa
+          ? r.fin + "," + (r.yRot - 4) + " " + desde + "," + (r.yRot - 4) + " " + desde + "," + (rot[1].yRot + 6) + " " + xi + "," + Math.max(yFin, rot[1].yRot + 6)
+          : xi + "," + (r.yRot + 4) + " " + xi + "," + yFin;
       svgEl("polyline", { points: pts, fill: "none" }, "g-guia", capaGuias);
     });
     pintarPeineBajan(lista, bajan, nombreNivel);
@@ -2136,9 +2153,11 @@ a.hallazgo__accion { color: var(--tinta); }
         "1er año " + pesos(p.percentiles.anio_1.p50),
         "5° año  " + pesos(p.percentiles.anio_5.p50) + "  (" + pctSigno(p.percentiles.p50_pct_1_5) + ")"
       ]);
-      var escala = lienzo.clientWidth / W;
-      ubicarTooltip(caja, figura, x(i) * escala,
-                    Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50)) * escala);
+      // Relativo a la figura, no al lienzo: sin el desfase del lienzo (título y rótulos encima) la
+      // ayuda quedaba más arriba de lo previsto; en los cuadrantes llegaba a tapar el punto.
+      var rf = figura.getBoundingClientRect(), rl = lienzo.getBoundingClientRect(), escala = rl.width / W;
+      ubicarTooltip(caja, figura, rl.left - rf.left + x(i) * escala,
+                    rl.top - rf.top + Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50)) * escala);
     }
     function desdePuntero(e) {
       var caja2 = svg.getBoundingClientRect();
@@ -2475,15 +2494,19 @@ a.hallazgo__accion { color: var(--tinta); }
         "Se compara con: " + nombreGrupo(p),
         "1er año " + pesos(p.percentiles.anio_1.p50) + (Math.abs(q.razon - 1) < 1e-9
           ? " (es la carrera del medio de su grupo)"
-          : " (×" + fmtUno.format(p.dif_grupo.razon_entrada).replace(/,0$/, "") + " de la del medio, " + pesos(q.ref1) + ")"),
+          // En pesos y no como razón: «×1» con un decimal se mostraba en 33 carreras rotuladas
+          // «entrada baja/alta» (0,96 → ×1). La diferencia viene de SQL (dif_grupo).
+          : " (" + pesos(Math.abs(p.dif_grupo.p50_anio_1)) + (p.dif_grupo.p50_anio_1 > 0 ? " más" : " menos") +
+            " que la del medio, " + pesos(q.ref1) + ")"),
         "Crecimiento 1er → 5° año: " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
         "Crecimiento de la del medio: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
         nombreCuadrante(p.posicion[clave])
       ];
       if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + nombreCuadrante(p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]));
       llenarTooltip(caja, p, lineas);
-      var escala = lienzo.clientWidth / W;
-      ubicarTooltip(caja, figura, x(q.razon) * escala, y(yDe(q)) * escala);
+      // Con el desfase del lienzo dentro de la figura (ver el peine): sin él, la ayuda tapaba el punto.
+      var rf = figura.getBoundingClientRect(), rl = lienzo.getBoundingClientRect(), escala = rl.width / W;
+      ubicarTooltip(caja, figura, rl.left - rf.left + x(q.razon) * escala, rl.top - rf.top + y(yDe(q)) * escala);
     }
     svg.onpointermove = svg.onpointerdown = function (e) {
       var rc = svg.getBoundingClientRect(), k = W / rc.width;
@@ -2661,9 +2684,12 @@ a.hallazgo__accion { color: var(--tinta); }
   function veredicto(p) {
     if (p.posicion && sinTipicaPropia(p)) {
       var af = p.area_ficha, niv = nivelCorto(p);
-      if (af.n_area === 1) return "Es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") +
-        " de su área en MiFuturo, así que esta ficha no la compara dentro del área. En los cuadrantes de la Parte I se compara con todas las carreras " +
-        niv + " " + TIPO_ADJ[p.tipo] + " (abajo).";
+      // Con el resultado primero: antes Derecho (única de su área) solo recibía el método.
+      if (af.n_area === 1) return "Frente a la carrera del medio de todas las carreras " + niv + " " + TIPO_ADJ[p.tipo] +
+        ", queda en «" + nombreCuadrante(p.posicion.cuadrante_pct) + "»" +
+        (p.posicion.cuadrante_pct === p.posicion.cuadrante_pesos ? "" : " en %, y en «" + nombreCuadrante(p.posicion.cuadrante_pesos) + "» en pesos") +
+        ". Se compara así porque es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") +
+        " de su área en MiFuturo: no hay otras con las que compararla dentro del área.";
       var m = motivoSinTipica(p), otras = af.n_area - 1;
       // Crecimiento del sueldo típico (1er → 5° año) frente a su área, en % y en pesos (SQL:
       // analytics.area_ficha). Reemplaza al «crece más o menos que su grupo», que era otras áreas.
@@ -2740,6 +2766,27 @@ a.hallazgo__accion { color: var(--tinta); }
   }
   function nombreCorto(s, max) { return s.length > max ? s.slice(0, max - 1).replace(/\s+\S*$/, "") + "…" : s; }
 
+  // El veredicto mide el crecimiento dentro de su área (todos los tipos) y este bloque frente a la
+  // carrera del medio de todo su tipo y nivel. Las dos son ciertas, pero en ~10 fichas una decía
+  // «mayor» y la otra «menor» sin explicar por qué (evaluación del 19-11-26). Si chocan, se dice.
+  // «La mayoría del área» = más de la mitad de las otras carreras; un empate exacto no choca con nada.
+  function puenteConVeredicto(p, af) {
+    var otras = af.n_area - 1;
+    if (otras < 1) return "";
+    var area = function (k) { return 2 * k > otras ? "más" : 2 * k < otras ? "menos" : null; };
+    var choca = function (k, prog) { var a = area(k); return a && prog !== "típico" && a !== prog ? a : null; };
+    var medidas = [[choca(af.mas_que_pct, p.posicion.progreso_pct), "en %"], [choca(af.mas_que_pesos, p.posicion.progreso_pesos), "en pesos"]]
+      .filter(function (m) { return m[0]; });
+    if (!medidas.length) return "";
+    var dentro = medidas[0][0] === "más" ? "mayor" : "menor", fuera = dentro === "mayor" ? "menor" : "mayor";
+    var cual = medidas.length === 2 && medidas[0][0] === medidas[1][0] ? "en % y en pesos"
+      : medidas.map(function (m) { return m[1]; }).join(" y ");
+    if (medidas.length === 2 && medidas[0][0] !== medidas[1][0]) return " Esto se lee distinto que el veredicto de arriba porque se compara con otras carreras: " +
+      "arriba, con las de su área; aquí, con la del medio de todas las carreras " + nivelCorto(p) + " " + TIPO_ADJ[p.tipo] + ".";
+    return " Arriba, dentro de su área, su crecimiento " + cual + " es " + dentro + " que el de la mayoría; aquí, frente a la carrera del medio de todas las carreras " +
+      nivelCorto(p) + " " + TIPO_ADJ[p.tipo] + ", es " + fuera + ". Las dos cosas son ciertas: se compara con grupos distintos.";
+  }
+
   function frenteATipica(cont, p, af) {
     var ref = referenciaDe(p, "p50_anio_1"), niv = nivelCorto(p), adj = TIPO_ADJ[p.tipo];
     if (af.motivo !== "celda") {
@@ -2750,7 +2797,8 @@ a.hallazgo__accion { color: var(--tinta); }
           (igual ? "" : " en %, y en «" + nombreCuadrante(po.cuadrante_pesos) + "» en pesos"),
         "Ahí se compara con la carrera del medio de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
         " de todas las áreas, porque " + motivoSinTipica(p) + ". Entra ganando " +
-        (po.entrada_alta ? "más" : "menos") + " que " + nombreMedio(p, "p50_anio_1") + ", la del medio en sueldo de entrada. " + fraseCrecimiento(p));
+        (po.entrada_alta ? "más" : "menos") + " que " + nombreMedio(p, "p50_anio_1") + ", la del medio en sueldo de entrada. " + fraseCrecimiento(p) +
+        puenteConVeredicto(p, af));
       return;
     }
     var FILAS = [
@@ -3002,10 +3050,14 @@ a.hallazgo__accion { color: var(--tinta); }
 
   // Un solo gráfico de sueldo por año. Puntos sin línea: cada año es otra cohorte de titulados
   // (una línea sugeriría a las mismas personas en el tiempo). Esta carrera en ocre (rombo = P50,
-  // barra = mitad central) en los años 1 y 5; el promedio de cada año en gris hueco; la típica
-  // del grupo en trazo discontinuo. Rótulos directos a la derecha, sin leyenda aparte.
+  // barra = mitad central) en los años 1 y 5; el promedio de cada año en gris hueco; la carrera
+  // del medio del grupo en trazo discontinuo. Rótulos directos a la derecha y una leyenda solo para
+  // el trazo discontinuo: en el 1er año no tiene rótulo (no cabe a la izquierda del eje) y, sin
+  // leyenda, quedaba una raya sin nombre (evaluación del 19-11-26, 14 fichas).
   function graficoSueldo(cont, p) {
     cont.appendChild(tituloGrafico("Sueldo típico y promedio por año desde la titulación · pesos"));
+    var leyS = el("div", "grafico__leyenda grafico__leyenda--arriba");
+    cont.appendChild(leyS);
     var caja = el("div", "ficha__grafico ficha__grafico--sueldo");
     cont.appendChild(caja);
     // ¿Hay rangos por institución? Entonces el 4° año se marca: es el único año que MiFuturo publica
@@ -3017,6 +3069,21 @@ a.hallazgo__accion { color: var(--tinta); }
     var a1 = p.percentiles.anio_1, a5 = p.percentiles.anio_5, v = p.media.anio;
     // Sin típica propia en su área, sin línea de típica: sería la de otras áreas.
     var ref1 = sinTipicaPropia(p) ? null : referenciaDe(p, "p50_anio_1"), ref5 = ref1 ? referenciaDe(p, "p50_anio_5") : null;
+    // Si ella misma es la del medio en un año, ese año no lleva trazo: coincidiría con su rombo.
+    var esElla1 = !!ref1 && ref1.q50_clave === p.clave, esElla5 = !!ref5 && ref5.q50_clave === p.clave;
+    // El rombo, la barra y el promedio ya tienen rótulo directo: la leyenda nombra solo el trazo.
+    if (ref1) {
+      var item = el("span", "leyenda-item");
+      if (esElla1 && esElla5) item.textContent = "Es la carrera del medio de su grupo al 1er y al 5° año";
+      else {
+        item.appendChild(el("span", "trazo trazo--ref")).setAttribute("aria-hidden", "true");
+        item.appendChild(document.createTextNode("Carrera del medio de su grupo · " +
+          [[esElla1, "p50_anio_1", ref1, "1er año"], [esElla5, "p50_anio_5", ref5, "5° año"]].map(function (a) {
+            return a[3] + ": " + (a[0] ? "es esta carrera" : nombreMedio(p, a[1]) + ", " + pesos(a[2].q50));
+          }).join(" · ")));
+      }
+      leyS.appendChild(item);
+    } else leyS.hidden = true;
     // Eje acotado a la mitad central, el promedio y la típica: con P10–P90 iba de $0 a $5.000
     // mil y aplastaba todo (P10–P90 queda en «Ver todas las cifras»).
     var todos = [a1.p25, a5.p25, a1.p75, a5.p75].concat(v);
@@ -3048,7 +3115,7 @@ a.hallazgo__accion { color: var(--tinta); }
     }
     [[0, a1, ref1], [4, a5, ref5]].forEach(function (a) {
       var cx = x(a[0]), q = a[1];
-      if (a[2]) svgEl("line", { x1: cx - 16, x2: cx + 16, y1: y(a[2].q50), y2: y(a[2].q50) }, "f-ref", svg);
+      if (a[2] && a[2].q50_clave !== p.clave) svgEl("line", { x1: cx - 16, x2: cx + 16, y1: y(a[2].q50), y2: y(a[2].q50) }, "f-ref", svg);
       svgEl("line", { x1: cx, x2: cx, y1: y(q.p25), y2: y(q.p75) }, "f-caja", svg);
     });
     v.forEach(function (val, i) { svgEl("circle", { cx: x(i), cy: y(val), r: 4 }, "f-prom", svg); });
