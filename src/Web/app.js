@@ -271,9 +271,9 @@
     var tec = nivelEdad("Carreras Técnicas");
     if (tec && tec.n_negativos) {
       var unaA = tec.n_negativos === 1;
-      var nodosA = [el("p", null, "No es que el sueldo baje: son grupos distintos de titulados." +
-        (tec.n_con_edad ? " En " + fmtEntero.format(tec.n_con_edad) + " de esas carreras" +
-          ", los recién titulados son mayores que los de hace cinco años." : ""))];
+      // «Son grupos distintos» ya dice que no es el sueldo de las mismas personas el que baja.
+      var nodosA = [el("p", null, "Son grupos distintos de titulados" +
+        (tec.n_con_edad ? ": en " + fmtEntero.format(tec.n_con_edad) + " de ellas, los recién titulados son mayores." : "."))];
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
         resultado: "carreras técnicas: quienes se titularon hace 5 años ganan más de " + fmtEntero.format(parametro("margen_tipico_pp")) +
@@ -296,12 +296,15 @@
         // «crecimiento mayor que la carrera del medio», no «crecen más que su grupo»: son dos grupos de
         // titulados distintos y la comparación es con una carrera (evaluación del 19-11-26).
         resultado: (unaB ? "carrera profesional tiene" : "carreras profesionales tienen") +
-          " un crecimiento mayor que el de la carrera del medio de su grupo en porcentaje, pero menor en pesos, o al revés." +
+          " un crecimiento mayor que la carrera del medio de su grupo en %, pero menor en pesos, o al revés." +
           (b.n_cambian_tec ? " También " + fmtEntero.format(b.n_cambian_tec) + (b.n_cambian_tec === 1 ? " técnica." : " técnicas.") : ""),
-        nodos: [parrafo([eb.nombre + ": quienes llevan 1 año titulados ganan ", pesos(eb.p50_anio_1),
-          " y quienes llevan 5 años, ", pesos(eb.p50_anio_5), ". Es un ", pct(eb.p50_pct_1_5),
-          " más; la carrera del medio de " + grupoEnPalabras(eb.grupo) + ", un ", pct(eb.ref_pct_q50),
-          ". Pero son ", pesos(eb.p50_delta_1_5), " más al mes, contra ", pesos(eb.ref_delta_q50), " de la carrera del medio en pesos."])],
+        // Cada comparación dice contra qué: la del medio de su grupo, nombrado como en el resto de
+        // la página. «Más/menos que» se calcula: la regla del ejemplo no fija la dirección.
+        nodos: [parrafo([eb.nombre + ": ", pesos(eb.p50_anio_1), " al 1er año y ", pesos(eb.p50_anio_5),
+          " al 5° año. Su crecimiento es ", pctSigno(eb.p50_pct_1_5), (eb.p50_pct_1_5 > eb.ref_pct_q50 ? ", mayor" : ", menor") + " que el ",
+          pctSigno(eb.ref_pct_q50), " de la del medio de su grupo (" + grupoEnPalabras(eb.grupo).replace(/^las /, "") +
+          "); pero en pesos es ", pesosSigno(eb.p50_delta_1_5),
+          (eb.p50_delta_1_5 > eb.ref_delta_q50 ? ", mayor" : ", menor") + " que los ", pesosSigno(eb.ref_delta_q50), " de la del medio."])],
         accion: "Ver " + eb.nombre + " →", par: pb
       }));
     }
@@ -312,11 +315,12 @@
     if (pc) {
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(c.n_enganosos),
-        resultado: (c.n_enganosos === 1 ? "carrera" : "carreras") + ": su empleabilidad (el % de titulados que gana al menos el sueldo mínimo al 1er año) difiere " +
+        // La definición se queda en la tarjeta (no en una ayuda al pasar el mouse: en el celular no
+        // se vería). La resta del rango se deduce de sus extremos.
+        resultado: (c.n_enganosos === 1 ? "carrera" : "carreras") + ": su empleabilidad al 1er año (el % de titulados que gana al menos el sueldo mínimo) difiere " +
           fmtEntero.format(c.umbral_pp) + " puntos o más según la institución.",
-        nodos: [parrafo(["En " + ec.nombre + ", la mitad de las " + TIPO_PLURAL[ec.tipo] + " está entre ",
-          pct(ec.q1), " y ", pct(ec.q3), ": ", fmtUno.format(ec.iqr) + " puntos", " de diferencia, más que los " + fmtEntero.format(c.umbral_pp) +
-          " del criterio. La cifra nacional es ", pct(ec.nacional), "."])],
+        nodos: [parrafo([ec.nombre + ": la mitad de las " + TIPO_PLURAL[ec.tipo] + " va de ",
+          pct(ec.q1), " a ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."])],
         accion: "Ver " + ec.nombre + " →", par: pc
       }));
     }
@@ -333,10 +337,9 @@
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(dt.de_cada_100) + " de cada 100",
         resultado: "titulados de carreras técnicas siguen estudiando al año siguiente; en las profesionales, " +
-          fmtEntero.format(dp.de_cada_100) + " de cada 100.",
-        nodos: [parrafo(["Depende de la carrera: en " + ej.alto.nombre + " (" + ej.alto.tipo + ") son ",
-          fmtEntero.format(ej.alto.de_cada_100), " de cada 100; en " + ej.bajo.nombre + " (" + ej.bajo.tipo + "), ",
-          fmtEntero.format(ej.bajo.de_cada_100), "."])],
+          fmtEntero.format(dp.de_cada_100) + ".",
+        nodos: [parrafo(["Varía por carrera: ", fmtEntero.format(ej.alto.de_cada_100), " en " + ej.alto.nombre + " (" + ej.alto.tipo + "), ",
+          fmtEntero.format(ej.bajo.de_cada_100), " en " + ej.bajo.nombre + " (" + ej.bajo.tipo + ")."])],
         accion: "Ver " + ej.alto.nombre + " →", par: pAlto
       }));
     }
