@@ -21,13 +21,7 @@
 4. **Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue estudiando el 21,7 % de los titulados de carreras técnicas y el 4,2 % de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: 37,4 % en Técnico en Administración de Empresas (IP) y 6,8 % en Técnico en Enfermería (IP). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.
 <!-- HALLAZGOS:FIN -->
 
-> **Corrección (16-11-26).** La versión anterior decía que, en las carreras con cambio de edad, los titulados de 30 años o más pasaban de 28 % a 55 %. Esa mediana se calculaba sobre las 9 carreras que bajan y no sobre las 7 que nombraba la frase; la cifra correcta en esa versión era 32,5 % → 56,6 % (cambió después con los datos y el método actuales). Desde esta versión, las cifras de los hallazgos se calculan en SQL y tienen sus propios controles de calidad.
->
-> **Corrección (17-11-26).** El hallazgo 1 daba una sola mediana de crecimiento para las 210 carreras comparables (+29,3 %), que mezclaba técnicas y profesionales y no describía a ninguno de los dos niveles. Ahora se informa por nivel.
->
-> **Cambio de método (18-11-26).** Los grupos de comparación usan ahora el área del conocimiento de MiFuturo en vez del área CINE ([ADR-002](src/BD/ADR-002-area-de-referencia.md)): quien busca una carrera piensa por interés, y la CINE separaba, por ejemplo, Telecomunicaciones de Informática. Siguen siendo 14 grupos con área propia; 27 carreras ganan uno y 17 pasan a compararse con todas las de su tipo y nivel. El hallazgo 2 pasó de 10 a 13 carreras profesionales; su ejemplo, Ingeniería en Alimentos, conserva sus cifras.
->
-> **Cambio de método (19-11-26).** Derecho se mide ahora con titulados de un año **antes** que las demás carreras (2020–2022 en vez de 2021–2023), como lo publica MiFuturo; antes se corría un año después ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)). Cambian el peso y los datos de contexto de Derecho y la carrera del medio en el aumento en pesos de las profesionales universitarias (de Odontología a Publicidad); los hallazgos no cambian. Su ventana del 5° año (2016–2018) empieza antes que el SIES: en el peso y en la comparación de titulados jóvenes se lleva a tres años; los conteos de títulos quedan reales.
+> Las correcciones y los cambios de método que alteraron cifras publicadas están en [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
