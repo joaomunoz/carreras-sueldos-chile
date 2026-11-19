@@ -53,7 +53,9 @@ WITH valores AS (
         ('p50_anio_5',    e.percentil_50_anio_5::numeric),
         ('emp1_nacional', e.empleabilidad_1er_anio)
     ) AS m (metrica, valor)
-    WHERE p.representativo
+    -- Sin valor no hay miembro: un NULL sumaría su peso al total y quedaría al final del orden,
+    -- corriendo la carrera del medio hacia arriba (hoy hay 0; segunda evaluación, 19-11-26).
+    WHERE p.representativo AND m.valor IS NOT NULL
 )
 SELECT 'segmento|' || tipo_institucion || '|' || nivel_carrera AS grupo_id,
        'segmento' AS tipo_grupo, NULL::text AS area, tipo_institucion, nivel_carrera,

@@ -950,17 +950,19 @@ a.hallazgo__accion { color: var(--tinta); }
 .tabla--inst thead th:first-child { min-width: 0; }
 /* Nombres en 1-2 líneas: sin mínimo, con 7 columnas quedaban de 3-4 líneas por fila. */
 .ficha .tabla--inst td.td--titulo { min-width: 13rem; }
-/* En celular, una tarjeta por institución (como la tabla de la carrera del medio): a 390 px se
-   veían 2,5 de sus 6 columnas y nada avisaba que había que deslizar (evaluación del 19-11-26). */
+/* En celular, una tarjeta por fila en las tablas de la ficha con muchas columnas (instituciones,
+   otras carreras del área, otro tipo de institución): a 390 px se veían 2,5 de 6 columnas y nada
+   avisaba que había que deslizar (evaluaciones del 19-11-26). Cada valor lleva su columna encima. */
 @media (max-width: 40rem) {
-  .ficha .tabla--inst, .ficha .tabla--inst tbody { display: block; width: 100%; }
-  .ficha .tabla--inst thead { display: none; }
-  .ficha .tabla--inst tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 0.35rem; border-bottom: 1px solid var(--regla); }
-  .ficha .tabla--inst td { border: 0; }
-  .ficha .tabla--inst td.td--titulo { grid-column: 1 / -1; min-width: 0; font-weight: 600; padding-bottom: 0; }
-  .ficha .tabla--inst td.num { white-space: normal; text-align: left; }
-  .ficha .tabla--inst td.num::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); color: var(--tinta-suave); }
+  .ficha .tabla--movil, .ficha .tabla--movil tbody { display: block; width: 100%; }
+  .ficha .tabla--movil thead { display: none; }
+  .ficha .tabla--movil tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 0.35rem; border-bottom: 1px solid var(--regla); }
+  .ficha .tabla--movil td { border: 0; }
+  .ficha .tabla--movil td.td--titulo { grid-column: 1 / -1; min-width: 0; font-weight: 600; padding-bottom: 0; }
+  .ficha .tabla--movil td:not(.td--titulo) { white-space: normal; text-align: left; }
+  .ficha .tabla--movil td:not(.td--titulo)::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); font-weight: 400; color: var(--tinta-suave); }
   .ficha .tabla--inst td.td--tramo { grid-column: 1 / -1; }
+}
 }
 .ficha .tabla--inst td.td--tramo { white-space: normal; }   /* gana a `.ficha .tabla--compacta td.num` (nowrap) por orden */
 .td__nota { display: block; font-family: var(--f-texto); font-size: 0.75rem; color: var(--tinta-suave); white-space: normal; }

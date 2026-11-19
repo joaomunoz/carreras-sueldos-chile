@@ -459,7 +459,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 75
+   "OK": 77
   },
   "controles": [
    {
@@ -562,6 +562,13 @@
    },
    {
     "control": "analytics_dispersion",
+    "objeto": "misma_institucion_del_medio",
+    "estado": "OK",
+    "umbral": "programa_vs_par.mediana_par_1er_anio = dispersion_empleabilidad.mediana (año 1) en cada par con dispersión",
+    "detalle": "0 programas con otra institución del medio que su encabezado"
+   },
+   {
+    "control": "analytics_dispersion",
     "objeto": "promedio_enganoso",
     "estado": "OK",
     "umbral": "engañoso ⇔ año 1 e IQR ≥ min_iqr_enganoso; NULL en año 2",
@@ -601,6 +608,13 @@
     "estado": "OK",
     "umbral": "un objeto JSON por par",
     "detalle": "252 objetos en v_par_json; 252 pares"
+   },
+   {
+    "control": "analytics_exportacion",
+    "objeto": "totales_en_json",
+    "estado": "OK",
+    "umbral": "que_no_dice del JSON = recuento independiente (comparables, cohortes atípicas de salud, estabilidad, composición por edad)",
+    "detalle": "0 cifras del JSON distintas del recuento"
    },
    {
     "control": "analytics_exportacion",

@@ -456,4 +456,21 @@ FROM (SELECT ((SELECT count(*) FROM analytics.par WHERE representativo)
      ) ::int
      + (SELECT count(*) FROM analytics.posicion po
         JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
-        WHERE (d.razon_entrada > 1) <> po.entrada_alta) AS n) x;
+        WHERE (d.razon_entrada > 1) <> po.entrada_alta) AS n) x
+UNION ALL
+-- Lo que de verdad se exporta (v_datos_json) contra recuentos por OTRO camino: el control anterior
+-- comparaba en parte la consulta consigo misma (segunda evaluación, 19-11-26). Comparables desde
+-- posicion (no desde par.representativo); salud desde el área de modelo (no desde par.area).
+SELECT 'analytics_exportacion', 'totales_en_json', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'que_no_dice del JSON = recuento independiente (comparables, cohortes atípicas de salud, estabilidad, composición por edad)',
+       format('%s cifras del JSON distintas del recuento', n)
+FROM (SELECT ((j.d->'que_no_dice'->>'pares_comparables')::int <> (SELECT count(*) FROM analytics.posicion))::int
+           + ((j.d->'que_no_dice'->>'cohortes_atipicas_salud')::int <>
+              (SELECT count(*) FROM analytics.estabilidad es
+               JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+               WHERE es.atipica AND e.area_conocimiento_mineduc = 'Salud'))::int
+           + ((j.d->'que_no_dice'->>'pares_estabilidad')::int <>
+              (SELECT count(DISTINCT (clave_carrera_generica, tipo_institucion)) FROM analytics.estabilidad))::int
+           + ((j.d->'que_no_dice'->>'pares_composicion_edad')::int <>
+              (SELECT count(*) FROM analytics.contexto WHERE composicion_edad))::int AS n
+      FROM (SELECT datos::jsonb AS d FROM analytics.v_datos_json) j) x;

@@ -285,13 +285,15 @@
       var unaB = b.n_cambian_pro === 1;
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(b.n_cambian_pro),
-        resultado: (unaB ? "carrera profesional crece" : "carreras profesionales crecen") +
-          " más que su grupo en porcentaje, pero menos en pesos, o al revés." +
+        // «crecimiento mayor que la carrera del medio», no «crecen más que su grupo»: son dos grupos de
+        // titulados distintos y la comparación es con una carrera (evaluación del 19-11-26).
+        resultado: (unaB ? "carrera profesional tiene" : "carreras profesionales tienen") +
+          " un crecimiento mayor que el de la carrera del medio de su grupo en porcentaje, pero menor en pesos, o al revés." +
           (b.n_cambian_tec ? " También " + fmtEntero.format(b.n_cambian_tec) + (b.n_cambian_tec === 1 ? " técnica." : " técnicas.") : ""),
         nodos: [parrafo([eb.nombre + ": quienes llevan 1 año titulados ganan ", pesos(eb.p50_anio_1),
           " y quienes llevan 5 años, ", pesos(eb.p50_anio_5), ". Es un ", pct(eb.p50_pct_1_5),
-          " más; en " + grupoEnPalabras(eb.grupo) + ", un ", pct(eb.ref_pct_q50),
-          ". Pero son ", pesos(eb.p50_delta_1_5), " más al mes, contra ", pesos(eb.ref_delta_q50), " en ellas."])],
+          " más; la carrera del medio de " + grupoEnPalabras(eb.grupo) + ", un ", pct(eb.ref_pct_q50),
+          ". Pero son ", pesos(eb.p50_delta_1_5), " más al mes, contra ", pesos(eb.ref_delta_q50), " de la carrera del medio en pesos."])],
         accion: "Ver " + eb.nombre + " →", par: pb
       }));
     }
@@ -882,6 +884,14 @@
     if (!sinPintar) pintarCuadrantes(false);
   }
 
+  // Nombre de un cuadrante para el lector: el SQL lo guarda como «entrada alta · progresa más», y
+  // «progresa» sugiere a las mismas personas en el tiempo (evaluación del 19-11-26). Solo cambia lo
+  // que se muestra; la clave del SQL sigue igual (los conteos se buscan con ella).
+  function nombreCuadrante(s) {
+    return s.replace("progresa más", "crecimiento mayor").replace("progresa menos", "crecimiento menor")
+            .replace("progreso típico", "crecimiento parecido");
+  }
+
   // Conteo de una zona (esquina o franja) desde el SQL (analytics.cuadrante_conteo).
   function conteoZona(medida, zona) {
     var c = datos.hallazgos.pct_pesos.conteos.filter(function (x) {
@@ -909,8 +919,8 @@
         [["Carrera", q.p.nombre + " (" + q.p.tipo + ")", "td--titulo"],
          ["Crecimiento %", pctSigno(q.p.percentiles.p50_pct_1_5), "num"],
          ["Crecimiento $", pesosSigno(q.p.percentiles.p50_delta_1_5), "num"],
-         ["Cuadrante en %", q.p.posicion.cuadrante_pct, ""],
-         ["Cuadrante en pesos", q.p.posicion.cuadrante_pesos, ""]].forEach(function (c) {
+         ["Cuadrante en %", nombreCuadrante(q.p.posicion.cuadrante_pct), ""],
+         ["Cuadrante en pesos", nombreCuadrante(q.p.posicion.cuadrante_pesos), ""]].forEach(function (c) {
           var td = el("td", c[2] || null, c[1]);
           td.setAttribute("data-rotulo", c[0]);
           tr.appendChild(td);
@@ -1040,7 +1050,7 @@
       var lineas = angosto ? e[0].split(" · ") : [e[0]];
       lineas.forEach(function (l, k) {
         var t = svgEl("text", { x: e[1], y: e[2] + k * 12, "text-anchor": e[3] }, "c-cuadrante", frente);
-        t.textContent = l;
+        t.textContent = nombreCuadrante(l);
       });
       var c = svgEl("text", { x: e[1], y: e[2] + (lineas.length - 1) * 12 + 16, "text-anchor": e[3] }, "c-conteo", frente);
       var nz = conteoZona(modo, e[0]);   // del SQL; la franja no pertenece a ninguna esquina
@@ -1103,11 +1113,11 @@
         "1er año " + pesos(p.percentiles.anio_1.p50) + (Math.abs(q.razon - 1) < 1e-9
           ? " (es la carrera del medio de su grupo)"
           : " (×" + fmtUno.format(p.dif_grupo.razon_entrada).replace(/,0$/, "") + " de la del medio, " + pesos(q.ref1) + ")"),
-        "Crece " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
+        "Crecimiento 1er → 5° año: " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
         "Crecimiento de la del medio: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
-        p.posicion[clave]
+        nombreCuadrante(p.posicion[clave])
       ];
-      if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]);
+      if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + nombreCuadrante(p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]));
       llenarTooltip(caja, p, lineas);
       var escala = lienzo.clientWidth / W;
       ubicarTooltip(caja, figura, x(q.razon) * escala, y(yDe(q)) * escala);
@@ -1294,17 +1304,18 @@
       var m = motivoSinTipica(p), otras = af.n_area - 1;
       // Crecimiento del sueldo típico (1er → 5° año) frente a su área, en % y en pesos (SQL:
       // analytics.area_ficha). Reemplaza al «crece más o menos que su grupo», que era otras áreas.
+      // Primero el resultado y después el porqué (antes eran ~70 palabras que empezaban por el método).
       var cuantas = function (k) {
-        return k === otras ? (otras === 1 ? "más que el de ella" : "más que el de todas") : k === 0 ? (otras === 1 ? "menos que el de ella" : "menos que el de todas")
-          : "más que el de " + fmtEntero.format(k) + " de ellas";
+        return k === otras ? (otras === 1 ? "mayor que el de ella" : "mayor que el de todas") : k === 0 ? (otras === 1 ? "menor que el de ella" : "menor que el de todas")
+          : "mayor que el de " + fmtEntero.format(k);
       };
       var crece = af.mas_que_pct === af.mas_que_pesos
         ? cuantas(af.mas_que_pct) + ", en % y en pesos"
         : cuantas(af.mas_que_pct) + " en %, y " + cuantas(af.mas_que_pesos) + " en pesos";
-      return "Su área no tiene carrera del medio propia: " + m + ". Esta ficha la compara con " +
-        (otras === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "")
-                     : "las otras " + fmtEntero.format(otras) + " carreras " + niv) +
-        " del área " + p.area.mineduc + ", de todos los tipos de institución. Su sueldo típico crece del 1er al 5° año " + crece + ".";
+      return "Frente a " + (otras === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "")
+                                         : "las otras " + fmtEntero.format(otras) + " carreras " + niv) +
+        " del área " + p.area.mineduc + " (todos los tipos de institución), su crecimiento entre el 1er y el 5° año es " + crece +
+        ". Se compara con todo su área porque no tiene carrera del medio propia: " + m + ".";
     }
     if (!p.posicion) {
       var n = p.conteos.n_inst_oferta, min = parametro("min_inst_oferta");
@@ -1372,8 +1383,8 @@
       // El resultado en palabras (antes el bloque prometía una comparación y no la daba). Sin cifras:
       // serían de otras áreas, y la ficha se lee solo por su área (criterio del 18-11-26).
       var po = p.posicion, igual = po.cuadrante_pct === po.cuadrante_pesos;
-      subbloque(cont, "En los cuadrantes de la Parte I queda en «" + po.cuadrante_pct + "»" +
-          (igual ? "" : " en %, y en «" + po.cuadrante_pesos + "» en pesos"),
+      subbloque(cont, "En los cuadrantes de la Parte I queda en «" + nombreCuadrante(po.cuadrante_pct) + "»" +
+          (igual ? "" : " en %, y en «" + nombreCuadrante(po.cuadrante_pesos) + "» en pesos"),
         "Ahí se compara con la carrera del medio de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
         " de todas las áreas, porque " + motivoSinTipica(p) + ". Entra ganando " +
         (po.entrada_alta ? "más" : "menos") + " que " + nombreMedio(p, "p50_anio_1") + ", la del medio en sueldo de entrada. " + fraseCrecimiento(p));
@@ -1599,6 +1610,7 @@
       " carreras " + nivel + " del área «" + area + "» de MiFuturo, en todos los tipos de institución, de mayor a menor sueldo de entrada. Haz clic en una para ver su ficha.");
     var cols = ["Carrera", "Tipo", "Sueldo 1er año", "Sueldo 5° año", "Empleabilidad 1er año"];
     var tb = tablaCon(cont, "Carreras " + nivel + " del área " + area + ", de mayor a menor sueldo típico al 1er año", cols);
+    tb.parentNode.classList.add("tabla--movil");   // tarjetas en celular (estilos.css)
     var i0 = orden.indexOf(p);
     function pintar() {
       tb.replaceChildren();
@@ -1938,8 +1950,10 @@
       var area = p.area.mineduc, niv = nivelCorto(p), otrasN = af.n_area - 1;
       var deArea = " del área " + area;
       if (otrasN > 0) {
-        var delas = otrasN === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "") + deArea
-                                 : "las otras " + fmtEntero.format(otrasN) + " carreras " + niv + deArea;
+        // «de todos los tipos»: junto al veredicto («las 10 carreras … universitarias», el grupo de un
+        // solo tipo) dos «10» seguidos parecían el mismo conjunto (evaluación del 19-11-26).
+        var delas = (otrasN === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "") + deArea
+                                  : "las otras " + fmtEntero.format(otrasN) + " carreras " + niv + deArea) + ", de todos los tipos de institución";
         b1 = bloque(art,
           af.mas_que === otrasN ? "Entra ganando más que " + delas
             : af.mas_que === 0 ? "Entra ganando menos que " + delas
@@ -1977,7 +1991,7 @@
       }
       frenteATipica(b1, p, af);
     } else {
-      b1 = bloque(art, "Entra ganando " + pesos(p.percentiles.anio_1.p50) + " y llega a " + pesos(p.percentiles.anio_5.p50) + " al 5° año",
+      b1 = bloque(art, "Sueldo típico: " + pesos(p.percentiles.anio_1.p50) + " al 1er año y " + pesos(p.percentiles.anio_5.p50) + " al 5° año",
         "Sueldo típico (P50) y empleabilidad nacional. Sin grupo de comparación: " + veredicto(p).replace(/^Sin comparación con otras carreras: /, ""));
       var dl0 = el("dl", "liq");
       liq(dl0, "Sueldo típico al 1er año", pesos(p.percentiles.anio_1.p50));
@@ -1995,6 +2009,7 @@
             " (menos de " + parametro("min_inst_oferta") + " instituciones)." : ""));
       var colsT = ["Tipo", "Sueldo 1er año", "Sueldo 5° año", "Empleabilidad 1er año"];
       var tbT = tablaCon(b1, p.nombre + " en cada tipo de institución", colsT);
+      tbT.parentNode.classList.add("tabla--movil");
       [p].concat(otrosTipos).sort(function (a, b) { return colador.compare(a.tipo, b.tipo); }).forEach(function (q) {
         filaTabla(tbT, [[colsT[0], q.tipo, "td--titulo"], [colsT[1], pesos(q.percentiles.anio_1.p50), "num"],
                         [colsT[2], pesos(q.percentiles.anio_5.p50), "num"], [colsT[3], pct(q.empleabilidad_nacional[0]), "num"]],
@@ -2108,7 +2123,7 @@
         var cols = ["Institución", "Empleabilidad 1er año", "Empleabilidad 2° año"].concat(d1 ? [COL_DIF] : [])
           .concat(["Continuidad de estudios", COL_RANGO]);
         var tbI = tablaCon(envolI, "Instituciones que publican " + p.nombre + " en MiFuturo, de mayor a menor empleabilidad", cols);
-        tbI.parentNode.classList.add("tabla--inst");
+        tbI.parentNode.classList.add("tabla--inst", "tabla--movil");
         (todasInst ? progs : progs.slice(0, MAX_INST)).forEach(function (g) {
           var celdas = [["Institución", nombreInst(g.institucion), "td--titulo"], ["Empleabilidad 1er año", pct(g.emp1), "num"],
                         ["Empleabilidad 2° año", pct(g.emp2), "num"]];

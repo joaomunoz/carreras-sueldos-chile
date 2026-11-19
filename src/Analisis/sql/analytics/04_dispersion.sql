@@ -297,6 +297,18 @@ FROM (SELECT (SELECT count(*) FROM analytics.dispersion_empleabilidad d
               WHERE round(pv.empleabilidad_1er_anio, 1) - round(pv.mediana_par_1er_anio, 1) <> round(pv.desvio_1er_anio, 1)
                  OR round(pv.empleabilidad_2do_anio, 1) - round(pv.mediana_par_2do_anio, 1) <> round(pv.desvio_2do_anio, 1)) AS n) x
 UNION ALL
+-- 1d. La tabla (programa_vs_par, diferencia de cada institución) y el encabezado (dispersión del
+--     par, «institución del medio (x %)») usan la misma institución del medio: hoy coinciden porque
+--     las dos usan percentile_disc, pero nada lo exigía (segunda evaluación, 19-11-26).
+SELECT 'analytics_dispersion', 'misma_institucion_del_medio', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'programa_vs_par.mediana_par_1er_anio = dispersion_empleabilidad.mediana (año 1) en cada par con dispersión',
+       format('%s programas con otra institución del medio que su encabezado', n)
+FROM (SELECT count(*) AS n
+      FROM analytics.programa_vs_par pv
+      JOIN analytics.dispersion_empleabilidad d
+        ON d.clave_carrera_generica = pv.clave_carrera_generica AND d.tipo_institucion = pv.tipo_institucion AND d.anio = 1
+      WHERE pv.mediana_par_1er_anio <> d.mediana) x
+UNION ALL
 -- 2. Dispersión solo con suficientes instituciones (y para todos los pares que las tienen).
 SELECT 'analytics_dispersion', 'min_instituciones', CASE WHEN n_mal = 0 AND n_falta = 0 THEN 'OK' ELSE 'FALLA' END,
        n_mal + n_falta, 'dispersión ⇔ ≥ min_inst_dispersion instituciones con el dato (n_pub_* de analytics.par)',
