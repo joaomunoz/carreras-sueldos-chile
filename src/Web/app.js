@@ -117,20 +117,32 @@
       // "más" / "menos" según el signo: con datos nuevos una mediana podría quedar bajo cero.
       var dif = function (v) { return [pct(Math.abs(v)), v < 0 ? " menos" : " más"]; };
       var dt = dif(tec.mediana_p50_pct), dp = dif(pro.mediana_p50_pct);
-      parrafoEn(tesis, ["Compara a quienes se titularon hace un año con quienes se titularon hace cinco (MiFuturo y SIES). " +
-        "En la técnica típica, los segundos ganan ", dt[0], dt[1] + "; en la profesional, ",
-        dp[0], dp[1] + ". Hay cuatro resultados que conviene conocer antes de comparar carreras, y "]);
+      // «Dos grupos» y «quienes llevan»: son cohortes distintas, no las mismas personas.
+      parrafoEn(tesis, ["Compara a dos grupos de titulados de cada carrera: quienes llevan un año titulados y " +
+        "quienes llevan cinco, con datos de MiFuturo (sueldos y empleabilidad) y del SIES (titulaciones). " +
+        "En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
+        dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta para comparar carreras, y "]);
       // Termina en una acción: la Parte II, donde el lector busca su carrera.
-      var ir = el("a", null, "puedes revisar tu carrera");
+      var ir = el("a", null, "la ficha de cada carrera");
       ir.href = "#parte-carrera";
       tesis.appendChild(ir);
-      tesis.appendChild(document.createTextNode("."));
+      tesis.appendChild(document.createTextNode(" permite revisarla en detalle."));
     }
     var qa = datos.qa.resumen, qnd = datos.que_no_dice;
     var total = (qa.OK || 0) + (qa.EXENTO || 0);
     // El universo va en el antetítulo (una sola vez); la línea técnica queda como respaldo.
     document.getElementById("portada-eyebrow").textContent =
-      fmtEntero.format(qnd.pares_total) + " carreras · universidades, IP y CFT · Chile";
+      fmtEntero.format(qnd.pares_total) + " carreras · universidades, IP y CFT";   // «Chile» ya va en el título
+    // Bajada de la Parte I: el universo de los hallazgos son las comparables, no las 252.
+    var bajada = document.getElementById("hallazgos-bajada");
+    bajada.textContent = "";
+    parrafoEn(bajada, ["Cuatro resultados del análisis de ",
+      fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos) + " carreras comparables",
+      ": dos sobre cómo cambia el sueldo entre el primer y el quinto año, uno sobre las diferencias de " +
+      "empleabilidad entre instituciones y uno sobre cuántos siguen estudiando. Cada carrera se compara " +
+      "solo con las de su mismo nivel y tipo de institución. El primer y el quinto año corresponden a " +
+      "titulados distintos, no a las mismas personas. El ", "sueldo típico",
+      " es el del medio: la mitad de los titulados gana más y la otra mitad, menos."]);
     parrafoEn(document.getElementById("portada-tecnica"), [
       "", fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos), " carreras comparables · ",
       fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);

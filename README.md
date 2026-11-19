@@ -1,14 +1,14 @@
-# Del primer al quinto año
+# Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación
 
-> Cuánto progresa el ingreso de cada carrera en Chile entre el primer y el quinto año desde la titulación, y dónde el promedio engaña. Análisis en PostgreSQL y Python, con una web autónoma.
+> Compara a quienes llevan un año titulados con quienes llevan cinco (cohortes distintas, no las mismas personas) en cada carrera comparable, y muestra dónde la cifra nacional no basta para compararlas. Análisis en PostgreSQL y Python, con una web autónoma.
 
-![Portada de la web: cada línea es una carrera, del sueldo típico al primer año al del quinto](docs/captura.png)
+![Portada de la web: título, introducción y las cuatro tarjetas de hallazgos](docs/captura.png)
 
 **Ver la web:** abre [`docs/index.html`](docs/index.html) con doble clic. Es un solo archivo (≈ 1,1 MB) con los datos incluidos, sin servidor ni conexión a internet.
 
 ---
 
-## Qué encontré
+## Hallazgos
 
 *Este bloque lo genera `make web` desde `docs/datos.json`: son las mismas cifras de la web, calculadas en SQL con controles de calidad.*
 
@@ -57,7 +57,7 @@ make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 1
 |---|---|
 | `make base` | `src/BD/build.py`: crea `raw`, `modelo`, `analytics` y `qa`, carga los CSV y corre los controles, todo en una transacción |
 | `make datos` | `src/Analisis/exportar.py`: escribe `docs/datos.json` (no exporta si algún control falla) |
-| `make web` | `src/Web/construir.py`: arma `docs/index.html` con todo incluido (no necesita la base) y regenera en este README el bloque «Qué encontré» y el conteo de controles |
+| `make web` | `src/Web/construir.py`: arma `docs/index.html` con todo incluido (no necesita la base) y regenera en este README el bloque «Hallazgos» y el conteo de controles |
 
 Los CSV procesados están versionados en `src/Scrapers/*/Salida/`, así que no hace falta descargar nada. Para rehacerlos desde las fuentes:
 

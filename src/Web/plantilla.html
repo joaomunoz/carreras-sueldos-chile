@@ -8,8 +8,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cuánto gana cada carrera al primer y al quinto año de titularse · Chile</title>
-<meta name="description" content="Sueldos de las carreras de universidades, IP y CFT en Chile al primer y al quinto año de titularse, y dónde el promedio engaña. Datos de MiFuturo y SIES.">
+<title>Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación</title>
+<meta name="description" content="Sueldos y empleabilidad de las carreras de universidades, IP y CFT en Chile al primer y quinto año de titulación, y dónde la cifra nacional no basta para compararlas. Datos de MiFuturo y SIES.">
 <style>
 /*@FUENTE@*/
 /*@ESTILOS@*/
@@ -25,7 +25,7 @@
     <a class="barra__marca" href="#inicio">Sueldos por carrera</a>
     <nav class="barra__nav" aria-label="Partes de la página">
       <ul class="barra__partes">
-        <li><a href="#parte-hallazgos" data-parte="parte-hallazgos"><span class="barra__largo">Lo que encontré</span><span class="barra__corto" aria-hidden="true">Hallazgos</span></a></li>
+        <li><a href="#parte-hallazgos" data-parte="parte-hallazgos"><span class="barra__largo">Hallazgos</span><span class="barra__corto" aria-hidden="true">Hallazgos</span></a></li>
         <li><a href="#parte-carrera" data-parte="parte-carrera"><span class="barra__largo">Busca tu carrera</span><span class="barra__corto" aria-hidden="true">Tu carrera</span></a></li>
         <li><a href="#parte-lectura" data-parte="parte-lectura"><span class="barra__largo">Cómo leerlo</span><span class="barra__corto" aria-hidden="true">Cómo leerlo</span></a></li>
       </ul>
@@ -40,8 +40,8 @@
          la tesis y qué puede hacer el lector; la línea técnica da respaldo y la de límites, honestidad.
          Antetítulo, bajada y línea técnica se redactan en app.js con cifras del SQL. "Evolución" o
          "trayectoria" quedan fuera del título: se comparan dos cohortes, no las mismas personas. -->
-    <p class="portada__eyebrow" id="portada-eyebrow">Universidades, IP y CFT · Chile</p>
-    <h1 class="portada__titulo">Cuánto gana cada carrera al primer y al quinto año de titularse</h1>
+    <p class="portada__eyebrow" id="portada-eyebrow">Universidades, IP y CFT</p>
+    <h1 class="portada__titulo">Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación</h1>
     <p class="portada__bajada" id="portada-tesis"></p>
     <p class="portada__tecnica" id="portada-tecnica"></p>
     <p class="portada__limites">No sigue a las mismas personas en el tiempo ni explica causas. <a href="#t-limites">Qué no dice →</a></p>
@@ -52,8 +52,9 @@
   <section class="parte" id="parte-hallazgos" aria-labelledby="t-parte-hallazgos">
     <header class="parte__cabecera">
       <p class="parte__numero">Parte I</p>
-      <h2 id="t-parte-hallazgos" class="parte__titulo">Lo que encontré</h2>
-      <p class="parte__bajada">Cuatro resultados sobre sueldos, empleabilidad y estudios, cada uno con la carrera que mejor lo muestra. El <strong>sueldo típico</strong> es el del medio: la mitad de los titulados gana más y la otra mitad, menos.</p>
+      <h2 id="t-parte-hallazgos" class="parte__titulo">Hallazgos</h2>
+      <!-- El conteo de carreras comparables lo escribe app.js (pintarPortada); este texto queda si falta. -->
+      <p class="parte__bajada" id="hallazgos-bajada">Cuatro resultados del análisis de las carreras comparables: dos sobre cómo cambia el sueldo entre el primer y el quinto año, uno sobre las diferencias de empleabilidad entre instituciones y uno sobre cuántos siguen estudiando. Cada carrera se compara solo con las de su mismo nivel y tipo de institución. El primer y el quinto año corresponden a titulados distintos, no a las mismas personas. El <strong>sueldo típico</strong> es el del medio: la mitad de los titulados gana más y la otra mitad, menos.</p>
     </header>
 
     <!-- La grilla abre la Parte I: cada tarjeta enuncia un resultado (cifra con su unidad), da un

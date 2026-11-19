@@ -7,7 +7,7 @@
 #   make base    src/BD/build.py: raw + modelo + analytics + controles qa (una transacción)
 #   make datos   src/Analisis/exportar.py: docs/datos.json (no exporta si algún control falla)
 #   make web     src/Web/construir.py: docs/index.html autónomo (no necesita la base) y el bloque
-#                "Qué encontré" y el conteo de controles del README, desde datos.json
+#                "Hallazgos" y el conteo de controles del README, desde datos.json
 #
 # Las metas son .PHONY a propósito: cada paso tiene sus propias verificaciones y es barato
 # (~10 s el build); rastrear dependencias por fecha de archivo daría falsos "al día".

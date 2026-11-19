@@ -7,7 +7,7 @@ Arma docs/index.html: un único archivo autónomo a partir de
   src/Web/app.js          → @APP@,
   src/Web/fuentes/*.woff2 → @FUENTE@ (como data URI; licencia OFL en src/Web/fuentes/),
   docs/datos.json         → @DATOS@ (salida de src/Analisis/exportar.py).
-Además regenera en README.md el bloque "Qué encontré" (entre los marcadores HALLAZGOS:INICIO y
+Además regenera en README.md el bloque "Hallazgos" (entre los marcadores HALLAZGOS:INICIO y
 HALLAZGOS:FIN) desde datos.json["hallazgos"]: así el README y la web citan las mismas cifras, que
 se calculan en SQL con controles qa (src/Analisis/sql/analytics/06_hallazgos.sql). Copiarlas a mano
 fue como un error de la web llegó también al README. Por la misma razón regenera el conteo de

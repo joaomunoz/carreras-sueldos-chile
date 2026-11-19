@@ -155,7 +155,8 @@ p { margin: 0; }
 /* 20ch: el título dice el tema completo (más largo que el anterior) y así queda en 3 líneas. */
 .portada__titulo {
   font-size: var(--t-4);
-  max-width: 20ch;
+  /* 26ch: el título formal (82 caracteres) cabe en 4 líneas a 1366 px; con 20ch eran 5. */
+  max-width: 26ch;
 }
 
 .portada__bajada {
