@@ -124,5 +124,4 @@ La lista completa, con sus cifras, está en la sección **«Qué no dice este an
 
 ## Autoría
 
-<!-- PENDIENTE: completar con nombre y enlaces (GitHub, LinkedIn). También en LICENSE y en el pie de src/Web/plantilla.html. -->
-_Pendiente: nombre y enlaces._
+Análisis de [Joao Muñoz](https://joaomunoz.github.io).
