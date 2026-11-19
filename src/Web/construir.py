@@ -123,9 +123,9 @@ def _hallazgos_readme(h: dict) -> str:
         items.append(f"**Crecer más en porcentaje no es crecer más.** {b['n_cambian_pro']} carreras profesionales "
                      f"({tec_txt}) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje "
                      f"(sin contar las que quedan a ±{_num(b['margen_pp'])} pp o ±${_num(b['margen_pesos'])} de la "
-                     f"carrera típica de su grupo). {e['nombre']} ({e['tipo']}) sube "
+                     f"carrera del medio de su grupo). {e['nombre']} ({e['tipo']}) sube "
                      f"{_num(e['p50_pct_1_5'], 1)} %, pero eso son +${_num(e['p50_delta_1_5'])}, frente a "
-                     f"+${_num(e['ref_delta_q50'])} de la carrera típica de su grupo (mediana ponderada por titulados).")
+                     f"+${_num(e['ref_delta_q50'])} de la carrera del medio de su grupo (mediana ponderada por titulados).")
     if c["ejemplo"]:
         e = c["ejemplo"]
         items.append(f"**El promedio nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras las "

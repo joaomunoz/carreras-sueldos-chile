@@ -120,7 +120,7 @@
       // «Dos grupos» y «quienes llevan»: son cohortes distintas, no las mismas personas.
       // Las fuentes ya están en la introducción de la plantilla (#portada-intro).
       parrafoEn(tesis, ["Compara a dos grupos de titulados de cada carrera: quienes llevan un año titulados y " +
-        "quienes llevan cinco. En la carrera técnica típica, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
+        "quienes llevan cinco. En la carrera técnica del medio, el segundo grupo gana ", dt[0], dt[1] + "; en la profesional, ",
         dp[0], dp[1] + ". Los cuatro hallazgos muestran dónde esa cifra no basta, y "]);
       // Termina en una acción: la Parte II, donde el lector busca su carrera.
       var ir = el("a", null, "la ficha de cada carrera");
@@ -895,10 +895,10 @@
     document.getElementById("cuadrantes-nota").textContent = n
       ? fmtEntero.format(n) + (n === 1 ? " carrera " + nombre + " cambia" : " carreras " + plural + " cambian") +
         " de cuadrante (en color): crecen más que su grupo en porcentaje pero menos en pesos, o al revés. " +
-        "No cuentan las que quedan en la franja del típico (a " + margen + "): ahí la diferencia es un empate."
+        "No cuentan las que quedan en la franja de la carrera del medio (a " + margen + "): ahí la diferencia es un empate."
       : "Ninguna carrera " + nombre + " cambia de cuadrante: en este nivel, medir en porcentaje o en pesos da la " +
         "misma lectura. Los conteos de las esquinas varían solo porque algunas carreras entran o salen de la " +
-        "franja del típico (a " + margen + ").";
+        "franja de la carrera del medio (a " + margen + ").";
     document.getElementById("c-leyenda-cambia").hidden = !n;
   }
 
@@ -958,7 +958,7 @@
     }
     var nombreNivel = cuad.nivel.replace("Carreras ", "").toLowerCase();
     svg.setAttribute("aria-label", puntos.length + " carreras " + nombreNivel + " comparables según sueldo de entrada y crecimiento " +
-      (modo === "pct" ? "en porcentaje" : "en pesos") + ", relativos a la carrera típica de su grupo.");
+      (modo === "pct" ? "en porcentaje" : "en pesos") + ", relativos a la carrera del medio de su grupo.");
 
     // Fondo: grilla, ejes y rótulos (se redibuja en cada modo: la escala Y cambia).
     var fondo = svg.querySelector(".c-fondo");
@@ -968,29 +968,29 @@
       svgEl("line", { x1: x(r), x2: x(r), y1: m.arriba, y2: H - m.abajo }, r === 1 ? "c-centro" : "g-grilla", fondo);
       var t = svgEl("text", { x: x(r), y: H - m.abajo + 16, "text-anchor": "middle" }, "g-eje-texto", fondo);
       // Hasta 2 decimales: con 1 decimal, ×0,75 se leía ×0,8.
-      t.textContent = r === 1 ? "típico" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
+      t.textContent = r === 1 ? "del medio" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
     });
     // Franja "progreso típico": ±margen de la mediana del grupo (0 en el eje relativo).
     var mg = modo === "pct" ? datos.hallazgos.pct_pesos.margen_pp : datos.hallazgos.pct_pesos.margen_pesos;
     svgEl("rect", { x: m.izq, width: W - m.der - m.izq, y: y(mg), height: Math.max(1, y(-mg) - y(mg)) }, "c-franja", fondo);
     var nTipico = conteoZona(modo, "progreso típico");
-    document.getElementById("c-leyenda-franja").textContent = "Cerca del típico (±" +
+    document.getElementById("c-leyenda-franja").textContent = "Cerca de la del medio (±" +
       (modo === "pct" ? fmtEntero.format(mg) + " pp" : pesos(mg)) + "): " + fmtEntero.format(nTipico) +
       (nTipico === 1 ? " carrera" : " carreras") + ", fuera de las esquinas";
     document.getElementById("c-titulo").textContent = "Sueldo de entrada y crecimiento " +
-      (modo === "pct" ? "en %" : "en pesos") + " frente a la típica de su grupo · " + fmtEntero.format(puntos.length) + " carreras " +
+      (modo === "pct" ? "en %" : "en pesos") + " frente a la carrera del medio de su grupo · " + fmtEntero.format(puntos.length) + " carreras " +
       puntos[0].p.nivel.replace("Carreras ", "").toLowerCase();
-    document.getElementById("c-titulo-y").textContent = "↑ Crecimiento del sueldo típico (1er → 5° año) frente al típico de su grupo, " +
+    document.getElementById("c-titulo-y").textContent = "↑ Crecimiento del sueldo típico (1er → 5° año) frente a la carrera del medio de su grupo, " +
       (modo === "pct" ? "en puntos porcentuales (pp)" : "en pesos");
     pintarNotaCuadrantes();
     // En celular se centra en todo el ancho: el margen de los ejes en pesos enteros lo correría fuera.
     var tituloX = svgEl("text", { x: angosto ? W / 2 : (m.izq + W - m.der) / 2, y: H - 4, "text-anchor": "middle" }, "c-titulo-eje", fondo);
-    tituloX.textContent = "Sueldo al 1er año respecto del típico de su grupo";
+    tituloX.textContent = "Sueldo al 1er año respecto de la carrera del medio de su grupo";
     var pasoY = modo === "pct" ? 20 : ((y1 - y0) > 1.2e6 ? 500000 : 250000);
     for (var v = Math.ceil(yPiso / pasoY) * pasoY; v <= yTope; v += pasoY) {
       svgEl("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v) }, v === 0 ? "c-centro" : "g-grilla", fondo);
       var ty = svgEl("text", { x: m.izq - 6, y: y(v) + 4, "text-anchor": "end" }, "g-eje-texto", fondo);
-      ty.textContent = v === 0 ? "típico" : modo === "pct" ? (v > 0 ? "+" : "−") + fmtEntero.format(Math.abs(v)) + " pp"
+      ty.textContent = v === 0 ? "del medio" : modo === "pct" ? (v > 0 ? "+" : "−") + fmtEntero.format(Math.abs(v)) + " pp"
                                                          : (v > 0 ? "+" : "−") + pesos(Math.abs(v));
     }
 
@@ -1067,10 +1067,10 @@
       var lineas = [
         "Se compara con: " + nombreGrupo(p),
         "1er año " + pesos(p.percentiles.anio_1.p50) + (Math.abs(q.razon - 1) < 1e-9
-          ? " (es la carrera típica de su grupo)"
-          : " (×" + fmtUno.format(Math.round(q.razon * 100) / 100).replace(/,0$/, "") + " del típico, " + pesos(q.ref1) + ")"),
+          ? " (es la carrera del medio de su grupo)"
+          : " (×" + fmtUno.format(Math.round(q.razon * 100) / 100).replace(/,0$/, "") + " de la del medio, " + pesos(q.ref1) + ")"),
         "Crece " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
-        "Típico del grupo: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
+        "Crecimiento de la del medio: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
         p.posicion[clave]
       ];
       if (p.posicion.cambia_cuadrante) lineas.push("En " + (modo === "pct" ? "pesos" : "%") + ": " + p.posicion[modo === "pct" ? "cuadrante_pesos" : "cuadrante_pct"]);
@@ -1244,7 +1244,7 @@
       var crece = af.mas_que_pct === af.mas_que_pesos
         ? cuantas(af.mas_que_pct) + ", en % y en pesos"
         : cuantas(af.mas_que_pct) + " en %, y " + cuantas(af.mas_que_pesos) + " en pesos";
-      return "Sin típica propia en su área: " + m + ". Esta ficha la compara con " +
+      return "Su área no tiene carrera del medio propia: " + m + ". Esta ficha la compara con " +
         (otras === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "")
                      : "las otras " + fmtEntero.format(otras) + " carreras " + niv) +
         " del área " + p.area.mineduc + ", de todos los tipos de institución. Su sueldo típico crece del 1er al 5° año " + crece + ".";
@@ -1257,8 +1257,8 @@
         : "Sin comparación con otras carreras: MiFuturo no publica todas sus cifras de ingreso.";
     }
     var d = p.dif_grupo.p50_anio_1;
-    var texto = d === 0 ? "Es la carrera típica de su grupo al entrar"
-      : "Entra ganando " + (p.posicion.entrada_alta ? "más" : "menos") + " que la carrera típica de su grupo";
+    var texto = d === 0 ? "Es la carrera del medio de su grupo al entrar"
+      : "Entra ganando " + (p.posicion.entrada_alta ? "más" : "menos") + " que la carrera del medio de su grupo";
     var a = p.posicion.progreso_pct, b = p.posicion.progreso_pesos;
     if (a === b) return texto + " y su sueldo crece " + COMO[a] + " que el de su grupo.";
     return texto + ". Su sueldo crece " + COMO[a] + " que el de su grupo en %, pero " + COMO[b] + " en pesos.";
@@ -1294,30 +1294,66 @@
     return t;
   }
 
-  // La típica del grupo estadístico (la de los cuadrantes), como dato: diferencia en las tres cifras.
-  // Si su área no tiene típica propia, se dice por qué (pocas carreras o una que domina el peso) y
-  // contra qué grupo se compara entonces (todas las de su tipo y nivel).
+  // La carrera del medio del grupo estadístico (la referencia de los cuadrantes), con nombre y con
+  // las dos cifras de cada comparación (18-11-26: «+$73.105» sin decir frente a quién no se
+  // entendía). Nombre y valor vienen de analytics.referencia (q50_clave, q50; control
+  // carrera_del_medio). Si su área no tiene carrera del medio propia, se dice por qué y contra qué
+  // grupo se compara en los cuadrantes, sin cifras de otras áreas.
+  function medioDe(p, metrica) {
+    if (!p.posicion || sinTipicaPropia(p)) return null;
+    var r = referenciaDe(p, metrica);
+    return { ref: r, par: parPorClave[r.q50_clave + "|" + p.tipo] };
+  }
+  function nombreCorto(s, max) { return s.length > max ? s.slice(0, max - 1).replace(/\s+\S*$/, "") + "…" : s; }
+
   function frenteATipica(cont, p, af) {
     var ref = referenciaDe(p, "p50_anio_1"), niv = nivelCorto(p), adj = TIPO_ADJ[p.tipo];
     if (af.motivo !== "celda") {
-      // Sin cifras de diferencia: serían frente a otras áreas. Solo el puente con los cuadrantes.
       subbloque(cont, "En los cuadrantes de la Parte I",
-        "Se compara con la típica de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
-        " de todas las áreas, porque su área no tiene típica propia (" + motivoSinTipica(p) + ").");
+        "Se compara con la carrera del medio de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
+        " de todas las áreas, porque su área no tiene una propia (" + motivoSinTipica(p) + ").");
       return;
     }
-    subbloque(cont, "Frente a la típica de su grupo", "La típica de las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj +
-      " del área " + p.area.mineduc + ": la mediana ponderada por titulados, la misma de los cuadrantes.");
-    var dl = el("dl", "liq");
-    var d = p.dif_grupo;
-    liq(dl, "Sueldo al 1er año", d.p50_anio_1 === 0 ? "es la típica" : pesosSigno(d.p50_anio_1));
-    liq(dl, "Sueldo al 5° año", d.p50_anio_5 === 0 ? "es la típica" : pesosSigno(d.p50_anio_5));
-    liq(dl, "Empleabilidad al 1er año", d.emp1_nacional === 0 ? "es la típica" : difPuntos(d.emp1_nacional));
-    cont.appendChild(dl);
+    var FILAS = [
+      { rotulo: "Sueldo típico al 1er año", metrica: "p50_anio_1", propio: p.percentiles.anio_1.p50, dif: p.dif_grupo.p50_anio_1, f: pesos,
+        difTexto: function (d) { return pesos(Math.abs(d)) + (d > 0 ? " más" : " menos"); } },
+      { rotulo: "Sueldo típico al 5° año", metrica: "p50_anio_5", propio: p.percentiles.anio_5.p50, dif: p.dif_grupo.p50_anio_5, f: pesos,
+        difTexto: function (d) { return pesos(Math.abs(d)) + (d > 0 ? " más" : " menos"); } },
+      { rotulo: "Empleabilidad al 1er año", metrica: "emp1_nacional", propio: p.empleabilidad_nacional[0], dif: p.dif_grupo.emp1_nacional, f: pct,
+        difTexto: function (d) { return fmtUno.format(Math.abs(d)) + (Math.abs(d) === 1 ? " punto" : " puntos") + (d > 0 ? " más" : " menos"); } }];
+    FILAS.forEach(function (f) { f.medio = medioDe(p, f.metrica); });
+    var claves = FILAS.map(function (f) { return f.medio.par.clave; });
+    var unaSola = claves.every(function (c) { return c === claves[0]; });
+    var esElla = unaSola && FILAS[0].medio.par === p;
+    var grupo = "las " + fmtEntero.format(ref.n_pares) + " carreras " + niv + " " + adj + " del área " + p.area.mineduc;
+    var quien = esElla ? "es esta carrera"
+      : unaSola ? "es " + FILAS[0].medio.par.nombre
+      : "cambia según la cifra (la tabla dice cuál es en cada una)";
+    subbloque(cont, "Comparada con la carrera del medio de su grupo",
+      "Entre " + grupo + ", la del medio (contando cuántos titulados tiene cada una) " + quien + ". Solo carreras " + adj +
+      ", porque cada carrera se compara con las de su mismo tipo de institución; es la referencia de los cuadrantes de la Parte I.");
+    // Encabezados cortos (el nombre de la del medio ya está en el texto de arriba): con cuatro
+    // columnas, a 390 px la tabla quedaba más ancha que la pantalla.
+    var colMedio = "La del medio";
+    if (esElla) return;   // la frase ya lo dice; una tabla de «es esta carrera» no agrega nada
+    var tb = tablaCon(cont, p.nombre + " frente a la carrera del medio de su grupo", ["Cifra", p.nombre, colMedio, "Diferencia"]);
+    tb.parentNode.classList.add("tabla--medio");
+    FILAS.forEach(function (f) {
+      var ella = f.medio.par === p;
+      var tr = filaTabla(tb, [["Cifra", f.rotulo, "td--titulo"], [p.nombre, f.f(f.propio), "num"],
+        [colMedio, ella ? "es esta carrera" : f.f(f.medio.ref.q50), "num"],
+        ["Diferencia", ella || f.dif === 0 ? "—" : f.difTexto(f.dif), "num"]], false, null);
+      // Con distintas carreras del medio, el nombre va bajo cada valor.
+      if (!unaSola && !ella) tr.children[2].appendChild(el("span", "td__nota", f.medio.par.nombre));
+      tr.children[3].classList.add("td--dif");
+    });
   }
 
-  // Franja de su grupo para una cifra: cada carrera del grupo es un punto gris (al pasar, su
-  // nombre; con clic, su ficha), la típica una línea con su rótulo y esta carrera un rombo ocre.
+  // Franja de su área para una cifra: cada carrera es un punto gris (al pasar, su nombre; con clic,
+  // su ficha), esta carrera un rombo ocre y la carrera del medio de su grupo un anillo oscuro con su
+  // nombre. Los puntos se apilan cuando se tocarían (enjambre, como el gráfico de instituciones):
+  // sobre una sola línea, carreras a $3.000 de distancia quedaban en el mismo píxel y la del medio
+  // podía quedar oculta entre dos vecinas (18-11-26). La altura no es un eje.
   function franjaGrupo(cont, p, miembros, cfg, tip, figura) {
     var fila = el("div", "grupo__fila");
     var rot = el("div", "grupo__rotulo");
@@ -1327,43 +1363,62 @@
     var lienzo = el("div", "grupo__svg");
     fila.appendChild(lienzo);
     cont.appendChild(fila);
-    var W = lienzo.clientWidth || 480, H = 64;
-    var vals = miembros.map(cfg.valor).concat(cfg.ref ? [cfg.ref.q50] : []);
+    var W = lienzo.clientWidth || 480;
+    var vals = miembros.map(cfg.valor);
     var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), pad = (hi - lo) * 0.04 || 1;
     lo -= pad; hi += pad;
     function x(v) { return 10 + (v - lo) / (hi - lo) * (W - 20); }
+    var medio = cfg.medio ? cfg.medio.par : null;
     var propio = cfg.valor(p);
+
+    // Enjambre: cada marca en el nivel libre más cercano a la línea (0, +1, −1, +2…). Radio por
+    // marca: el rombo y el anillo son más grandes que un punto.
+    var R = function (m) { return m === p ? 7 : m === medio ? 5.5 : 4; };
+    var orden = miembros.slice().sort(function (a, b) { return cfg.valor(a) - cfg.valor(b) || colador.compare(a.nombre, b.nombre); });
+    var puestos = [], maxNivel = 0, PASO = 10;
+    orden.forEach(function (m) {
+      var px = x(cfg.valor(m));
+      for (var k = 0; ; k++) {
+        var nivel = k % 2 ? (k + 1) / 2 : -k / 2;
+        var choca = puestos.some(function (q) { return q.nivel === nivel && Math.abs(q.x - px) < R(q.m) + R(m) + 1.5; });
+        if (!choca) { puestos.push({ m: m, x: px, nivel: nivel }); maxNivel = Math.max(maxNivel, Math.abs(nivel)); break; }
+      }
+    });
+    var arriba = medio && medio !== p ? 22 : 8;
+    var centro = arriba + maxNivel * PASO + 7, H = centro + maxNivel * PASO + 7 + 20;
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
       "aria-label": cfg.rotulo + ": " + cfg.formato(propio) +
-        (cfg.ref ? "; típica de su grupo " + cfg.formato(cfg.ref.q50) : "") +
-        "; las carreras van de " + cfg.formato(Math.min.apply(null, miembros.map(cfg.valor))) + " a " +
-        cfg.formato(Math.max.apply(null, miembros.map(cfg.valor))) + "." });
-    svgEl("line", { x1: 10, x2: W - 10, y1: 34, y2: 34 }, "g-grilla", svg);
-    // Sin ref (franjas por área, que mezclan tipos) no hay línea de «típica».
-    if (cfg.ref) {
-      var esTipica = propio === cfg.ref.q50;
-      svgEl("line", { x1: x(cfg.ref.q50), x2: x(cfg.ref.q50), y1: 16, y2: 46 }, "g-tipica", svg);
-      textoEn(svg, x(cfg.ref.q50), 11, (esTipica ? "es la típica: " : "típica ") + cfg.formato(cfg.ref.q50), "g-rotulo-suave", W);
-    }
-    var otros = miembros.filter(function (m) { return m !== p; });
-    otros.forEach(function (m, i) {
-      // Desfase vertical leve en grupos grandes (hasta 91 carreras) para que no se tapen.
-      var cy = 34 + (otros.length > 25 ? ((i % 3) - 1) * 5 : 0);
+        (medio ? (medio === p ? "; es la carrera del medio de su grupo" : "; carrera del medio de su grupo, " + medio.nombre + ", " + cfg.formato(cfg.valor(medio))) : "") +
+        "; las carreras del área van de " + cfg.formato(Math.min.apply(null, vals)) + " a " + cfg.formato(Math.max.apply(null, vals)) + "." });
+    svgEl("line", { x1: 10, x2: W - 10, y1: centro, y2: centro }, "g-grilla", svg);
+    var yDe = function (q) { return centro - q.nivel * PASO; };
+    puestos.forEach(function (q) {
+      var m = q.m, cy = yDe(q);
+      if (m === p) return;   // el rombo va al final, encima
       var g = svgEl("g", {}, "g-vecina", svg);
-      svgEl("circle", { cx: x(cfg.valor(m)), cy: cy, r: 4 }, "g-contexto g-anillo", g);
-      svgEl("circle", { cx: x(cfg.valor(m)), cy: cy, r: 10 }, "g-blanco", g);   // blanco de toque más grande que la marca
+      svgEl("circle", { cx: q.x, cy: cy, r: R(m) }, m === medio ? "g-medio" : "g-contexto g-anillo", g);
+      svgEl("circle", { cx: q.x, cy: cy, r: 9 }, "g-blanco", g);   // blanco de toque más grande que la marca
       g.addEventListener("pointerenter", function () {
-        tip.replaceChildren(el("div", "tooltip__titulo", m.nombre + " (" + m.tipo + ")"),
+        tip.replaceChildren(el("div", "tooltip__titulo", m.nombre + " (" + m.tipo + ")" + (m === medio ? " · la del medio" : "")),
                             el("div", "tooltip__cifras", cfg.rotulo + ": " + cfg.formato(cfg.valor(m))),
                             el("div", "tooltip__sub", "Clic para ver su ficha"));
         var rf = figura.getBoundingClientRect(), rl = lienzo.getBoundingClientRect();
-        ubicarTooltip(tip, figura, rl.left - rf.left + x(cfg.valor(m)) * rl.width / W, rl.top - rf.top + cy);
+        ubicarTooltip(tip, figura, rl.left - rf.left + q.x * rl.width / W, rl.top - rf.top + cy * rl.width / W);
       });
       g.addEventListener("pointerleave", function () { tip.hidden = true; });
       g.addEventListener("click", function () { tip.hidden = true; abrirFicha(m, "vecina"); });
     });
-    rombo(svg, x(propio), 34, 7);
-    textoEn(svg, x(propio), 60, "esta carrera", "g-rotulo", W);
+    var qp = puestos.filter(function (q) { return q.m === p; })[0];
+    rombo(svg, qp.x, yDe(qp), 7);
+    textoEn(svg, qp.x, H - 4, medio === p ? "esta carrera, la del medio" : "esta carrera", "g-rotulo", W);
+    if (medio && medio !== p) {
+      var qm = puestos.filter(function (q) { return q.m === medio; })[0];
+      // Rótulo largo: se ancla según su ancho estimado (≈ 6,3 px por carácter a 0,75 rem), no con el
+      // margen fijo de textoEn, que lo cortaba en el borde a 390 px.
+      var tm = "la del medio: " + nombreCorto(medio.nombre, 30), anchoT = tm.length * 6.3;
+      var anc = qm.x - anchoT / 2 < 2 ? "start" : qm.x + anchoT / 2 > W - 2 ? "end" : "middle";
+      svgEl("text", { x: anc === "start" ? 2 : anc === "end" ? W - 2 : qm.x, y: 12, "text-anchor": anc }, "g-rotulo-suave", svg).textContent = tm;
+    }
     lienzo.appendChild(svg);
   }
 
@@ -1505,7 +1560,7 @@
     function y(val) { return arriba + (1 - (val - lo) / (hi - lo)) * (H - arriba - abajo); }
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
       "aria-label": "Sueldo típico (P50) al 1er año " + pesos(a1.p50) + " y al 5° año " + pesos(a5.p50) +
-        (ref1 ? "; típica de su grupo " + pesos(ref1.q50) + " y " + pesos(ref5.q50) : "") +
+        (ref1 ? "; carrera del medio de su grupo " + pesos(ref1.q50) + " y " + pesos(ref5.q50) : "") +
         ". Promedio del año 1 al 5: " + v.map(pesos).join(", ") + "." });
     for (var g = lo; g <= hi; g += paso) {
       svgEl("line", { x1: mIzq - 4, x2: x(4) + 10, y1: y(g), y2: y(g) }, "g-grilla", svg);
@@ -1537,7 +1592,7 @@
       { y: y(a5.p50), t: angosto ? "Sueldo típico" : "Sueldo típico " + pesos(a5.p50), c: "g-rotulo" },
       { y: y(v[4]), t: angosto ? "Promedio" : "Promedio " + pesos(v[4]), c: "g-rotulo-suave" }
     ];
-    if (ref5) rotulos.push({ y: y(ref5.q50), t: angosto ? "Típica grupo" : "Típica del grupo " + pesos(ref5.q50), c: "g-rotulo-suave" });
+    if (ref5) rotulos.push({ y: y(ref5.q50), t: angosto ? "Del medio" : "Carrera del medio " + pesos(ref5.q50), c: "g-rotulo-suave" });
     rotulos.forEach(function (r) { r.marca = r.y; });
     rotulos.sort(function (a, b) { return a.y - b.y; });
     for (var k = 1; k < rotulos.length; k++) rotulos[k].y = Math.max(rotulos[k].y, rotulos[k - 1].y + 17);
@@ -1565,7 +1620,7 @@
         if (q) {
           lineas.unshift("Sueldo típico (P50) " + pesos(q.p50));
           lineas.push("Mitad central " + pesos(q.p25) + "–" + pesos(q.p75));
-          if (r) lineas.push("Típica del grupo " + pesos(r.q50));
+          if (r) lineas.push("Carrera del medio de su grupo " + pesos(r.q50));
         }
         tip.replaceChildren(el("div", "tooltip__titulo", (i === 0 ? "1er año" : (i + 1) + "° año") + " desde la titulación"));
         var cifras = el("div", "tooltip__cifras");
@@ -1776,9 +1831,9 @@
     // grupo estadístico y, sin celda, junto a Ingeniería Comercial salían Fonoaudiología y Traducción).
     var b1, af = p.area_ficha;
     var CIFRAS = [
-      { rotulo: "Sueldo típico al 1er año", valor: function (q) { return q.percentiles.anio_1.p50; }, formato: pesos },
-      { rotulo: "Sueldo típico al 5° año", valor: function (q) { return q.percentiles.anio_5.p50; }, formato: pesos },
-      { rotulo: "Empleabilidad nacional al 1er año", valor: function (q) { return q.empleabilidad_nacional[0]; }, formato: pct }];
+      { rotulo: "Sueldo típico al 1er año", metrica: "p50_anio_1", valor: function (q) { return q.percentiles.anio_1.p50; }, formato: pesos },
+      { rotulo: "Sueldo típico al 5° año", metrica: "p50_anio_5", valor: function (q) { return q.percentiles.anio_5.p50; }, formato: pesos },
+      { rotulo: "Empleabilidad nacional al 1er año", metrica: "emp1_nacional", valor: function (q) { return q.empleabilidad_nacional[0]; }, formato: pct }];
     if (p.posicion && af) {
       var area = p.area.mineduc, niv = nivelCorto(p), otrasN = af.n_area - 1;
       var deArea = " del área " + area;
@@ -1794,7 +1849,25 @@
         b1.classList.add("grupo");
         b1.appendChild(tipGrupo);
         var delArea = pares.filter(function (q) { return q.nivel === p.nivel && q.area.mineduc === area && q.marcas.representativo; });
-        CIFRAS.forEach(function (cfg) { franjaGrupo(b1, p, delArea, cfg, tipGrupo, b1); });
+        // Leyenda una vez para las tres franjas. El anillo solo si su área tiene carrera del medio
+        // propia (las 61 sin ella no muestran referencias de otras áreas).
+        var conMedio = !sinTipicaPropia(p);
+        // El anillo en la leyenda solo si se dibuja: si ella es la del medio en las tres cifras, no hay anillo.
+        var anillo = conMedio && CIFRAS.some(function (cfg) { return medioDe(p, cfg.metrica).par !== p; });
+        var leyG = el("div", "grafico__leyenda grafico__leyenda--arriba");
+        [["rombo-muestra", p.nombre],
+         anillo ? ["punto punto--medio", "La del medio de las carreras " + niv + " " + TIPO_ADJ[p.tipo] + " del área, en cada cifra"] : null,
+         ["punto punto--neutro", "Otra carrera del área"]].forEach(function (it) {
+          if (!it) return;
+          var s = el("span", "leyenda-item");
+          s.appendChild(el("span", it[0])).setAttribute("aria-hidden", "true");
+          s.appendChild(document.createTextNode(it[1]));
+          leyG.appendChild(s);
+        });
+        b1.appendChild(leyG);
+        CIFRAS.forEach(function (cfg) {
+          franjaGrupo(b1, p, delArea, Object.assign({ medio: conMedio ? medioDe(p, cfg.metrica) : null }, cfg), tipGrupo, b1);
+        });
       } else {
         b1 = bloque(art, "Es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") + " del área «" + area + "» de MiFuturo con datos comparables",
           "Sueldo típico (P50) y empleabilidad nacional.");
@@ -2385,7 +2458,7 @@
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
     else document.getElementById("ficha-estado").textContent =
-      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados que tiene una típica en su área y no es ella. Escribe la tuya arriba.";
+      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados cuya área tiene carrera del medio y que no es ella. Escribe la tuya arriba.";
     prepararHistorial();
   }
 

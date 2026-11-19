@@ -453,7 +453,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 70
+   "OK": 71
   },
   "controles": [
    {
@@ -700,6 +700,13 @@
     "estado": "OK",
     "umbral": "mas_que_* = rank() − 1 (P50 1er año, crecimiento en % y en pesos) y n_area = count() en área (MiFuturo) × nivel; una fila por representativo",
     "detalle": "0 filas distintas; 0 representativos sin fila"
+   },
+   {
+    "control": "analytics_referencia",
+    "objeto": "carrera_del_medio",
+    "estado": "OK",
+    "umbral": "q50_clave es miembro del grupo y su valor = q50, en todos los grupos y métricas",
+    "detalle": "0 referencias cuya carrera del medio no calza"
    },
    {
     "control": "analytics_referencia",
@@ -1093,7 +1100,8 @@
    "peso_max_pct": 40.0,
    "q25": 42.1,
    "q50": 61.8,
-   "q75": 67.9
+   "q75": 67.9,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
@@ -1106,7 +1114,8 @@
    "peso_max_pct": 40.0,
    "q25": 700121,
    "q50": 851124,
-   "q75": 851124
+   "q75": 851124,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
@@ -1119,7 +1128,8 @@
    "peso_max_pct": 40.0,
    "q25": 786544,
    "q50": 1062350,
-   "q75": 1062350
+   "q75": 1062350,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
@@ -1132,7 +1142,8 @@
    "peso_max_pct": 40.0,
    "q25": 91009,
    "q50": 211226,
-   "q75": 211226
+   "q75": 211226,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|CFT|Carreras Técnicas",
@@ -1145,7 +1156,8 @@
    "peso_max_pct": 40.0,
    "q25": 13.5,
    "q50": 24.8,
-   "q75": 24.8
+   "q75": 24.8,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
@@ -1158,7 +1170,8 @@
    "peso_max_pct": 39.6,
    "q25": 78.8,
    "q50": 81.1,
-   "q75": 81.6
+   "q75": 81.6,
+   "q50_clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
@@ -1171,7 +1184,8 @@
    "peso_max_pct": 39.6,
    "q25": 960832,
    "q50": 999393,
-   "q75": 1127919
+   "q75": 1127919,
+   "q50_clave": "CONTADOR AUDITOR"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
@@ -1184,7 +1198,8 @@
    "peso_max_pct": 39.6,
    "q25": 1338432,
    "q50": 1377977,
-   "q75": 1432590
+   "q75": 1432590,
+   "q50_clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
@@ -1197,7 +1212,8 @@
    "peso_max_pct": 39.6,
    "q25": 250058,
    "q50": 250058,
-   "q75": 433197
+   "q75": 433197,
+   "q50_clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Profesionales",
@@ -1210,7 +1226,8 @@
    "peso_max_pct": 39.6,
    "q25": 22.2,
    "q50": 25.7,
-   "q75": 43.3
+   "q75": 43.3,
+   "q50_clave": "ADMINISTRACION TURISTICA Y HOTELERA"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
@@ -1223,7 +1240,8 @@
    "peso_max_pct": 45.0,
    "q25": 71.1,
    "q50": 76.3,
-   "q75": 76.3
+   "q75": 76.3,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
@@ -1236,7 +1254,8 @@
    "peso_max_pct": 45.0,
    "q25": 942116,
    "q50": 1054045,
-   "q75": 1054045
+   "q75": 1054045,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
@@ -1249,7 +1268,8 @@
    "peso_max_pct": 45.0,
    "q25": 1122752,
    "q50": 1122752,
-   "q75": 1143800
+   "q75": 1143800,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
@@ -1262,7 +1282,8 @@
    "peso_max_pct": 45.0,
    "q25": 68707,
    "q50": 90782,
-   "q75": 149345
+   "q75": 149345,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE RECURSOS HUMANOS Y PERSONAL"
   },
   {
    "grupo": "celda|Administración y Comercio|IP|Carreras Técnicas",
@@ -1275,7 +1296,8 @@
    "peso_max_pct": 45.0,
    "q25": 6.5,
    "q50": 8.8,
-   "q75": 16.0
+   "q75": 16.0,
+   "q50_clave": "TECNICO EN LOGISTICA"
   },
   {
    "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
@@ -1288,7 +1310,8 @@
    "peso_max_pct": 45.7,
    "q25": 36.9,
    "q50": 43.1,
-   "q75": 43.1
+   "q75": 43.1,
+   "q50_clave": "DISENO GRAFICO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
@@ -1301,7 +1324,8 @@
    "peso_max_pct": 45.7,
    "q25": 722324,
    "q50": 722324,
-   "q75": 772729
+   "q75": 772729,
+   "q50_clave": "DISENO GRAFICO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
@@ -1314,7 +1338,8 @@
    "peso_max_pct": 45.7,
    "q25": 897878,
    "q50": 912776,
-   "q75": 978592
+   "q75": 978592,
+   "q50_clave": "ANIMACION DIGITAL"
   },
   {
    "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
@@ -1327,7 +1352,8 @@
    "peso_max_pct": 45.7,
    "q25": 175554,
    "q50": 175554,
-   "q75": 215578
+   "q75": 215578,
+   "q50_clave": "DISENO GRAFICO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
@@ -1340,7 +1366,8 @@
    "peso_max_pct": 45.7,
    "q25": 24.3,
    "q50": 24.3,
-   "q75": 27.9
+   "q75": 27.9,
+   "q50_clave": "DISENO GRAFICO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
@@ -1353,7 +1380,8 @@
    "peso_max_pct": 42.7,
    "q25": 45.0,
    "q50": 59.8,
-   "q75": 61.5
+   "q75": 61.5,
+   "q50_clave": "DISENO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
@@ -1366,7 +1394,8 @@
    "peso_max_pct": 42.7,
    "q25": 791416,
    "q50": 832615,
-   "q75": 916846
+   "q75": 916846,
+   "q50_clave": "MUSICA, CANTO O DANZA"
   },
   {
    "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
@@ -1379,7 +1408,8 @@
    "peso_max_pct": 42.7,
    "q25": 1107159,
    "q50": 1309591,
-   "q75": 1446963
+   "q75": 1446963,
+   "q50_clave": "DISENO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
@@ -1392,7 +1422,8 @@
    "peso_max_pct": 42.7,
    "q25": 274076,
    "q50": 501470,
-   "q75": 530117
+   "q75": 530117,
+   "q50_clave": "DISENO"
   },
   {
    "grupo": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
@@ -1405,7 +1436,8 @@
    "peso_max_pct": 42.7,
    "q25": 36.4,
    "q50": 57.8,
-   "q75": 57.8
+   "q75": 57.8,
+   "q50_clave": "ARQUITECTURA"
   },
   {
    "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
@@ -1418,7 +1450,8 @@
    "peso_max_pct": 34.2,
    "q25": 61.4,
    "q50": 64.3,
-   "q75": 68.7
+   "q75": 68.7,
+   "q50_clave": "BIOQUIMICA"
   },
   {
    "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
@@ -1431,7 +1464,8 @@
    "peso_max_pct": 34.2,
    "q25": 932599,
    "q50": 963527,
-   "q75": 1330299
+   "q75": 1330299,
+   "q50_clave": "QUIMICA, LICENCIADO EN QUIMICA"
   },
   {
    "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
@@ -1444,7 +1478,8 @@
    "peso_max_pct": 34.2,
    "q25": 1363713,
    "q50": 1429894,
-   "q75": 2592261
+   "q75": 2592261,
+   "q50_clave": "BIOLOGIA MARINA Y ECOLOGIA MARINA"
   },
   {
    "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
@@ -1457,7 +1492,8 @@
    "peso_max_pct": 34.2,
    "q25": 431114,
    "q50": 528494,
-   "q75": 1261962
+   "q75": 1261962,
+   "q50_clave": "BIOLOGIA MARINA Y ECOLOGIA MARINA"
   },
   {
    "grupo": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
@@ -1470,7 +1506,8 @@
    "peso_max_pct": 34.2,
    "q25": 46.2,
    "q50": 58.6,
-   "q75": 94.9
+   "q75": 94.9,
+   "q50_clave": "BIOLOGIA MARINA Y ECOLOGIA MARINA"
   },
   {
    "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
@@ -1483,7 +1520,8 @@
    "peso_max_pct": 45.6,
    "q25": 61.6,
    "q50": 61.6,
-   "q75": 66.9
+   "q75": 66.9,
+   "q50_clave": "PSICOLOGIA"
   },
   {
    "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
@@ -1496,7 +1534,8 @@
    "peso_max_pct": 45.6,
    "q25": 880598,
    "q50": 880598,
-   "q75": 920922
+   "q75": 920922,
+   "q50_clave": "PSICOLOGIA"
   },
   {
    "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
@@ -1509,7 +1548,8 @@
    "peso_max_pct": 45.6,
    "q25": 1220001,
    "q50": 1220001,
-   "q75": 1375090
+   "q75": 1375090,
+   "q50_clave": "PSICOLOGIA"
   },
   {
    "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
@@ -1522,7 +1562,8 @@
    "peso_max_pct": 45.6,
    "q25": 339403,
    "q50": 339403,
-   "q75": 423856
+   "q75": 423856,
+   "q50_clave": "PSICOLOGIA"
   },
   {
    "grupo": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
@@ -1535,7 +1576,8 @@
    "peso_max_pct": 45.6,
    "q25": 38.5,
    "q50": 38.5,
-   "q75": 44.6
+   "q75": 44.6,
+   "q50_clave": "PSICOLOGIA"
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1548,7 +1590,8 @@
    "peso_max_pct": 23.2,
    "q25": 63.1,
    "q50": 83.3,
-   "q75": 91.2
+   "q75": 91.2,
+   "q50_clave": "PEDAGOGIA EN LENGUAJE, COMUNICACION Y/O CASTELLANO"
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1561,7 +1604,8 @@
    "peso_max_pct": 23.2,
    "q25": 833511,
    "q50": 979212,
-   "q75": 1015922
+   "q75": 1015922,
+   "q50_clave": "PEDAGOGIA EN EDUCACION BASICA"
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1574,7 +1618,8 @@
    "peso_max_pct": 23.2,
    "q25": 1123662,
    "q50": 1221325,
-   "q75": 1253616
+   "q75": 1253616,
+   "q50_clave": "PEDAGOGIA EN EDUCACION BASICA"
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1587,7 +1632,8 @@
    "peso_max_pct": 23.2,
    "q25": 237694,
    "q50": 250137,
-   "q75": 291449
+   "q75": 291449,
+   "q50_clave": "PEDAGOGIA EN IDIOMAS"
   },
   {
    "grupo": "celda|Educación|Universidad|Carreras Profesionales",
@@ -1600,7 +1646,8 @@
    "peso_max_pct": 23.2,
    "q25": 23.4,
    "q50": 24.7,
-   "q75": 35.0
+   "q75": 35.0,
+   "q50_clave": "PEDAGOGIA EN EDUCACION BASICA"
   },
   {
    "grupo": "celda|Salud|Universidad|Carreras Profesionales",
@@ -1613,7 +1660,8 @@
    "peso_max_pct": 28.1,
    "q25": 49.6,
    "q50": 69.4,
-   "q75": 78.6
+   "q75": 78.6,
+   "q50_clave": "OBSTETRICIA Y PUERICULTURA"
   },
   {
    "grupo": "celda|Salud|Universidad|Carreras Profesionales",
@@ -1626,7 +1674,8 @@
    "peso_max_pct": 28.1,
    "q25": 782180,
    "q50": 991003,
-   "q75": 1064108
+   "q75": 1064108,
+   "q50_clave": "OBSTETRICIA Y PUERICULTURA"
   },
   {
    "grupo": "celda|Salud|Universidad|Carreras Profesionales",
@@ -1639,7 +1688,8 @@
    "peso_max_pct": 28.1,
    "q25": 1283240,
    "q50": 1715193,
-   "q75": 1826430
+   "q75": 1826430,
+   "q50_clave": "OBSTETRICIA Y PUERICULTURA"
   },
   {
    "grupo": "celda|Salud|Universidad|Carreras Profesionales",
@@ -1652,7 +1702,8 @@
    "peso_max_pct": 28.1,
    "q25": 500762,
    "q50": 724190,
-   "q75": 762322
+   "q75": 762322,
+   "q50_clave": "OBSTETRICIA Y PUERICULTURA"
   },
   {
    "grupo": "celda|Salud|Universidad|Carreras Profesionales",
@@ -1665,7 +1716,8 @@
    "peso_max_pct": 28.1,
    "q25": 56.8,
    "q50": 71.6,
-   "q75": 73.1
+   "q75": 73.1,
+   "q50_clave": "ENFERMERIA"
   },
   {
    "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
@@ -1678,7 +1730,8 @@
    "peso_max_pct": 21.4,
    "q25": 70.8,
    "q50": 72.4,
-   "q75": 80.1
+   "q75": 80.1,
+   "q50_clave": "TECNICO EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
@@ -1691,7 +1744,8 @@
    "peso_max_pct": 21.4,
    "q25": 1015229,
    "q50": 1069167,
-   "q75": 1093048
+   "q75": 1093048,
+   "q50_clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL"
   },
   {
    "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
@@ -1704,7 +1758,8 @@
    "peso_max_pct": 21.4,
    "q25": 1166539,
    "q50": 1274233,
-   "q75": 1331286
+   "q75": 1331286,
+   "q50_clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL"
   },
   {
    "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
@@ -1717,7 +1772,8 @@
    "peso_max_pct": 21.4,
    "q25": 111339,
    "q50": 158900,
-   "q75": 238238
+   "q75": 238238,
+   "q50_clave": "TECNICO EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "celda|Tecnología|CFT|Carreras Técnicas",
@@ -1730,7 +1786,8 @@
    "peso_max_pct": 21.4,
    "q25": 11.3,
    "q50": 15.7,
-   "q75": 21.8
+   "q75": 21.8,
+   "q50_clave": "TECNICO EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Profesionales",
@@ -1743,7 +1800,8 @@
    "peso_max_pct": 28.3,
    "q25": 79.0,
    "q50": 81.7,
-   "q75": 82.1
+   "q75": 82.1,
+   "q50_clave": "INGENIERIA EN PREVENCION DE RIESGOS"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Profesionales",
@@ -1756,7 +1814,8 @@
    "peso_max_pct": 28.3,
    "q25": 969116,
    "q50": 1148680,
-   "q75": 1344623
+   "q75": 1344623,
+   "q50_clave": "INGENIERIA EN COMPUTACION E INFORMATICA"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Profesionales",
@@ -1769,7 +1828,8 @@
    "peso_max_pct": 28.3,
    "q25": 1339221,
    "q50": 1373917,
-   "q75": 1682097
+   "q75": 1682097,
+   "q50_clave": "INGENIERIA EN CONSTRUCCION"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Profesionales",
@@ -1782,7 +1842,8 @@
    "peso_max_pct": 28.3,
    "q25": -5402,
    "q50": 385293,
-   "q75": 517321
+   "q75": 517321,
+   "q50_clave": "INGENIERIA EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Profesionales",
@@ -1795,7 +1856,8 @@
    "peso_max_pct": 28.3,
    "q25": -0.4,
    "q50": 39.8,
-   "q75": 51.8
+   "q75": 51.8,
+   "q50_clave": "INGENIERIA EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Técnicas",
@@ -1808,7 +1870,8 @@
    "peso_max_pct": 18.2,
    "q25": 68.2,
    "q50": 74.7,
-   "q75": 78.5
+   "q75": 78.5,
+   "q50_clave": "TECNICO EN PREVENCION DE RIESGOS"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Técnicas",
@@ -1821,7 +1884,8 @@
    "peso_max_pct": 18.2,
    "q25": 986828,
    "q50": 1036292,
-   "q75": 1095419
+   "q75": 1095419,
+   "q50_clave": "TECNICO EN COMPUTACION E INFORMATICA"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Técnicas",
@@ -1834,7 +1898,8 @@
    "peso_max_pct": 18.2,
    "q25": 1039867,
    "q50": 1059423,
-   "q75": 1316723
+   "q75": 1316723,
+   "q50_clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Técnicas",
@@ -1847,7 +1912,8 @@
    "peso_max_pct": 18.2,
    "q25": -55552,
    "q50": 72595,
-   "q75": 259063
+   "q75": 259063,
+   "q50_clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES"
   },
   {
    "grupo": "celda|Tecnología|IP|Carreras Técnicas",
@@ -1860,7 +1926,8 @@
    "peso_max_pct": 18.2,
    "q25": -5.1,
    "q50": 7.4,
-   "q75": 24.5
+   "q75": 24.5,
+   "q50_clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
@@ -1873,7 +1940,8 @@
    "peso_max_pct": 28.4,
    "q25": 82.9,
    "q50": 87.1,
-   "q75": 89.3
+   "q75": 89.3,
+   "q50_clave": "INGENIERIA EN ELECTRICIDAD"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
@@ -1886,7 +1954,8 @@
    "peso_max_pct": 28.4,
    "q25": 1243889,
    "q50": 1534688,
-   "q75": 1660911
+   "q75": 1660911,
+   "q50_clave": "INGENIERIA EN PREVENCION DE RIESGOS"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
@@ -1899,7 +1968,8 @@
    "peso_max_pct": 28.4,
    "q25": 1946268,
    "q50": 2235765,
-   "q75": 2466538
+   "q75": 2466538,
+   "q50_clave": "INGENIERIA CIVIL, PLAN COMUN Y LICENCIATURA EN CIENCIAS DE LA INGENIERIA"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
@@ -1912,7 +1982,8 @@
    "peso_max_pct": 28.4,
    "q25": 500979,
    "q50": 805627,
-   "q75": 845253
+   "q75": 845253,
+   "q50_clave": "INGENIERIA CIVIL INDUSTRIAL"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Profesionales",
@@ -1925,7 +1996,8 @@
    "peso_max_pct": 28.4,
    "q25": 47.9,
    "q50": 48.5,
-   "q75": 71.8
+   "q75": 71.8,
+   "q50_clave": "INGENIERIA CIVIL INDUSTRIAL"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
@@ -1938,7 +2010,8 @@
    "peso_max_pct": 23.3,
    "q25": 54.1,
    "q50": 68.8,
-   "q75": 75.4
+   "q75": 75.4,
+   "q50_clave": "TECNICO EN MINERIA"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
@@ -1951,7 +2024,8 @@
    "peso_max_pct": 23.3,
    "q25": 845287,
    "q50": 1041029,
-   "q75": 1129019
+   "q75": 1129019,
+   "q50_clave": "TECNICO EN MINERIA"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
@@ -1964,7 +2038,8 @@
    "peso_max_pct": 23.3,
    "q25": 1114979,
    "q50": 1429847,
-   "q75": 1539282
+   "q75": 1539282,
+   "q50_clave": "TECNICO EN MINERIA"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
@@ -1977,7 +2052,8 @@
    "peso_max_pct": 23.3,
    "q25": 269692,
    "q50": 388818,
-   "q75": 422556
+   "q75": 422556,
+   "q50_clave": "TECNICO EN MINERIA"
   },
   {
    "grupo": "celda|Tecnología|Universidad|Carreras Técnicas",
@@ -1990,7 +2066,8 @@
    "peso_max_pct": 23.3,
    "q25": 31.9,
    "q50": 34.0,
-   "q75": 40.2
+   "q75": 40.2,
+   "q50_clave": "TECNICO EN METALURGIA"
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2003,7 +2080,8 @@
    "peso_max_pct": 14.8,
    "q25": 43.1,
    "q50": 62.1,
-   "q75": 70.8
+   "q75": 70.8,
+   "q50_clave": "TECNICO EN ENFERMERIA"
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2016,7 +2094,8 @@
    "peso_max_pct": 14.8,
    "q25": 700121,
    "q50": 828682,
-   "q75": 988839
+   "q75": 988839,
+   "q50_clave": "TECNICO EN CONTABILIDAD GENERAL"
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2029,7 +2108,8 @@
    "peso_max_pct": 14.8,
    "q25": 806275,
    "q50": 955618,
-   "q75": 1171554
+   "q75": 1171554,
+   "q50_clave": "TECNICO JURIDICO"
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2042,7 +2122,8 @@
    "peso_max_pct": 14.8,
    "q25": 91009,
    "q50": 158900,
-   "q75": 211226
+   "q75": 211226,
+   "q50_clave": "TECNICO EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "segmento|CFT|Carreras Técnicas",
@@ -2055,7 +2136,8 @@
    "peso_max_pct": 14.8,
    "q25": 11.3,
    "q50": 19.2,
-   "q75": 23.9
+   "q75": 23.9,
+   "q50_clave": "TECNICO EN ELECTRICIDAD Y ELECTRICIDAD INDUSTRIAL"
   },
   {
    "grupo": "segmento|IP|Carreras Profesionales",
@@ -2068,7 +2150,8 @@
    "peso_max_pct": 12.9,
    "q25": 67.5,
    "q50": 79.7,
-   "q75": 81.7
+   "q75": 81.7,
+   "q50_clave": "INGENIERIA EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "segmento|IP|Carreras Profesionales",
@@ -2081,7 +2164,8 @@
    "peso_max_pct": 12.9,
    "q25": 913955,
    "q50": 999393,
-   "q75": 1148680
+   "q75": 1148680,
+   "q50_clave": "CONTADOR AUDITOR"
   },
   {
    "grupo": "segmento|IP|Carreras Profesionales",
@@ -2094,7 +2178,8 @@
    "peso_max_pct": 12.9,
    "q25": 1164513,
    "q50": 1354409,
-   "q75": 1432590
+   "q75": 1432590,
+   "q50_clave": "INGENIERIA EN MECANICA AUTOMOTRIZ"
   },
   {
    "grupo": "segmento|IP|Carreras Profesionales",
@@ -2107,7 +2192,8 @@
    "peso_max_pct": 12.9,
    "q25": 182649,
    "q50": 250058,
-   "q75": 433197
+   "q75": 433197,
+   "q50_clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS"
   },
   {
    "grupo": "segmento|IP|Carreras Profesionales",
@@ -2120,7 +2206,8 @@
    "peso_max_pct": 12.9,
    "q25": 18.6,
    "q50": 29.0,
-   "q75": 43.3
+   "q75": 43.3,
+   "q50_clave": "PSICOPEDAGOGIA"
   },
   {
    "grupo": "segmento|IP|Carreras Técnicas",
@@ -2133,7 +2220,8 @@
    "peso_max_pct": 16.1,
    "q25": 51.8,
    "q50": 65.8,
-   "q75": 74.7
+   "q75": 74.7,
+   "q50_clave": "TECNICO EN ENFERMERIA"
   },
   {
    "grupo": "segmento|IP|Carreras Técnicas",
@@ -2146,7 +2234,8 @@
    "peso_max_pct": 16.1,
    "q25": 767136,
    "q50": 819465,
-   "q75": 1054045
+   "q75": 1054045,
+   "q50_clave": "TECNICO EN SERVICIO SOCIAL"
   },
   {
    "grupo": "segmento|IP|Carreras Técnicas",
@@ -2159,7 +2248,8 @@
    "peso_max_pct": 16.1,
    "q25": 837430,
    "q50": 890574,
-   "q75": 1122752
+   "q75": 1122752,
+   "q50_clave": "TECNICO EN SERVICIO SOCIAL"
   },
   {
    "grupo": "segmento|IP|Carreras Técnicas",
@@ -2172,7 +2262,8 @@
    "peso_max_pct": 16.1,
    "q25": 68707,
    "q50": 78088,
-   "q75": 106449
+   "q75": 106449,
+   "q50_clave": "TECNICO ASISTENTE DEL EDUCADOR DE PARVULOS"
   },
   {
    "grupo": "segmento|IP|Carreras Técnicas",
@@ -2185,7 +2276,8 @@
    "peso_max_pct": 16.1,
    "q25": 6.5,
    "q50": 11.7,
-   "q75": 15.1
+   "q75": 15.1,
+   "q50_clave": "TECNICO EN ENFERMERIA"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2198,7 +2290,8 @@
    "peso_max_pct": 8.6,
    "q25": 62.7,
    "q50": 78.0,
-   "q75": 84.4
+   "q75": 84.4,
+   "q50_clave": "ADMINISTRACION DE EMPRESAS E ING. ASOCIADAS"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2211,7 +2304,8 @@
    "peso_max_pct": 8.6,
    "q25": 880598,
    "q50": 1046881,
-   "q75": 1317860
+   "q75": 1317860,
+   "q50_clave": "INGENIERIA EN CONSTRUCCION"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2224,7 +2318,8 @@
    "peso_max_pct": 8.6,
    "q25": 1221325,
    "q50": 1576091,
-   "q75": 2008881
+   "q75": 2008881,
+   "q50_clave": "CONTADOR AUDITOR"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2237,7 +2332,8 @@
    "peso_max_pct": 8.6,
    "q25": 339403,
    "q50": 573466,
-   "q75": 724190
+   "q75": 724190,
+   "q50_clave": "ODONTOLOGIA"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2250,7 +2346,8 @@
    "peso_max_pct": 8.6,
    "q25": 35.0,
    "q50": 48.5,
-   "q75": 64.0
+   "q75": 64.0,
+   "q50_clave": "INGENIERIA CIVIL INDUSTRIAL"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2263,7 +2360,8 @@
    "peso_max_pct": 26.1,
    "q25": 52.4,
    "q50": 63.3,
-   "q75": 65.2
+   "q75": 65.2,
+   "q50_clave": "TECNICO EN ENFERMERIA"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2276,7 +2374,8 @@
    "peso_max_pct": 26.1,
    "q25": 792044,
    "q50": 845287,
-   "q75": 981055
+   "q75": 981055,
+   "q50_clave": "TECNICO EN CONSTRUCCION Y OBRAS CIVILES"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2289,7 +2388,8 @@
    "peso_max_pct": 26.1,
    "q25": 892793,
    "q50": 1061531,
-   "q75": 1176096
+   "q75": 1176096,
+   "q50_clave": "TECNICO EN ADMINISTRACION DE EMPRESAS"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2302,7 +2402,8 @@
    "peso_max_pct": 26.1,
    "q25": 80476,
    "q50": 100749,
-   "q75": 269692
+   "q75": 269692,
+   "q50_clave": "TECNICO EN ENFERMERIA"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2315,7 +2416,8 @@
    "peso_max_pct": 26.1,
    "q25": 8.2,
    "q50": 12.9,
-   "q75": 31.9
+   "q75": 31.9,
+   "q50_clave": "TECNICO ASISTENTE DEL EDUCADOR DE PARVULOS"
   }
  ],
  "hallazgos": {

@@ -82,6 +82,10 @@ CREATE TABLE analytics.referencia (
     q25               numeric NOT NULL,
     q50               numeric NOT NULL,
     q75               numeric NOT NULL,
+    -- La carrera «del medio»: la que da q50 (sin interpolar, q50 es siempre el valor de una carrera
+    -- real). La ficha la nombra y la marca en las franjas (18-11-26): «+$73.105» sin decir frente a
+    -- quién no se entendía. Mismo orden (valor, clave) que el cuantil; el tipo es el del grupo.
+    q50_clave         text    NOT NULL,
     PRIMARY KEY (grupo_id, metrica),
     CHECK ((tipo_grupo = 'celda') = (area IS NOT NULL)),
     CHECK (q25 <= q50 AND q50 <= q75)
@@ -102,7 +106,9 @@ SELECT grupo_id, metrica, tipo_grupo, area, tipo_institucion, nivel_carrera,
        count(*), max(peso_total), max(peso)::numeric / max(peso_total),
        min(valor) FILTER (WHERE peso_acum >= 0.25 * peso_total),
        min(valor) FILTER (WHERE peso_acum >= 0.50 * peso_total),
-       min(valor) FILTER (WHERE peso_acum >= 0.75 * peso_total)
+       min(valor) FILTER (WHERE peso_acum >= 0.75 * peso_total),
+       (array_agg(clave_carrera_generica ORDER BY valor, clave_carrera_generica)
+            FILTER (WHERE peso_acum >= 0.50 * peso_total))[1]
 FROM acum
 GROUP BY grupo_id, metrica, tipo_grupo, area, tipo_institucion, nivel_carrera;
 
@@ -342,7 +348,17 @@ SELECT 'analytics_referencia', 'referencia_completa', CASE WHEN n = 0 THEN 'OK' 
        format('%s pares con menos de 5 métricas de referencia', n)
 FROM (SELECT count(*) AS n
       FROM analytics.posicion po
-      WHERE (SELECT count(*) FROM analytics.referencia r WHERE r.grupo_id = po.grupo_id) <> 5) x;
+      WHERE (SELECT count(*) FROM analytics.referencia r WHERE r.grupo_id = po.grupo_id) <> 5) x
+UNION ALL
+-- 9. La carrera «del medio» que nombra la ficha es miembro del grupo y su valor es exactamente q50.
+SELECT 'analytics_referencia', 'carrera_del_medio', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'q50_clave es miembro del grupo y su valor = q50, en todos los grupos y métricas',
+       format('%s referencias cuya carrera del medio no calza', n)
+FROM (SELECT count(*) AS n
+      FROM analytics.referencia r
+      WHERE NOT EXISTS (SELECT 1 FROM analytics.miembro_referencia m
+                        WHERE m.grupo_id = r.grupo_id AND m.metrica = r.metrica
+                          AND m.clave_carrera_generica = r.q50_clave AND m.valor = r.q50)) x;
 
 -- --------------------------------------------------------------------------
 -- Posición en su área, para la ficha (18-11-26)

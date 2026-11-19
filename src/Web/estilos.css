@@ -730,6 +730,9 @@ a.hallazgo__accion { color: var(--tinta); }
   .conmutador button { font-size: 0.75rem; padding: 0.35rem 0.55rem; }
 }
 .punto--neutro { background: var(--tinta-suave); opacity: 0.7; }
+/* Carrera del medio: anillo oscuro (en el gráfico, .g-medio); se distingue sin color. */
+.punto--medio { background: transparent; box-shadow: inset 0 0 0 2px var(--tinta); width: 0.7rem; height: 0.7rem; }
+.rombo-muestra { display: inline-block; flex-shrink: 0; width: 0.6rem; height: 0.6rem; background: var(--acento); transform: rotate(45deg); }
 .punto--acento { background: var(--acento); width: 0.75rem; height: 0.75rem; }
 .muestra-franja { width: 1.25rem; height: 0.6rem; background: var(--tinta-suave); opacity: 0.16; display: inline-block; }
 /* Dos conmutadores (nivel y medida) en una fila; en celular bajan uno bajo el otro. */
@@ -884,6 +887,24 @@ a.hallazgo__accion { color: var(--tinta); }
 .g-acento { fill: var(--acento); }
 .g-contexto { fill: var(--tinta-suave); fill-opacity: 0.55; }
 .g-blanco { fill: transparent; }
+.g-medio { fill: var(--papel-alto); stroke: var(--tinta); stroke-width: 2; }
+/* Tabla «Comparada con la carrera del medio»: la diferencia («$73.105 más») puede partirse.
+   Con .ficha delante: si no, .ficha .tabla--compacta td.num (nowrap) gana por especificidad. */
+.ficha .tabla--medio td.td--dif { white-space: normal; }
+/* En celular, una tarjeta por cifra: sus dos valores lado a lado, cada uno con el nombre de su
+   columna (data-rotulo), y la diferencia en una línea completa. Con cuatro columnas, o con tres
+   montos por línea, la tabla quedaba más ancha que la pantalla (390 y 320 px). */
+@media (max-width: 40rem) {
+  .ficha .tabla--medio, .ficha .tabla--medio tbody { display: block; width: 100%; }
+  .ficha .tabla--medio thead { display: none; }
+  .ficha .tabla--medio tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 0.3rem; border-bottom: 1px solid var(--regla); }
+  .ficha .tabla--medio td { border: 0; }
+  .ficha .tabla--medio td.td--titulo { grid-column: 1 / -1; padding-bottom: 0; font-weight: 600; min-width: 0; }
+  .ficha .tabla--medio td.num { white-space: normal; text-align: left; }
+  .ficha .tabla--medio td.num::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); color: var(--tinta-suave); }
+  .ficha .tabla--medio td.td--dif { grid-column: 1 / -1; padding-top: 0; }
+  .ficha .tabla--medio td.td--dif::before { display: inline; content: attr(data-rotulo) ": "; }
+}
 .g-vecina { cursor: pointer; }
 .g-vecina:hover .g-contexto { fill-opacity: 1; }
 .g-tipica { stroke: var(--tinta); stroke-width: 2; }

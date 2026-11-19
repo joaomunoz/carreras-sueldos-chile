@@ -226,7 +226,8 @@ SELECT json_build_object(
                         'peso_max_pct', round(100 * peso_max_share, 1),
                         'q25', round(q25, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
                         'q50', round(q50, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
-                        'q75', round(q75, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END))
+                        'q75', round(q75, CASE WHEN metrica IN ('p50_pct_1_5', 'emp1_nacional') THEN 1 ELSE 0 END),
+                        'q50_clave', q50_clave)
                         ORDER BY grupo_id, metrica)
                     FROM analytics.referencia),
     -- Cifras y ejemplos de los hallazgos de portada (06_hallazgos.sql): la web y el README solo redactan.
