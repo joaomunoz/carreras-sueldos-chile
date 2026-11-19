@@ -675,6 +675,8 @@
       texto += "En violeta, " + (nv.n_marca_edad === 1 ? "la que tiene" : "las " + fmtEntero.format(nv.n_marca_edad) + " que tienen") +
         " titulados recientes mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
     }
+    // Por qué esos dos rótulos: sin decirlo, «−4,4 %» parecía la mayor caída (hay mayores, con aviso).
+    texto += " Con nombre, la mayor y la menor diferencia entre las carreras sin avisos.";
     document.getElementById("peine-bajada").textContent = texto;
     document.getElementById("peine-titulo").textContent = "Sueldo típico (P50) al 1er y al 5° año de las " +
       fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel + " comparables · ingresos " + aniosIngreso("percentiles_anio_1") + ", en pesos de septiembre de 2025";
@@ -728,6 +730,10 @@
     if (!limpias.length) limpias = lista;
     var masSube = maximoPor(limpias, function (p) { return p.percentiles.p50_pct_1_5; });
     var masBaja = maximoPor(limpias, function (p) { return -p.percentiles.p50_pct_1_5; });
+    // Las guías van DEBAJO de los rótulos: el halo del rótulo (color del fondo) las tapa donde
+    // cruzan el texto. Antes se dibujaban encima y, si la carrera quedaba a la izquierda del final
+    // del rótulo, la línea lo tachaba (evaluación del 19-11-26).
+    var capaGuias = svgEl("g", {}, null, svg);
     [masSube, masBaja].forEach(function (p, k) {
       var i = lista.indexOf(p);
       var yRot = m.arriba + 10 + k * 18;
@@ -745,8 +751,11 @@
       var fin = m.izq + 8 + t.getComputedTextLength() + 6;
       var yDot = k === 0 ? Math.min(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50))
                          : Math.max(y(p.percentiles.anio_1.p50), y(p.percentiles.anio_5.p50));
-      svgEl("polyline", { points: fin + "," + (yRot - 4) + " " + (x(i) - 4) + "," + (yRot - 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4)),
-                          fill: "none" }, "g-guia", svg);
+      // Si la carrera queda bajo el rótulo, la guía baja directo desde su punto.
+      var pts = x(i) - 4 > fin
+        ? fin + "," + (yRot - 4) + " " + (x(i) - 4) + "," + (yRot - 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4))
+        : x(i) + "," + (yRot + 4) + " " + x(i) + "," + (yDot + (k === 0 ? -4 : 4));
+      svgEl("polyline", { points: pts, fill: "none" }, "g-guia", capaGuias);
     });
     pintarPeineBajan(lista, bajan, nombreNivel);
     lienzo.tabIndex = 0;
@@ -1651,8 +1660,9 @@
       var tg = svgEl("text", { x: mIzq - 10, y: y(g) + 4, "text-anchor": "end" }, "g-eje-texto", svg);
       tg.textContent = pesos(g);
     }
+    // Con las cohortes de esta carrera (SQL): en Derecho el 4° año ya no incluye los años anómalos.
     var anomalos = {};
-    datos.hitos.forEach(function (h) { anomalos[h.anio] = h.incluye_caida || h.incluye_rebote; });
+    p.marcas.anios_anomalos.forEach(function (k) { anomalos[k] = true; });
     v.forEach(function (val, i) {
       var et = svgEl("text", { x: x(i), y: H - (conRango ? 22 : 6), "text-anchor": "middle" }, "g-eje-texto", svg);
       et.textContent = (i + 1) + "°" + (anomalos[i + 1] ? "*" : "");
@@ -1742,7 +1752,10 @@
     return v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + fmtUno.format(Math.abs(v)) + (Math.abs(v) === 1 ? " punto" : " puntos");
   }
   // «Del medio» y no «típica»: el lector no tiene por qué saber qué es una mediana (18-11-26).
-  var TRAMO_VS = { sobre: "sobre la institución del medio", igual: "igual a la institución del medio", bajo: "bajo la institución del medio" };
+  // «Rango del medio», no «institución del medio»: se calcula entre las instituciones que publican
+  // rango (39 en Enfermería, no 43), así que no es la misma institución que la de la empleabilidad;
+  // con el mismo nombre, una fila decía «0,0 puntos» y «sobre la institución del medio» (19-11-26).
+  var TRAMO_VS = { sobre: "sobre el rango del medio", igual: "igual al rango del medio", bajo: "bajo el rango del medio" };
 
   // Empleabilidad al 1er año por institución. Cada punto es una institución; la altura NO es un
   // eje: los puntos solo se apilan cuando se tocarían (enjambre), para que ninguno tape a otro sin
@@ -1829,7 +1842,7 @@
       q.nodo.classList.add("g-inst--activa");
       svg.appendChild(q.nodo);   // al frente
       var lineas = ["Empleabilidad 1er año: " + pct(g.emp1), "Empleabilidad 2° año: " + pct(g.emp2),
-                    "Dif. 1er año con la institución del medio: " + difPuntos(g.desvio_emp1),
+                    "Dif. 1er año con la institución del medio: " + (g.desvio_emp1 === 0 ? "igual a la del medio" : difPuntos(g.desvio_emp1)),
                     "Continuidad de estudios: " + pct(g.continuidad)];
       if (g.tramo) {
         lineas.push("Rango de ingreso al 4° año: " + tramoTexto(g.tramo));
@@ -2001,7 +2014,7 @@
     b2.appendChild(el("p", "ficha__explica", "El sueldo típico (mediana) es lo que gana el titulado del medio: la mitad gana menos. " +
       "El promedio suma también los sueldos más altos y junta tres cohortes de titulados; por eso al 1er año son " +
       pesos(med1) + " de sueldo típico y " + pesos(prom1) + " de promedio."));
-    if (datos.hitos.some(function (h) { return h.incluye_caida || h.incluye_rebote; })) {
+    if (p.marcas.anios_anomalos.length) {
       b2.appendChild(el("p", "ficha__nota", "* Incluye titulados de " + parametro("anio_caida_titulacion") + " o " +
         parametro("anio_rebote_titulacion") + ", años de titulación anómalos por la pandemia."));
     }
@@ -2086,9 +2099,9 @@
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
       var COL_DIF = d1 ? "Dif. 1er año con la institución del medio (" + pct(d1.mediana) + ")" : null;
-      // Con el valor de referencia: «bajo la institución del medio» no decía bajo qué cifra.
+      // Con el valor de referencia: «bajo el rango del medio» no decía bajo qué cifra.
       var COL_RANGO = "Rango de ingreso al 4° año" + (conTramo && p.dispersion.tramo.mediana_min != null
-        ? " (la institución del medio parte en " + pesos(p.dispersion.tramo.mediana_min) + ")" : "");
+        ? " (el rango del medio entre las instituciones que lo publican parte en " + pesos(p.dispersion.tramo.mediana_min) + ")" : "");
       function pintarInst() {
         envolI.replaceChildren();
         filasI = [];
@@ -2099,7 +2112,8 @@
         (todasInst ? progs : progs.slice(0, MAX_INST)).forEach(function (g) {
           var celdas = [["Institución", nombreInst(g.institucion), "td--titulo"], ["Empleabilidad 1er año", pct(g.emp1), "num"],
                         ["Empleabilidad 2° año", pct(g.emp2), "num"]];
-          if (d1) celdas.push([COL_DIF, difPuntos(g.desvio_emp1), "num"]);
+          // Con empate en la mediana puede haber más de una: «igual a la del medio», no «0,0 puntos».
+          if (d1) celdas.push([COL_DIF, g.desvio_emp1 === 0 ? "igual a la del medio" : difPuntos(g.desvio_emp1), "num"]);
           celdas.push(["Continuidad de estudios", pct(g.continuidad), "num"]);
           // Espacio de ancho cero tras el guion: el rango puede partirse en dos líneas en vez de ensanchar la tabla.
           celdas.push([COL_RANGO, g.tramo ? tramoTexto(g.tramo).replace("–", "–\u200b") : "sin dato", "num td--tramo"]);
@@ -2131,7 +2145,7 @@
       // Con 10 o menos no hay filas ocultas: el botón no haría nada.
       if (progs.length > MAX_INST) b3.appendChild(bI);
       b3.appendChild(el("p", "ficha__nota", "Rango de ingreso al 4° año: ingreso promedio que MiFuturo publica por institución como rango, no como cifra exacta" +
-        (conTramo ? "; se compara con el rango de la institución del medio." : ".") +
+        (conTramo ? "; se compara con el rango del medio entre las instituciones que lo publican." : ".") +
         " Continuidad de estudios: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
     }
 

@@ -53,6 +53,12 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
         'grupo_referencia', po.grupo_id,
         'baja_cobertura', p.baja_cobertura,
         'es_derecho', p.es_derecho,
+        -- Años (k) del promedio cuyos titulados incluyen los años anómalos, con las cohortes de ESTA
+        -- carrera: en Derecho, un año antes, el 4° año (2017–2019) ya no los incluye (19-11-26).
+        'anios_anomalos', coalesce((SELECT json_agg(h.anio_k ORDER BY h.anio_k) FROM analytics.hito h
+                                    CROSS JOIN LATERAL (SELECT p.es_derecho::int * analytics.param('corrimiento_derecho')::int AS sh) s
+                                    WHERE analytics.param('anio_caida_titulacion')  BETWEEN h.cohorte_desde + s.sh AND h.cohorte_hasta + s.sh
+                                       OR analytics.param('anio_rebote_titulacion') BETWEEN h.cohorte_desde + s.sh AND h.cohorte_hasta + s.sh), '[]'),
         'cohorte_atipica', coalesce(es.atipica, false),
         'composicion_edad', coalesce(c.composicion_edad, false),
         'promedio_enganoso', coalesce(de1.promedio_enganoso, false)),

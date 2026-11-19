@@ -2847,6 +2847,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -2987,6 +2993,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -3160,6 +3172,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -3356,6 +3374,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -3529,6 +3553,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -3702,6 +3732,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -3837,6 +3873,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4033,6 +4075,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4197,6 +4245,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4332,6 +4386,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4496,6 +4556,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4660,6 +4726,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -4842,6 +4914,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -5015,6 +5093,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -5197,6 +5281,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -5361,6 +5451,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -5543,6 +5639,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -5683,6 +5785,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -5879,6 +5987,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -6043,6 +6157,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -6225,6 +6345,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -6360,6 +6486,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -6533,6 +6665,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -6697,6 +6835,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -6870,6 +7014,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -7034,6 +7184,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -7198,6 +7354,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -7362,6 +7524,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -7502,6 +7670,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -7666,6 +7840,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -7830,6 +8010,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -7994,6 +8180,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -8134,6 +8326,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -8274,6 +8472,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -8414,6 +8618,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -8554,6 +8764,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -8727,6 +8943,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -8891,6 +9113,12 @@
     "grupo_referencia": "celda|Tecnología|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9055,6 +9283,12 @@
     "grupo_referencia": "celda|Administración y Comercio|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9228,6 +9462,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9392,6 +9632,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9532,6 +9778,12 @@
     "grupo_referencia": "segmento|CFT|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9696,6 +9948,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -9855,6 +10113,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10051,6 +10315,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10215,6 +10485,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10355,6 +10631,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10519,6 +10801,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10683,6 +10971,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -10847,6 +11141,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11011,6 +11311,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11207,6 +11513,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11347,6 +11659,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11511,6 +11829,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11693,6 +12017,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11833,6 +12163,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -11968,6 +12304,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12132,6 +12474,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12296,6 +12644,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12460,6 +12814,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12656,6 +13016,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12820,6 +13186,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -12984,6 +13356,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -13166,6 +13544,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -13330,6 +13714,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -13494,6 +13884,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -13658,6 +14054,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -13822,6 +14224,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -13962,6 +14370,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -14126,6 +14540,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -14266,6 +14686,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -14406,6 +14832,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -14570,6 +15002,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -14766,6 +15204,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -14930,6 +15374,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15094,6 +15544,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15234,6 +15690,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15374,6 +15836,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15538,6 +16006,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15678,6 +16152,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15842,6 +16322,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -15982,6 +16468,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16122,6 +16614,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16286,6 +16784,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16450,6 +16954,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16632,6 +17142,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16796,6 +17312,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -16960,6 +17482,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -17124,6 +17652,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -17320,6 +17854,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -17502,6 +18042,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -17666,6 +18212,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -17862,6 +18414,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -18044,6 +18602,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -18208,6 +18772,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -18372,6 +18942,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -18536,6 +19112,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -18676,6 +19258,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -18840,6 +19428,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -19022,6 +19616,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -19186,6 +19786,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -19359,6 +19965,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -19555,6 +20167,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -19719,6 +20337,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -19883,6 +20507,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -20047,6 +20677,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -20243,6 +20879,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -20383,6 +21025,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -20518,6 +21166,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -20714,6 +21368,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -20854,6 +21514,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -21018,6 +21684,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -21182,6 +21854,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -21346,6 +22024,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -21510,6 +22194,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -21683,6 +22373,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -21847,6 +22543,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -22011,6 +22713,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -22175,6 +22883,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -22339,6 +23053,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -22503,6 +23223,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -22667,6 +23393,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -22831,6 +23563,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -22971,6 +23709,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": true
@@ -23153,6 +23897,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -23317,6 +24067,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -23457,6 +24213,12 @@
     "grupo_referencia": "celda|Tecnología|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -23621,6 +24383,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -23761,6 +24529,12 @@
     "grupo_referencia": "celda|Administración y Comercio|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -23943,6 +24717,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -24107,6 +24887,12 @@
     "grupo_referencia": "segmento|IP|Carreras Técnicas",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -24271,6 +25057,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -24411,6 +25203,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -24551,6 +25349,12 @@
     "grupo_referencia": "segmento|IP|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -24747,6 +25551,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -24911,6 +25721,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -25107,6 +25923,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -25303,6 +26125,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -25485,6 +26313,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -25681,6 +26515,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -25863,6 +26703,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26059,6 +26905,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26241,6 +27093,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26400,6 +27258,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26564,6 +27428,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26723,6 +27593,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -26905,6 +27781,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -27087,6 +27969,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -27251,6 +28139,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -27447,6 +28341,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -27643,6 +28543,11 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": true,
+    "anios_anomalos": [
+     1,
+     2,
+     3
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -27839,6 +28744,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -28035,6 +28946,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -28208,6 +29125,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -28372,6 +29295,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -28568,6 +29497,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -28764,6 +29699,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -28946,6 +29887,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -29128,6 +30075,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -29287,6 +30240,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -29422,6 +30381,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -29618,6 +30583,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -29782,6 +30753,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -29922,6 +30899,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -30118,6 +31101,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -30314,6 +31303,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -30510,6 +31505,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -30706,6 +31707,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -30902,6 +31909,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -31098,6 +32111,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -31294,6 +32313,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -31490,6 +32515,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -31686,6 +32717,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -31850,6 +32887,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -32014,6 +33057,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -32196,6 +33245,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -32360,6 +33415,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -32556,6 +33617,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -32752,6 +33819,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -32934,6 +34007,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -33098,6 +34177,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -33262,6 +34347,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -33426,6 +34517,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -33566,6 +34663,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -33706,6 +34809,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -33865,6 +34974,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -34029,6 +35144,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -34193,6 +35314,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -34366,6 +35493,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -34530,6 +35663,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -34694,6 +35833,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -34853,6 +35998,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35017,6 +36168,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35181,6 +36338,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35377,6 +36540,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35512,6 +36681,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35685,6 +36860,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -35881,6 +37062,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -36063,6 +37250,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -36259,6 +37452,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -36455,6 +37654,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -36637,6 +37842,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -36833,6 +38044,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -37029,6 +38246,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -37225,6 +38448,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -37421,6 +38650,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -37617,6 +38852,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -37813,6 +39054,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -38009,6 +39256,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -38205,6 +39458,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -38401,6 +39660,12 @@
     "grupo_referencia": null,
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -38541,6 +39806,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -38700,6 +39971,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -38864,6 +40141,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -39060,6 +40343,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -39256,6 +40545,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -39452,6 +40747,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -39648,6 +40949,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -39844,6 +41151,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -40017,6 +41330,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -40213,6 +41532,12 @@
     "grupo_referencia": "celda|Educación|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -40377,6 +41702,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -40573,6 +41904,12 @@
     "grupo_referencia": "celda|Ciencias Básicas|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -40732,6 +42069,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -40928,6 +42271,12 @@
     "grupo_referencia": "celda|Arte y Arquitectura|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -41101,6 +42450,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -41265,6 +42620,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -41461,6 +42822,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -41625,6 +42992,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -41807,6 +43180,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -42003,6 +43382,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -42167,6 +43552,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -42331,6 +43722,12 @@
     "grupo_referencia": null,
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -42466,6 +43863,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -42630,6 +44033,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -42812,6 +44221,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -42985,6 +44400,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -43149,6 +44570,12 @@
     "grupo_referencia": null,
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -43289,6 +44716,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -43485,6 +44918,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -43649,6 +45088,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -43813,6 +45258,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -43977,6 +45428,12 @@
     "grupo_referencia": null,
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -44117,6 +45574,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": true,
     "promedio_enganoso": false
@@ -44281,6 +45744,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -44445,6 +45914,12 @@
     "grupo_referencia": "celda|Tecnología|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -44609,6 +46084,12 @@
     "grupo_referencia": null,
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -44749,6 +46230,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Técnicas",
     "baja_cobertura": true,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -44913,6 +46400,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": true,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -45109,6 +46602,12 @@
     "grupo_referencia": "celda|Salud|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
@@ -45305,6 +46804,12 @@
     "grupo_referencia": "celda|Ciencias Sociales|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": true
@@ -45501,6 +47006,12 @@
     "grupo_referencia": "segmento|Universidad|Carreras Profesionales",
     "baja_cobertura": false,
     "es_derecho": false,
+    "anios_anomalos": [
+     1,
+     2,
+     3,
+     4
+    ],
     "cohorte_atipica": false,
     "composicion_edad": false,
     "promedio_enganoso": false
