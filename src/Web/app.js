@@ -653,6 +653,15 @@
     p.textContent = partes.join(". ").replace(/\s+/g, " ").trim() + ".";
   }
 
+  // Ancho real de un texto en la fuente de la página (medido, no estimado por carácter: una
+  // estimación partía en dos líneas títulos que cabían en una).
+  var lienzoMedida = document.createElement("canvas").getContext("2d");
+  function anchoTexto(texto, tamano) {
+    var cs = getComputedStyle(document.body);
+    lienzoMedida.font = tamano.replace("rem", "") * parseFloat(getComputedStyle(document.documentElement).fontSize) + "px " + cs.fontFamily;
+    return lienzoMedida.measureText(texto).width;
+  }
+
   // Ubica el tooltip junto al punto (x, y) relativo a la figura, sin salirse por los costados.
   function ubicarTooltip(caja, figura, x, y) {
     caja.hidden = false;
@@ -1027,8 +1036,13 @@
 
     var W = lienzo.clientWidth || 800;
     var angosto = W < 600;
+    // A 320 px (≈ 290 de lienzo) los rótulos de esquina en dos líneas aún chocaban
+    // («CRECIMIENTOCRECIMIENTO») y el título del eje X se cortaba: van en tres y en dos líneas.
+    var muyAngosto = W < 330;   // lienzo de 288 px a 320; a 390 (358) bastan dos líneas
+    var TITULO_X = "Sueldo al 1er año respecto de la carrera del medio de su grupo";
+    var tituloX2 = anchoTexto(TITULO_X, "0.75rem") > W - 2;   // a 390 px cabe justo (354 de 358)
     var H = angosto ? Math.round(W * 1.05) : 460;
-    var m = { izq: angosto ? 80 : 90, der: 10, arriba: 10, abajo: 40 };
+    var m = { izq: angosto ? 80 : 90, der: 10, arriba: 10, abajo: tituloX2 ? 53 : 40 };
     var razones = puntos.map(function (q) { return q.razon; });
     var lx0 = Math.log2(Math.min.apply(null, razones) * 0.92), lx1 = Math.log2(Math.max.apply(null, razones) * 1.06);
     var ys = puntos.map(yDe);
@@ -1036,7 +1050,7 @@
     var holgura = (y1 - y0) * 0.04; y0 -= holgura; y1 += holgura;
     // Franjas reservadas arriba y abajo para los rótulos de los cuadrantes: los datos se dibujan
     // en el área interior, así ningún punto queda debajo de un rótulo.
-    var franja = angosto ? 48 : 36;
+    var franja = muyAngosto ? 60 : angosto ? 48 : 36;
     function x(r) { return m.izq + (Math.log2(r) - lx0) / (lx1 - lx0) * (W - m.izq - m.der); }
     function y(v) { return m.arriba + franja + (1 - (v - y0) / (y1 - y0)) * (H - m.arriba - m.abajo - 2 * franja); }
     // Rango de valores que cubre toda el área (incluidas las franjas), para la grilla.
@@ -1078,12 +1092,19 @@
     // Fondo: grilla, ejes y rótulos (se redibuja en cada modo: la escala Y cambia).
     var fondo = svg.querySelector(".c-fondo");
     fondo.replaceChildren();
-    [0.5, 0.75, 1, 1.5, 2, 2.5].forEach(function (r) {
+    // Marcas en orden de prioridad («del medio» primero); una marca cuyo texto chocaría con otra ya
+    // puesta se omite (su línea de grilla queda): a 320 px «×0,75» se montaba sobre «del medio».
+    var puestas = [];
+    [1, 0.5, 2, 1.5, 0.75, 2.5].forEach(function (r) {
       if (Math.log2(r) < lx0 || Math.log2(r) > lx1) return;
       svgEl("line", { x1: x(r), x2: x(r), y1: m.arriba, y2: H - m.abajo }, r === 1 ? "c-centro" : "g-grilla", fondo);
-      var t = svgEl("text", { x: x(r), y: H - m.abajo + 16, "text-anchor": "middle" }, "g-eje-texto", fondo);
       // Hasta 2 decimales: con 1 decimal, ×0,75 se leía ×0,8.
-      t.textContent = r === 1 ? "del medio" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
+      var txt = r === 1 ? "del medio" : "×" + new Intl.NumberFormat("es-CL", { maximumFractionDigits: 2 }).format(r);
+      var mitad = txt.length * 3.3 + 4;
+      if (puestas.some(function (q) { return Math.abs(q.x - x(r)) < q.mitad + mitad; })) return;
+      puestas.push({ x: x(r), mitad: mitad });
+      var t = svgEl("text", { x: x(r), y: H - m.abajo + 16, "text-anchor": "middle" }, "g-eje-texto", fondo);
+      t.textContent = txt;
     });
     // Franja "progreso típico": ±margen de la mediana del grupo (0 en el eje relativo).
     var mg = modo === "pct" ? datos.hallazgos.pct_pesos.margen_pp : datos.hallazgos.pct_pesos.margen_pesos;
@@ -1099,8 +1120,11 @@
       (modo === "pct" ? "en puntos porcentuales (pp)" : "en pesos");
     pintarNotaCuadrantes();
     // En celular se centra en todo el ancho: el margen de los ejes en pesos enteros lo correría fuera.
-    var tituloX = svgEl("text", { x: angosto ? W / 2 : (m.izq + W - m.der) / 2, y: H - 4, "text-anchor": "middle" }, "c-titulo-eje", fondo);
-    tituloX.textContent = "Sueldo al 1er año respecto de la carrera del medio de su grupo";
+    var lineasX = tituloX2 ? ["Sueldo al 1er año respecto de", "la carrera del medio de su grupo"] : [TITULO_X];
+    lineasX.forEach(function (l, k) {
+      var tituloX = svgEl("text", { x: angosto ? W / 2 : (m.izq + W - m.der) / 2, y: H - 4 - (lineasX.length - 1 - k) * 13, "text-anchor": "middle" }, "c-titulo-eje", fondo);
+      tituloX.textContent = l;
+    });
     var pasoY = modo === "pct" ? 20 : ((y1 - y0) > 1.2e6 ? 500000 : 250000);
     for (var v = Math.ceil(yPiso / pasoY) * pasoY; v <= yTope; v += pasoY) {
       svgEl("line", { x1: m.izq, x2: W - m.der, y1: y(v), y2: y(v) }, v === 0 ? "c-centro" : "g-grilla", fondo);
@@ -1113,15 +1137,17 @@
     var frente = svg.querySelector(".c-frente");
     frente.replaceChildren();
     // En pantallas angostas el rótulo va en dos líneas (si no, los de izquierda y derecha chocan).
-    var abajoY = H - m.abajo - (angosto ? 36 : 22);
+    var abajoY = H - m.abajo - (muyAngosto ? 48 : angosto ? 36 : 22);
     [["entrada baja · progresa más", m.izq + 6, m.arriba + 12, "start"],
      ["entrada alta · progresa más", W - m.der - 6, m.arriba + 12, "end"],
      ["entrada baja · progresa menos", m.izq + 6, abajoY, "start"],
      ["entrada alta · progresa menos", W - m.der - 6, abajoY, "end"]].forEach(function (e) {
-      var lineas = angosto ? e[0].split(" · ") : [e[0]];
+      var lineas = angosto ? e[0].split(" · ").map(nombreCuadrante) : [nombreCuadrante(e[0])];
+      // Muy angosto: «crecimiento mayor» en dos líneas, para que izquierda y derecha no se toquen.
+      if (muyAngosto) lineas = [lineas[0]].concat(lineas[1].split(" "));
       lineas.forEach(function (l, k) {
         var t = svgEl("text", { x: e[1], y: e[2] + k * 12, "text-anchor": e[3] }, "c-cuadrante", frente);
-        t.textContent = nombreCuadrante(l);
+        t.textContent = l;
       });
       var c = svgEl("text", { x: e[1], y: e[2] + (lineas.length - 1) * 12 + 16, "text-anchor": e[3] }, "c-conteo", frente);
       var nz = conteoZona(modo, e[0]);   // del SQL; la franja no pertenece a ninguna esquina
@@ -1373,14 +1399,18 @@
     if (a == null && b == null) return "En crecimiento entre el 1er y el 5° año, en % y en pesos, ella misma es la carrera del medio.";
     var ella = a == null ? " En %, ella misma es la carrera del medio en crecimiento." : b == null ? " En pesos, ella misma es la carrera del medio en crecimiento." : "";
     if (a != null && b != null && xp === xd && a === b) return base + DIF[a] + " de " + xp + ", la carrera del medio en crecimiento, en % y en pesos.";
-    var partes = [];
-    if (a != null) partes.push(DIF[a] + " de " + xp + " en %");
-    if (b != null) partes.push((a != null ? "y " : "") + DIF[b] + " de " + (xd === xp ? "esa misma carrera" : xd) + " en pesos");
+    // Con las dos medidas cada carrera se nombra junto a su papel, sin paréntesis al final: antes
+    // «…y menor que el de esa misma carrera en pesos (la carrera del medio en crecimiento)» no
+    // dejaba claro a qué se refería el paréntesis (evaluación final, 19-11-26).
+    if (a != null && b != null) {
+      return base + (xp === xd
+        ? DIF[a] + " de " + xp + ", la carrera del medio en crecimiento, en %, y " + DIF[b].split(" ")[0] + " en pesos."
+        : DIF[a] + " de " + xp + " (la del medio en %) y " + DIF[b] + " de " + xd + " (la del medio en pesos).");
+    }
     // Con una sola medida se nombra cuál: «la carrera del medio en crecimiento» a secas hacía que
     // Enfermería y Obstetricia se nombraran mutuamente como «la» del medio.
-    var cual = xp && xd ? (xp !== xd ? "las carreras del medio en cada medida" : "la carrera del medio en crecimiento")
-      : "la carrera del medio en crecimiento " + (xp ? "en %" : "en pesos");
-    return base + partes.join(", ") + " (" + cual + ")." + ella;
+    return base + (a != null ? DIF[a] + " de " + xp + ", la carrera del medio en crecimiento en %."
+                             : DIF[b] + " de " + xd + ", la carrera del medio en crecimiento en pesos.") + ella;
   }
 
   function veredicto(p) {
@@ -2412,9 +2442,10 @@
   document.addEventListener("pointerdown", function (e) { ultimoToque = { el: e.target, t: Date.now() }; }, true);
 
   function capturarOrigen() {
-    var foco = document.activeElement;
+    // Un toque o clic reciente manda sobre el foco: Safari no enfoca el botón al hacer clic, y el
+    // foco que quedaba de antes devolvía al lector a la tarjeta anterior al volver.
+    var foco = ultimoToque.el && Date.now() - ultimoToque.t < 2000 ? ultimoToque.el : document.activeElement;
     if (foco === document.body) foco = null;
-    if (!foco && ultimoToque.el && Date.now() - ultimoToque.t < 2000) foco = ultimoToque.el;
     var seccion = foco && foco.closest ? foco.closest("section.bloque") : null;
     if (!seccion) {
       var centro = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
@@ -2985,7 +3016,9 @@
         t1.appendChild(el("code", "qa-nombre", c.objeto));
         t1.setAttribute("data-rotulo", "Control");
         var t2 = el("td"); t2.setAttribute("data-rotulo", "Estado"); t2.appendChild(estadoNodo(c.estado));
-        var t3 = el("td", null, c.detalle); t3.setAttribute("data-rotulo", "Resultado");
+        // Coma decimal como en el resto de la página: el detalle viene de format() en SQL («0.33 %»),
+        // que también lee el log del build; se convierte solo al mostrarlo.
+        var t3 = el("td", null, c.detalle.replace(/(\d)\.(\d)/g, "$1,$2")); t3.setAttribute("data-rotulo", "Resultado");
         t3.title = "Criterio: " + c.umbral;
         tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
         cuerpo.appendChild(tr);
