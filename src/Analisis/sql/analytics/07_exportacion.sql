@@ -368,6 +368,11 @@ SELECT json_build_object(
                                               'emp_pp', round(med_emp, 1), 'tramo_pct', round(100 * med_tramo, 1),
                                               'n_emp', n_emp, 'n_tramo', n_tramo)
                                           FROM analytics.brecha_nacional),
+        -- Lo que de verdad queda fuera: titulaciones recientes en carreras sin estadística nacional de
+        -- MiFuturo para su tipo (3,9 %), desde el embudo de la Parte I. El 2,1 % de abajo es solo la
+        -- parte sin ningún programa publicado y se quedaba corto (tercera evaluación, 19-11-26).
+        'pct_titulaciones_sin_estadistica', (SELECT round(100.0 * (sum(tit_sies) - sum(tit_con_estadistica)) / sum(tit_sies), 1)
+                                             FROM analytics.universo_embudo WHERE ventana = '1er'),
         'pct_titulaciones_genericas_no_publicadas', (
             SELECT round(100.0 * sum(t.total_titulaciones) FILTER (
                        WHERE NOT EXISTS (SELECT 1 FROM modelo.mifuturo_programa m
@@ -458,19 +463,72 @@ FROM (SELECT ((SELECT count(*) FROM analytics.par WHERE representativo)
         JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
         WHERE (d.razon_entrada > 1) <> po.entrada_alta) AS n) x
 UNION ALL
--- Lo que de verdad se exporta (v_datos_json) contra recuentos por OTRO camino: el control anterior
--- comparaba en parte la consulta consigo misma (segunda evaluación, 19-11-26). Comparables desde
--- posicion (no desde par.representativo); salud desde el área de modelo (no desde par.area).
+-- Lo que de verdad se exporta (v_datos_json) contra recuentos rehechos desde modelo.*, sin pasar por
+-- las tablas de analytics que los calculan: la versión anterior reusaba en parte la misma consulta
+-- (estabilidad, edad), así que un error en ella pasaba (tercera evaluación, 19-11-26).
+--   ser:  cohorte atípica, desde modelo.mifuturo_serie (las previas con un LATERAL, no con FILTER).
+--   edad: marca de composición por edad, desde modelo.titulacion (no desde analytics.contexto).
+--   sin:  titulaciones recientes fuera de las carreras con estadística, desde modelo.titulacion
+--         (no desde el embudo).
+-- La brecha nacional y la cobertura no se rehacen aquí: tienen sus propios controles de dos caminos.
 SELECT 'analytics_exportacion', 'totales_en_json', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
-       n, 'que_no_dice del JSON = recuento independiente (comparables, cohortes atípicas de salud, estabilidad, composición por edad)',
+       n, 'que_no_dice del JSON = recuento desde modelo.* (comparables, estabilidad, cohortes atípicas y de salud, composición por edad, grupos de área, titulaciones sin estadística)',
        format('%s cifras del JSON distintas del recuento', n)
-FROM (SELECT ((j.d->'que_no_dice'->>'pares_comparables')::int <> (SELECT count(*) FROM analytics.posicion))::int
-           + ((j.d->'que_no_dice'->>'cohortes_atipicas_salud')::int <>
-              (SELECT count(*) FROM analytics.estabilidad es
-               JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
-               WHERE es.atipica AND e.area_conocimiento_mineduc = 'Salud'))::int
-           + ((j.d->'que_no_dice'->>'pares_estabilidad')::int <>
-              (SELECT count(DISTINCT (clave_carrera_generica, tipo_institucion)) FROM analytics.estabilidad))::int
-           + ((j.d->'que_no_dice'->>'pares_composicion_edad')::int <>
-              (SELECT count(*) FROM analytics.contexto WHERE composicion_edad))::int AS n
-      FROM (SELECT datos::jsonb AS d FROM analytics.v_datos_json) j) x;
+FROM (
+    WITH ser AS (
+        SELECT a.clave_carrera_generica, a.tipo_institucion,
+               abs(a.valor - pr.m) >= analytics.param('min_desvio_atipico_pp')
+               AND abs(a.valor - pr.m) >= analytics.param('min_z_atipico') * coalesce(pr.sd, 0) AS atipica
+        FROM modelo.mifuturo_serie a
+        JOIN modelo.cohorte c ON c.indicador = 'percentiles_anio_1' AND a.cohorte = c.cohorte_desde
+        CROSS JOIN LATERAL (SELECT avg(b.valor) AS m, stddev_samp(b.valor) AS sd, count(*) AS n
+                            FROM modelo.mifuturo_serie b
+                            WHERE b.indicador = a.indicador AND b.clave_carrera_generica = a.clave_carrera_generica
+                              AND b.tipo_institucion = a.tipo_institucion AND b.cohorte < a.cohorte) pr
+        WHERE a.indicador = 'serie_empleabilidad_1er_anio' AND a.valor IS NOT NULL AND pr.n >= 3
+    ),
+    corr AS (SELECT analytics.param('corrimiento_derecho')::int AS k),
+    edad AS (
+        SELECT t.clave_carrera_generica, i.tipo_institucion,
+               100.0 * sum(t.titulados_30_34 + t.titulados_35_39 + t.titulados_mayores_40) FILTER (WHERE t.anio = c1.cohorte_desde + s.sh)
+                     / nullif(sum(t.total_titulaciones - t.titulados_edad_sin_info) FILTER (WHERE t.anio = c1.cohorte_desde + s.sh), 0)
+             - 100.0 * sum(t.titulados_30_34 + t.titulados_35_39 + t.titulados_mayores_40) FILTER (WHERE t.anio = c5.cohorte_desde + s.sh)
+                     / nullif(sum(t.total_titulaciones - t.titulados_edad_sin_info) FILTER (WHERE t.anio = c5.cohorte_desde + s.sh), 0) AS dif
+        FROM modelo.titulacion t
+        JOIN modelo.institucion i USING (codigo_institucion)
+        JOIN modelo.cohorte c1 ON c1.indicador = 'percentiles_anio_1'
+        JOIN modelo.cohorte c5 ON c5.indicador = 'percentiles_anio_5'
+        CROSS JOIN corr
+        CROSS JOIN LATERAL (SELECT CASE WHEN t.clave_carrera_generica = 'DERECHO' THEN corr.k ELSE 0 END AS sh) s
+        GROUP BY 1, 2
+    ),
+    marca AS (SELECT p.clave_carrera_generica, p.tipo_institucion
+              FROM analytics.par p JOIN edad e USING (clave_carrera_generica, tipo_institucion)
+              WHERE e.dif >= analytics.param('min_cambio_edad_pp')),
+    sin AS (
+        SELECT 100.0 * sum(t.total_titulaciones) FILTER (WHERE NOT EXISTS (
+                   SELECT 1 FROM analytics.par p WHERE p.clave_carrera_generica = t.clave_carrera_generica
+                                                   AND p.tipo_institucion = i.tipo_institucion))
+               / sum(t.total_titulaciones) AS pct
+        FROM modelo.titulacion t
+        JOIN modelo.institucion i USING (codigo_institucion)
+        JOIN modelo.cohorte c ON c.indicador = 'ingreso_medio_1er_anio'
+        CROSS JOIN corr
+        WHERE t.anio BETWEEN c.cohorte_desde + CASE WHEN t.clave_carrera_generica = 'DERECHO' THEN corr.k ELSE 0 END
+                         AND c.cohorte_hasta + CASE WHEN t.clave_carrera_generica = 'DERECHO' THEN corr.k ELSE 0 END
+    )
+    SELECT ((q->>'pares_comparables')::int <> (SELECT count(*) FROM analytics.posicion))::int
+         + ((q->>'pares_estabilidad')::int <> (SELECT count(*) FROM ser))::int
+         + ((q->>'cohortes_atipicas')::int <> (SELECT count(*) FROM ser WHERE atipica))::int
+         + ((q->>'cohortes_atipicas_salud')::int <>
+            (SELECT count(*) FROM ser JOIN modelo.mifuturo_estadistica e USING (clave_carrera_generica, tipo_institucion)
+             WHERE ser.atipica AND e.area_conocimiento_mineduc = 'Salud'))::int
+         + ((q->>'pares_composicion_edad')::int <> (SELECT count(*) FROM marca))::int
+         + ((q->>'pares_composicion_edad_comparables')::int <>
+            (SELECT count(*) FROM marca JOIN analytics.posicion USING (clave_carrera_generica, tipo_institucion)))::int
+         + ((q->>'celdas_validas')::int <> (SELECT count(DISTINCT grupo_id) FROM analytics.referencia WHERE tipo_grupo = 'celda'))::int
+         + ((q->>'pct_titulaciones_sin_estadistica')::numeric <> round((SELECT pct FROM sin), 1))::int
+         -- Lo que no publica MiFuturo es parte de lo que queda sin estadística, nunca más.
+         + ((q->>'pct_titulaciones_genericas_no_publicadas')::numeric > (q->>'pct_titulaciones_sin_estadistica')::numeric)::int AS n
+    FROM (SELECT datos::jsonb -> 'que_no_dice' AS q FROM analytics.v_datos_json) j
+) x;

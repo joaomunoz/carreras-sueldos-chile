@@ -109,18 +109,20 @@ CREATE TABLE analytics.dispersion_empleabilidad (
     CHECK (minimo <= q1 AND q1 <= mediana AND mediana <= q3 AND q3 <= maximo)
 );
 
+-- percentile_cont devuelve double precision: 8,65 quedaba 8,6499… y se mostraba 8,6; en el umbral de
+-- 15 puntos podía clasificar mal (tercera evaluación, 19-11-26). Se pasa a numeric antes de restar.
 INSERT INTO analytics.dispersion_empleabilidad
 SELECT v.clave_carrera_generica, v.tipo_institucion, v.anio, count(*),
        min(v.valor),
-       percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor),
+       percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor)::numeric,
        percentile_disc(0.50) WITHIN GROUP (ORDER BY v.valor),   -- institución real (ver programa_vs_par)
-       percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor),
+       percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor)::numeric,
        max(v.valor),
-       percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor) - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor),
+       percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor)::numeric - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor)::numeric,
        max(v.nacional),
        max(v.nacional) - percentile_disc(0.50) WITHIN GROUP (ORDER BY v.valor),
        CASE WHEN v.anio = 1 THEN
-           percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor) - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor)
+           percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor)::numeric - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor)::numeric
            >= analytics.param('min_iqr_enganoso') END
 FROM analytics.programa_vs_par pv
 CROSS JOIN LATERAL (VALUES

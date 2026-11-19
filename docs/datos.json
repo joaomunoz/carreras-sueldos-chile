@@ -459,7 +459,7 @@
  "qa": {
   "resumen": {
    "EXENTO": 3,
-   "OK": 77
+   "OK": 78
   },
   "controles": [
    {
@@ -613,7 +613,7 @@
     "control": "analytics_exportacion",
     "objeto": "totales_en_json",
     "estado": "OK",
-    "umbral": "que_no_dice del JSON = recuento independiente (comparables, cohortes atípicas de salud, estabilidad, composición por edad)",
+    "umbral": "que_no_dice del JSON = recuento desde modelo.* (comparables, estabilidad, cohortes atípicas y de salud, composición por edad, grupos de área, titulaciones sin estadística)",
     "detalle": "0 cifras del JSON distintas del recuento"
    },
    {
@@ -732,7 +732,7 @@
     "control": "analytics_par",
     "objeto": "ventanas_en_sies",
     "estado": "OK",
-    "umbral": "toda ventana tiene años en el SIES y peso = round(tit_1·f1 + tit_5·f5)",
+    "umbral": "toda ventana tiene años en el SIES, su factor = años de la ventana ÷ años presentes en modelo.titulacion, y peso = round(tit_1·f1 + tit_5·f5)",
     "detalle": "DERECHO Universidad: ventana 5° año 2016–2018 escalada ×1.50"
    },
    {
@@ -776,6 +776,13 @@
     "estado": "OK",
     "umbral": "Σ peso(valor > q50) ≤ 0,5 × peso total en cada grupo × métrica",
     "detalle": "0 grupos donde más de la mitad del peso queda sobre la mediana"
+   },
+   {
+    "control": "analytics_referencia",
+    "objeto": "mediana_ponderada",
+    "estado": "OK",
+    "umbral": "peso antes de la del medio < 50 % del total ≤ peso hasta ella inclusive",
+    "detalle": "0 de 95 referencias cuya carrera del medio no es la mediana ponderada"
    },
    {
     "control": "analytics_referencia",
@@ -15181,7 +15188,7 @@
      "mediana": 78.8,
      "q3": 85.2,
      "max": 98.8,
-     "iqr": 8.6,
+     "iqr": 8.7,
      "nacional_menos_mediana": 5.1
     },
     "tramo": {
@@ -31886,7 +31893,7 @@
      "mediana": 90.6,
      "q3": 94.1,
      "max": 98.2,
-     "iqr": 5.9,
+     "iqr": 6.0,
      "nacional_menos_mediana": 2.3
     },
     "tramo": {
@@ -37631,7 +37638,7 @@
      "mediana": 74.2,
      "q3": 77.1,
      "max": 77.6,
-     "iqr": 5.0,
+     "iqr": 5.1,
      "nacional_menos_mediana": -0.3
     },
     "tramo": {
@@ -39021,7 +39028,7 @@
      "mediana": 90.5,
      "q3": 93.0,
      "max": 94.8,
-     "iqr": 4.1,
+     "iqr": 4.2,
      "nacional_menos_mediana": 0.3
     },
     "emp2": {
@@ -75101,6 +75108,7 @@
    "n_emp": 104,
    "n_tramo": 62
   },
+  "pct_titulaciones_sin_estadistica": 3.9,
   "pct_titulaciones_genericas_no_publicadas": 2.1
  }
 }

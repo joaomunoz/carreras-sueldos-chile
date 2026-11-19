@@ -2708,8 +2708,11 @@
         " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
         " sobre ellas en el rango de ingreso al 4° año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución del medio de su carrera."]);
     }
-    item("No incluye las carreras que MiFuturo no publica.", ["Suman el ", pct(q.pct_titulaciones_genericas_no_publicadas),
-      " de las titulaciones recientes; entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);
+    // El total que queda fuera (SQL, desde el embudo) y, dentro de él, las carreras sin ningún programa:
+    // el 2,1 % solo se quedaba corto frente al 3,9 % real (tercera evaluación, 19-11-26).
+    item("No incluye las carreras sin cifras nacionales de MiFuturo.", ["Quedan fuera el ", pct(q.pct_titulaciones_sin_estadistica),
+      " de las titulaciones recientes: carreras que MiFuturo no publica para ese tipo de institución. El ", pct(q.pct_titulaciones_genericas_no_publicadas),
+      " es de carreras sin ningún programa publicado, entre ellas Física, Historia, Filosofía y Matemática, que MiFuturo omite porque una parte alta de sus titulados sigue estudiando."]);
     var cs = q.continuidad_sin_relacion;
     if (cs) {
       item("La continuidad de estudios no explica la empleabilidad.", ["Entre instituciones de una misma carrera, las que tienen más titulados que siguen estudiando no tienen una empleabilidad distinta (la relación más fuerte da t = ",

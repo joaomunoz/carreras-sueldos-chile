@@ -360,7 +360,25 @@ FROM (SELECT count(*) AS n
       FROM analytics.referencia r
       WHERE NOT EXISTS (SELECT 1 FROM analytics.miembro_referencia m
                         WHERE m.grupo_id = r.grupo_id AND m.metrica = r.metrica
-                          AND m.clave_carrera_generica = r.q50_clave AND m.valor = r.q50)) x;
+                          AND m.clave_carrera_generica = r.q50_clave AND m.valor = r.q50)) x
+UNION ALL
+-- 10. Que q50 sea DE VERDAD la mediana ponderada, por su definición y sin la suma acumulada de la
+--     referencia: el peso de las carreras antes de la del medio (orden valor, clave) es < 50 % del
+--     total, y con ella llega a ≥ 50 %. El control 9 solo pedía que fuera miembro con ese valor
+--     (tercera evaluación, 19-11-26).
+SELECT 'analytics_referencia', 'mediana_ponderada', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'peso antes de la del medio < 50 % del total ≤ peso hasta ella inclusive',
+       format('%s de %s referencias cuya carrera del medio no es la mediana ponderada', n,
+              (SELECT count(*) FROM analytics.referencia))
+FROM (SELECT count(*) AS n
+      FROM analytics.referencia r
+      CROSS JOIN LATERAL (
+          SELECT sum(m.peso) FILTER (WHERE (m.valor, m.clave_carrera_generica) < (r.q50, r.q50_clave)) AS antes,
+                 sum(m.peso) FILTER (WHERE m.clave_carrera_generica = r.q50_clave) AS ella,
+                 sum(m.peso) AS total
+          FROM analytics.miembro_referencia m
+          WHERE m.grupo_id = r.grupo_id AND m.metrica = r.metrica) w
+      WHERE NOT (coalesce(w.antes, 0) < 0.5 * w.total AND coalesce(w.antes, 0) + w.ella >= 0.5 * w.total)) x;
 
 -- --------------------------------------------------------------------------
 -- Posición en su área, para la ficha (18-11-26)

@@ -317,23 +317,30 @@ FROM (SELECT count(*) AS n FROM analytics.par
 -- Ventanas fuera del SIES (19-11-26): ninguna ventana de titulaciones puede quedar sin años en el
 -- SIES (factor NULL), y el peso de cada par es exactamente sus títulos llevados a 3 años. El
 -- detalle nombra las ventanas que se escalan (hoy solo Derecho, 5° año).
+-- Además, el factor se compara con los años que de verdad trae modelo.titulacion, no con el rango
+-- declarado en modelo.cohorte que usa factor_ventana: si se cargara 2016 sin actualizar ese rango,
+-- el peso se escalaría de más y el control antes pasaba igual (tercera evaluación, 19-11-26).
 INSERT INTO qa.control (control, objeto, estado, metrica, umbral, detalle)
-WITH c AS (SELECT indicador, cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte
+WITH anios AS (SELECT DISTINCT anio FROM modelo.titulacion),
+c AS (SELECT indicador, cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte
            WHERE indicador IN ('ingreso_medio_1er_anio', 'ingreso_medio_5to_anio')),
 v AS (
     SELECT p.clave_carrera_generica, p.tipo_institucion, p.peso, p.tit_ventana_1, p.tit_ventana_5,
            s.sh,
            analytics.factor_ventana(c1.d + s.sh, c1.h + s.sh) AS f1,
            analytics.factor_ventana(c5.d + s.sh, c5.h + s.sh) AS f5,
-           (c5.d + s.sh) || '–' || (c5.h + s.sh) AS v5
+           (c5.d + s.sh) || '–' || (c5.h + s.sh) AS v5,
+           (c1.h - c1.d + 1)::numeric / nullif((SELECT count(*) FROM anios WHERE anio BETWEEN c1.d + s.sh AND c1.h + s.sh), 0) AS f1_real,
+           (c5.h - c5.d + 1)::numeric / nullif((SELECT count(*) FROM anios WHERE anio BETWEEN c5.d + s.sh AND c5.h + s.sh), 0) AS f5_real
     FROM analytics.par p
     CROSS JOIN LATERAL (SELECT (p.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int AS sh) s
     JOIN c c1 ON c1.indicador = 'ingreso_medio_1er_anio'
     JOIN c c5 ON c5.indicador = 'ingreso_medio_5to_anio'
 )
 SELECT 'analytics_par', 'ventanas_en_sies', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END, n,
-       'toda ventana tiene años en el SIES y peso = round(tit_1·f1 + tit_5·f5)',
+       'toda ventana tiene años en el SIES, su factor = años de la ventana ÷ años presentes en modelo.titulacion, y peso = round(tit_1·f1 + tit_5·f5)',
        coalesce((SELECT string_agg(DISTINCT format('%s %s: ventana 5° año %s escalada ×%s', clave_carrera_generica, tipo_institucion, v5, round(f5, 2)), '; ')
                  FROM v WHERE f5 <> 1 OR f1 <> 1), 'ninguna ventana escalada')
 FROM (SELECT count(*) AS n FROM v
-      WHERE f1 IS NULL OR f5 IS NULL OR peso <> round(tit_ventana_1 * f1 + tit_ventana_5 * f5)) x;
+      WHERE f1 IS NULL OR f5 IS NULL OR peso <> round(tit_ventana_1 * f1 + tit_ventana_5 * f5)
+         OR f1 IS DISTINCT FROM f1_real OR f5 IS DISTINCT FROM f5_real) x;
