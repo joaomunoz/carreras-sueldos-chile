@@ -543,14 +543,6 @@ a.hallazgo__accion { color: var(--tinta); }
   width: 100%;
 }
 .filtro select { min-width: 9rem; }
-.filtro--casilla {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.9375rem;
-  min-height: 2.5rem;
-}
-.filtro--casilla input { width: 1.1rem; height: 1.1rem; accent-color: var(--anio5); }
 .filtros__conteo { margin-top: 0.75rem; font-size: var(--t-0); color: var(--tinta-suave); }
 .tabla__mas { margin-top: 1rem; }
 /* Sección plegada (N4): el resumen se ve como un botón, no como la letra chica de una leyenda. */
@@ -602,10 +594,7 @@ a.hallazgo__accion { color: var(--tinta); }
 .tabla thead th[aria-sort] button { color: var(--tinta); }
 .tabla thead th[aria-sort="ascending"] button::after { content: " ↑"; }
 .tabla thead th[aria-sort="descending"] button::after { content: " ↓"; }
-.tabla--cifras td:first-child { min-width: 14rem; }
-.carrera__nombre { display: block; }
 .timbres { display: flex; flex-wrap: wrap; gap: 0 0.15rem; margin: 0.25rem 0 0 -3px; }
-.tabla .negativo { color: var(--tinta); font-weight: 600; }
 .nota { margin-top: 0.75rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
 
 /* En pantallas angostas cada fila es una tarjeta: nombre y timbres arriba, cifras en pares
@@ -635,12 +624,6 @@ a.hallazgo__accion { color: var(--tinta); }
   .tabla--tarjetas td.td--titulo { display: block; text-align: left; padding-bottom: 0.4rem; font-weight: 600; }
   .tabla--tarjetas td.td--titulo::before { content: none; }
   .tabla--tarjetas td:empty { display: none; }
-  .tabla--cifras td:first-child { min-width: 0; }
-}
-/* Sin encabezado visible en las tarjetas, el orden se elige desde este selector. */
-.orden-movil { display: none; }
-@media (max-width: 40rem) {
-  .orden-movil { display: grid; }
 }
 
 /* ---------------------------------------------------------------- gráficos (W3) */
@@ -665,7 +648,6 @@ a.hallazgo__accion { color: var(--tinta); }
 .punto--anio5 { background: var(--anio5); }
 .trazo { display: inline-block; width: 1.25rem; height: 0; border-top: 2px solid var(--tinta-suave); }
 .trazo--timbre { border-top: 3px solid var(--timbre); }
-.trazo--fino { border-top: 1px solid var(--tinta-suave); }
 /* Muestra del trazo discontinuo de la carrera del medio (.f-ref del gráfico de sueldo). */
 .trazo--ref { border-top: 2px dashed var(--tinta); }
 /* Muestras verticales: las líneas de referencia del gráfico de instituciones son verticales. */
@@ -673,7 +655,6 @@ a.hallazgo__accion { color: var(--tinta); }
 .trazo-v--punteado { border-left: 2px dashed var(--tinta-suave); }
 .grafico__leyenda--arriba { margin: 0.5rem 0 0.75rem; }
 .grafico__leyenda[hidden] { display: none; }
-.barra-muestra { display: inline-block; width: 1.25rem; height: 0.4rem; border-radius: 2px; background: var(--tinta-suave); }
 
 /* Marcas SVG: el color sale de clases, así cambiar de tema no obliga a redibujar. */
 .g-grilla { stroke: var(--regla); stroke-width: 1; }
@@ -768,7 +749,6 @@ a.hallazgo__accion { color: var(--tinta); }
 .c-punto--cambia circle { fill: var(--acento); fill-opacity: 1; }
 /* Franja "progreso típico": ±margen de la mediana; recesiva, como la grilla. */
 .c-franja { fill: var(--tinta-suave); fill-opacity: 0.16; }
-.c-franja-texto { fill: var(--tinta-suave); font: 0.6875rem var(--f-texto); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
 .c-punto--aviso circle { stroke: var(--timbre); stroke-width: 2; }
 .c-punto--activo circle { stroke: var(--tinta); stroke-width: 2.5; }
 .c-centro { stroke: var(--tinta-suave); stroke-width: 1.5; }
