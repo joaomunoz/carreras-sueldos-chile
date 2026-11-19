@@ -84,7 +84,6 @@ src/
 │   └── Titulados/       SIES, titulaciones 2017–2025 (94.579 programa-año)
 ├── BD/                el modelo: DDL, carga, controles, build.py, diagrama y diccionario
 ├── Analisis/
-│   ├── sql/auditoria/   auditoría de la Fase 1 (cobertura, sesgos, completitud)
 │   ├── sql/analytics/   las métricas (par, brecha, referencias, dispersión, contexto, exportación)
 │   └── exportar.py
 └── Web/               plantilla, estilos, app.js y construir.py

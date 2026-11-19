@@ -1,9 +1,10 @@
 -- src/Analisis/sql/analytics/01_par.sql
 --
 -- A1 (Fase 2): el par (carrera genérica × tipo de institución) como tabla permanente, con las
--- marcas que deciden en qué análisis entra. Es la lógica de la vista temporal de
--- src/Analisis/sql/auditoria/06_cobertura_celdas.sql (T5, aprobada como gate), más el peso del
--- par y la cobertura por segmento.
+-- marcas que deciden en qué análisis entra. Es la lógica de la consulta de diagnóstico de la
+-- Fase 1 que aprobó el paso al análisis (06_cobertura_celdas.sql; las consultas de diagnóstico se
+-- retiraron del repo y quedan en el historial de git hasta el commit 7f56023), más el peso del par
+-- y la cobertura por segmento.
 --
 -- Corre dentro de la transacción única de src/BD/build.py, después de src/BD/04_qa.sql (necesita
 -- qa.control). Lee solo `modelo`. Recrea el esquema `analytics` completo: los archivos
