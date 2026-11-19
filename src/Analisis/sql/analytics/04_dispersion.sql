@@ -25,7 +25,8 @@
 --   - tramo: por carrera donde haya >= 5 instituciones; resumen por segmento solo donde el
 --     segmento tenga >= min_pares_resumen_tramo pares (hoy solo Universidad profesional: 47 vs 2-5).
 -- Instituciones sin ponderar: para quien elige institución, cada una es una opción.
--- Cuartiles de empleabilidad con percentile_cont (interpolado). La mediana del tramo es el tramo
+-- Cuartiles de empleabilidad con percentile_cont (interpolado), salvo la mediana, que es la
+-- institución del medio real (percentile_disc, desde el 19-11-26). La mediana del tramo es el tramo
 -- de la institución mediana (percentile_disc): un tramo es una categoría, no se interpola.
 -- Requiere 01_par.sql.
 
@@ -63,8 +64,11 @@ COMMENT ON TABLE analytics.programa_vs_par IS
 INSERT INTO analytics.programa_vs_par
 WITH mediana AS (
     SELECT clave_carrera_generica, tipo_institucion,
-           percentile_cont(0.5) WITHIN GROUP (ORDER BY empleabilidad_1er_anio) AS med_1,
-           percentile_cont(0.5) WITHIN GROUP (ORDER BY empleabilidad_2do_anio) AS med_2,  -- ignora NULL
+           -- percentile_disc: la «institución del medio» es una institución real (19-11-26). Con
+           -- percentile_cont, con un número par de instituciones era el promedio de dos y las
+           -- diferencias de la tabla no cuadraban a la décima con la cifra mostrada (102 filas).
+           percentile_disc(0.5) WITHIN GROUP (ORDER BY empleabilidad_1er_anio) AS med_1,
+           percentile_disc(0.5) WITHIN GROUP (ORDER BY empleabilidad_2do_anio) AS med_2,  -- ignora NULL
            percentile_disc(0.5) WITHIN GROUP (ORDER BY ingreso_4to_anio_tramo_min) AS med_tramo
     FROM modelo.mifuturo_programa
     GROUP BY 1, 2
@@ -109,12 +113,12 @@ INSERT INTO analytics.dispersion_empleabilidad
 SELECT v.clave_carrera_generica, v.tipo_institucion, v.anio, count(*),
        min(v.valor),
        percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor),
-       percentile_cont(0.50) WITHIN GROUP (ORDER BY v.valor),
+       percentile_disc(0.50) WITHIN GROUP (ORDER BY v.valor),   -- institución real (ver programa_vs_par)
        percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor),
        max(v.valor),
        percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor) - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor),
        max(v.nacional),
-       max(v.nacional) - percentile_cont(0.50) WITHIN GROUP (ORDER BY v.valor),
+       max(v.nacional) - percentile_disc(0.50) WITHIN GROUP (ORDER BY v.valor),
        CASE WHEN v.anio = 1 THEN
            percentile_cont(0.75) WITHIN GROUP (ORDER BY v.valor) - percentile_cont(0.25) WITHIN GROUP (ORDER BY v.valor)
            >= analytics.param('min_iqr_enganoso') END
@@ -272,10 +276,26 @@ FROM (SELECT count(*) AS n
       -- numeric difiere en el último bit aunque el valor guardado sea el mismo (118 falsos
       -- positivos la primera vez).
       WHERE pv.mediana_par_1er_anio <> (
-          SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY m.empleabilidad_1er_anio)
+          SELECT percentile_disc(0.5) WITHIN GROUP (ORDER BY m.empleabilidad_1er_anio)
           FROM modelo.mifuturo_programa m
           WHERE m.clave_carrera_generica = pv.clave_carrera_generica
             AND m.tipo_institucion = pv.tipo_institucion)::numeric) x
+UNION ALL
+-- 1c. La institución del medio es una institución real del par y las diferencias que publica la
+--     web cuadran a la décima con las cifras que muestra (empleabilidad − institución del medio, y
+--     nacional − institución del medio): antes 102 filas diferían en 0,1.
+SELECT 'analytics_dispersion', 'institucion_del_medio_real', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'mediana ∈ empleabilidades del par; round(valor,1) − round(mediana,1) = round(diferencia,1)',
+       format('%s filas sin institución real o con diferencia que no cuadra', n)
+FROM (SELECT (SELECT count(*) FROM analytics.dispersion_empleabilidad d
+              WHERE NOT EXISTS (SELECT 1 FROM analytics.programa_vs_par pv
+                                WHERE pv.clave_carrera_generica = d.clave_carrera_generica
+                                  AND pv.tipo_institucion = d.tipo_institucion
+                                  AND (CASE d.anio WHEN 1 THEN pv.empleabilidad_1er_anio ELSE pv.empleabilidad_2do_anio END) = d.mediana)
+                 OR round(d.nacional, 1) - round(d.mediana, 1) <> round(d.nacional_menos_mediana, 1))
+           + (SELECT count(*) FROM analytics.programa_vs_par pv
+              WHERE round(pv.empleabilidad_1er_anio, 1) - round(pv.mediana_par_1er_anio, 1) <> round(pv.desvio_1er_anio, 1)
+                 OR round(pv.empleabilidad_2do_anio, 1) - round(pv.mediana_par_2do_anio, 1) <> round(pv.desvio_2do_anio, 1)) AS n) x
 UNION ALL
 -- 2. Dispersión solo con suficientes instituciones (y para todos los pares que las tienen).
 SELECT 'analytics_dispersion', 'min_instituciones', CASE WHEN n_mal = 0 AND n_falta = 0 THEN 'OK' ELSE 'FALLA' END,

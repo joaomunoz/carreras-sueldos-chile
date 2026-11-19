@@ -139,14 +139,14 @@
     var bajada = document.getElementById("hallazgos-bajada");
     bajada.textContent = "";
     parrafoEn(bajada, ["Cuatro resultados del análisis de ",
-      fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos) + " carreras comparables",
+      fmtEntero.format(qnd.pares_comparables) + " carreras comparables",
       ": dos sobre cómo cambia el sueldo entre el primer y el quinto año, uno sobre las diferencias de " +
       "empleabilidad entre instituciones y uno sobre cuántos siguen estudiando. Cada carrera se compara " +
       "solo con las de su mismo nivel y tipo de institución. El primer y el quinto año corresponden a " +
       "titulados distintos, no a las mismas personas. El ", "sueldo típico",
       " es el del medio: la mitad de los titulados gana más y la otra mitad, menos."]);
     parrafoEn(document.getElementById("portada-tecnica"), [
-      "", fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos), " carreras comparables · ",
+      "", fmtEntero.format(qnd.pares_comparables), " carreras comparables · ",
       fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);
   }
 
@@ -156,12 +156,15 @@
   function pintarTitulos() {
     var tec = nivelEdad("Carreras Técnicas"), pro = nivelEdad("Carreras Profesionales");
     if (tec && pro) {
-      var neg = tec.n_negativos + pro.n_negativos;
+      // Con el margen de empate de los cuadrantes (±margen_tipico_pp, 19-11-26): una caída de −0,3 %
+      // no cuenta como «ganan menos».
+      var bt = datos.que_no_dice.bajan_total, neg = bt.n_negativos, mg = fmtEntero.format(parametro("margen_tipico_pp"));
       document.getElementById("t-peine").textContent = neg
-        ? "En " + fmtEntero.format(neg) + " de " + fmtEntero.format(tec.n_comparables + pro.n_comparables) +
-          " carreras, los titulados de hace 5 años ganan menos que los de hace 1" + (tec.n_negativos ? " (" + fmtEntero.format(tec.n_negativos) +
-          (tec.n_negativos === 1 ? " técnica)" : " técnicas)") : "")
-        : "En todas las carreras comparables, los titulados de hace 5 años ganan más que los de hace 1";
+        ? "En " + fmtEntero.format(neg) + " de " + fmtEntero.format(bt.n_comparables) +
+          " carreras, los titulados de hace 5 años ganan más de " + mg + " % menos que los de hace 1" +
+          (tec.n_negativos === neg ? (neg === 1 ? " (técnica)" : " (todas técnicas)")
+            : tec.n_negativos ? " (" + fmtEntero.format(tec.n_negativos) + (tec.n_negativos === 1 ? " técnica)" : " técnicas)") : "")
+        : "En ninguna carrera comparable los titulados de hace 5 años ganan más de " + mg + " % menos que los de hace 1";
     }
     // Por nivel: el hallazgo es de las profesionales (en las técnicas no cambia ninguna).
     var b = datos.hallazgos.pct_pesos;
@@ -257,7 +260,8 @@
           ", los recién titulados son mayores que los de hace cinco años." : ""))];
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
-        resultado: "carreras técnicas: quienes se titularon hace 5 años ganan menos que quienes se titularon hace 1.",
+        resultado: "carreras técnicas: quienes se titularon hace 5 años ganan más de " + fmtEntero.format(parametro("margen_tipico_pp")) +
+          " % menos que quienes se titularon hace 1.",
         nodos: nodosA, accion: unaA ? "Verla en el gráfico ↓" : "Ver esas " + fmtEntero.format(tec.n_negativos) + " carreras ↓",
         href: "#t-peine",
         alClic: function () { elegirNivelPeine("Carreras Técnicas"); }
@@ -345,7 +349,7 @@
       "Titulaciones de pregrado por año · universidades, IP y CFT · SIES";
     var t1 = u.totales.filter(function (t) { return t.ventana === "1er"; })[0];
     var t5 = u.totales.filter(function (t) { return t.ventana === "5to"; })[0];
-    var nComp = fmtEntero.format(qnd.pares_total - qnd.pares_no_representativos);
+    var nComp = fmtEntero.format(qnd.pares_comparables);
     pintarUniversoResumen(u, v);
     parrafoEn(document.getElementById("universo-embudo"), [
       "De esos títulos, el ", pct(t1.pct_comparables), " de " + rangoAnios(v["1er"]) + " y el ", pct(t5.pct_comparables),
@@ -654,8 +658,10 @@
 
     var texto = "Las " + fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel +
       " comparables. Cada línea va del sueldo típico de quienes se titularon hace un año al de quienes se titularon hace cinco. " +
-      (nv.n_negativos ? "En " + fmtEntero.format(nv.n_negativos) + " de ellas, los titulados de hace 5 años ganan menos que los de hace 1 (▼). "
-                     : "En todas, los titulados de hace 5 años ganan más que los de hace 1. ");
+      (nv.n_negativos ? "En " + fmtEntero.format(nv.n_negativos) + " de ellas, los titulados de hace 5 años ganan más de " +
+                          fmtEntero.format(parametro("margen_tipico_pp")) + " % menos que los de hace 1 (▼). "
+                     : "En ninguna, los titulados de hace 5 años ganan más de " + fmtEntero.format(parametro("margen_tipico_pp")) +
+                          " % menos que los de hace 1 (diferencias menores se cuentan como empate). ");
     if (nv.n_marca_edad) {
       texto += "En violeta, " + (nv.n_marca_edad === 1 ? "la que tiene" : "las " + fmtEntero.format(nv.n_marca_edad) + " que tienen") +
         " titulados recientes mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
@@ -1078,7 +1084,7 @@
         "Se compara con: " + nombreGrupo(p),
         "1er año " + pesos(p.percentiles.anio_1.p50) + (Math.abs(q.razon - 1) < 1e-9
           ? " (es la carrera del medio de su grupo)"
-          : " (×" + fmtUno.format(Math.round(q.razon * 100) / 100).replace(/,0$/, "") + " de la del medio, " + pesos(q.ref1) + ")"),
+          : " (×" + fmtUno.format(p.dif_grupo.razon_entrada).replace(/,0$/, "") + " de la del medio, " + pesos(q.ref1) + ")"),
         "Crece " + pctSigno(p.percentiles.p50_pct_1_5) + " / " + pesosSigno(p.percentiles.p50_delta_1_5),
         "Crecimiento de la del medio: " + pctSigno(q.refPct) + " / " + pesosSigno(q.refDelta),
         p.posicion[clave]
@@ -2088,7 +2094,7 @@
     var dl5 = el("dl", "liq");
     var w1 = ventana("ingreso_medio_1er_anio", corr), w5 = ventana("ingreso_medio_5to_anio", corr);
     var f30 = p.contexto.fuera30_rango;
-    if (f30[0] != null) liq(dl5, "Con 30 años o más al titularse (titulados " + w1 + ")", "entre " + pct(f30[0]) + " y " + pct(f30[1]));
+    if (f30[0] != null) liq(dl5, "Con más de 30 años al titularse (titulados " + w1 + ")", "entre " + pct(f30[0]) + " y " + pct(f30[1]));
     var oj = p.contexto.oferta_joven;
     if (p.contexto.var_oferta_joven_pct != null) liq(dl5, "Titulados menores de 30 años",
       fmtEntero.format(oj[0]) + " (" + w5 + ") → " + fmtEntero.format(oj[1]) + " (" + w1 + "), " + pctSigno(p.contexto.var_oferta_joven_pct));
@@ -2503,7 +2509,7 @@
     var q = datos.que_no_dice, ul = document.getElementById("limites");
     function item(titulo, partes) { var li = el("li"); textoConCifras(li, titulo, partes); ul.appendChild(li); }
     var anomalos = q.hitos_con_anomalia.map(function (a) { return a + "°"; });
-    var atipSalud = pares.filter(function (p) { return p.marcas.cohorte_atipica && p.area.mineduc === "Salud"; }).length;
+    var atipSalud = q.cohortes_atipicas_salud;   // desde SQL (control totales_exportados)
     // Números de analytics.brecha_nacional (antes se sacaban con un regex del texto del control qa).
     var brecha = q.brecha_nacional_instituciones || {};
 

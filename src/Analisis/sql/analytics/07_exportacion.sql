@@ -21,7 +21,9 @@ CREATE VIEW analytics.v_dif_grupo AS
 SELECT po.clave_carrera_generica, po.tipo_institucion,
        max(m.valor - r.q50) FILTER (WHERE m.metrica = 'p50_anio_1')    AS p50_anio_1,
        max(m.valor - r.q50) FILTER (WHERE m.metrica = 'p50_anio_5')    AS p50_anio_5,
-       max(m.valor - r.q50) FILTER (WHERE m.metrica = 'emp1_nacional') AS emp1_nacional
+       max(m.valor - r.q50) FILTER (WHERE m.metrica = 'emp1_nacional') AS emp1_nacional,
+       -- «×1,25 de la del medio» de la ayuda de los cuadrantes: antes lo calculaba app.js (19-11-26).
+       max(m.valor / r.q50) FILTER (WHERE m.metrica = 'p50_anio_1')    AS razon_entrada
 FROM analytics.posicion po
 JOIN analytics.miembro_referencia m
   ON m.grupo_id = po.grupo_id
@@ -89,7 +91,8 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
     -- ficha; la web la usa en el título de acción ("entra ganando $96 mil más que la típica").
     'dif_grupo', CASE WHEN po.clave_carrera_generica IS NULL THEN NULL ELSE (
         SELECT json_build_object('p50_anio_1', round(dg.p50_anio_1), 'p50_anio_5', round(dg.p50_anio_5),
-                                 'emp1_nacional', round(dg.emp1_nacional, 1))
+                                 'emp1_nacional', round(dg.emp1_nacional, 1),
+                                 'razon_entrada', round(dg.razon_entrada, 2))
         FROM analytics.v_dif_grupo dg
         WHERE dg.clave_carrera_generica = p.clave_carrera_generica AND dg.tipo_institucion = p.tipo_institucion) END,
     -- Posición en su área de MiFuturo (todas las carreras del nivel, todos los tipos) y, si no tiene
@@ -332,6 +335,13 @@ SELECT json_build_object(
                                      FROM analytics.segmento WHERE baja_cobertura),
         'pares_no_representativos', (SELECT count(*) FROM analytics.par WHERE NOT representativo),
         'pares_total', (SELECT count(*) FROM analytics.par),
+        -- Conteos que antes sumaba o filtraba app.js (19-11-26); control totales_exportados.
+        'pares_comparables', (SELECT count(*) FROM analytics.par WHERE representativo),
+        'bajan_total', (SELECT json_build_object('n_negativos', sum(n_negativos), 'n_comparables', sum(n_comparables))
+                        FROM analytics.hallazgo_edad),
+        'cohortes_atipicas_salud', (SELECT count(*) FROM analytics.estabilidad es
+                                    JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+                                    WHERE es.atipica AND p.area = 'Salud'),
         'celdas_validas', (SELECT count(DISTINCT (area, tipo_institucion, nivel_carrera)) FROM analytics.par WHERE celda_valida),
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
@@ -417,4 +427,19 @@ SELECT 'analytics_exportacion', 'dif_grupo', CASE WHEN n = 0 THEN 'OK' ELSE 'FAL
 FROM (SELECT (SELECT count(*) FROM analytics.posicion po
               LEFT JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
               WHERE d.p50_anio_1 IS NULL OR d.p50_anio_5 IS NULL OR d.emp1_nacional IS NULL
-                 OR (d.p50_anio_1 > 0) <> po.entrada_alta) AS n) x;
+                 OR (d.p50_anio_1 > 0) <> po.entrada_alta) AS n) x
+UNION ALL
+-- Totales que la web antes calculaba: las comparables y las que bajan, por otro camino (desde
+-- brecha y no desde hallazgo_edad), y la razón de entrada = P50 ÷ carrera del medio.
+SELECT 'analytics_exportacion', 'totales_exportados', CASE WHEN n = 0 THEN 'OK' ELSE 'FALLA' END,
+       n, 'comparables = Σ niveles de hallazgo_edad; bajan = recuento desde brecha con el margen; razón > 1 ⇔ entrada_alta',
+       format('%s diferencias', n)
+FROM (SELECT ((SELECT count(*) FROM analytics.par WHERE representativo)
+               <> (SELECT sum(n_comparables) FROM analytics.hallazgo_edad)
+           OR (SELECT sum(n_negativos) FROM analytics.hallazgo_edad)
+               <> (SELECT count(*) FROM analytics.par p JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
+                   WHERE p.representativo AND b.p50_pct_1_5 < -analytics.param('margen_tipico_pp'))
+     ) ::int
+     + (SELECT count(*) FROM analytics.posicion po
+        JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)
+        WHERE (d.razon_entrada > 1) <> po.entrada_alta) AS n) x;

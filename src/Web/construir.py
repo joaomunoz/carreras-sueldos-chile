@@ -96,7 +96,8 @@ def _num(valor: float, decimales: int = 0) -> str:
     return ("−" if valor < 0 else "") + texto
 
 
-def _hallazgos_readme(h: dict) -> str:
+def _hallazgos_readme(h: dict, margen: float) -> str:
+    """margen: margen_tipico_pp; una caída menor se cuenta como empate (19-11-26)."""
     b, c = h["pct_pesos"], h["dispersion"]
     # (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
     nivel = {x["nivel"]: x for x in h["edad"]}
@@ -111,8 +112,10 @@ def _hallazgos_readme(h: dict) -> str:
         t = (f"**Al quinto año no siempre se gana más.** En la mitad de las carreras técnicas, quienes llevan cinco años "
              f"titulados ganan al menos {_num(tec['mediana_p50_pct'], 1)} % más que quienes llevan uno (sueldo típico, P50); en las "
              f"profesionales, al menos {_num(pro['mediana_p50_pct'], 1)} % más (mediana de las carreras de cada nivel, contando juntos "
-             f"los tipos de institución). Pero ganan menos en {tec['n_negativos']} de {tec['n_comparables']} técnicas "
-             f"y en {pro['n_negativos']} de {pro['n_comparables']} profesionales.")
+             f"los tipos de institución). Pero ganan más de {_num(margen, 0)} % menos en {tec['n_negativos']} de "
+             f"{tec['n_comparables']} técnicas y en "
+             + (f"{pro['n_negativos']} de {pro['n_comparables']} profesionales." if pro['n_negativos']
+                else f"ninguna de las {pro['n_comparables']} profesionales (diferencias menores se cuentan como empate)."))
         if tec["n_con_edad"]:
             t += (f" No es que caigan los sueldos: en {tec['n_con_edad']} de esas {tec['n_negativos']} técnicas, quienes se "
                   f"titularon hace poco son mucho mayores (los de 30 años o más son el {_num(tec['mayores30'][0], 1)} % de "
@@ -180,7 +183,8 @@ def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str, veces:
 
 def _actualizar_readme(datos: dict) -> None:
     texto = _leer(README)
-    nuevo = _reemplazar_bloque(texto, INICIO, FIN, "\n" + _hallazgos_readme(datos["hallazgos"]) + "\n")
+    nuevo = _reemplazar_bloque(texto, INICIO, FIN, "\n" + _hallazgos_readme(datos["hallazgos"],
+                       next(x["valor"] for x in datos["parametros"] if x["nombre"] == "margen_tipico_pp")) + "\n")
     nuevo = _reemplazar_bloque(nuevo, CONTROLES_INICIO, CONTROLES_FIN, _controles_readme(datos["qa"]))
     nuevo = _reemplazar_bloque(nuevo, BRECHA_INICIO, BRECHA_FIN, _brecha_readme(datos["que_no_dice"]), veces=2)
     if nuevo != texto:   # sin cambios no se reescribe: git no ve diferencias falsas

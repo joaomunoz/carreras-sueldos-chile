@@ -30,7 +30,10 @@ CREATE TABLE analytics.hallazgo_edad (
     nivel_carrera    text    PRIMARY KEY,
     n_comparables    integer NOT NULL,
     mediana_p50_pct  numeric NOT NULL,   -- mediana SIMPLE del crecimiento del P50 1°→5°, dentro del nivel
-    n_negativos      integer NOT NULL,   -- comparables del nivel cuyo P50 del 5° año es menor que el del 1°
+    -- Comparables del nivel cuyo P50 del 5° año es menor que el del 1° por MÁS que margen_tipico_pp
+    -- (19-11-26, aprobado por el usuario): el mismo empate de ±2 pp de los cuadrantes; antes contaba
+    -- caídas de −0,3 % como «ganan menos».
+    n_negativos      integer NOT NULL,
     claves_bajan     text[]  NOT NULL,   -- 'CLAVE|tipo' de esas carreras: el peine las destaca sin volver a filtrar
     n_con_edad       integer NOT NULL,   -- de ellas, con la marca de composición por edad
     n_base_edad      integer NOT NULL,   -- carreras sobre las que se calculan las dos medianas de edad
@@ -57,14 +60,14 @@ WITH comp AS (
 SELECT nivel_carrera,
        count(*),
        (percentile_cont(0.5) WITHIN GROUP (ORDER BY p50_pct_1_5))::numeric,
-       count(*) FILTER (WHERE p50_pct_1_5 < 0),
-       coalesce(array_agg(clave ORDER BY clave) FILTER (WHERE p50_pct_1_5 < 0), '{}'),
-       count(*) FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad),
-       count(*) FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad),
+       count(*) FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp')),
+       coalesce(array_agg(clave ORDER BY clave) FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp')), '{}'),
+       count(*) FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp') AND composicion_edad),
+       count(*) FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp') AND composicion_edad),
        (percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p5)
-            FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad))::numeric,
+            FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp') AND composicion_edad))::numeric,
        (percentile_cont(0.5) WITHIN GROUP (ORDER BY mayores30_max_p1)
-            FILTER (WHERE p50_pct_1_5 < 0 AND composicion_edad))::numeric,
+            FILTER (WHERE p50_pct_1_5 < -analytics.param('margen_tipico_pp') AND composicion_edad))::numeric,
        count(*) FILTER (WHERE composicion_edad)
 FROM comp
 GROUP BY nivel_carrera;
@@ -154,16 +157,16 @@ SELECT 'analytics_hallazgos', 'edad_mismo_grupo', CASE WHEN n = 0 THEN 'OK' ELSE
 FROM (SELECT count(*) AS n
       FROM analytics.hallazgo_edad h
       FULL JOIN (SELECT p.nivel_carrera,
-                        count(*) FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1) AS neg,
-                        count(*) FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                        count(*) FILTER (WHERE 100.0 * (e.percentil_50_anio_5 - e.percentil_50_anio_1) / e.percentil_50_anio_1 < -analytics.param('margen_tipico_pp')) AS neg,
+                        count(*) FILTER (WHERE 100.0 * (e.percentil_50_anio_5 - e.percentil_50_anio_1) / e.percentil_50_anio_1 < -analytics.param('margen_tipico_pp')
                                            AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
                                                >= analytics.param('min_cambio_edad_pp')) AS edad,
                         (percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p5)
-                             FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                             FILTER (WHERE 100.0 * (e.percentil_50_anio_5 - e.percentil_50_anio_1) / e.percentil_50_anio_1 < -analytics.param('margen_tipico_pp')
                                        AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
                                            >= analytics.param('min_cambio_edad_pp')))::numeric AS p5,
                         (percentile_cont(0.5) WITHIN GROUP (ORDER BY c.mayores30_max_p1)
-                             FILTER (WHERE e.percentil_50_anio_5 < e.percentil_50_anio_1
+                             FILTER (WHERE 100.0 * (e.percentil_50_anio_5 - e.percentil_50_anio_1) / e.percentil_50_anio_1 < -analytics.param('margen_tipico_pp')
                                        AND (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
                                            >= analytics.param('min_cambio_edad_pp')))::numeric AS p1,
                         count(*) FILTER (WHERE (c.mayores30_max_p1 - c.mayores30_max_p5) * 100
