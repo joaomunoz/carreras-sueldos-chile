@@ -6,7 +6,7 @@
 
 ![Portada de la web: título, qué es el proyecto, qué muestra y las cuatro tarjetas de hallazgos](docs/captura.png)
 
-**Ver la web:** abre [`docs/index.html`](docs/index.html) con doble clic. Es un solo archivo (≈ 1,1 MB) con los datos incluidos, sin servidor ni conexión a internet.
+**Ver la web:** abre [`docs/index.html`](docs/index.html) con doble clic. Es un solo archivo (≈ 1,4 MB) con los datos incluidos, sin servidor ni conexión a internet.
 
 ---
 
@@ -54,7 +54,7 @@ pip install -r requirements.txt
 createdb carreras_sueldos
 export PGDATABASE=carreras_sueldos
 
-make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 13 s)
+make todo        # base de datos → docs/datos.json → docs/index.html  (≈ 50 s)
 ```
 
 | Comando | Qué hace |

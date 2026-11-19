@@ -10,7 +10,7 @@
 #                "Hallazgos" y el conteo de controles del README, desde datos.json
 #
 # Las metas son .PHONY a propósito: cada paso tiene sus propias verificaciones y es barato
-# (~10 s el build); rastrear dependencias por fecha de archivo daría falsos "al día".
+# (~50 s todo el proceso); rastrear dependencias por fecha de archivo daría falsos "al día".
 
 .PHONY: todo base datos web
 # El orden importa (base → datos → web): nunca en paralelo, aunque se llame con make -j.
