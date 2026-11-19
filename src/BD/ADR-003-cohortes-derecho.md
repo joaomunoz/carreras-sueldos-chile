@@ -56,7 +56,7 @@ Ensayo con los mismos 74 controles en OK (sin el escalado de la ventana incomple
 
 En las 13 carreras que se comparan con el segmento de las 91 profesionales universitarias, las diferencias se mueven entre $17.000 y $28.000.
 
-Las consultas de diagnóstico de la Fase 1 (`src/Analisis/sql/auditoria/`) usaban el +1 de su época. No formaban parte del build y se retiraron del repo al preparar la entrega; quedan en el historial de git hasta el commit `7f56023`.
+Las consultas de diagnóstico de la Fase 1 (`src/Analisis/sql/auditoria/`) usaban el +1 de su época. No formaban parte del build y se retiraron del repo al preparar la entrega; quedan en el historial de git hasta el commit `ccbc685`.
 
 ## Corrección del mismo día: la ventana del 5° año queda fuera del SIES
 
