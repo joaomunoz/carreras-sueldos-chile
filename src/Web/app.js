@@ -364,8 +364,11 @@
     document.getElementById("t-universo").textContent = "El análisis compara a quienes se titularon en " +
       rangoAnios(v["5to"]) + " con quienes se titularon en " + rangoAnios(v["1er"]) + " (el sueldo típico, a los de " +
       ventana("percentiles_anio_5") + " con los de " + ventana("percentiles_anio_1") + ")";
-    document.getElementById("universo-titulo").textContent =
-      "Titulaciones de pregrado por año · universidades, IP y CFT · SIES";
+    // Título de acción: lo que hay que mirar es qué años entran al análisis (el color); profesionales
+    // y técnicas ya los explica la leyenda. Años desde los datos, no escritos a mano.
+    var aniosU = u.anual.map(function (a) { return a.anio; });
+    document.getElementById("universo-titulo").textContent = "Cuántos se titularon cada año entre " +
+      Math.min.apply(null, aniosU) + " y " + Math.max.apply(null, aniosU) + ", y qué años entran al análisis · SIES";
     var t1 = u.totales.filter(function (t) { return t.ventana === "1er"; })[0];
     var t5 = u.totales.filter(function (t) { return t.ventana === "5to"; })[0];
     var nComp = fmtEntero.format(qnd.pares_comparables);
