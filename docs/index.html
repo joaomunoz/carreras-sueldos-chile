@@ -1906,6 +1906,7 @@ a.hallazgo__accion { color: var(--tinta); }
         var i = universo.activo < 0 ? (e.key === "ArrowRight" ? 0 : n - 1)
           : Math.max(0, Math.min(n - 1, universo.activo + (e.key === "ArrowRight" ? 1 : -1)));
         mostrar(i);
+        anunciarAyuda(figura, caja);
       } else if (e.key === "Escape") { mostrar(-1); }
     };
     lienzo.onblur = function () { mostrar(-1); };
@@ -1976,6 +1977,23 @@ a.hallazgo__accion { color: var(--tinta); }
     var t = el("div", "timbres");
     TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });
     if (t.childNodes.length) caja.appendChild(t);
+  }
+
+  // Repite en voz lo que muestra la ayuda emergente, para quien recorre un gráfico con las flechas
+  // y un lector de pantalla: la ayuda es un div que no se anuncia, y sin esto mover el foco no decía
+  // nada (el gráfico de instituciones ya lo hacía con su propio párrafo). Solo desde el teclado: con
+  // el puntero se anunciaría cada píxel recorrido. Un párrafo por figura, reutilizado al repintar.
+  function anunciarAyuda(figura, caja) {
+    var p = figura.querySelector(":scope > .anuncio-grafico");
+    if (!p) {
+      p = el("p", "solo-lectores anuncio-grafico");
+      p.setAttribute("aria-live", "polite");
+      figura.appendChild(p);
+    }
+    var partes = Array.prototype.map.call(caja.children, function (c) {
+      return c.children.length ? Array.prototype.map.call(c.children, function (x) { return x.textContent; }).join("; ") : c.textContent;
+    });
+    p.textContent = partes.join(". ").replace(/\s+/g, " ").trim() + ".";
   }
 
   // Ubica el tooltip junto al punto (x, y) relativo a la figura, sin salirse por los costados.
@@ -2183,6 +2201,7 @@ a.hallazgo__accion { color: var(--tinta); }
         e.preventDefault();
         var i = peine.activo < 0 ? 0 : peine.activo + (e.key === "ArrowRight" ? 1 : -1);
         mostrar(Math.max(0, Math.min(n - 1, i)));
+        anunciarAyuda(figura, caja);
       } else if (e.key === "Enter" && peine.activo >= 0) { abrirFicha(lista[peine.activo], true);
       } else if (e.key === "Escape") { mostrar(-1); }
     };
@@ -2536,6 +2555,7 @@ a.hallazgo__accion { color: var(--tinta); }
         e.preventDefault();
         var i = cuad.activo < 0 ? 0 : cuad.activo + (e.key === "ArrowRight" ? 1 : -1);
         mostrar(Math.max(0, Math.min(puntos.length - 1, i)));
+        anunciarAyuda(figura, caja);
       } else if (e.key === "Enter" && cuad.activo >= 0) { abrirFicha(puntos[cuad.activo].p, true);
       } else if (e.key === "Escape") { mostrar(-1); }
     };
@@ -2935,6 +2955,7 @@ a.hallazgo__accion { color: var(--tinta); }
         e.preventDefault();
         var i = activoQ < 0 ? (e.key === "ArrowRight" ? 0 : otrosQ.length - 1) : activoQ + (e.key === "ArrowRight" ? 1 : -1);
         activar(Math.max(0, Math.min(otrosQ.length - 1, i)));
+        anunciarAyuda(figura, tip);
       } else if (e.key === "Enter" && activoQ >= 0) { var m = otrosQ[activoQ].m; activar(-1); abrirFicha(m, "vecina");
       } else if (e.key === "Escape") { activar(-1); }
     });
