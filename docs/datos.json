@@ -17,128 +17,107 @@
   {
    "nombre": "anio_caida_titulacion",
    "valor": 2020,
-   "descripcion": "Año en que las titulaciones cayeron por la pandemia: se avisa en las cifras que incluyen a esos titulados",
-   "origen": "T4, auditoría 05"
+   "descripcion": "Año en que las titulaciones cayeron por la pandemia: se avisa en las cifras que incluyen a esos titulados"
   },
   {
    "nombre": "anio_rebote_titulacion",
    "valor": 2021,
-   "descripcion": "Año en que las titulaciones rebotaron (títulos atrasados por la pandemia): mismo aviso",
-   "origen": "T4, auditoría 05"
+   "descripcion": "Año en que las titulaciones rebotaron (títulos atrasados por la pandemia): mismo aviso"
   },
   {
    "nombre": "corrimiento_derecho",
    "valor": -1,
-   "descripcion": "Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)",
-   "origen": "T4; parámetro desde el 19-11-26 (ADR-003)"
+   "descripcion": "Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)"
   },
   {
    "nombre": "margen_ejemplo_pesos",
    "valor": 0.2,
-   "descripcion": "Hallazgo de crecimiento en % y en pesos: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo",
-   "origen": "W3; movido de app.js a SQL en la revisión del 16-11-26"
+   "descripcion": "Hallazgo de crecimiento en % y en pesos: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo"
   },
   {
    "nombre": "margen_tipico_pesos",
    "valor": 20000,
-   "descripcion": "Diferencia en pesos con la carrera del medio que se cuenta como empate (unos 2 puntos sobre una entrada de $900.000)",
-   "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
+   "descripcion": "Diferencia en pesos con la carrera del medio que se cuenta como empate (unos 2 puntos sobre una entrada de $900.000)"
   },
   {
    "nombre": "margen_tipico_pp",
    "valor": 2,
-   "descripcion": "Diferencia de crecimiento (puntos porcentuales) con la carrera del medio que se cuenta como empate; también, la caída mínima para decir que se gana menos al 5° año",
-   "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
+   "descripcion": "Diferencia de crecimiento (puntos porcentuales) con la carrera del medio que se cuenta como empate; también, la caída mínima para decir que se gana menos al 5° año"
   },
   {
    "nombre": "max_cobertura_baja",
    "valor": 0.75,
-   "descripcion": "Si los programas que publica MiFuturo reúnen menos de esta parte de los titulados de un tipo y nivel, se avisa baja cobertura",
-   "origen": "T5, decisión 2"
+   "descripcion": "Si los programas que publica MiFuturo reúnen menos de esta parte de los titulados de un tipo y nivel, se avisa baja cobertura"
   },
   {
    "nombre": "max_peso_dominante",
    "valor": 0.5,
-   "descripcion": "Si una carrera reúne más de esta parte de los titulados de su grupo de área, el grupo no sirve de referencia",
-   "origen": "A3: celdas dominadas (aprobada por el usuario)"
+   "descripcion": "Si una carrera reúne más de esta parte de los titulados de su grupo de área, el grupo no sirve de referencia"
   },
   {
    "nombre": "max_t_continuidad",
    "valor": 2.6,
-   "descripcion": "Hallazgo de la continuidad de estudios: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica",
-   "origen": "Hallazgo (d), 18-11-26"
+   "descripcion": "Hallazgo de la continuidad de estudios: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica"
   },
   {
    "nombre": "min_cambio_edad_pp",
    "valor": 15,
-   "descripcion": "Aumento mínimo (puntos) de titulados de 30 años o más entre los dos grupos para avisar que la comparación mezcla edades",
-   "origen": "A6 (hallazgo de A5)"
+   "descripcion": "Aumento mínimo (puntos) de titulados de 30 años o más entre los dos grupos para avisar que la comparación mezcla edades"
   },
   {
    "nombre": "min_desvio_atipico_pp",
    "valor": 5,
-   "descripcion": "Diferencia mínima (puntos) entre la empleabilidad del grupo del sueldo al 1er año y la de los años anteriores para avisar cohorte atípica",
-   "origen": "A5 (D5)"
+   "descripcion": "Diferencia mínima (puntos) entre la empleabilidad del grupo del sueldo al 1er año y la de los años anteriores para avisar cohorte atípica"
   },
   {
    "nombre": "min_inst_dispersion",
    "valor": 5,
-   "descripcion": "Instituciones con el dato necesarias para comparar las instituciones de una carrera",
-   "origen": "D1"
+   "descripcion": "Instituciones con el dato necesarias para comparar las instituciones de una carrera"
   },
   {
    "nombre": "min_inst_ejemplo",
    "valor": 20,
-   "descripcion": "Hallazgo de la cifra nacional engañosa: instituciones mínimas para que una carrera sirva de ejemplo",
-   "origen": "W3; ídem"
+   "descripcion": "Hallazgo de la cifra nacional engañosa: instituciones mínimas para que una carrera sirva de ejemplo"
   },
   {
    "nombre": "min_inst_oferta",
    "valor": 3,
-   "descripcion": "Instituciones necesarias para que una carrera sea comparable (con 1 o 2, la cifra nacional es la de esas instituciones)",
-   "origen": "T0 / D2: dos conteos de instituciones"
+   "descripcion": "Instituciones necesarias para que una carrera sea comparable (con 1 o 2, la cifra nacional es la de esas instituciones)"
   },
   {
    "nombre": "min_iqr_enganoso",
    "valor": 15,
-   "descripcion": "Distancia (puntos de empleabilidad) entre las instituciones del cuarto bajo y del cuarto alto desde la cual la cifra nacional es engañosa",
-   "origen": "Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)"
+   "descripcion": "Distancia (puntos de empleabilidad) entre las instituciones del cuarto bajo y del cuarto alto desde la cual la cifra nacional es engañosa"
   },
   {
    "nombre": "min_pares_celda",
    "valor": 5,
-   "descripcion": "Carreras comparables necesarias para que un área, dentro de un tipo y nivel, tenga carrera del medio propia",
-   "origen": "D2"
+   "descripcion": "Carreras comparables necesarias para que un área, dentro de un tipo y nivel, tenga carrera del medio propia"
   },
   {
    "nombre": "min_pares_resumen_tramo",
    "valor": 20,
-   "descripcion": "Carreras con rango de ingreso por institución necesarias para resumir un tipo y nivel",
-   "origen": "T5, decisión 1"
+   "descripcion": "Carreras con rango de ingreso por institución necesarias para resumir un tipo y nivel"
   },
   {
    "nombre": "min_prog_ejemplo_cont",
    "valor": 5,
-   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera técnica para servir de ejemplo",
-   "origen": "Hallazgo (d), 18-11-26"
+   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera técnica para servir de ejemplo"
   },
   {
    "nombre": "min_prog_par_cont",
    "valor": 5,
-   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera para entrar en la prueba de relación",
-   "origen": "Hallazgo (d), 18-11-26"
+   "descripcion": "Hallazgo de la continuidad de estudios: instituciones mínimas de una carrera para entrar en la prueba de relación"
   },
   {
    "nombre": "min_share_area",
    "valor": 0.8,
-   "descripcion": "Parte mínima de las titulaciones en un área CINE (clasificación internacional) para asignarla a una carrera; solo contexto",
-   "origen": "T0 / T4"
+   "descripcion": "Parte mínima de las titulaciones en un área CINE (clasificación internacional) para asignarla a una carrera; solo contexto"
   },
   {
    "nombre": "min_z_atipico",
    "valor": 2,
-   "descripcion": "Desvío mínimo, en desviaciones estándar de los años anteriores, para avisar cohorte atípica (se exigen los dos umbrales)",
-   "origen": "A5 (D5)"
+   "descripcion": "Desvío mínimo, en desviaciones estándar de los años anteriores, para avisar cohorte atípica (se exigen los dos umbrales)"
   }
  ],
  "cohortes": [
@@ -950,21 +929,21 @@
     "objeto": "serie_empleabilidad_1er_anio",
     "estado": "EXENTO",
     "umbral": "0 años de cohorte sin titulaciones en modelo.titulacion",
-    "detalle": "cohortes 2019-2023; D5: las series no se cruzan con el SIES"
+    "detalle": "cohortes 2019-2023; las series de MiFuturo solo sirven para ver si la cohorte es estable y no se cruzan con el SIES"
    },
    {
     "control": "cohorte_en_sies",
     "objeto": "serie_empleabilidad_2do_anio",
     "estado": "EXENTO",
     "umbral": "0 años de cohorte sin titulaciones en modelo.titulacion",
-    "detalle": "cohortes 2018-2022; D5: las series no se cruzan con el SIES"
+    "detalle": "cohortes 2018-2022; las series de MiFuturo solo sirven para ver si la cohorte es estable y no se cruzan con el SIES"
    },
    {
     "control": "cohorte_en_sies",
     "objeto": "serie_ingreso_medio_4to_anio",
     "estado": "EXENTO",
     "umbral": "0 años de cohorte sin titulaciones en modelo.titulacion",
-    "detalle": "cohortes 2016-2020; faltan en SIES: 2016; D5: las series no se cruzan con el SIES"
+    "detalle": "cohortes 2016-2020; faltan en SIES: 2016; las series de MiFuturo solo sirven para ver si la cohorte es estable y no se cruzan con el SIES"
    },
    {
     "control": "cohorte_en_sies",

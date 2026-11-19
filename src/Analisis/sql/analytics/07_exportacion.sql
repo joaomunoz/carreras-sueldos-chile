@@ -198,8 +198,10 @@ SELECT json_build_object(
         -- Ficha que abre la Parte II (regla en analytics.v_ficha_ejemplo); la web dice por qué.
         'ficha_ejemplo', (SELECT json_build_object('clave', clave_carrera_generica, 'tipo', tipo_institucion)
                           FROM analytics.v_ficha_ejemplo)),
+    -- Sin `origen`: remite a tareas del plan de trabajo (T4, W3…), que no forma parte de la entrega,
+    -- y la web no lo usa. Sigue en analytics.parametro para quien mantenga el SQL.
     'parametros', (SELECT json_agg(json_build_object('nombre', nombre, 'valor', valor,
-                                                     'descripcion', descripcion, 'origen', origen) ORDER BY nombre)
+                                                     'descripcion', descripcion) ORDER BY nombre)
                    FROM analytics.parametro),
     'cohortes', (SELECT json_agg(json_build_object('indicador', indicador, 'fuente', fuente,
                                                    'cohortes', json_build_array(cohorte_desde, cohorte_hasta),

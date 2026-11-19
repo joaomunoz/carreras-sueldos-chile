@@ -44,7 +44,7 @@ SELECT 'cohorte_en_sies',
        '0 años de cohorte sin titulaciones en modelo.titulacion',
        format('cohortes %s-%s%s%s', c.cohorte_desde, c.cohorte_hasta,
               CASE WHEN f.n_faltan > 0 THEN '; faltan en SIES: ' || f.faltan END,
-              CASE WHEN c.indicador LIKE 'serie\_%' THEN '; D5: las series no se cruzan con el SIES' END)
+              CASE WHEN c.indicador LIKE 'serie\_%' THEN '; las series de MiFuturo solo sirven para ver si la cohorte es estable y no se cruzan con el SIES' END)
 FROM modelo.cohorte c
 CROSS JOIN LATERAL (
     SELECT count(*) AS n_faltan, string_agg(y::text, ', ' ORDER BY y) AS faltan
