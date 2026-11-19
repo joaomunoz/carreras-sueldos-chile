@@ -17,127 +17,127 @@
   {
    "nombre": "anio_caida_titulacion",
    "valor": 2020,
-   "descripcion": "Año de titulación con caída anómala (pandemia): marca los hitos cuyas cohortes lo incluyen",
+   "descripcion": "Año en que las titulaciones cayeron por la pandemia: se avisa en las cifras que incluyen a esos titulados",
    "origen": "T4, auditoría 05"
   },
   {
    "nombre": "anio_rebote_titulacion",
    "valor": 2021,
-   "descripcion": "Año de titulación con rebote anómalo (titulaciones atrasadas): ídem",
+   "descripcion": "Año en que las titulaciones rebotaron (títulos atrasados por la pandemia): mismo aviso",
    "origen": "T4, auditoría 05"
   },
   {
    "nombre": "corrimiento_derecho",
    "valor": -1,
-   "descripcion": "Años que se corren las ventanas de titulación de Derecho respecto de las demás carreras (excepción de MiFuturo: un año antes)",
+   "descripcion": "Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)",
    "origen": "T4; parámetro desde el 19-11-26 (ADR-003)"
   },
   {
    "nombre": "margen_ejemplo_pesos",
    "valor": 0.2,
-   "descripcion": "Hallazgo (b): el ejemplo crece en pesos al menos esta proporción menos que la mediana de su grupo (sin margen podría ser la propia mediana)",
+   "descripcion": "Tarjeta 2: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo",
    "origen": "W3; movido de app.js a SQL en la revisión del 16-11-26"
   },
   {
    "nombre": "margen_tipico_pesos",
    "valor": 20000,
-   "descripcion": "Ídem en pesos de aumento del P50; equivale a ~2 pp sobre una entrada típica de ~$900 mil",
+   "descripcion": "Diferencia en pesos con la carrera del medio que se cuenta como empate (unos 2 puntos sobre una entrada de $900.000)",
    "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
   },
   {
    "nombre": "margen_tipico_pp",
    "valor": 2,
-   "descripcion": "Distancia a la mediana del grupo (puntos porcentuales de crecimiento) dentro de la cual el progreso es \"típico\"",
+   "descripcion": "Diferencia de crecimiento (puntos porcentuales) con la carrera del medio que se cuenta como empate; también, la caída mínima para decir que se gana menos al 5° año",
    "origen": "Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)"
   },
   {
    "nombre": "max_cobertura_baja",
    "valor": 0.75,
-   "descripcion": "Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura",
+   "descripcion": "Si los programas que publica MiFuturo reúnen menos de esta parte de los titulados de un tipo y nivel, se avisa baja cobertura",
    "origen": "T5, decisión 2"
   },
   {
    "nombre": "max_peso_dominante",
    "valor": 0.5,
-   "descripcion": "Si una carrera supera esta proporción del peso de su celda, la celda deja de ser referencia",
+   "descripcion": "Si una carrera reúne más de esta parte de los titulados de su grupo de área, el grupo no sirve de referencia",
    "origen": "A3: celdas dominadas (aprobada por el usuario)"
   },
   {
    "nombre": "max_t_continuidad",
    "valor": 2.6,
-   "descripcion": "Hallazgo (d): |t| máximo de la correlación continuidad–empleabilidad dentro de cada carrera para afirmar que no la explica (0,05 / 5 pruebas, dos colas)",
+   "descripcion": "Tarjeta 4: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
    "nombre": "min_cambio_edad_pp",
    "valor": 15,
-   "descripcion": "Aumento (puntos) de titulados de 30+ entre la cohorte de los percentiles del 5° año y la del 1er año para marcar la comparación 1°→5° como sesgada por composición",
+   "descripcion": "Aumento mínimo (puntos) de titulados de 30 años o más entre los dos grupos para avisar que la comparación mezcla edades",
    "origen": "A6 (hallazgo de A5)"
   },
   {
    "nombre": "min_desvio_atipico_pp",
    "valor": 5,
-   "descripcion": "Desvío mínimo (puntos) de la empleabilidad de la cohorte de los percentiles respecto de sus cohortes previas para marcarla atípica",
+   "descripcion": "Diferencia mínima (puntos) entre la empleabilidad del grupo del sueldo al 1er año y la de los años anteriores para avisar cohorte atípica",
    "origen": "A5 (D5)"
   },
   {
    "nombre": "min_inst_dispersion",
    "valor": 5,
-   "descripcion": "Instituciones publicadas con el dato para medir dispersión entre instituciones",
+   "descripcion": "Instituciones con el dato necesarias para comparar las instituciones de una carrera",
    "origen": "D1"
   },
   {
    "nombre": "min_inst_ejemplo",
    "valor": 20,
-   "descripcion": "Hallazgo (c): instituciones mínimas para que una carrera sirva de ejemplo (con pocas sería anecdótico)",
+   "descripcion": "Tarjeta 3: instituciones mínimas para que una carrera sirva de ejemplo",
    "origen": "W3; ídem"
   },
   {
    "nombre": "min_inst_oferta",
    "valor": 3,
-   "descripcion": "Instituciones del tipo con titulaciones SIES en ambas ventanas para que el par sea representativo",
+   "descripcion": "Instituciones necesarias para que una carrera sea comparable (con 1 o 2, la cifra nacional es la de esas instituciones)",
    "origen": "T0 / D2: dos conteos de instituciones"
   },
   {
    "nombre": "min_iqr_enganoso",
    "valor": 15,
-   "descripcion": "IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual la cifra nacional es engañosa",
+   "descripcion": "Distancia (puntos de empleabilidad) entre las instituciones del cuarto bajo y del cuarto alto desde la cual la cifra nacional es engañosa",
    "origen": "Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)"
   },
   {
    "nombre": "min_pares_celda",
    "valor": 5,
-   "descripcion": "Pares representativos para que una celda área × tipo × nivel sea referencia",
+   "descripcion": "Carreras comparables necesarias para que un área, dentro de un tipo y nivel, tenga carrera del medio propia",
    "origen": "D2"
   },
   {
    "nombre": "min_pares_resumen_tramo",
    "valor": 20,
-   "descripcion": "Pares con dispersión de tramo necesarios para resumir el tramo por segmento",
+   "descripcion": "Carreras con rango de ingreso por institución necesarias para resumir un tipo y nivel",
    "origen": "T5, decisión 1"
   },
   {
    "nombre": "min_prog_ejemplo_cont",
    "valor": 5,
-   "descripcion": "Hallazgo (d): programas mínimos de una carrera técnica para servir de ejemplo de continuidad",
+   "descripcion": "Tarjeta 4: instituciones mínimas de una carrera técnica para servir de ejemplo",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
    "nombre": "min_prog_par_cont",
    "valor": 5,
-   "descripcion": "Hallazgo (d): programas mínimos de un par para entrar en la prueba dentro de cada carrera",
+   "descripcion": "Tarjeta 4: instituciones mínimas de una carrera para entrar en la prueba de relación",
    "origen": "Hallazgo (d), 18-11-26"
   },
   {
    "nombre": "min_share_area",
    "valor": 0.8,
-   "descripcion": "Proporción de titulaciones del área dominante para asignar el área a la genérica",
+   "descripcion": "Parte mínima de las titulaciones en un área CINE (clasificación internacional) para asignarla a una carrera; solo contexto",
    "origen": "T0 / T4"
   },
   {
    "nombre": "min_z_atipico",
    "valor": 2,
-   "descripcion": "Desvío mínimo en desviaciones estándar de las cohortes previas para marcarla atípica (se exigen ambos umbrales)",
+   "descripcion": "Desvío mínimo, en desviaciones estándar de los años anteriores, para avisar cohorte atípica (se exigen los dos umbrales)",
    "origen": "A5 (D5)"
   }
  ],
@@ -73304,6 +73304,8 @@
    4
   ],
   "cohortes_atipicas": 15,
+  "pares_estabilidad": 236,
+  "pares_composicion_edad_comparables": 24,
   "pares_composicion_edad": 27,
   "continuidad_sin_relacion": {
    "max_t": 2.2,

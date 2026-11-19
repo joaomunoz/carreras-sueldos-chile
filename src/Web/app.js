@@ -58,12 +58,13 @@
     { id: "no_comparable", texto: "No comparable",
       aplica: function (p) { return !p.marcas.representativo; },
       explica: function () {
-        return "Menos de " + parametro("min_inst_oferta") + " instituciones la ofrecen: su cifra nacional es en realidad la de una o dos instituciones. Aparece en la tabla, pero no en rankings ni comparaciones.";
+        return "Menos de " + parametro("min_inst_oferta") + " instituciones la ofrecen: su cifra nacional es en realidad la de una o dos instituciones. Se muestra junto a las de su área solo como referencia; no entra en rankings, gráficos de comparación ni en el cálculo de la carrera del medio.";
       } },
     { id: "cohorte_atipica", texto: "Cohorte atípica",
       aplica: function (p) { return p.marcas.cohorte_atipica; },
       explica: function () {
-        return "La empleabilidad de quienes se titularon en el año del P50 del primer año se aleja al menos " + parametro("min_desvio_atipico_pp") + " puntos de la de las cohortes anteriores: su sueldo del primer año viene de un año anómalo.";
+        return "Los titulados del año del que sale el sueldo típico del 1er año tuvieron una empleabilidad al menos " + parametro("min_desvio_atipico_pp") +
+          " puntos distinta de la de los años anteriores: toma con cautela la comparación de su sueldo de entrada.";
       } },
     { id: "composicion_edad", texto: "Composición por edad",
       aplica: function (p) { return p.marcas.composicion_edad; },
@@ -152,7 +153,8 @@
       "titulados distintos, no a las mismas personas. El ", "sueldo típico",
       " es el del medio: la mitad de los titulados gana más y la otra mitad, menos."]);
     parrafoEn(document.getElementById("portada-tecnica"), [
-      "", fmtEntero.format(qnd.pares_comparables), " carreras comparables · ",
+      "", fmtEntero.format(qnd.pares_comparables), " carreras comparables (las otras " + fmtEntero.format(qnd.pares_no_representativos) +
+      " tienen ficha, sin comparación) · ",
       fmtEntero.format(total), " controles de calidad · pesos de septiembre de 2025"]);
   }
 
@@ -167,10 +169,10 @@
       var bt = datos.que_no_dice.bajan_total, neg = bt.n_negativos, mg = fmtEntero.format(parametro("margen_tipico_pp"));
       document.getElementById("t-peine").textContent = neg
         ? "En " + fmtEntero.format(neg) + " de " + fmtEntero.format(bt.n_comparables) +
-          " carreras, los titulados de hace 5 años ganan más de " + mg + " % menos que los de hace 1" +
+          " carreras, los titulados de hace 5 años ganan más de " + mg + "\u00a0% menos que los de hace 1" +
           (tec.n_negativos === neg ? (neg === 1 ? " (técnica)" : " (todas técnicas)")
             : tec.n_negativos ? " (" + fmtEntero.format(tec.n_negativos) + (tec.n_negativos === 1 ? " técnica)" : " técnicas)") : "")
-        : "En ninguna carrera comparable los titulados de hace 5 años ganan más de " + mg + " % menos que los de hace 1";
+        : "En ninguna carrera comparable los titulados de hace 5 años ganan más de " + mg + "\u00a0% menos que los de hace 1";
     }
     // Por nivel: el hallazgo es de las profesionales (en las técnicas no cambia ninguna).
     var b = datos.hallazgos.pct_pesos;
@@ -186,7 +188,7 @@
   function pintarCierre() {
     var ul = document.getElementById("llevar");
     var items = [
-      ["Compara dentro del mismo nivel. ", "Las carreras técnicas y las profesionales crecen a ritmos muy distintos: un promedio de ambas no describe a ninguna."],
+      ["Compara dentro del mismo nivel. ", "Entre el 1er y el 5° año, la diferencia de sueldo es muy distinta en las carreras técnicas y en las profesionales: un promedio de ambas no describe a ninguna."],
       ["Mira el aumento en pesos, no solo el porcentaje. ", "Una carrera que parte con un sueldo bajo puede crecer mucho en porcentaje y sumar poco a fin de mes."],
       ["Mira tu institución, no solo la cifra nacional. ", "En algunas carreras, la empleabilidad cambia mucho de una institución a otra."]
     ];
@@ -267,7 +269,7 @@
       ul.appendChild(hallazgo({
         cifra: fmtEntero.format(tec.n_negativos) + " de " + fmtEntero.format(tec.n_comparables),
         resultado: "carreras técnicas: quienes se titularon hace 5 años ganan más de " + fmtEntero.format(parametro("margen_tipico_pp")) +
-          " % menos que quienes se titularon hace 1.",
+          "\u00a0% menos que quienes se titularon hace 1.",
         nodos: nodosA, accion: unaA ? "Verla en el gráfico ↓" : "Ver esas " + fmtEntero.format(tec.n_negativos) + " carreras ↓",
         href: "#t-peine",
         alClic: function () { elegirNivelPeine("Carreras Técnicas"); }
@@ -303,7 +305,8 @@
         resultado: (c.n_enganosos === 1 ? "carrera" : "carreras") + ": su empleabilidad (el % de titulados que gana al menos el sueldo mínimo al 1er año) difiere " +
           fmtEntero.format(c.umbral_pp) + " puntos o más según la institución.",
         nodos: [parrafo(["En " + ec.nombre + ", la mitad de las " + TIPO_PLURAL[ec.tipo] + " está entre ",
-          pct(ec.q1), " y ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."])],
+          pct(ec.q1), " y ", pct(ec.q3), ": ", fmtUno.format(ec.iqr) + " puntos", " de diferencia, más que los " + fmtEntero.format(c.umbral_pp) +
+          " del criterio. La cifra nacional es ", pct(ec.nacional), "."])],
         accion: "Ver " + ec.nombre + " →", par: pc
       }));
     }
@@ -665,16 +668,16 @@
     var texto = "Las " + fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel +
       " comparables. Cada línea va del sueldo típico de quienes se titularon hace un año al de quienes se titularon hace cinco. " +
       (nv.n_negativos ? "En " + fmtEntero.format(nv.n_negativos) + " de ellas, los titulados de hace 5 años ganan más de " +
-                          fmtEntero.format(parametro("margen_tipico_pp")) + " % menos que los de hace 1 (▼). "
+                          fmtEntero.format(parametro("margen_tipico_pp")) + "\u00a0% menos que los de hace 1 (▼). "
                      : "En ninguna, los titulados de hace 5 años ganan más de " + fmtEntero.format(parametro("margen_tipico_pp")) +
-                          " % menos que los de hace 1 (diferencias menores se cuentan como empate). ");
+                          "\u00a0% menos que los de hace 1 (diferencias menores se cuentan como empate). ");
     if (nv.n_marca_edad) {
       texto += "En violeta, " + (nv.n_marca_edad === 1 ? "la que tiene" : "las " + fmtEntero.format(nv.n_marca_edad) + " que tienen") +
         " titulados recientes mucho mayores que los de hace cinco años: ahí la comparación mezcla edades.";
     }
     document.getElementById("peine-bajada").textContent = texto;
     document.getElementById("peine-titulo").textContent = "Sueldo típico (P50) al 1er y al 5° año de las " +
-      fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel + " comparables · pesos, ingresos " + aniosIngreso("percentiles_anio_1");
+      fmtEntero.format(nv.n_comparables) + " carreras " + nombreNivel + " comparables · ingresos " + aniosIngreso("percentiles_anio_1") + ", en pesos de septiembre de 2025";
 
     var W = lienzo.clientWidth || 800;
     var angosto = W < 600;
@@ -1376,11 +1379,13 @@
     // columnas, a 390 px la tabla quedaba más ancha que la pantalla.
     var colMedio = "La del medio";
     if (esElla) return;   // la frase ya lo dice; una tabla de «es esta carrera» no agrega nada
-    var tb = tablaCon(cont, p.nombre + " frente a la carrera del medio de su grupo", ["Cifra", p.nombre, colMedio, "Diferencia"]);
+    // «Esta carrera» y no su nombre: en celular el rótulo de cada valor es el encabezado, y los
+    // nombres largos se encimaban (evaluación del 19-11-26). El nombre ya está en el título.
+    var tb = tablaCon(cont, p.nombre + " frente a la carrera del medio de su grupo", ["Cifra", "Esta carrera", colMedio, "Diferencia"]);
     tb.parentNode.classList.add("tabla--medio");
     FILAS.forEach(function (f) {
       var ella = f.medio.par === p;
-      var tr = filaTabla(tb, [["Cifra", f.rotulo, "td--titulo"], [p.nombre, f.f(f.propio), "num"],
+      var tr = filaTabla(tb, [["Cifra", f.rotulo, "td--titulo"], ["Esta carrera", f.f(f.propio), "num"],
         [colMedio, ella ? "es esta carrera" : f.f(f.medio.ref.q50), "num"],
         ["Diferencia", ella || f.dif === 0 ? "—" : f.difTexto(f.dif), "num"]], false, null);
       // Con distintas carreras del medio, el nombre va bajo cada valor.
@@ -1432,22 +1437,48 @@
         "; las carreras del área van de " + cfg.formato(Math.min.apply(null, vals)) + " a " + cfg.formato(Math.max.apply(null, vals)) + "." });
     svgEl("line", { x1: 10, x2: W - 10, y1: centro, y2: centro }, "g-grilla", svg);
     var yDe = function (q) { return centro - q.nivel * PASO; };
+    // Cada carrera con su ayuda; también con el teclado (flechas ← →, Enter abre su ficha): antes
+    // las franjas solo servían con el puntero (evaluación del 19-11-26).
+    function mostrarQ(q) {
+      var m = q.m;
+      tip.replaceChildren(el("div", "tooltip__titulo", m.nombre + " (" + m.tipo + ")" + (m === medio ? " · la del medio" : "")),
+                          el("div", "tooltip__cifras", cfg.rotulo + ": " + cfg.formato(cfg.valor(m))),
+                          el("div", "tooltip__sub", "Clic o Enter para ver su ficha"));
+      var rf = figura.getBoundingClientRect(), rl = lienzo.getBoundingClientRect();
+      ubicarTooltip(tip, figura, rl.left - rf.left + q.x * rl.width / W, rl.top - rf.top + yDe(q) * rl.width / W);
+    }
+    var otrosQ = [];
     puestos.forEach(function (q) {
       var m = q.m, cy = yDe(q);
       if (m === p) return;   // el rombo va al final, encima
       var g = svgEl("g", {}, "g-vecina", svg);
       svgEl("circle", { cx: q.x, cy: cy, r: R(m) }, m === medio ? "g-medio" : "g-contexto g-anillo", g);
       svgEl("circle", { cx: q.x, cy: cy, r: 9 }, "g-blanco", g);   // blanco de toque más grande que la marca
-      g.addEventListener("pointerenter", function () {
-        tip.replaceChildren(el("div", "tooltip__titulo", m.nombre + " (" + m.tipo + ")" + (m === medio ? " · la del medio" : "")),
-                            el("div", "tooltip__cifras", cfg.rotulo + ": " + cfg.formato(cfg.valor(m))),
-                            el("div", "tooltip__sub", "Clic para ver su ficha"));
-        var rf = figura.getBoundingClientRect(), rl = lienzo.getBoundingClientRect();
-        ubicarTooltip(tip, figura, rl.left - rf.left + q.x * rl.width / W, rl.top - rf.top + cy * rl.width / W);
-      });
+      q.nodo = g;
+      otrosQ.push(q);
+      g.addEventListener("pointerenter", function () { mostrarQ(q); });
       g.addEventListener("pointerleave", function () { tip.hidden = true; });
       g.addEventListener("click", function () { tip.hidden = true; abrirFicha(m, "vecina"); });
     });
+    var activoQ = -1;
+    function activar(i) {
+      if (activoQ >= 0) otrosQ[activoQ].nodo.classList.remove("g-vecina--activa");
+      activoQ = i;
+      if (i < 0) { tip.hidden = true; return; }
+      otrosQ[i].nodo.classList.add("g-vecina--activa");
+      mostrarQ(otrosQ[i]);
+    }
+    lienzo.tabIndex = 0;
+    lienzo.setAttribute("aria-label", cfg.rotulo + " de las carreras del área: recórrelas con las flechas ← →; Enter abre su ficha");
+    lienzo.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        var i = activoQ < 0 ? (e.key === "ArrowRight" ? 0 : otrosQ.length - 1) : activoQ + (e.key === "ArrowRight" ? 1 : -1);
+        activar(Math.max(0, Math.min(otrosQ.length - 1, i)));
+      } else if (e.key === "Enter" && activoQ >= 0) { var m = otrosQ[activoQ].m; activar(-1); abrirFicha(m, "vecina");
+      } else if (e.key === "Escape") { activar(-1); }
+    });
+    lienzo.addEventListener("blur", function () { activar(-1); });
     var qp = puestos.filter(function (q) { return q.m === p; })[0];
     rombo(svg, qp.x, yDe(qp), 7);
     textoEn(svg, qp.x, H - 4, medio === p ? "esta carrera, la del medio" : "esta carrera", "g-rotulo", W);
@@ -1615,7 +1646,7 @@
     });
     if (conRango) {
       var t4 = svgEl("text", { x: x(3), y: H - 2, "text-anchor": "middle" }, "g-rotulo-suave", svg);
-      t4.textContent = angosto ? "por institución ↓" : "el año que se publica por institución ↓";
+      t4.textContent = angosto ? "dato por institución" : "único año con dato por institución (ver abajo)";
     }
     [[0, a1, ref1], [4, a5, ref5]].forEach(function (a) {
       var cx = x(a[0]), q = a[1];
@@ -1633,6 +1664,8 @@
       { y: y(v[4]), t: angosto ? "Promedio" : "Promedio " + pesos(v[4]), c: "g-rotulo-suave" }
     ];
     if (ref5) rotulos.push({ y: y(ref5.q50), t: angosto ? "Del medio" : "Carrera del medio " + pesos(ref5.q50), c: "g-rotulo-suave" });
+    // La barra (P25–P75) no tenía rótulo: se nombra junto a su extremo alto del 5° año.
+    rotulos.push({ y: y(a5.p75), t: angosto ? "Mitad central" : "Mitad central de los titulados", c: "g-rotulo-suave" });
     rotulos.forEach(function (r) { r.marca = r.y; });
     rotulos.sort(function (a, b) { return a.y - b.y; });
     for (var k = 1; k < rotulos.length; k++) rotulos[k].y = Math.max(rotulos[k].y, rotulos[k - 1].y + 17);
@@ -1929,7 +1962,7 @@
     var otrosTipos = pares.filter(function (q) { return q.clave === p.clave && q.nivel === p.nivel && q.tipo !== p.tipo; });
     if (otrosTipos.length) {
       subbloque(b1, "La misma carrera en otro tipo de institución",
-        "Cada tipo se compara con su propio grupo. Haz clic en un tipo para ver su ficha." +
+        "Cada tipo de institución tiene su propia carrera del medio, así que estas cifras se leen una al lado de la otra, sin compararlas. Haz clic en un tipo para ver su ficha." +
           (otrosTipos.some(function (q) { return !q.marcas.representativo; }) ? " Sin grupo de comparación: " +
             otrosTipos.filter(function (q) { return !q.marcas.representativo; }).map(function (q) { return q.tipo; }).join(", ") +
             " (menos de " + parametro("min_inst_oferta") + " instituciones)." : ""));
@@ -1944,9 +1977,11 @@
 
     // 2. Año a año
     var pc = p.percentiles.p50_pct_1_5;
-    var b2 = bloque(art, "Su sueldo típico " + (pc >= 0 ? "sube " : "baja ") + fmtUno.format(Math.abs(pc)) + " % entre el 1er y el 5° año",
-      "Ingresos " + aniosIngreso("percentiles_anio_1") + " en pesos (el promedio, " + aniosIngreso("ingreso_medio_1er_anio") +
-        "). Cada año es otra cohorte de titulados, no las mismas personas.");
+    // «Es X % mayor/menor», no «sube/baja»: son dos grupos distintos de titulados (evaluación del 19-11-26).
+    var b2 = bloque(art, "Al 5° año, su sueldo típico es " + fmtUno.format(Math.abs(pc)) + " % " + (pc >= 0 ? "mayor" : "menor") + " que al 1er año",
+      "Ingresos " + aniosIngreso("percentiles_anio_1") + " (el promedio, " + aniosIngreso("ingreso_medio_1er_anio") +
+        "), en pesos de septiembre de 2025. Cada año es otra cohorte de titulados, no las mismas personas. " +
+        "La barra de los años 1 y 5 es la mitad central de los titulados.");
     graficoSueldo(b2, p);
     var med1 = p.percentiles.anio_1.p50, prom1 = p.media.anio[0];
     b2.appendChild(el("p", "ficha__explica", "El sueldo típico (mediana) es lo que gana el titulado del medio: la mitad gana menos. " +
@@ -2037,7 +2072,9 @@
       b3.appendChild(envolI);
       var MAX_INST = 10, todasInst = false, filasI = [];
       var COL_DIF = d1 ? "Dif. 1er año con la institución del medio (" + pct(d1.mediana) + ")" : null;
-      var COL_RANGO = "Rango de ingreso al 4° año";
+      // Con el valor de referencia: «bajo la institución del medio» no decía bajo qué cifra.
+      var COL_RANGO = "Rango de ingreso al 4° año" + (conTramo && p.dispersion.tramo.mediana_min != null
+        ? " (la institución del medio parte en " + pesos(p.dispersion.tramo.mediana_min) + ")" : "");
       function pintarInst() {
         envolI.replaceChildren();
         filasI = [];
@@ -2498,7 +2535,7 @@
     document.getElementById("ficha-texto").value = etiquetaPar(inicial);
     if (desdeDireccion()) document.getElementById("ficha").scrollIntoView();
     else document.getElementById("ficha-estado").textContent =
-      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados cuya área tiene carrera del medio y que no es ella. Escribe la tuya arriba.";
+      "Ejemplo: " + etiquetaPar(inicial) + ", la carrera con más titulados entre las que se comparan con una carrera del medio de su área. Escribe la tuya arriba.";
     prepararHistorial();
   }
 
@@ -2525,16 +2562,19 @@
       " (5° año); los promedios y la empleabilidad, a los de " + ventana("ingreso_medio_1er_anio") + " con los de " + ventana("ingreso_medio_5to_anio") + "."]);
     item("No ve a todos.", ["Los programas que publica MiFuturo reúnen el ", pct(q.cobertura_titulaciones[0]),
       " de los titulados recientes y el ", pct(q.cobertura_titulaciones[1]),
-      " de los de hace cinco años. Faltan programas chicos y los que cerraron; con baja cobertura: " +
-      q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return x[0] + " (" + x[1].replace("Carreras ", "").toLowerCase() + ")"; }).join(", ") + "."]);
+      " de los de hace cinco años (no confundir con el " + pct(datos.universo.totales[0].pct_comparables) +
+      " de la Parte I, que es la parte de los títulos que cae en carreras comparables). Faltan programas chicos y los que cerraron; la cobertura es baja en: " +
+      q.segmentos_baja_cobertura.map(function (s) { var x = s.split(" · "); return "las carreras " + x[1].replace("Carreras ", "").toLowerCase() + " de " + (TIPO_PLURAL[x[0]] || x[0]); }).join(", ") + "."]);
     item("No compara lo que no se puede comparar.", ["", fmtEntero.format(q.pares_no_representativos), " de " + fmtEntero.format(q.pares_total) +
       " carreras tienen menos de " + parametro("min_inst_oferta") + " instituciones y quedan fuera de rankings y gráficos de comparación; solo ",
       fmtEntero.format(q.celdas_validas), " grupos de área tienen carreras suficientes para servir de referencia."]);
-    item("No limpia los años raros.", ["Los años ", anomalos.join(", "), " del ingreso promedio incluyen titulados de " +
+    item("No limpia los años anómalos.", ["Los años ", anomalos.join(", "), " del ingreso promedio incluyen titulados de " +
       parametro("anio_caida_titulacion") + " o " + parametro("anio_rebote_titulacion") + ". En ", fmtEntero.format(q.cohortes_atipicas),
-      " carreras la cohorte del sueldo al primer año tuvo una empleabilidad atípica (" + fmtEntero.format(atipSalud) +
-      " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " los titulados recientes son mucho mayores que los de hace cinco años."]);
-    item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el P10 está truncado. No hay datos por sexo, edad ni región."]);
+      " de las " + fmtEntero.format(q.pares_estabilidad) + " carreras con serie de empleabilidad, los titulados del sueldo al primer año tuvieron una empleabilidad atípica (" +
+      fmtEntero.format(atipSalud) + " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " de las " + fmtEntero.format(q.pares_total) +
+      " (" + fmtEntero.format(q.pares_composicion_edad_comparables) + " de las " + fmtEntero.format(q.pares_comparables) +
+      " comparables) los titulados recientes son mucho mayores que los de hace cinco años."]);
+    item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el sueldo del 10 % que menos gana aparece más alto de lo real. Los ingresos no vienen separados por sexo, edad ni región."]);
     if (brecha.emp_pp != null && brecha.tramo_pct != null) {
       item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha.emp_pp) + " puntos",
         " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
@@ -2545,7 +2585,7 @@
     var cs = q.continuidad_sin_relacion;
     if (cs) {
       item("La continuidad de estudios no explica la empleabilidad.", ["Entre instituciones de una misma carrera, las que tienen más titulados que siguen estudiando no tienen una empleabilidad distinta (la relación más fuerte da t = ",
-        fmtUno.format(cs.max_t), ", bajo el umbral de " + fmtUno.format(cs.umbral_t) + " para 5 pruebas). En bruto parece haber relación, pero viene de comparar carreras distintas."]);
+        fmtUno.format(cs.max_t), ", bajo el umbral de " + fmtUno.format(cs.umbral_t) + " para 5 pruebas). Sin separar por carrera sí aparece una relación, pero viene de comparar carreras distintas."]);
     }
     item("No tiene márgenes de error.", ["Son registros administrativos completos, no una muestra: las diferencias chicas entre carreras pueden ser reales y aun así poco relevantes."]);
   }
@@ -2565,7 +2605,8 @@
   function pintarMetodo() {
     var div = document.getElementById("metodo");
     div.appendChild(el("p", null, "Fuentes: " + datos.meta.fuentes.join("; ") + ". Montos en " + datos.meta.unidad_ingresos.replace(">=", "≥") + "."));
-    div.appendChild(el("p", null, "Una carrera es una carrera genérica de MiFuturo dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel. El área es la del conocimiento que usa MiFuturo (por ejemplo, «Tecnología» junta Informática y Telecomunicaciones); la clasificación internacional CINE de cada carrera se guarda como contexto."));
+    div.appendChild(el("p", null, "Empleabilidad: " + datos.meta.rotulo_empleabilidad.replace(">=", "≥") + ". No es la tasa de desempleo."));
+    div.appendChild(el("p", null, "Una carrera es un nombre de carrera de MiFuturo (por ejemplo, Enfermería) dentro de un tipo de institución (universidad, instituto profesional o centro de formación técnica). Cada carrera se compara con las de su misma área, tipo y nivel; si el área tiene pocas carreras o una sola domina el grupo, con todas las de su tipo y nivel. El área es la del conocimiento que usa MiFuturo (por ejemplo, «Tecnología» junta Informática y Telecomunicaciones); la clasificación internacional de carreras (CINE, de la UNESCO) se guarda como contexto."));
     div.appendChild(el("p", null, "Cómo se construye, de los archivos públicos a esta página (se reproduce con un solo comando, make todo):"));
     div.appendChild(el("p", "metodo__flujo", "CSV de MiFuturo y SIES → base PostgreSQL (raw → modelo → analytics) → " +
       fmtEntero.format(datos.qa.controles.length) + " controles de calidad → datos.json → esta página, un solo archivo sin dependencias"));
@@ -2597,7 +2638,12 @@
     datos.parametros.forEach(function (prm) {
       var tr = el("tr");
       // Proporciones (0–1) se muestran como %; años y conteos, tal cual.
-      var valor = prm.valor > 0 && prm.valor < 1 ? fmtEntero.format(prm.valor * 100) + " %" : prm.valor > 1900 ? String(prm.valor) : fmtEntero.format(prm.valor);
+      // Años por nombre (no por magnitud: 20.000 pesos no es un año), pesos con separador y
+      // decimales cuando los hay (2,6 se mostraba «3»).
+      var valor = /^anio_/.test(prm.nombre) ? String(prm.valor)
+        : /pesos$/.test(prm.nombre) && prm.valor >= 1 ? pesos(prm.valor)
+        : prm.valor > 0 && prm.valor < 1 ? fmtEntero.format(prm.valor * 100) + " %"
+        : Number.isInteger(prm.valor) ? fmtEntero.format(prm.valor) : fmtUno.format(prm.valor);
       [["Regla", prm.descripcion, "td--titulo"], ["Valor", valor, "num"]].forEach(function (x) {
         var td = el("td", x[2], x[1]); td.setAttribute("data-rotulo", x[0]); tr.appendChild(td);
       });
@@ -2638,7 +2684,7 @@
   // ------------------------------------------------------------- notas y pie
   function pintarNotas() {
     document.getElementById("pie-comparacion").textContent =
-      "Comparación transversal: el primer y el quinto año son grupos distintos de titulados, no las mismas personas en el tiempo.";
+      "Comparación entre grupos distintos: el primer y el quinto año son grupos distintos de titulados, no las mismas personas en el tiempo.";
     document.getElementById("pie-fuentes").textContent = "Fuentes: " + datos.meta.fuentes.join(" · ") + ".";
   }
 

@@ -123,12 +123,12 @@
       <figure class="grafico" id="peine">
         <!-- Título del gráfico (qué se mide, unidad y universo) pegado al trazado; el h3 lleva la conclusión. -->
         <p class="grafico__titulo" id="peine-titulo"></p>
-        <div class="grafico__lienzo" id="peine-lienzo"></div>
+        <div class="grafico__lienzo" id="peine-lienzo" aria-label="Gráfico de líneas por carrera: recórrelo con las flechas ← →; Enter abre la ficha"></div>
         <div class="tooltip" id="peine-tooltip" hidden></div>
         <figcaption class="grafico__leyenda">
           <span class="leyenda-item"><span class="punto punto--anio1" aria-hidden="true"></span>Sueldo típico al 1er año</span>
           <span class="leyenda-item"><span class="punto punto--anio5" aria-hidden="true"></span>Al 5° año</span>
-          <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Comparación sesgada por edad</span>
+          <span class="leyenda-item"><span class="trazo trazo--timbre" aria-hidden="true"></span>Composición por edad: titulados recientes mucho mayores</span>
           <span class="leyenda-item"><span class="marca-baja" aria-hidden="true">▼</span>Los titulados de hace 5 años ganan menos</span>
           <span class="grafico__eje-x">Carreras del nivel elegido, ordenadas por sueldo típico del 1er año, de menor a mayor → (escala propia de cada nivel)</span>
         </figcaption>
@@ -139,7 +139,7 @@
 
     <section class="bloque" aria-labelledby="t-cuadrantes">
       <h3 id="t-cuadrantes" class="bloque__titulo">Cuánto se entra ganando y cuánto se progresa</h3>
-      <p class="bloque__texto">Cada punto es una carrera, comparada con las de su mismo grupo (su área dentro del tipo de institución y nivel, o su tipo y nivel si el área tiene pocas carreras). Hacia la derecha, entra ganando más que la carrera del medio de su grupo (la que queda al medio contando cuántos titulados tiene cada una: las carreras con más titulados pesan más); hacia arriba, su sueldo típico crece más entre el primer y el quinto año. Cambia la medida del crecimiento para ver qué carreras se mueven.</p>
+      <p class="bloque__texto">Cada punto es una carrera, comparada con las de su mismo grupo (su área dentro del tipo de institución y nivel, o su tipo y nivel si el área tiene pocas carreras). Hacia la derecha, entra ganando más que la carrera del medio de su grupo (la que queda al medio contando cuántos titulados tiene cada una: las carreras con más titulados pesan más); hacia arriba, su <strong>crecimiento</strong> es mayor que el de esa carrera. Aquí «crecimiento» es la diferencia entre el sueldo típico de quienes llevan cinco años titulados y el de quienes llevan uno: son dos grupos distintos, no las mismas personas. Cambia la medida del crecimiento (en % o en pesos) para ver qué carreras se mueven.</p>
       <!-- Rediseño de cuadrantes: un nivel a la vez, como el peine. Por defecto Profesionales: ahí
            está el hallazgo (b); en las técnicas ninguna carrera cambia de cuadrante. -->
       <div class="controles-grafico">
@@ -156,7 +156,7 @@
         <p class="grafico__titulo" id="c-titulo"></p>
         <!-- Título del eje Y fuera del SVG y sin rotar: así se lee igual en un celular. -->
         <p class="grafico__eje-y" id="c-titulo-y"></p>
-        <div class="grafico__lienzo" id="cuadrantes-lienzo"></div>
+        <div class="grafico__lienzo" id="cuadrantes-lienzo" aria-label="Gráfico de cuadrantes: recórrelo con las flechas ← →; Enter abre la ficha"></div>
         <div class="tooltip" id="cuadrantes-tooltip" hidden></div>
         <figcaption class="grafico__leyenda">
           <span class="leyenda-item" id="c-leyenda-cambia"><span class="punto punto--cambia" aria-hidden="true"></span>Cambia de cuadrante al medir en pesos</span>
@@ -198,7 +198,7 @@
     <header class="parte__cabecera">
       <p class="parte__numero">Parte II</p>
       <h2 id="t-parte-carrera" class="parte__titulo">Busca tu carrera</h2>
-      <p class="parte__bajada">Cómo le va a una carrera frente a las de su grupo y dónde conviene estudiarla. Elige otra carrera desde el buscador, sus vecinas o sus versiones en otro tipo de institución.</p>
+      <p class="parte__bajada">Cómo le va a una carrera frente a las de su grupo y dónde conviene estudiarla. Elige otra carrera desde el buscador, las carreras de su área o sus versiones en otro tipo de institución.</p>
     </header>
 
     <!-- Ficha híbrida: una sola vista de la carrera dentro de su contexto (su grupo, sus vecinas,
@@ -313,7 +313,7 @@
         <summary>Ver los controles uno por uno</summary>
         <div class="tabla-desplazable">
           <table class="tabla tabla--tarjetas" id="tabla-qa">
-            <caption class="solo-lectores">Controles de calidad del último build</caption>
+            <caption class="solo-lectores">Controles de calidad de la última construcción de la página</caption>
             <thead>
               <tr>
                 <th scope="col">Control</th>

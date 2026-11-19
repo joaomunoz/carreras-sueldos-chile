@@ -31,8 +31,8 @@
 -- Requiere 01_par.sql.
 
 INSERT INTO analytics.parametro VALUES
-    ('min_iqr_enganoso',        15, 'IQR entre instituciones de la empleabilidad del 1er año (puntos) desde el cual la cifra nacional es engañosa', 'Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)'),
-    ('min_pares_resumen_tramo', 20, 'Pares con dispersión de tramo necesarios para resumir el tramo por segmento',                                   'T5, decisión 1');
+    ('min_iqr_enganoso',        15, 'Distancia (puntos de empleabilidad) entre las instituciones del cuarto bajo y del cuarto alto desde la cual la cifra nacional es engañosa', 'Plan Fase 2, decisión 2 (sensibilidad 10/15/20 revisada en A4)'),
+    ('min_pares_resumen_tramo', 20, 'Carreras con rango de ingreso por institución necesarias para resumir un tipo y nivel',                                   'T5, decisión 1');
 
 -- --------------------------------------------------------------------------
 -- Programa (institución × genérica) frente a la institución típica de su par

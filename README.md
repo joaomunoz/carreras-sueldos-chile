@@ -21,7 +21,7 @@
 4. **Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue estudiando el 21,7 % de los titulados de carreras técnicas y el 4,2 % de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: 37,4 % en Técnico en Administración de Empresas (IP) y 6,8 % en Técnico en Enfermería (IP). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.
 <!-- HALLAZGOS:FIN -->
 
-> **Corrección (16-11-26).** La versión anterior decía que, en las carreras con cambio de edad, los titulados de 30 años o más pasaban de 28 % a 55 %. Esa mediana se calculaba sobre las 9 carreras que bajan y no sobre las 7 que nombraba la frase; la cifra correcta es 32,5 % → 56,6 %. Desde esta versión, las cifras de los hallazgos se calculan en SQL y tienen sus propios controles de calidad.
+> **Corrección (16-11-26).** La versión anterior decía que, en las carreras con cambio de edad, los titulados de 30 años o más pasaban de 28 % a 55 %. Esa mediana se calculaba sobre las 9 carreras que bajan y no sobre las 7 que nombraba la frase; la cifra correcta en esa versión era 32,5 % → 56,6 % (cambió después con los datos y el método actuales). Desde esta versión, las cifras de los hallazgos se calculan en SQL y tienen sus propios controles de calidad.
 >
 > **Corrección (17-11-26).** El hallazgo 1 daba una sola mediana de crecimiento para las 210 carreras comparables (+29,3 %), que mezclaba técnicas y profesionales y no describía a ninguno de los dos niveles. Ahora se informa por nivel.
 >
@@ -34,7 +34,7 @@
 ## Por qué confiar en las cifras
 
 - **Cuatro capas en PostgreSQL:** `raw` (copia fiel de los CSV) → `modelo` (relacional, con PK, FK y `CHECK`) → `analytics` (métricas) → `qa` (controles). Todo se construye en **una sola transacción**: si algo falla, la base queda como estaba.
-- <!-- CONTROLES:INICIO -->**77 controles de calidad**: 74 hacen fallar el build y 3 están exentos por diseño (documentados)<!-- CONTROLES:FIN -->. Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
+- <!-- CONTROLES:INICIO -->**77 controles de calidad**: 74 hacen fallar el build y 3 no aplican por diseño (documentados en la web)<!-- CONTROLES:FIN -->. Entre ellos: el contrato de columnas contra los esquemas de los scrapers, que cada cohorte exista en el SIES, la cohorte de cada punto de las series (validada contra la propia fuente: error mediano de 0,3 % frente a 1,8–2,3 % con la cohorte corrida un año) y que los cuantiles ponderados coincidan con un cálculo independiente. Si un control falla, **el exportador se niega a escribir los datos** y la web no se puede regenerar.
 - **Determinista:** reconstruir la base y volver a exportar da el mismo archivo, con el mismo SHA-256.
 - **Los datos corrigieron dos decisiones del plan** y quedaron documentadas:
   - Con la ponderación, algunos grupos de área quedaban dominados por una sola carrera (con el área CINE, Psicología pesaba el 70 % de su grupo; con la de MiFuturo, Técnico en Enfermería pesa el 73–75 % de Salud técnica e Ingeniería Comercial el 53 % de Administración universitaria). Se agregó una regla: un grupo deja de ser referencia si una carrera supera el 50 % de su peso.
@@ -117,7 +117,7 @@ Es una **comparación transversal**: el primer y el quinto año son grupos disti
 
 - MiFuturo cubre el 90,5 % de los titulados recientes y el 84,5 % de los de hace cinco años. Faltan programas chicos y programas cerrados.
 - Solo cuenta ingresos sobre el sueldo mínimo con registro en el SII; no hay datos por sexo, edad ni región.
-- Los años 1 a 4 del ingreso promedio incluyen titulados de 2020–2021 (pandemia), y en 15 carreras la cohorte 2023 tuvo una empleabilidad atípica (sobre todo en salud).
+- Los años 1 a 4 del ingreso promedio incluyen titulados de 2020–2021 (pandemia), y en 15 carreras los titulados de 2023 tuvieron una empleabilidad atípica (6 de ellas de salud).
 
 La lista completa, con sus cifras, está en la sección **«Qué no dice este análisis»** de la web.
 
@@ -125,7 +125,7 @@ La lista completa, con sus cifras, está en la sección **«Qué no dice este an
 
 ## Fuentes y licencias
 
-- **Datos:** [MiFuturo](https://www.mifuturo.cl) (Buscador de Empleabilidad e Ingresos y Buscador de Estadísticas por Carrera, metodologías 2025–2026) y SIES (Titulados 2007–2025), ambos del Ministerio de Educación de Chile. Rigen las condiciones de uso de sus fuentes; este repositorio no los relicencia.
+- **Datos:** [MiFuturo](https://www.mifuturo.cl) (Buscador de Empleabilidad e Ingresos y Buscador de Estadísticas por Carrera, metodologías 2025–2026) y SIES (Titulados 2017–2025), ambos del Ministerio de Educación de Chile. Rigen las condiciones de uso de sus fuentes; este repositorio no los relicencia.
 - **Fuente tipográfica:** Archivo Narrow (SIL Open Font License 1.1, ver `src/Web/fuentes/`).
 - **Código:** licencia [MIT](LICENSE).
 

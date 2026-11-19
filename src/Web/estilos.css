@@ -673,7 +673,7 @@ a.hallazgo__accion { color: var(--tinta); }
 .peine-bajan__titulo { font-size: var(--t-0); color: var(--tinta-suave); }
 .peine-bajan__lista { list-style: none; margin: 0.35rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-size: var(--t-0); }
 .peine-bajan__lista li { display: inline-flex; gap: 0.4rem; align-items: baseline; }
-.peine-bajan__cifra { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; color: var(--tinta-suave); }
+.peine-bajan__cifra { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; color: var(--tinta-suave); white-space: nowrap; }   /* «−13,4 %» no se parte en dos líneas */
 /* Ejemplo del hallazgo (b) en los cuadrantes: anillo en tinta y nombre con halo de papel. */
 /* .c-punto delante: sin él ganaba ".c-punto circle" (más específica) y rellenaba el anillo. */
 .c-punto .c-anillo-ejemplo { fill: none; stroke: var(--tinta); stroke-width: 1.5; }
@@ -909,6 +909,8 @@ a.hallazgo__accion { color: var(--tinta); }
 }
 .g-vecina { cursor: pointer; }
 .g-vecina:hover .g-contexto { fill-opacity: 1; }
+.g-vecina--activa .g-contexto { fill-opacity: 1; stroke: var(--tinta); }   /* carrera elegida con el teclado */
+.grupo__svg:focus-visible { outline: 3px solid var(--foco); outline-offset: 4px; }
 .g-tipica { stroke: var(--tinta); stroke-width: 2; }
 /* Cifra nacional: punteada y en tinta suave, para distinguirla de la institución del medio sin color. */
 .g-nacional { stroke: var(--tinta-suave); stroke-width: 2; stroke-dasharray: 4 3; }
@@ -948,7 +950,18 @@ a.hallazgo__accion { color: var(--tinta); }
 .tabla--inst thead th:first-child { min-width: 0; }
 /* Nombres en 1-2 líneas: sin mínimo, con 7 columnas quedaban de 3-4 líneas por fila. */
 .ficha .tabla--inst td.td--titulo { min-width: 13rem; }
-@media (max-width: 40rem) { .ficha .tabla--inst td.td--titulo { min-width: 8.5rem; } }
+/* En celular, una tarjeta por institución (como la tabla de la carrera del medio): a 390 px se
+   veían 2,5 de sus 6 columnas y nada avisaba que había que deslizar (evaluación del 19-11-26). */
+@media (max-width: 40rem) {
+  .ficha .tabla--inst, .ficha .tabla--inst tbody { display: block; width: 100%; }
+  .ficha .tabla--inst thead { display: none; }
+  .ficha .tabla--inst tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 0.35rem; border-bottom: 1px solid var(--regla); }
+  .ficha .tabla--inst td { border: 0; }
+  .ficha .tabla--inst td.td--titulo { grid-column: 1 / -1; min-width: 0; font-weight: 600; padding-bottom: 0; }
+  .ficha .tabla--inst td.num { white-space: normal; text-align: left; }
+  .ficha .tabla--inst td.num::before { content: attr(data-rotulo); display: block; font-family: var(--f-texto); font-size: var(--t-0); color: var(--tinta-suave); }
+  .ficha .tabla--inst td.td--tramo { grid-column: 1 / -1; }
+}
 .ficha .tabla--inst td.td--tramo { white-space: normal; }   /* gana a `.ficha .tabla--compacta td.num` (nowrap) por orden */
 .td__nota { display: block; font-family: var(--f-texto); font-size: 0.75rem; color: var(--tinta-suave); white-space: normal; }
 

@@ -15,8 +15,8 @@
 
 -- Años con anomalía de titulación (auditoría T4, 05_serie_anual_sies.sql: 2020 −20 %, 2021 +42 %).
 INSERT INTO analytics.parametro VALUES
-    ('anio_caida_titulacion',  2020, 'Año de titulación con caída anómala (pandemia): marca los hitos cuyas cohortes lo incluyen', 'T4, auditoría 05'),
-    ('anio_rebote_titulacion', 2021, 'Año de titulación con rebote anómalo (titulaciones atrasadas): ídem',                        'T4, auditoría 05');
+    ('anio_caida_titulacion',  2020, 'Año en que las titulaciones cayeron por la pandemia: se avisa en las cifras que incluyen a esos titulados', 'T4, auditoría 05'),
+    ('anio_rebote_titulacion', 2021, 'Año en que las titulaciones rebotaron (títulos atrasados por la pandemia): mismo aviso',                        'T4, auditoría 05');
 
 -- --------------------------------------------------------------------------
 -- Hitos de la media: qué cohortes entran en cada año k (para rotular los hitos en la web)

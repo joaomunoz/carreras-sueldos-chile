@@ -345,6 +345,11 @@ SELECT json_build_object(
         'celdas_validas', (SELECT count(DISTINCT (area, tipo_institucion, nivel_carrera)) FROM analytics.par WHERE celda_valida),
         'hitos_con_anomalia', (SELECT json_agg(anio_k ORDER BY anio_k) FROM analytics.hito WHERE incluye_caida OR incluye_rebote),
         'cohortes_atipicas', (SELECT count(*) FROM analytics.estabilidad WHERE atipica),
+        -- Universos de esos conteos, para que «Qué no dice» diga «de cuántas» (19-11-26).
+        'pares_estabilidad', (SELECT count(*) FROM analytics.estabilidad),
+        'pares_composicion_edad_comparables', (SELECT count(*) FROM analytics.contexto c
+                                               JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+                                               WHERE c.composicion_edad AND p.representativo),
         'pares_composicion_edad', (SELECT count(*) FROM analytics.contexto WHERE composicion_edad),
         -- Vigilada por el control continuidad_sin_relacion: si fallara, el build no llega aquí.
         'continuidad_sin_relacion', json_build_object(
@@ -439,6 +444,8 @@ FROM (SELECT ((SELECT count(*) FROM analytics.par WHERE representativo)
            OR (SELECT sum(n_negativos) FROM analytics.hallazgo_edad)
                <> (SELECT count(*) FROM analytics.par p JOIN analytics.brecha b USING (clave_carrera_generica, tipo_institucion)
                    WHERE p.representativo AND b.p50_pct_1_5 < -analytics.param('margen_tipico_pp'))
+        OR (SELECT count(*) FROM analytics.contexto c JOIN analytics.par p USING (clave_carrera_generica, tipo_institucion)
+            WHERE c.composicion_edad AND p.representativo) <> (SELECT sum(n_marca_edad) FROM analytics.hallazgo_edad)
      ) ::int
      + (SELECT count(*) FROM analytics.posicion po
         JOIN analytics.v_dif_grupo d USING (clave_carrera_generica, tipo_institucion)

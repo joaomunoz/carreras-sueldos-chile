@@ -160,7 +160,7 @@ def _controles_readme(qa: dict) -> str:
         raise SystemExit(f"Estados qa inesperados para el README: {sorted(resumen)}")
     ok, exentos = resumen.get("OK", 0), resumen.get("EXENTO", 0)
     return (f"**{ok + exentos} controles de calidad**: {ok} hacen fallar el build y "
-            f"{exentos} están exentos por diseño (documentados)")
+            f"{exentos} no aplican por diseño (documentados en la web)")
 
 
 def _brecha_readme(qnd: dict) -> str:

@@ -17,8 +17,8 @@
 
 -- Antes eran números escritos en app.js (0.8 y 20): ahora viven con el resto de los umbrales.
 INSERT INTO analytics.parametro VALUES
-    ('margen_ejemplo_pesos', 0.20, 'Hallazgo (b): el ejemplo crece en pesos al menos esta proporción menos que la mediana de su grupo (sin margen podría ser la propia mediana)', 'W3; movido de app.js a SQL en la revisión del 16-11-26'),
-    ('min_inst_ejemplo',     20,   'Hallazgo (c): instituciones mínimas para que una carrera sirva de ejemplo (con pocas sería anecdótico)',                                  'W3; ídem');
+    ('margen_ejemplo_pesos', 0.20, 'Tarjeta 2: el ejemplo debe ganar en pesos al menos esta proporción menos que la carrera del medio de su grupo', 'W3; movido de app.js a SQL en la revisión del 16-11-26'),
+    ('min_inst_ejemplo',     20,   'Tarjeta 3: instituciones mínimas para que una carrera sirva de ejemplo',                                  'W3; ídem');
 
 -- --------------------------------------------------------------------------
 -- (a) Al quinto año no siempre se gana más — POR NIVEL
@@ -267,9 +267,9 @@ FROM (SELECT count(*) AS n FROM analytics.hallazgo_dispersion
 -- resiste la corrección por 5 pruebas. La frase de «Qué no dice» que lo afirma la vigila el
 -- control continuidad_sin_relacion: si un dato nuevo muestra relación, el build falla.
 INSERT INTO analytics.parametro VALUES
-    ('min_prog_ejemplo_cont', 5,   'Hallazgo (d): programas mínimos de una carrera técnica para servir de ejemplo de continuidad', 'Hallazgo (d), 18-11-26'),
-    ('max_t_continuidad',     2.6, 'Hallazgo (d): |t| máximo de la correlación continuidad–empleabilidad dentro de cada carrera para afirmar que no la explica (0,05 / 5 pruebas, dos colas)', 'Hallazgo (d), 18-11-26'),
-    ('min_prog_par_cont',     5,   'Hallazgo (d): programas mínimos de un par para entrar en la prueba dentro de cada carrera', 'Hallazgo (d), 18-11-26');
+    ('min_prog_ejemplo_cont', 5,   'Tarjeta 4: instituciones mínimas de una carrera técnica para servir de ejemplo', 'Hallazgo (d), 18-11-26'),
+    ('max_t_continuidad',     2.6, 'Tarjeta 4: fuerza máxima de la relación (estadístico t) entre continuidad de estudios y empleabilidad dentro de cada carrera para decir que no la explica', 'Hallazgo (d), 18-11-26'),
+    ('min_prog_par_cont',     5,   'Tarjeta 4: instituciones mínimas de una carrera para entrar en la prueba de relación', 'Hallazgo (d), 18-11-26');
 
 -- Peso de cada programa: titulaciones SIES de su institución y carrera en las cohortes del indicador.
 CREATE VIEW analytics.v_continuidad_programa AS

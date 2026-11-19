@@ -23,9 +23,9 @@
 -- Requiere 01_par.sql.
 
 INSERT INTO analytics.parametro VALUES
-    ('min_desvio_atipico_pp', 5, 'Desvío mínimo (puntos) de la empleabilidad de la cohorte de los percentiles respecto de sus cohortes previas para marcarla atípica', 'A5 (D5)'),
-    ('min_z_atipico',         2, 'Desvío mínimo en desviaciones estándar de las cohortes previas para marcarla atípica (se exigen ambos umbrales)',                    'A5 (D5)'),
-    ('min_cambio_edad_pp',   15, 'Aumento (puntos) de titulados de 30+ entre la cohorte de los percentiles del 5° año y la del 1er año para marcar la comparación 1°→5° como sesgada por composición', 'A6 (hallazgo de A5)');
+    ('min_desvio_atipico_pp', 5, 'Diferencia mínima (puntos) entre la empleabilidad del grupo del sueldo al 1er año y la de los años anteriores para avisar cohorte atípica', 'A5 (D5)'),
+    ('min_z_atipico',         2, 'Desvío mínimo, en desviaciones estándar de los años anteriores, para avisar cohorte atípica (se exigen los dos umbrales)',                    'A5 (D5)'),
+    ('min_cambio_edad_pp',   15, 'Aumento mínimo (puntos) de titulados de 30 años o más entre los dos grupos para avisar que la comparación mezcla edades', 'A6 (hallazgo de A5)');
 
 -- --------------------------------------------------------------------------
 -- 1. Contexto SIES por par

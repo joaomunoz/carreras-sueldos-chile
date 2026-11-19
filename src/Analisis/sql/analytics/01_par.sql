@@ -26,13 +26,13 @@ INSERT INTO analytics.parametro VALUES
     -- Años que se corren las ventanas SIES de Derecho respecto de modelo.cohorte (MiFuturo usa otra
     -- cohorte para esta carrera: 2020–2022 en vez de 2021–2023). Un solo lugar: antes un +1, en sentido
     -- contrario, estaba escrito en 10 consultas (corregido el 19-11-26, ADR-003).
-    ('corrimiento_derecho', -1,   'Años que se corren las ventanas de titulación de Derecho respecto de las demás carreras (excepción de MiFuturo: un año antes)', 'T4; parámetro desde el 19-11-26 (ADR-003)'),
-    ('min_inst_oferta',     3,    'Instituciones del tipo con titulaciones SIES en ambas ventanas para que el par sea representativo', 'T0 / D2: dos conteos de instituciones'),
-    ('min_pares_celda',     5,    'Pares representativos para que una celda área × tipo × nivel sea referencia',                     'D2'),
-    ('min_share_area',      0.80, 'Proporción de titulaciones del área dominante para asignar el área a la genérica',                'T0 / T4'),
-    ('min_inst_dispersion', 5,    'Instituciones publicadas con el dato para medir dispersión entre instituciones',                  'D1'),
-    ('max_cobertura_baja',  0.75, 'Bajo esta cobertura de titulaciones (peor ventana) el segmento se marca de baja cobertura',       'T5, decisión 2'),
-    ('max_peso_dominante',  0.50, 'Si una carrera supera esta proporción del peso de su celda, la celda deja de ser referencia',     'A3: celdas dominadas (aprobada por el usuario)');
+    ('corrimiento_derecho', -1,   'Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)', 'T4; parámetro desde el 19-11-26 (ADR-003)'),
+    ('min_inst_oferta',     3,    'Instituciones necesarias para que una carrera sea comparable (con 1 o 2, la cifra nacional es la de esas instituciones)', 'T0 / D2: dos conteos de instituciones'),
+    ('min_pares_celda',     5,    'Carreras comparables necesarias para que un área, dentro de un tipo y nivel, tenga carrera del medio propia',                     'D2'),
+    ('min_share_area',      0.80, 'Parte mínima de las titulaciones en un área CINE (clasificación internacional) para asignarla a una carrera; solo contexto',                'T0 / T4'),
+    ('min_inst_dispersion', 5,    'Instituciones con el dato necesarias para comparar las instituciones de una carrera',                  'D1'),
+    ('max_cobertura_baja',  0.75, 'Si los programas que publica MiFuturo reúnen menos de esta parte de los titulados de un tipo y nivel, se avisa baja cobertura',       'T5, decisión 2'),
+    ('max_peso_dominante',  0.50, 'Si una carrera reúne más de esta parte de los titulados de su grupo de área, el grupo no sirve de referencia',     'A3: celdas dominadas (aprobada por el usuario)');
 
 -- Lectura de un parámetro que FALLA si el nombre no existe. Con un subselect simple, un nombre
 -- mal escrito daría NULL y toda comparación contra NULL sería falsa en silencio (p. ej. ningún

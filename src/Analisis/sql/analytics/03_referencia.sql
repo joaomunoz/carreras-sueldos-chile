@@ -33,8 +33,8 @@
 -- El eje x (entrada) conserva el corte "> mediana": sus empates no varían entre % y pesos.
 
 INSERT INTO analytics.parametro VALUES
-    ('margen_tipico_pp',    2,     'Distancia a la mediana del grupo (puntos porcentuales de crecimiento) dentro de la cual el progreso es "típico"', 'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)'),
-    ('margen_tipico_pesos', 20000, 'Ídem en pesos de aumento del P50; equivale a ~2 pp sobre una entrada típica de ~$900 mil',                         'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)');
+    ('margen_tipico_pp',    2,     'Diferencia de crecimiento (puntos porcentuales) con la carrera del medio que se cuenta como empate; también, la caída mínima para decir que se gana menos al 5° año', 'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)'),
+    ('margen_tipico_pesos', 20000, 'Diferencia en pesos con la carrera del medio que se cuenta como empate (unos 2 puntos sobre una entrada de $900.000)',                         'Rediseño de cuadrantes: empates en la mediana (aprobado por el usuario)');
 
 -- --------------------------------------------------------------------------
 -- Miembros de cada grupo de comparación (vista: la usan la tabla y los controles)
