@@ -280,8 +280,8 @@ SELECT p.codigo_institucion, p.clave_carrera_generica, p.tipo_institucion, g.niv
        coalesce((SELECT sum(t.total_titulaciones) FROM modelo.titulacion t
                  WHERE t.codigo_institucion = p.codigo_institucion
                    AND t.clave_carrera_generica = p.clave_carrera_generica
-                   AND t.anio BETWEEN c.desde + (p.clave_carrera_generica = 'DERECHO')::int
-                                  AND c.hasta + (p.clave_carrera_generica = 'DERECHO')::int), 0) AS peso
+                   AND t.anio BETWEEN c.desde + (p.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                  AND c.hasta + (p.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int), 0) AS peso
 FROM modelo.mifuturo_programa p
 JOIN modelo.carrera_generica g USING (clave_carrera_generica)
 CROSS JOIN c;

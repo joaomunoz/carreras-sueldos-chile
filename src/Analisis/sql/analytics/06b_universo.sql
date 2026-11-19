@@ -77,10 +77,10 @@ sexo AS (   -- directo de modelo.titulacion, con el mismo corrimiento de Derecho
     JOIN modelo.carrera_generica g USING (clave_carrera_generica)
     CROSS JOIN c1 CROSS JOIN c5
     CROSS JOIN LATERAL (SELECT CASE
-        WHEN t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                        AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int THEN '1er'
-        WHEN t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                        AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int THEN '5to' END AS ventana) v
+        WHEN t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                        AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int THEN '1er'
+        WHEN t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                        AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int THEN '5to' END AS ventana) v
     WHERE v.ventana IS NOT NULL
     GROUP BY 1, 2
 ),
@@ -138,7 +138,7 @@ FROM (SELECT count(*) AS n
                                JOIN modelo.carrera_generica g USING (clave_carrera_generica)
                                WHERE t.clave_carrera_generica = 'DERECHO' AND g.nivel_carrera = a.nivel_carrera), 0)
                    + coalesce((SELECT sum(t.total_titulaciones) FROM modelo.titulacion t
-                               JOIN analytics.universo_anual b ON b.anio + 1 = t.anio AND b.ventana = a.ventana
+                               JOIN analytics.universo_anual b ON b.anio + analytics.param('corrimiento_derecho')::int = t.anio AND b.ventana = a.ventana
                                     AND b.nivel_carrera = a.nivel_carrera
                                JOIN modelo.carrera_generica g USING (clave_carrera_generica)
                                WHERE t.clave_carrera_generica = 'DERECHO' AND g.nivel_carrera = a.nivel_carrera), 0) AS total

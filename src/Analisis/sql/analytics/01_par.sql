@@ -23,6 +23,10 @@ CREATE TABLE analytics.parametro (
 );
 
 INSERT INTO analytics.parametro VALUES
+    -- Años que se corren las ventanas SIES de Derecho respecto de modelo.cohorte (MiFuturo usa otra
+    -- cohorte para esta carrera: 2020–2022 en vez de 2021–2023). Un solo lugar: antes un +1, en sentido
+    -- contrario, estaba escrito en 10 consultas (corregido el 19-11-26, ADR-003).
+    ('corrimiento_derecho', -1,   'Años que se corren las ventanas de titulación de Derecho respecto de las demás carreras (excepción de MiFuturo: un año antes)', 'T4; parámetro desde el 19-11-26 (ADR-003)'),
     ('min_inst_oferta',     3,    'Instituciones del tipo con titulaciones SIES en ambas ventanas para que el par sea representativo', 'T0 / D2: dos conteos de instituciones'),
     ('min_pares_celda',     5,    'Pares representativos para que una celda área × tipo × nivel sea referencia',                     'D2'),
     ('min_share_area',      0.80, 'Proporción de titulaciones del área dominante para asignar el área a la genérica',                'T0 / T4'),
@@ -70,11 +74,11 @@ x AS (
     SELECT i.tipo_institucion, g.nivel_carrera,
            p.codigo_institucion IS NOT NULL AS publicado,
            sum(t.total_titulaciones) FILTER (
-               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int) AS tit_1,
+               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) AS tit_1,
            sum(t.total_titulaciones) FILTER (
-               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int) AS tit_5
+               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) AS tit_5
     FROM modelo.titulacion t
     JOIN modelo.institucion i USING (codigo_institucion)
     JOIN modelo.carrera_generica g USING (clave_carrera_generica)
@@ -121,7 +125,7 @@ CREATE TABLE analytics.par (
     celda_valida            boolean  NOT NULL,   -- su celda área (MiFuturo) × tipo × nivel es referencia
     referencia              text     CHECK (referencia IN ('celda', 'segmento')),  -- NULL = no comparable
     baja_cobertura          boolean  NOT NULL,   -- heredada del segmento
-    es_derecho              boolean  NOT NULL,   -- cohortes desplazadas +1 año
+    es_derecho              boolean  NOT NULL,   -- cohortes desplazadas corrimiento_derecho años
     PRIMARY KEY (clave_carrera_generica, tipo_institucion),
     FOREIGN KEY (clave_carrera_generica, tipo_institucion) REFERENCES modelo.mifuturo_estadistica,
     FOREIGN KEY (tipo_institucion, nivel_carrera) REFERENCES analytics.segmento
@@ -136,11 +140,11 @@ WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.co
 inst AS (
     SELECT i.tipo_institucion, t.clave_carrera_generica, t.codigo_institucion,
            coalesce(sum(t.total_titulaciones) FILTER (
-               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int), 0) AS tit_1,
+               WHERE t.anio BETWEEN c1.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                AND c1.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int), 0) AS tit_1,
            coalesce(sum(t.total_titulaciones) FILTER (
-               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int
-                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int), 0) AS tit_5
+               WHERE t.anio BETWEEN c5.desde + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                AND c5.hasta + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int), 0) AS tit_5
     FROM modelo.titulacion t
     JOIN modelo.institucion i USING (codigo_institucion)
     CROSS JOIN c1 CROSS JOIN c5

@@ -27,6 +27,12 @@
    "origen": "T4, auditoría 05"
   },
   {
+   "nombre": "corrimiento_derecho",
+   "valor": -1,
+   "descripcion": "Años que se corren las ventanas de titulación de Derecho respecto de las demás carreras (excepción de MiFuturo: un año antes)",
+   "origen": "T4; parámetro desde el 19-11-26 (ADR-003)"
+  },
+  {
    "nombre": "margen_ejemplo_pesos",
    "valor": 0.2,
    "descripcion": "Hallazgo (b): el ejemplo crece en pesos al menos esta proporción menos que la mediana de su grupo (sin margen podría ser la propia mediana)",
@@ -790,7 +796,7 @@
     "objeto": "embudo_anidado",
     "estado": "OK",
     "umbral": "tit_sies >= tit_con_estadistica >= tit_comparables en las 4 filas",
-    "detalle": "1er Carreras Profesionales: 434938 ≥ 422046 ≥ 407234; 1er Carreras Técnicas: 252293 ≥ 238680 ≥ 231114; 5to Carreras Profesionales: 364283 ≥ 351112 ≥ 340521; 5to Carreras Técnicas: 250963 ≥ 235985 ≥ 228851"
+    "detalle": "1er Carreras Profesionales: 431692 ≥ 418800 ≥ 403988; 1er Carreras Técnicas: 252293 ≥ 238680 ≥ 231114; 5to Carreras Profesionales: 361775 ≥ 348604 ≥ 338013; 5to Carreras Técnicas: 250963 ≥ 235985 ≥ 228851"
    },
    {
     "control": "analytics_universo",
@@ -1069,7 +1075,7 @@
    "nivel": "Carreras Profesionales",
    "cobertura": [
     90.3,
-    86.4
+    86.3
    ],
    "baja_cobertura": false,
    "pares": 97,
@@ -2324,9 +2330,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 880598,
-   "q50": 1046881,
+   "q50": 1029714,
    "q75": 1317860,
-   "q50_clave": "INGENIERIA EN CONSTRUCCION"
+   "q50_clave": "INGENIERIA EN MEDIO AMBIENTE"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2338,9 +2344,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 1221325,
-   "q50": 1576091,
+   "q50": 1547860,
    "q75": 2008881,
-   "q50_clave": "CONTADOR AUDITOR"
+   "q50_clave": "INGENIERIA EN CONSTRUCCION"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2352,9 +2358,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 339403,
-   "q50": 573466,
+   "q50": 560948,
    "q75": 724190,
-   "q50_clave": "ODONTOLOGIA"
+   "q50_clave": "PUBLICIDAD"
   },
   {
    "grupo": "segmento|Universidad|Carreras Profesionales",
@@ -2366,9 +2372,9 @@
    "n_pares": 91,
    "peso_max_pct": 8.6,
    "q25": 35.0,
-   "q50": 48.5,
+   "q50": 48.7,
    "q75": 64.0,
-   "q50_clave": "INGENIERIA CIVIL INDUSTRIAL"
+   "q50_clave": "INGENIERIA EN BIOTECNOLOGIA Y BIOINGENIERIA"
   },
   {
    "grupo": "segmento|Universidad|Carreras Técnicas",
@@ -2530,7 +2536,7 @@
      "nivel": "Carreras Profesionales",
      "medida": "pesos",
      "zona": "entrada baja · progresa más",
-     "n": 27
+     "n": 28
     },
     {
      "nivel": "Carreras Profesionales",
@@ -2542,7 +2548,7 @@
      "nivel": "Carreras Profesionales",
      "medida": "pesos",
      "zona": "progreso típico",
-     "n": 18
+     "n": 17
     },
     {
      "nivel": "Carreras Técnicas",
@@ -2740,14 +2746,14 @@
   "totales": [
    {
     "ventana": "1er",
-    "sies": 687231,
-    "comparables": 638348,
+    "sies": 683985,
+    "comparables": 635102,
     "pct_comparables": 92.9
    },
    {
     "ventana": "5to",
-    "sies": 615246,
-    "comparables": 569372,
+    "sies": 612738,
+    "comparables": 566864,
     "pct_comparables": 92.5
    }
   ],
@@ -2778,12 +2784,12 @@
    {
     "ventana": "1er",
     "nivel": "Carreras Profesionales",
-    "sies": 434938,
-    "con_estadistica": 422046,
-    "comparables": 407234,
+    "sies": 431692,
+    "con_estadistica": 418800,
+    "comparables": 403988,
     "n_comparables": 125,
-    "mujeres": 240386,
-    "hombres": 194551,
+    "mujeres": 238476,
+    "hombres": 193215,
     "otro": 1,
     "pct_mujeres": 55,
     "pct_hombres": 45
@@ -2804,12 +2810,12 @@
    {
     "ventana": "5to",
     "nivel": "Carreras Profesionales",
-    "sies": 364283,
-    "con_estadistica": 351112,
-    "comparables": 340521,
+    "sies": 361775,
+    "con_estadistica": 348604,
+    "comparables": 338013,
     "n_comparables": 125,
-    "mujeres": 200733,
-    "hombres": 163550,
+    "mujeres": 199355,
+    "hombres": 162420,
     "otro": 0,
     "pct_mujeres": 55,
     "pct_hombres": 45
@@ -24842,10 +24848,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 80127,
-    "p50_anio_5": -95576,
+    "p50_anio_1": 97294,
+    "p50_anio_5": -67345,
     "emp1_nacional": 0.0,
-    "razon_entrada": 1.08
+    "razon_entrada": 1.09
    },
    "area_ficha": {
     "n_area": 15,
@@ -25232,10 +25238,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -250281,
-    "p50_anio_5": -573083,
+    "p50_anio_1": -233114,
+    "p50_anio_5": -544852,
     "emp1_nacional": -30.9,
-    "razon_entrada": 0.76
+    "razon_entrada": 0.77
    },
    "area_ficha": {
     "n_area": 15,
@@ -25413,10 +25419,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 17079,
-    "p50_anio_5": 96222,
+    "p50_anio_1": 34246,
+    "p50_anio_5": 124453,
     "emp1_nacional": -9.8,
-    "razon_entrada": 1.02
+    "razon_entrada": 1.03
    },
    "area_ficha": {
     "n_area": 4,
@@ -26165,10 +26171,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 39494,
-    "p50_anio_5": -240333,
+    "p50_anio_1": 56661,
+    "p50_anio_5": -212102,
     "emp1_nacional": -3.0,
-    "razon_entrada": 1.04
+    "razon_entrada": 1.06
    },
    "area_ficha": {
     "n_area": 3,
@@ -27358,16 +27364,16 @@
     "cuartil_p50_delta_1_5": 3,
     "entrada_alta": false,
     "cuadrante_pct": "entrada baja · progresa más",
-    "cuadrante_pesos": "entrada baja · progreso típico",
+    "cuadrante_pesos": "entrada baja · progresa más",
     "progreso_pct": "más",
-    "progreso_pesos": "típico",
+    "progreso_pesos": "más",
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -61152,
-    "p50_anio_5": 0,
+    "p50_anio_1": -43985,
+    "p50_anio_5": 28231,
     "emp1_nacional": 7.3,
-    "razon_entrada": 0.94
+    "razon_entrada": 0.96
    },
    "area_ficha": {
     "n_area": 15,
@@ -27485,11 +27491,11 @@
     "promedio_enganoso": true
    },
    "conteos": {
-    "n_inst_oferta": 45,
+    "n_inst_oferta": 42,
     "n_pub_emp1": 31,
     "n_pub_emp2": 30,
     "n_pub_tramo": 26,
-    "peso": 24264
+    "peso": 18510
    },
    "media": {
     "anio": [
@@ -27559,10 +27565,10 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 414925,
-    "p50_anio_5": 481230,
+    "p50_anio_1": 432092,
+    "p50_anio_5": 509461,
     "emp1_nacional": -2.9,
-    "razon_entrada": 1.4
+    "razon_entrada": 1.42
    },
    "area_ficha": {
     "n_area": 1,
@@ -27592,26 +27598,26 @@
    },
    "contexto": {
     "pct_mujeres": [
-     53.7,
-     51.8
+     52.1,
+     50.8
     ],
     "fuera30_rango": [
-     16.5,
-     29.8
+     16.4,
+     32.1
     ],
     "pct_plan_continuidad": null,
     "oferta_joven": [
-     7356,
-     9516
+     5543,
+     7002
     ],
-    "var_oferta_joven_pct": 29.4,
+    "var_oferta_joven_pct": 26.3,
     "mayores30_cohorte_p5": [
-     15.1,
-     30.6
+     16.4,
+     32.2
     ],
     "mayores30_cohorte_p1": [
-     15.2,
-     27.6
+     16.8,
+     32.1
     ]
    },
    "estabilidad": {
@@ -31385,10 +31391,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 270979,
-    "p50_anio_5": 432790,
+    "p50_anio_1": 288146,
+    "p50_anio_5": 461021,
     "emp1_nacional": 4.0,
-    "razon_entrada": 1.26
+    "razon_entrada": 1.28
    },
    "area_ficha": {
     "n_area": 15,
@@ -32087,10 +32093,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 104398,
-    "p50_anio_5": -60178,
+    "p50_anio_1": 121565,
+    "p50_anio_5": -31947,
     "emp1_nacional": 2.8,
-    "razon_entrada": 1.1
+    "razon_entrada": 1.12
    },
    "area_ficha": {
     "n_area": 15,
@@ -32640,10 +32646,10 @@
     "cambia_cuadrante": true
    },
    "dif_grupo": {
-    "p50_anio_1": 279009,
-    "p50_anio_5": 345165,
+    "p50_anio_1": 296176,
+    "p50_anio_5": 373396,
     "emp1_nacional": 9.3,
-    "razon_entrada": 1.27
+    "razon_entrada": 1.29
    },
    "area_ficha": {
     "n_area": 15,
@@ -34570,10 +34576,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -91880,
-    "p50_anio_5": -282855,
+    "p50_anio_1": -74713,
+    "p50_anio_5": -254624,
     "emp1_nacional": -8.6,
-    "razon_entrada": 0.91
+    "razon_entrada": 0.93
    },
    "area_ficha": {
     "n_area": 15,
@@ -34891,10 +34897,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": 70709,
-    "p50_anio_5": -122630,
+    "p50_anio_1": 87876,
+    "p50_anio_5": -94399,
     "emp1_nacional": 6.6,
-    "razon_entrada": 1.07
+    "razon_entrada": 1.09
    },
    "area_ficha": {
     "n_area": 4,
@@ -35750,10 +35756,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -260219,
-    "p50_anio_5": -401292,
+    "p50_anio_1": -243052,
+    "p50_anio_5": -373061,
     "emp1_nacional": -43.2,
-    "razon_entrada": 0.75
+    "razon_entrada": 0.76
    },
    "area_ficha": {
     "n_area": 3,
@@ -36126,10 +36132,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -154606,
-    "p50_anio_5": -304774,
+    "p50_anio_1": -137439,
+    "p50_anio_5": -276543,
     "emp1_nacional": -12.1,
-    "razon_entrada": 0.85
+    "razon_entrada": 0.87
    },
    "area_ficha": {
     "n_area": 4,
@@ -45316,10 +45322,10 @@
     "cambia_cuadrante": false
    },
    "dif_grupo": {
-    "p50_anio_1": -324081,
-    "p50_anio_5": -703542,
+    "p50_anio_1": -306914,
+    "p50_anio_5": -675311,
     "emp1_nacional": -36.5,
-    "razon_entrada": 0.69
+    "razon_entrada": 0.7
    },
    "area_ficha": {
     "n_area": 3,

@@ -231,10 +231,10 @@ SELECT med_emp, med_tramo, n_emp, n_tramo FROM (
          c4 AS (SELECT cohorte_desde AS d, cohorte_hasta AS h FROM modelo.cohorte WHERE indicador = 'tramo_ingreso_4to_anio_institucion'),
     peso AS (
         SELECT t.codigo_institucion, t.clave_carrera_generica,
-               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c1.d + (t.clave_carrera_generica = 'DERECHO')::int
-                                                                  AND c1.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w1,
-               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c4.d + (t.clave_carrera_generica = 'DERECHO')::int
-                                                                  AND c4.h + (t.clave_carrera_generica = 'DERECHO')::int) AS w4
+               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c1.d + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                                                  AND c1.h + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) AS w1,
+               sum(t.total_titulaciones) FILTER (WHERE t.anio BETWEEN c4.d + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int
+                                                                  AND c4.h + (t.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int) AS w4
         FROM modelo.titulacion t CROSS JOIN c1 CROSS JOIN c4
         GROUP BY 1, 2
     ),

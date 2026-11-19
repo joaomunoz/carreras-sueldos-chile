@@ -80,12 +80,18 @@
       explica: function () {
         return "MiFuturo publica programas que reúnen menos del " + fmtEntero.format(parametro("max_cobertura_baja") * 100) + " % de los titulados de este tipo de institución y nivel.";
       } },
-    { id: "derecho", texto: "Cohortes +1 año",
+    { id: "derecho", texto: "Cohortes de otro año",
       aplica: function (p) { return p.marcas.es_derecho; },
       explica: function () {
-        return "Derecho se mide con las cohortes corridas un año, porque la titulación efectiva llega meses después del último trámite en la universidad.";
+        return "Derecho se mide con titulados de " + corrDerechoTexto() + " que las demás carreras (así lo publica MiFuturo): su título se entrega meses después del último trámite en la universidad, y su primer año de trabajo empieza más tarde.";
       } }
   ];
+
+  // «un año antes / después», desde el parámetro (ADR-003): ningún texto fija el sentido a mano.
+  function corrDerechoTexto() {
+    var c = parametro("corrimiento_derecho");
+    return (Math.abs(c) === 1 ? "un año" : Math.abs(c) + " años") + (c < 0 ? " antes" : " después");
+  }
 
   function timbre(def) {
     var nodo = el("span", "timbre", def.texto);
@@ -362,7 +368,7 @@
     }).join("; ");
     document.getElementById("universo-nota").textContent =
       "Se cuentan títulos, no personas: quien obtiene dos títulos cuenta dos veces. " +
-      "Derecho se cuenta un año después, como en el resto del análisis, porque su titulación llega meses después del último trámite." +
+      "Derecho se cuenta " + corrDerechoTexto() + ", como en el resto del análisis, porque así lo publica MiFuturo: su título se entrega meses después del último trámite." +
       (notaOtro ? " " + notaOtro.charAt(0).toUpperCase() + notaOtro.slice(1) + " y no entra en los porcentajes por sexo." : "");
 
     var cuerpo = document.querySelector("#universo-tabla tbody");
@@ -1838,7 +1844,7 @@
     fichaActual = p;
     var art = document.getElementById("ficha-contenido");
     art.replaceChildren();
-    var corr = p.marcas.es_derecho ? 1 : 0;
+    var corr = p.marcas.es_derecho ? parametro("corrimiento_derecho") : 0;   // ADR-003
     // Un solo tooltip para las franjas del grupo (el artículo es el marco de posición).
     var tipGrupo = el("div", "tooltip");
     tipGrupo.hidden = true;
@@ -2019,7 +2025,7 @@
       // cohortes y años de ingreso que los rangos (no con el 1er y 5° año de arriba).
       // Solo si alguna institución publica su rango: sin rangos no hay con qué compararlo.
       if (progs.some(function (g) { return g.tramo; })) {
-        var corrD = p.marcas.es_derecho ? 1 : 0;
+        var corrD = p.marcas.es_derecho ? parametro("corrimiento_derecho") : 0;
         var dl4 = el("dl", "liq");
         liq(dl4, "Promedio nacional al 4° año (titulados " + ventana("ingreso_medio_4to_anio", corrD) + ", ingresos " +
           aniosIngreso("ingreso_medio_4to_anio") + ")", pesos(p.media.anio[3]));
@@ -2111,9 +2117,9 @@
         ventana("percentiles_anio_1", corr) + " (1er año) y " + ventana("percentiles_anio_5", corr) + " (5° año).",
       "Promedio por año: cada año junta tres cohortes de titulados (del " + ventana("ingreso_medio_1er_anio", corr) + " al 1er año al " +
         ventana("ingreso_medio_5to_anio", corr) + " al 5°), medidas con los ingresos " + aniosIngreso("ingreso_medio_1er_anio") +
-        ". No son las mismas personas en el tiempo." + (p.marcas.es_derecho ? " En Derecho las cohortes van corridas un año." : ""),
-      "Empleabilidad: " + datos.meta.rotulo_empleabilidad.replace(">=", "≥") + "; titulados " + ventana("empleabilidad_1er_anio_nacional") +
-        " (1er año) y " + ventana("empleabilidad_2do_anio_nacional") + " (2° año).",
+        ". No son las mismas personas en el tiempo." + (p.marcas.es_derecho ? " En Derecho, los titulados son de " + corrDerechoTexto() + " que en las demás carreras." : ""),
+      "Empleabilidad: " + datos.meta.rotulo_empleabilidad.replace(">=", "≥") + "; titulados " + ventana("empleabilidad_1er_anio_nacional", corr) +
+        " (1er año) y " + ventana("empleabilidad_2do_anio_nacional", corr) + " (2° año).",
       "Titulados, sexo y duración: SIES y MiFuturo, " + anioTit + ". Edad: titulaciones SIES de todas las instituciones de este tipo; es un rango porque el SIES agrupa de 30 a 34 años."
     ].forEach(function (f) { ul.appendChild(el("li", null, f)); });
     pie.appendChild(ul);
@@ -2584,7 +2590,7 @@
     });
     var nota = el("p", "nota", "El sueldo típico existe solo al 1er y 5° año (nacional); el promedio, del 1° al 5° año (nacional); " +
       "por institución, solo un rango al 4° año. Por eso el análisis compara el 1er con el 5° año, y las instituciones, al 4°. " +
-      "Derecho usa en todas las cifras las cohortes corridas un año.");
+      "Derecho usa en todas las cifras titulados de " + corrDerechoTexto() + " que las demás carreras (así lo publica MiFuturo).");
     document.getElementById("tabla-cohortes").parentNode.parentNode.appendChild(nota);
 
     var cp = document.querySelector("#tabla-parametros tbody");

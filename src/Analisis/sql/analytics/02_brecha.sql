@@ -30,7 +30,7 @@ CREATE TABLE analytics.hito (
     incluye_rebote    boolean  NOT NULL    -- ídem anio_rebote_titulacion
 );
 COMMENT ON TABLE analytics.hito IS
-    'Cohortes de la media de cada año k (modelo.cohorte). Derecho usa cohortes +1: su marca puede diferir (ver analytics.par.es_derecho).';
+    'Cohortes de la media de cada año k (modelo.cohorte). Derecho usa cohortes corridas (corrimiento_derecho): su marca puede diferir (ver analytics.par.es_derecho).';
 
 INSERT INTO analytics.hito
 SELECT k, c.indicador, c.cohorte_desde, c.cohorte_hasta,

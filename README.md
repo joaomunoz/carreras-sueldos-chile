@@ -26,6 +26,8 @@
 > **Corrección (17-11-26).** El hallazgo 1 daba una sola mediana de crecimiento para las 210 carreras comparables (+29,3 %), que mezclaba técnicas y profesionales y no describía a ninguno de los dos niveles. Ahora se informa por nivel.
 >
 > **Cambio de método (18-11-26).** Los grupos de comparación usan ahora el área del conocimiento de MiFuturo en vez del área CINE ([ADR-002](src/BD/ADR-002-area-de-referencia.md)): quien busca una carrera piensa por interés, y la CINE separaba, por ejemplo, Telecomunicaciones de Informática. Siguen siendo 14 grupos con área propia; 27 carreras ganan uno y 17 pasan a compararse con todas las de su tipo y nivel. El hallazgo 2 pasó de 10 a 13 carreras profesionales; su ejemplo, Ingeniería en Alimentos, conserva sus cifras.
+>
+> **Cambio de método (19-11-26).** Derecho se mide ahora con titulados de un año **antes** que las demás carreras (2020–2022 en vez de 2021–2023), como lo publica MiFuturo; antes se corría un año después ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)). Cambian el peso y los datos de contexto de Derecho y la carrera del medio de las profesionales universitarias sin área propia; los hallazgos no cambian.
 
 ---
 
@@ -99,6 +101,7 @@ docs/                  index.html (la web), datos.json y captura.png
 | Decisión | Contexto | Alternativa descartada |
 |---|---|---|
 | **La media y los percentiles nunca se combinan** | La media de cada año junta tres cohortes con ingresos 2022–2024; los percentiles usan una sola cohorte con ingresos 2024. Son poblaciones distintas | `Media / P50` (mezclaría poblaciones) |
+| **Derecho se mide con titulados de un año antes** | Así lo publica MiFuturo (su título llega meses después del último trámite); el corrimiento vive en un solo parámetro ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)) | Correrlo un año después (lo que se hacía antes del 19-11-26) |
 | **Comparable = 3 o más instituciones la ofrecen** | Con 1 o 2, la "cifra nacional" es en realidad la de una institución | Comparar todas (42 de 252 carreras serían anécdotas) |
 | **El área de cada grupo es la de MiFuturo, no la CINE** | Quien busca una carrera piensa por interés y ve esa clasificación en MiFuturo; la CINE separaba Telecomunicaciones de Informática | Mantener la CINE (dejaba Informática contra las 91 profesionales universitarias); usar ambas en cascada (dos clasificaciones en una misma página) |
 | **Un grupo de área deja de ser referencia si una carrera pesa más del 50 %** | Con pesos por titulados, la mediana del grupo sería el valor de esa carrera | Avisarlo sin cambiar la referencia; mediana sin ponderar (mezcla criterios) |

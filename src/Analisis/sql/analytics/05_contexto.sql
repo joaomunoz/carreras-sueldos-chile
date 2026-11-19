@@ -75,9 +75,9 @@ WITH c AS (
            max(cohorte_desde) FILTER (WHERE indicador = 'percentiles_anio_5')     AS p5
     FROM modelo.cohorte
 ),
-t AS (  -- cada fila SIES con la ventana a la que pertenece (Derecho +1)
+t AS (  -- cada fila SIES con la ventana a la que pertenece (Derecho corrido corrimiento_derecho años)
     SELECT i.tipo_institucion, x.*,
-           x.anio - (x.clave_carrera_generica = 'DERECHO')::int AS anio_ref,
+           x.anio - (x.clave_carrera_generica = 'DERECHO')::int * analytics.param('corrimiento_derecho')::int AS anio_ref,
            x.carrera_clasificacion_nivel_1 = 'Licenciatura No Conducente a Título' AS es_lnc,
            x.titulados_15_19 + x.titulados_20_24 + x.titulados_25_29 AS jovenes,
            x.titulados_35_39 + x.titulados_mayores_40 AS mayores35,
