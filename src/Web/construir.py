@@ -12,8 +12,10 @@ HALLAZGOS:FIN) desde datos.json["hallazgos"]: así el README y la web citan las 
 se calculan en SQL con controles qa (src/Analisis/sql/analytics/06_hallazgos.sql). Copiarlas a mano
 fue como un error de la web llegó también al README. Por la misma razón regenera el conteo de
 controles (entre CONTROLES:INICIO y CONTROLES:FIN) desde datos.json["qa"]["resumen"]: escrito a
-mano, ya se había desactualizado una vez. Y la brecha cifra nacional − instituciones (dos pares
-BRECHA:INICIO/FIN) desde datos.json["que_no_dice"]["brecha_nacional_instituciones"].
+mano, ya se había desactualizado una vez. Y la brecha cifra nacional − instituciones (BRECHA:INICIO/FIN)
+desde datos.json["que_no_dice"]["brecha_nacional_instituciones"]. Las demás cifras sueltas del README
+(universo, cobertura, umbrales, cohortes) van entre <!-- DATO:clave --> y <!-- /DATO -->, con una lista
+cerrada de claves (_datos_readme): una clave desconocida o un marcador sin cerrar detiene el build.
 
 Por qué incrustar todo: abierta con doble clic (file://), la página no puede leer un JSON
 externo (el navegador lo bloquea), y el requisito es cero dependencias externas.
@@ -32,6 +34,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -46,9 +49,12 @@ FIN = "<!-- HALLAZGOS:FIN -->"
 # Marcadores en línea: el conteo vive dentro de una viñeta del README, no en un bloque propio.
 CONTROLES_INICIO = "<!-- CONTROLES:INICIO -->"
 CONTROLES_FIN = "<!-- CONTROLES:FIN -->"
-# La brecha cifra nacional − instituciones aparece dos veces en el README (viñeta y tabla de decisiones).
+# La brecha cifra nacional − instituciones aparece una vez (Metodología; antes dos, 20-11-26).
 BRECHA_INICIO = "<!-- BRECHA:INICIO -->"
 BRECHA_FIN = "<!-- BRECHA:FIN -->"
+DATO_ABRE = "<!-- DATO:"
+DATO_CIERRA = "<!-- /DATO -->"
+DATO_RE = re.compile(r"<!-- DATO:([a-z0-9_]+) -->(.*?)<!-- /DATO -->", re.S)
 
 
 def _leer(ruta: Path) -> str:
@@ -191,6 +197,55 @@ def _brecha_readme(qnd: dict) -> str:
             f"+{_num(b['tramo_pct'], 1)} % en el rango de ingreso al 4° año")
 
 
+def _rango(par) -> str:
+    return str(par[0]) if par[0] == par[1] else f"{par[0]}–{par[1]}"
+
+
+def _datos_readme(datos: dict, bytes_html: int) -> dict[str, str]:
+    """Cifras sueltas del README (pedido del 20-11-26: cero cifras escritas a mano). Lista cerrada:
+    cada clave sale de datos.json (o del tamaño de la web recién escrita), nunca de un literal."""
+    q, par = datos["que_no_dice"], {x["nombre"]: x["valor"] for x in datos["parametros"]}
+    coh = {c["indicador"]: c for c in datos["cohortes"]}
+    unidad = datos["meta"]["unidad_ingresos"]   # «pesos de septiembre de 2025; ingreso bruto…»
+    if not unidad.startswith("pesos de "):
+        raise SystemExit(f"meta.unidad_ingresos con formato inesperado: {unidad!r}")
+    return {
+        "pares_total": _num(q["pares_total"]),
+        "pares_comparables": _num(q["pares_comparables"]),
+        "pares_no_representativos": _num(q["pares_no_representativos"]),
+        "cobertura_1er": _num(q["cobertura_titulaciones"][0], 1) + " %",
+        "cobertura_5to": _num(q["cobertura_titulaciones"][1], 1) + " %",
+        "cohortes_atipicas": _num(q["cohortes_atipicas"]),
+        "cohortes_atipicas_salud": _num(q["cohortes_atipicas_salud"]),
+        "min_inst_oferta": _num(par["min_inst_oferta"]),
+        "min_pares_celda": _num(par["min_pares_celda"]),
+        "max_peso_dominante": _num(par["max_peso_dominante"] * 100) + " %",
+        "min_iqr_enganoso": _num(par["min_iqr_enganoso"]),
+        "margen_tipico_pp": _num(par["margen_tipico_pp"]),
+        "margen_tipico_pesos": "$" + _num(par["margen_tipico_pesos"]),
+        "anios_pandemia": _rango([par["anio_caida_titulacion"], par["anio_rebote_titulacion"]]),
+        "anios_sies": _rango(coh["titulados_sies"]["cohortes"]),
+        "anios_ingreso": _rango(coh["ingreso_medio_1er_anio"]["anios_ingreso"]),
+        "cohortes_media_1": _rango(coh["ingreso_medio_1er_anio"]["cohortes"]),
+        "cohortes_media_5": _rango(coh["ingreso_medio_5to_anio"]["cohortes"]),
+        "cohorte_p1": _rango(coh["percentiles_anio_1"]["cohortes"]),
+        "cohorte_p5": _rango(coh["percentiles_anio_5"]["cohortes"]),
+        "ingreso_percentiles": _rango(coh["percentiles_anio_1"]["anios_ingreso"]),
+        "pesos_de": unidad.split(";")[0][len("pesos de "):],
+        "peso_web": _num(bytes_html / 1024 / 1024, 1) + " MB",
+    }
+
+
+def _reemplazar_datos(texto: str, valores: dict[str, str]) -> str:
+    abiertos, cerrados, hallados = texto.count(DATO_ABRE), texto.count(DATO_CIERRA), DATO_RE.findall(texto)
+    if not (abiertos == cerrados == len(hallados)):
+        raise SystemExit(f"README.md: marcadores DATO mal formados ({abiertos} abren, {cerrados} cierran, {len(hallados)} válidos).")
+    desconocidas = sorted({k for k, _ in hallados} - set(valores))
+    if desconocidas:
+        raise SystemExit(f"README.md: claves DATO desconocidas: {', '.join(desconocidas)}")
+    return DATO_RE.sub(lambda m: DATO_ABRE + m.group(1) + " -->" + valores[m.group(1)] + DATO_CIERRA, texto)
+
+
 def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str, veces: int = 1) -> str:
     if texto.count(inicio) != veces or texto.count(fin) != veces:
         raise SystemExit(f"README.md debe tener {veces} vez/veces cada marcador {inicio} / {fin}.")
@@ -202,12 +257,13 @@ def _reemplazar_bloque(texto: str, inicio: str, fin: str, contenido: str, veces:
     return salida
 
 
-def _actualizar_readme(datos: dict) -> None:
+def _actualizar_readme(datos: dict, bytes_html: int) -> None:
     texto = _leer(README)
     nuevo = _reemplazar_bloque(texto, INICIO, FIN, "\n" + _hallazgos_readme(datos["hallazgos"],
                        next(x["valor"] for x in datos["parametros"] if x["nombre"] == "margen_tipico_pp")) + "\n")
     nuevo = _reemplazar_bloque(nuevo, CONTROLES_INICIO, CONTROLES_FIN, _controles_readme(datos["qa"]))
-    nuevo = _reemplazar_bloque(nuevo, BRECHA_INICIO, BRECHA_FIN, _brecha_readme(datos["que_no_dice"]), veces=2)
+    nuevo = _reemplazar_bloque(nuevo, BRECHA_INICIO, BRECHA_FIN, _brecha_readme(datos["que_no_dice"]))
+    nuevo = _reemplazar_datos(nuevo, _datos_readme(datos, bytes_html))
     if nuevo != texto:   # sin cambios no se reescribe: git no ve diferencias falsas
         temporal = README.with_suffix(".md.tmp")
         temporal.write_text(nuevo, encoding="utf-8")
@@ -238,7 +294,7 @@ def construir() -> str:
     temporal = SALIDA.with_suffix(".html.tmp")
     temporal.write_text(html, encoding="utf-8")
     temporal.replace(SALIDA)
-    _actualizar_readme(datos)   # después de index.html: si la web no se construye, el README no cambia
+    _actualizar_readme(datos, len(html.encode("utf-8")))   # después de index.html: si la web no se construye, el README no cambia
     return hashlib.sha256(html.encode("utf-8")).hexdigest()
 
 
