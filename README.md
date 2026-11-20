@@ -6,7 +6,7 @@
 
 ![Portada de la web: título, qué es el proyecto, qué muestra y las cuatro tarjetas de hallazgos](docs/captura.png)
 
-**Ver la web:** abre [`docs/index.html`](docs/index.html) con doble clic. Es un solo archivo (≈ 1,4 MB) con los datos incluidos, sin servidor ni conexión a internet.
+**Ver la web:** [joaomunoz.github.io/carreras-sueldos-chile](https://joaomunoz.github.io/carreras-sueldos-chile/). También funciona sin conexión: abre [`docs/index.html`](docs/index.html) con doble clic; es un solo archivo (≈ 1,4 MB) con los datos incluidos.
 
 ---
 
