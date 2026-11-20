@@ -97,31 +97,40 @@ def _num(valor: float, decimales: int = 0) -> str:
 
 
 def _hallazgos_readme(h: dict, margen: float) -> str:
-    """margen: margen_tipico_pp; una caída menor se cuenta como empate (19-11-26)."""
+    """margen: margen_tipico_pp; una caída menor se cuenta como empate (19-11-26).
+
+    Cada hallazgo lleva una frase principal limpia (y a lo más una segunda, corta); los umbrales y
+    definiciones van en un <details> «Precisiones» dentro del mismo bloque generado, para que también
+    salgan de datos.json y no queden escritos a mano (pedido del 20-11-26: README escaneable).
+    """
     b, c = h["pct_pesos"], h["dispersion"]
     # (a) por nivel: técnicas y profesionales nunca se resumen con una misma mediana.
     nivel = {x["nivel"]: x for x in h["edad"]}
     tec, pro = nivel.get("Carreras Técnicas"), nivel.get("Carreras Profesionales")
     if tec is None or pro is None:
         raise SystemExit("datos.json no trae el hallazgo (a) para técnicas y profesionales: exportar de nuevo.")
-    items = []
+    items, precisiones = [], []
     if tec["n_negativos"] or pro["n_negativos"]:
         # Mediana simple de las carreras de cada nivel, con los tipos de institución juntos: se dice
         # así (decisión del 19-11-26). Sin «sube ni pasa de… a…» (son grupos distintos) y sin
         # «muchos ya trabajaban», que ningún dato respalda.
         t = (f"**Al quinto año no siempre se gana más.** En la mitad de las carreras técnicas, quienes llevan cinco años "
-             f"titulados ganan al menos {_num(tec['mediana_p50_pct'], 1)} % más que quienes llevan uno (sueldo típico, P50); en las "
-             f"profesionales, al menos {_num(pro['mediana_p50_pct'], 1)} % más (mediana de las carreras de cada nivel, contando juntos "
-             f"los tipos de institución). Pero ganan más de {_num(margen, 0)} % menos en {tec['n_negativos']} de "
-             f"{tec['n_comparables']} técnicas y en "
-             + (f"{pro['n_negativos']} de {pro['n_comparables']} profesionales." if pro['n_negativos']
-                else f"ninguna de las {pro['n_comparables']} profesionales (diferencias menores se cuentan como empate)."))
+             f"titulados ganan al menos {_num(tec['mediana_p50_pct'], 1)} % más que quienes llevan uno; en las "
+             f"profesionales, al menos {_num(pro['mediana_p50_pct'], 1)} % más. Pero en {tec['n_negativos']} de las "
+             f"{tec['n_comparables']} técnicas ganan menos, y en "
+             + (f"{pro['n_negativos']} de las {pro['n_comparables']} profesionales." if pro['n_negativos']
+                else f"ninguna de las {pro['n_comparables']} profesionales."))
+        p = (f"**Al quinto año no siempre se gana más:** compara el sueldo típico (la mediana o P50: la mitad gana menos) "
+             f"y da la mediana de las carreras de cada nivel, con los tipos de institución juntos. «Ganan menos» es más de "
+             f"{_num(margen, 0)} % menos; una diferencia menor se cuenta como empate.")
         if tec["n_con_edad"]:
-            t += (f" No es que caigan los sueldos: en {tec['n_con_edad']} de esas {tec['n_negativos']} técnicas, quienes se "
-                  f"titularon hace poco son mucho mayores (los de 30 años o más son el {_num(tec['mayores30'][0], 1)} % de "
-                  f"los titulados de hace cinco años y el {_num(tec['mayores30'][1], 1)} % de los recientes, mediana de esas "
+            t += (f" En {tec['n_con_edad']} de esas {tec['n_negativos']}, quienes se titularon hace poco son mucho mayores: "
+                  f"no es que caigan los sueldos.")
+            p += (f" En esas {tec['n_con_edad']} carreras, los de 30 años o más son el {_num(tec['mayores30'][0], 1)} % de los "
+                  f"titulados de hace cinco años y el {_num(tec['mayores30'][1], 1)} % de los recientes (mediana de las "
                   f"{tec['n_con_edad']}).")
         items.append(t)
+        precisiones.append(p)
     if b["ejemplo"]:
         e = b["ejemplo"]
         # Por nivel: el fenómeno es de las profesionales; con un total mezclado no se veía.
@@ -130,18 +139,22 @@ def _hallazgos_readme(h: dict, margen: float) -> str:
         tec_txt = ("ninguna técnica" if b["n_cambian_tec"] == 0 else
                    f"{b['n_cambian_tec']} técnica{'s' if b['n_cambian_tec'] > 1 else ''}")
         items.append(f"**Un crecimiento mayor en porcentaje puede ser menor en pesos.** {b['n_cambian_pro']} carreras profesionales "
-                     f"({tec_txt}) cambian de cuadrante si el crecimiento se mide en pesos en vez de en porcentaje "
-                     f"(sin contar las que quedan a ±{_num(b['margen_pp'])} pp o ±${_num(b['margen_pesos'])} de la "
-                     f"carrera del medio de su grupo). En {e['nombre']} ({e['tipo']}), quienes llevan cinco años titulados "
-                     f"ganan {_num(e['p50_pct_1_5'], 1)} % más que quienes llevan uno, pero eso son +${_num(e['p50_delta_1_5'])}, frente a "
-                     f"+${_num(e['ref_delta_q50'])} de la carrera del medio de su grupo (mediana ponderada por titulados).")
+                     f"({tec_txt}) cambian de cuadrante según se mida el crecimiento en porcentaje o en pesos. En "
+                     f"{e['nombre']} ({e['tipo']}), quienes llevan cinco años titulados ganan {_num(e['p50_pct_1_5'], 1)} % más "
+                     f"que quienes llevan uno, pero son +${_num(e['p50_delta_1_5'])}, frente a +${_num(e['ref_delta_q50'])} de "
+                     f"la carrera del medio de su grupo.")
+        precisiones.append(f"**Porcentaje y pesos:** no se cuentan las carreras que quedan a ±{_num(b['margen_pp'])} pp "
+                           f"(puntos porcentuales) o ±${_num(b['margen_pesos'])} de la carrera del medio de su grupo. La "
+                           f"carrera del medio es la mediana del grupo, ponderada por titulados.")
     if c["ejemplo"]:
         e = c["ejemplo"]
-        items.append(f"**La cifra nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras las "
-                     f"instituciones difieren {_num(c['umbral_pp'])} puntos o más en empleabilidad, aun dejando fuera al "
-                     f"cuarto más alto y al cuarto más bajo. En {e['nombre']} ({e['tipo']}, {e['n_inst']} instituciones) "
-                     f"la mitad central va de {_num(e['q1'], 1)} % a {_num(e['q3'], 1)} %, con una cifra nacional de "
-                     f"{_num(e['nacional'], 1)} %.")
+        items.append(f"**La cifra nacional esconde diferencias entre instituciones.** En {c['n_enganosos']} carreras, la "
+                     f"empleabilidad varía {_num(c['umbral_pp'])} puntos o más entre las instituciones del rango del medio. En "
+                     f"{e['nombre']} ({e['tipo']}), ese rango va de {_num(e['q1'], 1)} % a {_num(e['q3'], 1)} %, con una "
+                     f"cifra nacional de {_num(e['nacional'], 1)} %.")
+        precisiones.append(f"**Diferencias entre instituciones:** el rango del medio es la mitad central de las instituciones "
+                           f"de la carrera, sin el cuarto más alto ni el cuarto más bajo ({e['nombre']}: {e['n_inst']} "
+                           f"instituciones).")
     # (d) continuidad de estudios por nivel, ponderada por titulados (06_hallazgos.sql).
     d = h.get("continuidad") or {}
     niv = {x["nivel"]: x for x in d.get("niveles") or []}
@@ -150,10 +163,16 @@ def _hallazgos_readme(h: dict, margen: float) -> str:
         t, p, a, b_ = niv["Carreras Técnicas"], niv["Carreras Profesionales"], ej["alto"], ej["bajo"]
         items.append(f"**Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue "
                      f"estudiando el {_num(t['pct'], 1)} % de los titulados de carreras técnicas y el {_num(p['pct'], 1)} % "
-                     f"de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: "
-                     f"{_num(a['pct'], 1)} % en {a['nombre']} ({a['tipo']}) y {_num(b_['pct'], 1)} % en {b_['nombre']} "
-                     f"({b_['tipo']}). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.")
-    return "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
+                     f"de los de carreras profesionales. Depende de la carrera: {_num(a['pct'], 1)} % en {a['nombre']} "
+                     f"({a['tipo']}) y {_num(b_['pct'], 1)} % en {b_['nombre']} ({b_['tipo']}).")
+        precisiones.append("**Seguir estudiando:** promedio ponderado por titulados. No explica las diferencias de "
+                           "empleabilidad entre instituciones de una misma carrera.")
+    lista = "\n".join(f"{i}. {t}" for i, t in enumerate(items, 1))
+    if not precisiones:
+        return lista
+    # Línea en blanco tras <summary> y antes de </details>: sin ella GitHub no interpreta el Markdown interior.
+    return (lista + "\n\n<details>\n<summary>Precisiones de los hallazgos</summary>\n\n"
+            + "\n".join(f"- {x}" for x in precisiones) + "\n\n</details>")
 
 
 def _controles_readme(qa: dict) -> str:
