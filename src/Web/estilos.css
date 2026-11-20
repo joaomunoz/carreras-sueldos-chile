@@ -872,6 +872,9 @@ a.hallazgo__accion { color: var(--tinta); }
 .ficha__seccion > summary::-webkit-details-marker { display: none; }
 .ficha__seccion > summary::before {
   content: "▸"; grid-row: 1 / span 2; color: var(--tinta-suave); font-size: 1rem; line-height: 1.5rem;
+  /* Caja del tamaño del signo, arriba: estirada a todo el alto, al girar caía sobre la pista
+     cuando esta ocupaba dos líneas (320 px). */
+  align-self: start; height: 1.5rem; text-align: center;
   transition: transform 0.15s ease;
 }
 .ficha__seccion[open] > summary::before { transform: rotate(90deg); }

@@ -886,6 +886,9 @@ a.hallazgo__accion { color: var(--tinta); }
 .ficha__seccion > summary::-webkit-details-marker { display: none; }
 .ficha__seccion > summary::before {
   content: "▸"; grid-row: 1 / span 2; color: var(--tinta-suave); font-size: 1rem; line-height: 1.5rem;
+  /* Caja del tamaño del signo, arriba: estirada a todo el alto, al girar caía sobre la pista
+     cuando esta ocupaba dos líneas (320 px). */
+  align-self: start; height: 1.5rem; text-align: center;
   transition: transform 0.15s ease;
 }
 .ficha__seccion[open] > summary::before { transform: rotate(90deg); }
@@ -2538,6 +2541,7 @@ a.hallazgo__accion { color: var(--tinta); }
     frente.replaceChildren();
     // En pantallas angostas el rótulo va en dos líneas (si no, los de izquierda y derecha chocan).
     var abajoY = H - m.abajo - (muyAngosto ? 48 : angosto ? 36 : 22);
+    var conteos = [];
     [["entrada baja · progresa más", m.izq + 6, m.arriba + 12, "start"],
      ["entrada alta · progresa más", W - m.der - 6, m.arriba + 12, "end"],
      ["entrada baja · progresa menos", m.izq + 6, abajoY, "start"],
@@ -2552,6 +2556,17 @@ a.hallazgo__accion { color: var(--tinta); }
       var c = svgEl("text", { x: e[1], y: e[2] + (lineas.length - 1) * 12 + 16, "text-anchor": e[3] }, "c-conteo", frente);
       var nz = conteoZona(modo, e[0]);   // del SQL; la franja no pertenece a ninguna esquina
       c.textContent = fmtEntero.format(nz) + (nz === 1 ? " carrera" : " carreras");
+      conteos.push({ t: c, x: e[1] });
+    });
+    // La fuente de cifras (ui-monospace, SF Mono…) cambia según el navegador: en Firefox es 7 % más
+    // ancha y a 320 px los conteos de una misma fila se tocaban («39 carreras15 carreras»). Se mide
+    // lo dibujado y, si no hay 8 px entre izquierda y derecha, se achica la letra de esa fila.
+    [[0, 1], [2, 3]].forEach(function (par) {
+      var a = conteos[par[0]], d = conteos[par[1]];
+      ["", "0.75rem", "0.6875rem"].some(function (tam) {
+        a.t.style.fontSize = d.t.style.fontSize = tam;
+        return a.x + a.t.getComputedTextLength() + 8 <= d.x - d.t.getComputedTextLength();
+      });
     });
 
     // Puntos: el transform lleva la posición; la transición CSS anima el cambio de modo.
@@ -3208,7 +3223,11 @@ a.hallazgo__accion { color: var(--tinta); }
     var conRango = (programasPor[claveDe(p)] || []).some(function (g) { return g.tramo; });
     var W = caja.clientWidth || 600, H = conRango ? 216 : 200, arriba = 12, abajo = conRango ? 42 : 26;
     var angosto = W < 520;
-    var mIzq = 70, mDer = angosto ? 92 : 200, dentro = angosto ? 16 : 26;
+    // Muy angosto (≤ 360 px de pantalla; 254 de lienzo a 320): los rótulos directos de la derecha se
+    // llevaban 92 px y los años quedaban pegados («1°*2°*3°*»). Ahí van como leyenda bajo el gráfico.
+    // A 390 (324 de lienzo) los rótulos caben y se mantienen.
+    var muyAngosto = W < 300;
+    var mIzq = 70, mDer = muyAngosto ? 12 : angosto ? 92 : 200, dentro = angosto ? 16 : 26;
     var a1 = p.percentiles.anio_1, a5 = p.percentiles.anio_5, v = p.media.anio;
     // Sin típica propia en su área, sin línea de típica: sería la de otras áreas.
     var ref1 = sinTipicaPropia(p) ? null : referenciaDe(p, "p50_anio_1"), ref5 = ref1 ? referenciaDe(p, "p50_anio_5") : null;
@@ -3234,6 +3253,8 @@ a.hallazgo__accion { color: var(--tinta); }
     var lo = Math.min.apply(null, todos), hi = Math.max.apply(null, todos);
     var paso = [100000, 250000, 500000, 1000000].filter(function (s) { return (Math.ceil(hi / s) - Math.floor(lo / s)) <= 4; })[0] || 1000000;
     lo = Math.floor(lo / paso) * paso; hi = Math.ceil(hi / paso) * paso;
+    // El monto más largo del eje, medido: con 70 fijos «$3.000.000» quedaba 1 px fuera del borde (5 a 320 px).
+    mIzq = Math.max(mIzq, Math.ceil(anchoTexto(pesos(hi), "0.75rem")) + 14);
     function x(i) { return mIzq + dentro + i * (W - mIzq - dentro - mDer) / 4; }
     function y(val) { return arriba + (1 - (val - lo) / (hi - lo)) * (H - arriba - abajo); }
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
@@ -3253,8 +3274,10 @@ a.hallazgo__accion { color: var(--tinta); }
       et.textContent = (i + 1) + "°" + (anomalos[i + 1] ? "*" : "");
     });
     if (conRango) {
-      var t4 = svgEl("text", { x: x(3), y: H - 2, "text-anchor": "middle" }, "g-rotulo-suave", svg);
-      t4.textContent = angosto ? "dato por institución" : "único año con dato por institución (ver abajo)";
+      var txt4 = angosto ? "dato por institución" : "único año con dato por institución (ver abajo)";
+      // Centrado en el 4° año salvo que se salga por la derecha (sin margen derecho, a ≤ 360 px, se cortaba).
+      var t4 = svgEl("text", { x: Math.min(x(3), W - anchoTexto(txt4, "0.75rem") / 2 - 2), y: H - 2, "text-anchor": "middle" }, "g-rotulo-suave", svg);
+      t4.textContent = txt4;
     }
     [[0, a1, ref1], [4, a5, ref5]].forEach(function (a) {
       var cx = x(a[0]), q = a[1];
@@ -3275,10 +3298,27 @@ a.hallazgo__accion { color: var(--tinta); }
     if (ref5 && ref5.q50_clave !== p.clave) rotulos.push({ y: y(ref5.q50), t: angosto ? "Del medio" : "Carrera del medio " + pesos(ref5.q50), c: "g-rotulo-suave" });
     // La barra (P25–P75) no tenía rótulo: se nombra junto a su extremo alto del 5° año.
     rotulos.push({ y: y(a5.p75), t: angosto ? "Mitad central" : "Mitad central de los titulados", c: "g-rotulo-suave" });
+    if (muyAngosto) {
+      // Leyenda bajo el gráfico con las mismas marcas; la línea de la carrera del medio ya está en la
+      // leyenda de arriba.
+      var leyAbajo = el("div", "grafico__leyenda");
+      [["rombo", "Sueldo típico"], ["prom", "Promedio"], ["caja", "Mitad central de los titulados"]].forEach(function (it) {
+        var s = el("span", "leyenda-item");
+        var m = svgEl("svg", { width: 14, height: 14, viewBox: "0 0 14 14", "aria-hidden": "true" });
+        if (it[0] === "rombo") rombo(m, 7, 7, 5);
+        else if (it[0] === "prom") svgEl("circle", { cx: 7, cy: 7, r: 4 }, "f-prom", m);
+        else svgEl("line", { x1: 7, x2: 7, y1: 1, y2: 13 }, "f-caja", m);
+        s.appendChild(m);
+        s.appendChild(document.createTextNode(it[1]));
+        leyAbajo.appendChild(s);
+      });
+      caja.after(leyAbajo);
+      rotulos = [];
+    }
     rotulos.forEach(function (r) { r.marca = r.y; });
     rotulos.sort(function (a, b) { return a.y - b.y; });
     for (var k = 1; k < rotulos.length; k++) rotulos[k].y = Math.max(rotulos[k].y, rotulos[k - 1].y + 17);
-    var exceso = rotulos[rotulos.length - 1].y - (H - abajo);
+    var exceso = rotulos.length ? rotulos[rotulos.length - 1].y - (H - abajo) : 0;
     if (exceso > 0) rotulos.forEach(function (r) { r.y -= exceso; });
     rotulos.forEach(function (r) {
       var x0 = x(4) + 12;
