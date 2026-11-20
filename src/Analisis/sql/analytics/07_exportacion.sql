@@ -45,7 +45,7 @@ SELECT p.clave_carrera_generica, p.tipo_institucion,
     'area', json_build_object('cine13', p.area_cine13, 'pct_dominante', round(100 * p.share_area, 1),
                               'asignable', p.area_asignable,
                               -- Área del conocimiento de MiFuturo (MINEDUC): la de referencia de los grupos
-                              -- y de «Otras carreras de su área» (ADR-002); cine13 queda como contexto.
+                              -- y de «Otras carreras de su área»; cine13 queda como contexto.
                               'mineduc', p.area),
     'marcas', json_build_object(
         'representativo', p.representativo,

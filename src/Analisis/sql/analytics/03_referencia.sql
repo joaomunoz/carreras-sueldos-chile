@@ -75,7 +75,7 @@ CREATE TABLE analytics.referencia (
     grupo_id          text    NOT NULL,
     metrica           text    NOT NULL CHECK (metrica IN ('p50_anio_1', 'p50_pct_1_5', 'p50_delta_1_5', 'p50_anio_5', 'emp1_nacional')),
     tipo_grupo        text    NOT NULL CHECK (tipo_grupo IN ('celda', 'segmento')),
-    area              text,                       -- área de MiFuturo (ADR-002); NULL en los segmentos
+    area              text,                       -- área de MiFuturo; NULL en los segmentos
     tipo_institucion  text    NOT NULL,
     nivel_carrera     text    NOT NULL,
     n_pares           integer NOT NULL,

@@ -126,8 +126,8 @@ def _verificar_base(cur: psycopg.Cursor) -> None:
     El build hace DROP SCHEMA ... CASCADE de los 4 esquemas propios: con PGDATABASE apuntando
     a otra base existente («raw» es un nombre común en proyectos de datos) borraría datos
     ajenos. No se exige el nombre carreras_sueldos porque los ensayos de método usan una base
-    aparte (ADR-002, ADR-003). Una base es aceptable si está vacía o si es de un build anterior
-    (tiene qa.control y nada fuera de los 4 esquemas).
+    aparte (área de MiFuturo, cohortes de Derecho). Una base es aceptable si está vacía o si es
+    de un build anterior (tiene qa.control y nada fuera de los 4 esquemas).
     """
     cur.execute("SELECT current_database()")
     base = cur.fetchone()[0]

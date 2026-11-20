@@ -24,7 +24,7 @@ CREATE TABLE analytics.parametro (
 );
 
 -- Factor para llevar a 3 años una ventana que cae en parte fuera de los años del SIES: con Derecho
--- un año antes (ADR-003), su ventana del 5° año es 2016–2018 y el SIES empieza en 2017; sumar solo
+-- un año antes, su ventana del 5° año es 2016–2018 y el SIES empieza en 2017; sumar solo
 -- 2 años la dejaba pesando 2/3 (evaluación del 19-11-26). NULL si ningún año de la ventana existe:
 -- el NOT NULL del peso hace fallar el build en vez de inventar un dato.
 CREATE FUNCTION analytics.factor_ventana(desde integer, hasta integer) RETURNS numeric
@@ -37,8 +37,8 @@ $$;
 INSERT INTO analytics.parametro VALUES
     -- Años que se corren las ventanas SIES de Derecho respecto de modelo.cohorte (MiFuturo usa otra
     -- cohorte para esta carrera: 2020–2022 en vez de 2021–2023). Un solo lugar: antes un +1, en sentido
-    -- contrario, estaba escrito en 10 consultas (corregido el 19-11-26, ADR-003).
-    ('corrimiento_derecho', -1,   'Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)', 'T4; parámetro desde el 19-11-26 (ADR-003)'),
+    -- contrario, estaba escrito en 10 consultas (corregido el 19-11-26).
+    ('corrimiento_derecho', -1,   'Años de diferencia entre los titulados que usa Derecho y los de las demás carreras (−1: un año antes, como publica MiFuturo)', 'T4; parámetro desde el 19-11-26'),
     ('min_inst_oferta',     3,    'Instituciones necesarias para que una carrera sea comparable (con 1 o 2, la cifra nacional es la de esas instituciones)', 'T0 / D2: dos conteos de instituciones'),
     ('min_pares_celda',     5,    'Carreras comparables necesarias para que un área, dentro de un tipo y nivel, tenga carrera del medio propia',                     'D2'),
     ('min_share_area',      0.80, 'Parte mínima de las titulaciones en un área CINE (clasificación internacional) para asignarla a una carrera; solo contexto',                'T0 / T4'),
@@ -77,7 +77,7 @@ CREATE TABLE analytics.segmento (
     PRIMARY KEY (tipo_institucion, nivel_carrera)
 );
 COMMENT ON TABLE analytics.segmento IS
-    'Cobertura por titulaciones de los programas publicados por MiFuturo. Ventanas = cohortes de la media del 1er y 5° año (modelo.cohorte; Derecho corrido según corrimiento_derecho, ADR-003).';
+    'Cobertura por titulaciones de los programas publicados por MiFuturo. Ventanas = cohortes de la media del 1er y 5° año (modelo.cohorte; Derecho corrido según corrimiento_derecho).';
 
 INSERT INTO analytics.segmento
 WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
@@ -117,11 +117,11 @@ CREATE TABLE analytics.par (
     nombre                  text     NOT NULL,
     nivel_carrera           text     NOT NULL,
     -- Área de REFERENCIA: el área del conocimiento de MiFuturo (MINEDUC), la que ve quien busca
-    -- carreras. Define la celda área × tipo × nivel (ADR-002, 18-11-26): la CINE separaba, p. ej.,
+    -- carreras. Define la celda área × tipo × nivel (18-11-26): la CINE separaba, p. ej.,
     -- Telecomunicaciones (ingeniería) de Informática (TIC), y las carreras de un área chica se
     -- comparaban con todas las de su tipo × nivel. Misma área en todos los tipos (control qa).
     area                    text     NOT NULL,
-    -- Área CINE-F 2013 dominante por titulaciones SIES: solo contexto desde el ADR-002.
+    -- Área CINE-F 2013 dominante por titulaciones SIES: solo contexto desde el 18-11-26.
     area_cine13             text     NOT NULL,
     share_area              numeric  NOT NULL,   -- proporción 0-1 del área CINE dominante
     area_asignable          boolean  NOT NULL,   -- área CINE dominante ≥ min_share_area
@@ -148,7 +148,7 @@ COMMENT ON COLUMN analytics.par.referencia IS
 INSERT INTO analytics.par
 WITH c1 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_1er_anio'),
      c5 AS (SELECT cohorte_desde AS desde, cohorte_hasta AS hasta FROM modelo.cohorte WHERE indicador = 'ingreso_medio_5to_anio'),
--- Titulaciones por institución × genérica en cada ventana (Derecho corrido corrimiento_derecho años, ADR-003).
+-- Titulaciones por institución × genérica en cada ventana (Derecho corrido corrimiento_derecho años).
 inst AS (
     SELECT i.tipo_institucion, t.clave_carrera_generica, t.codigo_institucion,
            coalesce(sum(t.total_titulaciones) FILTER (
@@ -221,7 +221,7 @@ marcado AS (
     FROM base b
 ),
 celda AS (
-    -- Celda = área de MiFuturo × tipo × nivel (ADR-002). Toda carrera tiene área de MiFuturo, así
+    -- Celda = área de MiFuturo × tipo × nivel. Toda carrera tiene área de MiFuturo, así
     -- que ya no se exige área asignable (eso era de la CINE, dominante por titulaciones).
     -- Una celda es referencia si tiene suficientes pares Y ninguna carrera domina su peso: con
     -- más de la mitad del peso, la mediana ponderada ES el valor de esa carrera y el resto de la
@@ -285,7 +285,7 @@ FROM (SELECT count(*) AS n
             (coalesce(c.n_repr, 0) >= analytics.param('min_pares_celda')
              AND coalesce(c.share_max, 1) <= analytics.param('max_peso_dominante'))) x
 UNION ALL
--- ADR-002: el área de MiFuturo es de la carrera, no del tipo. Si MiFuturo clasificara una carrera
+-- El área de MiFuturo es de la carrera, no del tipo. Si MiFuturo clasificara una carrera
 -- distinto en universidades, IP o CFT, la lista «Otras carreras de su área» y los grupos se
 -- partirían sin aviso; además, el área de cada par debe ser la de su fila en MiFuturo.
 SELECT 'analytics_par', 'area_mifuturo', CASE WHEN n_varias + n_distinta = 0 THEN 'OK' ELSE 'FALLA' END,

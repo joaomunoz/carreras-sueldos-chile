@@ -90,7 +90,7 @@
       } }
   ];
 
-  // «un año antes / después», desde el parámetro (ADR-003): ningún texto fija el sentido a mano.
+  // «un año antes / después», desde el parámetro corrimiento_derecho: ningún texto fija el sentido a mano.
   function corrDerechoTexto() {
     var c = parametro("corrimiento_derecho");
     return (Math.abs(c) === 1 ? "un año" : Math.abs(c) + " años") + (c < 0 ? " antes" : " después");
@@ -257,7 +257,7 @@
   var TIPO_ADJ = { Universidad: "universitarias", IP: "de IP", CFT: "de CFT" };
 
   // Grupo de comparación del hallazgo (b), en palabras: «las carreras universitarias del área
-  // Tecnología» (área de MiFuturo, ADR-002) o, sin área, «las carreras profesionales universitarias».
+  // Tecnología» (área de MiFuturo) o, sin área, «las carreras profesionales universitarias».
   function grupoEnPalabras(g) {
     if (g.tipo_grupo === "celda") {
       return "las carreras " + TIPO_ADJ[g.tipo] + " del área " + g.area;
@@ -388,7 +388,7 @@
       return fmtEntero.format(e.otro) + (e.otro === 1 ? " título" : " títulos") + " de " + rangoAnios(v[e.ventana]) +
         " (" + nivelCorto({ nivel: e.nivel }) + ")" + (e.otro === 1 ? " está registrado" : " están registrados") + " como no binario";
     }).join("; ");
-    // Los conteos reales no se escalan (ADR-003): si la ventana corrida de Derecho empieza antes que
+    // Los conteos reales no se escalan: si la ventana corrida de Derecho empieza antes que
     // el SIES, se dice qué años faltan; sin decirlo, 612.738 parecía incluir tres años de Derecho.
     var corrD = parametro("corrimiento_derecho"), siesDesde = datos.cohortes.filter(function (c) { return c.indicador === "titulados_sies"; })[0].cohortes[0];
     var faltaD = Object.keys(v).map(function (k) { return [v[k][0] + corrD, v[k][1] + corrD]; })
@@ -2157,14 +2157,14 @@
     fichaActual = p;
     var art = document.getElementById("ficha-contenido");
     art.replaceChildren();
-    var corr = p.marcas.es_derecho ? parametro("corrimiento_derecho") : 0;   // ADR-003
+    var corr = p.marcas.es_derecho ? parametro("corrimiento_derecho") : 0;   // Derecho: titulados de un año antes
     // Un solo tooltip para las franjas del grupo (el artículo es el marco de posición).
     var tipGrupo = el("div", "tooltip");
     tipGrupo.hidden = true;
 
     // Encabezado y veredicto
     art.appendChild(el("h4", "ficha__nombre", p.nombre)).id = "ficha-nombre";
-    // Área de MiFuturo: la de referencia de los grupos y de «Otras carreras de su área» (ADR-002).
+    // Área de MiFuturo: la de referencia de los grupos y de «Otras carreras de su área».
     art.appendChild(el("p", "ficha__sub", p.tipo + " · " + nivelCorto(p) + " · área " + p.area.mineduc + " (MiFuturo)"));
     var t = el("div", "timbres");
     TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });

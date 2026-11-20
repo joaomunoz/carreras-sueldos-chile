@@ -18,7 +18,7 @@
 --   2. analytics.estabilidad (D5): ¿la cohorte de los percentiles del 1er año (2023) fue atípica en
 --      su serie de empleabilidad del 1er año (cohortes 2019-2022)? Se marca, no se excluye.
 --
--- Ventanas desde modelo.cohorte (Derecho corrido según corrimiento_derecho, ADR-003). La duración formal y real no se copia aquí: está
+-- Ventanas desde modelo.cohorte (Derecho corrido según corrimiento_derecho). La duración formal y real no se copia aquí: está
 -- en modelo.mifuturo_estadistica y la exportación (A6) la toma de ahí.
 -- Requiere 01_par.sql.
 

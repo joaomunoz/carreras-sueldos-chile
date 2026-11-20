@@ -21,8 +21,6 @@
 4. **Seguir estudiando es cosa de las carreras técnicas.** Al año siguiente de titularse sigue estudiando el 21,7 % de los titulados de carreras técnicas y el 4,2 % de los de carreras profesionales (promedio ponderado por titulados). Depende de la carrera: 37,4 % en Técnico en Administración de Empresas (IP) y 6,8 % en Técnico en Enfermería (IP). No explica las diferencias de empleabilidad entre instituciones de una misma carrera.
 <!-- HALLAZGOS:FIN -->
 
-> Las correcciones y los cambios de método que alteraron cifras publicadas están en [CHANGELOG.md](CHANGELOG.md).
-
 ---
 
 ## Por qué confiar en las cifras
@@ -84,7 +82,7 @@ src/
 docs/                  index.html (la web), datos.json y captura.png
 ```
 
-- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md) · [ADR del modelo relacional](src/BD/ADR-001-modelo-relacional.md) · [ADR del área de referencia](src/BD/ADR-002-area-de-referencia.md) · [ADR de las cohortes de Derecho](src/BD/ADR-003-cohortes-derecho.md).
+- Modelo de datos: [diagrama ER](src/BD/diagrama_modelo.md) · [diccionario de datos](src/BD/diccionario_datos.md).
 - La web es HTML, CSS, JavaScript y SVG sin librerías: modo claro y oscuro, usable con teclado y lector de pantalla, sin desplazamiento horizontal a 320 px, con contraste ≥ 4,5:1 en todo el texto.
 
 ---
@@ -94,7 +92,7 @@ docs/                  index.html (la web), datos.json y captura.png
 | Decisión | Contexto | Alternativa descartada |
 |---|---|---|
 | **La media y los percentiles nunca se combinan** | La media de cada año junta tres cohortes con ingresos 2022–2024; los percentiles usan una sola cohorte con ingresos 2024. Son poblaciones distintas | `Media / P50` (mezclaría poblaciones) |
-| **Derecho se mide con titulados de un año antes** | Así lo publica MiFuturo (su título llega meses después del último trámite); el corrimiento vive en un solo parámetro ([ADR-003](src/BD/ADR-003-cohortes-derecho.md)) | Correrlo un año después (lo que se hacía antes del 19-11-26) |
+| **Derecho se mide con titulados de un año antes** | Así lo publica MiFuturo: el título de abogado lo entrega la Corte Suprema meses después de terminar la carrera. El proyecto aplica la misma regla a las cifras del SIES y la fija en un solo parámetro (`corrimiento_derecho`) | Correrlo un año después: daba un «1er año» con titulados que aún no tenían un año completo de ingresos |
 | **Comparable = 3 o más instituciones la ofrecen** | Con 1 o 2, la "cifra nacional" es en realidad la de una institución | Comparar todas (42 de 252 carreras serían anécdotas) |
 | **El área de cada grupo es la de MiFuturo, no la CINE** | Quien busca una carrera piensa por interés y ve esa clasificación en MiFuturo; la CINE separaba Telecomunicaciones de Informática | Mantener la CINE (dejaba Informática contra las 91 profesionales universitarias); usar ambas en cascada (dos clasificaciones en una misma página) |
 | **Un grupo de área deja de ser referencia si una carrera pesa más del 50 %** | Con pesos por titulados, la mediana del grupo sería el valor de esa carrera | Avisarlo sin cambiar la referencia; mediana sin ponderar (mezcla criterios) |

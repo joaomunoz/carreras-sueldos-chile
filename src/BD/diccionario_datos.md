@@ -1,6 +1,6 @@
 # Diccionario de datos — base `carreras_sueldos`
 
-**Última revisión:** 2026-11-16 · **DDL:** `src/BD/01_raw.sql`, `src/BD/02_modelo.sql` · **Decisiones:** `src/BD/ADR-001-modelo-relacional.md`
+**Última revisión:** 2026-11-20 · **DDL:** `src/BD/01_raw.sql`, `src/BD/02_modelo.sql`
 
 Convenciones para toda la base:
 
@@ -57,7 +57,7 @@ Copia fiel de los CSV de los scrapers. Columnas, orden y significado son los de 
 | `min_casos` | smallint | sí | Umbral de publicación declarado por la fuente |
 | `referencia` | text | no | Documento y líneas de `datos externos/` que respaldan la fila |
 
-Derecho usa en todos los indicadores de MiFuturo titulados de un año antes que las demás carreras: su 1er año usa los de 2020–2022 y su 5° año, los de 2016–2018. (MiFuturo lo describe como «cohorte de titulación + 1 año» porque cuenta el año en que se entrega el título; en años del SIES equivale a un año antes.) El análisis lo aplica con el parámetro `corrimiento_derecho` = −1. Como el SIES empieza en 2017, la ventana 2016–2018 se lleva a tres años con `analytics.factor_ventana` en el peso y en la comparación de titulados jóvenes; los conteos de títulos quedan reales ([ADR-003](ADR-003-cohortes-derecho.md)).
+Derecho usa en todos los indicadores de MiFuturo titulados de un año antes que las demás carreras: su 1er año usa los de 2020–2022 y su 5° año, los de 2016–2018. (MiFuturo lo describe como «cohorte de titulación + 1 año» porque cuenta el año en que se entrega el título; en años del SIES equivale a un año antes.) El análisis lo aplica con el parámetro `corrimiento_derecho` = −1. Como el SIES empieza en 2017, la ventana 2016–2018 se lleva a tres años con `analytics.factor_ventana` en el peso y en la comparación de titulados jóvenes; los conteos de títulos quedan reales.
 
 ### `modelo.titulacion` — hecho SIES
 **Grano:** un programa en un año. **Llave:** `(anio, codigo_programa)`. **Filas esperadas:** 94.579. **Origen:** `raw.titulados`. **Unidad:** titulaciones, no personas.
