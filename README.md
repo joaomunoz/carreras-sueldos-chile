@@ -57,7 +57,17 @@ La lista completa, con sus cifras, está en la sección «Qué no dice este aná
 
 **Fuentes.** [MiFuturo](https://www.mifuturo.cl): Buscador de Empleabilidad e Ingresos (por institución) y Buscador de Estadísticas por Carrera (nacional por carrera y tipo de institución), con sus metodologías 2025–2026. SIES: [base de datos de titulados](https://www.mifuturo.cl/bases-de-datos-titulados/) 2007–2025 (versión del 27-05-2026, con su [glosario](https://www.mifuturo.cl/wp-content/uploads/2026/05/GLOSARIO_DE_TITULADO_2007_2025_E.pdf)). Ambas son del Ministerio de Educación de Chile.
 
-**Proceso.** Tres scrapers descargan y validan las fuentes → los CSV procesados se cargan en PostgreSQL en cuatro capas: `raw` (copia fiel), `modelo` (relacional, con PK, FK y `CHECK`), `analytics` (métricas) y `qa` (controles), todo en **una sola transacción** → SQL arma `docs/datos.json` → `construir.py` lo incrusta en una web de un solo archivo.
+**Proceso.** Los buscadores de MiFuturo no publican archivos descargables: tres scrapers leen el HTML y las consultas internas del sitio, y descargan el Excel del SIES → los CSV procesados se cargan en PostgreSQL en cuatro capas: `raw` (copia fiel), `modelo` (relacional, con PK, FK y `CHECK`), `analytics` (métricas) y `qa` (controles), todo en **una sola transacción** → SQL arma `docs/datos.json` → `construir.py` lo incrusta en una web de un solo archivo.
+
+<details>
+<summary>Cómo se extraen los datos</summary>
+
+- **MiFuturo, Buscador de Empleabilidad e Ingresos (por institución).** La tabla no tiene una interfaz de datos propia: `Empleabilidad/obtener.py` envía el formulario del buscador una vez por tipo de institución y lee la tabla del HTML; los identificadores de carrera e institución salen de los atributos `onclick` de cada fila. Otras dos consultas del sitio se probaron y se descartaron: una trae sus campos mal etiquetados (por ejemplo, su «deserción» es en realidad la retención del primer año, verificado con muestras contra la tabla) y la otra no cruza con las carreras genéricas.
+- **MiFuturo, Buscador de Estadísticas por Carrera (nacional).** `Estadisticas/obtener.py` obtiene el catálogo desde el formulario y luego hace una consulta interna (AJAX) por cada una de las <!-- DATO:pares_total -->252<!-- /DATO --> carreras por tipo de institución, que devuelve un JSON con todos los campos de su ficha. El JSON se guarda completo y sin interpretar, como evidencia. Los nombres de campo arrastran años de un esquema antiguo (`cohorte_2005_a` es la empleabilidad actual del primer año): qué campo corresponde a qué cohorte se fija en `Estadisticas/esquema.py`, y un control de calidad lo verifica en todas las carreras. Si falta una sola, el scraper falla en vez de seguir, y entre consultas hace una pausa para no saturar el servidor.
+- **SIES, base de titulados.** `Titulados/obtener.py` busca en la página el enlace vigente al Excel histórico, cuyo nombre cambia con cada versión, y lo descarga.
+- **Procesamiento (`procesar.py` de cada fuente).** Los porcentajes pasan a escala 0–100 y las claves de cruce de carrera e institución se normalizan con la misma regla en las tres fuentes. El rango de ingreso al 4° año se lee desde la etiqueta publicada, porque el código numérico del HTML no está ordenado; los «sin información» quedan vacíos, sin imputar. Estos scripts validan solo la forma (columnas, rangos, llave única); las reglas de negocio las verifican los controles de calidad de la base.
+
+</details>
 
 **Reglas de comparación**
 
