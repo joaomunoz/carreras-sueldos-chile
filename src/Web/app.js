@@ -151,7 +151,10 @@
     var total = (qa.OK || 0) + (qa.EXENTO || 0);
     // El universo va en el antetítulo (una sola vez); la línea técnica queda como respaldo.
     document.getElementById("portada-eyebrow").textContent =
-      fmtEntero.format(qnd.pares_total) + " carreras · universidades, IP y CFT";   // «Chile» ya va en el título
+      fmtEntero.format(qnd.pares_total) + " carreras\u00a0· universidades, IP y CFT\u00a0· al primer y quinto año de titulación";
+    // «Chile» va en el título; el periodo, aquí: el título «Radiografía…» (20-11-26) ya no lo dice.
+    // En palabras y no «1er y 5°»: el antetítulo va en mayúsculas y «1ER» se leía mal. Espacio duro
+    // antes de cada «·»: a 320 px la segunda línea empezaba con «· AL PRIMER…».
     // Bajada de la Parte I: el universo de los hallazgos son las comparables, no las 252.
     var bajada = document.getElementById("hallazgos-bajada");
     bajada.textContent = "";

@@ -188,7 +188,7 @@ LIMIT 1;
 CREATE VIEW analytics.v_datos_json AS
 SELECT json_build_object(
     'meta', json_build_object(
-        'proyecto', 'Trayectoria salarial y riesgo institucional por carrera en Chile (1er vs. 5° año de titulación)',
+        'proyecto', 'Radiografía de las carreras y sueldos en Chile (1er y 5° año de titulación)',
         'fuentes', json_build_array(
             'MiFuturo: Buscador de Empleabilidad e Ingresos y Buscador de Estadísticas por Carrera (metodologías 2025-2026)',
             'SIES: Titulados 2017-2025'),

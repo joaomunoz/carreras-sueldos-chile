@@ -6,7 +6,7 @@ Módulo de procesamiento de la base de Titulados SIES.
 Entrada:  Entrada/titulados_2007_2025.xlsx   (42 columnas, 234.074 filas)
 Salida:   Salida/titulados_procesado.csv     (columnas según esquema.py)
 
-Alcance (decisión del proyecto "Trayectoria salarial por carrera"):
+Alcance (decisión del proyecto "Radiografía de las carreras y sueldos en Chile"):
   - Solo NIVEL GLOBAL = Pregrado: MiFuturo publica empleabilidad e ingresos solo de pregrado.
     Posgrado y postítulo no tienen contraparte con la que cruzar.
   - Solo años 2017-2025: cubre todas las cohortes que usa MiFuturo 2025-2026 (ingreso al 5° año =

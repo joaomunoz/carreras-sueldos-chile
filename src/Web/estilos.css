@@ -232,6 +232,9 @@ p { margin: 0; }
 }
 .barra__corto { display: none; }
 
+/* La marca es el título completo (20-11-26, 282 px sin cortes): bajo 60rem chocaba con los enlaces
+ * y desbordaba (821 px a 800). El título ya está en la portada. */
+@media (max-width: 60rem) { .barra__marca { display: none; } }
 /* Celular: sin marca, rótulos cortos y el tema solo con su ícono. Los rótulos largos y el texto
  * del botón quedan para lectores de pantalla (con display:none el enlace se quedaría sin nombre). */
 @media (max-width: 40rem) {

@@ -1,4 +1,4 @@
-# Sueldos y empleabilidad por carrera en Chile al primer y quinto año de titulación
+# Radiografía de las carreras y sueldos en Chile
 
 Análisis independiente de datos públicos del Ministerio de Educación (MiFuturo y SIES) sobre 252 carreras de universidades, institutos profesionales (IP) y centros de formación técnica (CFT). Muestra qué cambia en el sueldo y la empleabilidad entre el primer y el quinto año de titulación, y cuándo la cifra nacional no basta para comparar. Cada cifra se calcula con reglas fijas y pasa controles de calidad.
 
