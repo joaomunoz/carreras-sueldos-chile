@@ -15,10 +15,12 @@
   var fmtEntero = new Intl.NumberFormat("es-CL", { maximumFractionDigits: 0 });
   var fmtUno = new Intl.NumberFormat("es-CL", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
-  function pct(valor) { return valor == null ? "—" : fmtUno.format(valor) + " %"; }
+  // Espacio duro (NBSP) antes de «%»: con uno normal, «59,5» y «%» podían quedar en líneas distintas.
+  var PCT = "\u00a0%";
+  function pct(valor) { return valor == null ? "—" : fmtUno.format(valor) + PCT; }
   function pctSigno(valor) {
     if (valor == null) return "—";
-    return (valor > 0 ? "+" : valor < 0 ? "−" : "") + fmtUno.format(Math.abs(valor)) + " %";
+    return (valor > 0 ? "+" : valor < 0 ? "−" : "") + fmtUno.format(Math.abs(valor)) + PCT;
   }
   function pesos(valor) { return valor == null ? "—" : "$" + fmtEntero.format(valor); }
   function pesosSigno(valor) {
@@ -79,7 +81,7 @@
     { id: "baja_cobertura", texto: "Baja cobertura",
       aplica: function (p) { return p.marcas.baja_cobertura; },
       explica: function () {
-        return "MiFuturo publica programas que reúnen menos del " + fmtEntero.format(parametro("max_cobertura_baja") * 100) + " % de los titulados de este tipo de institución y nivel.";
+        return "MiFuturo publica programas que reúnen menos del " + fmtEntero.format(parametro("max_cobertura_baja") * 100) + PCT + " de los titulados de este tipo de institución y nivel.";
       } },
     { id: "derecho", texto: "Cohortes de otro año",
       aplica: function (p) { return p.marcas.es_derecho; },
@@ -1323,15 +1325,20 @@
 
   function avisosDe(p) {
     var frases = [];
-    TIMBRES.forEach(function (def) { if (def.aplica(p)) frases.push(def.explica()); });
-    if (p.marcas.cohorte_atipica && p.estabilidad) {
-      frases.push("En esta carrera: la empleabilidad al primer año de la cohorte " + p.estabilidad.cohorte + " fue " +
-        pct(p.estabilidad.empleabilidad) + ", frente a " + pct(p.estabilidad.media_previas) + " en promedio en las cohortes anteriores.");
-    }
-    if (p.marcas.composicion_edad) {
-      frases.push("En esta carrera: quienes tienen 30 años o más pasan de " + pct(p.contexto.mayores30_cohorte_p5[1]) +
-        " (titulados hace cinco años) a " + pct(p.contexto.mayores30_cohorte_p1[1]) + " (titulados recientes), en la cota alta del rango.");
-    }
+    // Cada «En esta carrera: …» va justo después del aviso que concreta: al final de la lista, en 5
+    // fichas quedaba detrás de otro aviso y no se sabía a cuál se refería (pasada por la Parte II, 19-11-26).
+    TIMBRES.forEach(function (def) {
+      if (!def.aplica(p)) return;
+      frases.push(def.explica());
+      if (def.id === "cohorte_atipica" && p.estabilidad) {
+        frases.push("En esta carrera: la empleabilidad al primer año de la cohorte " + p.estabilidad.cohorte + " fue " +
+          pct(p.estabilidad.empleabilidad) + ", frente a " + pct(p.estabilidad.media_previas) + " en promedio en las cohortes anteriores.");
+      }
+      if (def.id === "composicion_edad") {
+        frases.push("En esta carrera: quienes tienen 30 años o más pasan de " + pct(p.contexto.mayores30_cohorte_p5[1]) +
+          " (titulados hace cinco años) a " + pct(p.contexto.mayores30_cohorte_p1[1]) + " (titulados recientes), en la cota alta del rango.");
+      }
+    });
     return frases;
   }
 
@@ -1377,7 +1384,7 @@
     }
     var dom = parPorClave[af.domina + "|" + p.tipo];
     return (dom === p ? "esta carrera reúne" : (dom ? dom.nombre : "una carrera") + " reúne") + " el " + fmtEntero.format(af.domina_pct) +
-      " % de los titulados de las carreras " + adj + " de su área";
+      PCT + " de los titulados de las carreras " + adj + " de su área";
   }
 
   // Nombre de la carrera del medio de su grupo en una cifra (analytics.referencia.q50_clave).
@@ -2018,7 +2025,7 @@
       svgEl("line", { x1: x(t), x2: x(t), y1: arriba - 4, y2: abajoBanda + 2 }, "g-grilla", svg);
       if (k % salto === 0) {
         var tx = svgEl("text", { x: x(t), y: H - 2, "text-anchor": "middle" }, "g-eje-texto", svg);
-        tx.textContent = fmtEntero.format(t) + " %";
+        tx.textContent = fmtEntero.format(t) + PCT;
       }
     }
     // Las dos líneas antes que los puntos (quedan detrás). Rótulos uno arriba y otro abajo: no chocan
@@ -2094,9 +2101,9 @@
 
   // «menos de 1 %» / «más de 99 %» cuando el entero redondea a 0 o 100 pero hay personas.
   function textoSexo(pctv, n, nOtro) {
-    if (pctv === 0 && n > 0) return "menos de 1 %";
-    if (pctv === 100 && nOtro > 0) return "más de 99 %";
-    return fmtEntero.format(pctv) + " %";
+    if (pctv === 0 && n > 0) return "menos de 1" + PCT;
+    if (pctv === 100 && nOtro > 0) return "más de 99" + PCT;
+    return fmtEntero.format(pctv) + PCT;
   }
 
   // La ficha en pantalla: el paso inicial del historial la guarda aunque la dirección no tenga
@@ -2277,7 +2284,7 @@
     seccion(art, "sueldo", "Sueldo año a año", "Del 1er al 5° año, con todas las cifras", function (cuerpo) {
     var pc = p.percentiles.p50_pct_1_5;
     // «Es X % mayor/menor», no «sube/baja»: son dos grupos distintos de titulados (evaluación del 19-11-26).
-    var b2 = bloque(cuerpo, "Al 5° año, su sueldo típico es " + fmtUno.format(Math.abs(pc)) + " % " + (pc >= 0 ? "mayor" : "menor") + " que al 1er año",
+    var b2 = bloque(cuerpo, "Al 5° año, su sueldo típico es " + fmtUno.format(Math.abs(pc)) + PCT + " " + (pc >= 0 ? "mayor" : "menor") + " que al 1er año",
       "Ingresos " + aniosIngreso("percentiles_anio_1") + " (el promedio, " + aniosIngreso("ingreso_medio_1er_anio") +
         "), en pesos de septiembre de 2025. Cada año es otra cohorte de titulados, no las mismas personas. " +
         "La barra de los años 1 y 5 es la mitad central de los titulados.");
@@ -2943,10 +2950,10 @@
       fmtEntero.format(atipSalud) + " de salud), y en ", fmtEntero.format(q.pares_composicion_edad), " de las " + fmtEntero.format(q.pares_total) +
       " (" + fmtEntero.format(q.pares_composicion_edad_comparables) + " de las " + fmtEntero.format(q.pares_comparables) +
       " comparables) los titulados recientes son mucho mayores que los de hace cinco años."]);
-    item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el sueldo del 10 % que menos gana aparece más alto de lo real. Los ingresos no vienen separados por sexo, edad ni región."]);
+    item("No mide todo el sueldo.", ["Solo cuenta a quienes ganan al menos el sueldo mínimo y tienen registro en el SII; por eso el sueldo del 10\u00a0% que menos gana aparece más alto de lo real. Los ingresos no vienen separados por sexo, edad ni región."]);
     if (brecha.emp_pp != null && brecha.tramo_pct != null) {
       item("La cifra nacional no es el promedio de las instituciones.", ["Queda ", fmtUno.format(brecha.emp_pp) + " puntos",
-        " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + " %",
+        " sobre ellas en empleabilidad al primer año y ", fmtUno.format(brecha.tramo_pct) + PCT,
         " sobre ellas en el rango de ingreso al 4° año: incluye titulados que no aparecen en ninguna institución publicada. Por eso cada institución se compara con la institución del medio de su carrera."]);
     }
     // El total que queda fuera (SQL, desde el embudo) y, dentro de él, las carreras sin ningún programa:
@@ -3033,7 +3040,7 @@
       // decimales cuando los hay (2,6 se mostraba «3»).
       var valor = /^anio_/.test(prm.nombre) ? String(prm.valor)
         : /pesos$/.test(prm.nombre) && prm.valor >= 1 ? pesos(prm.valor)
-        : prm.valor > 0 && prm.valor < 1 ? fmtEntero.format(prm.valor * 100) + " %"
+        : prm.valor > 0 && prm.valor < 1 ? fmtEntero.format(prm.valor * 100) + PCT
         : Number.isInteger(prm.valor) ? fmtEntero.format(prm.valor) : fmtUno.format(prm.valor);
       [["Regla", prm.descripcion, "td--titulo"], ["Valor", valor, "num"]].forEach(function (x) {
         var td = el("td", x[2], x[1]); td.setAttribute("data-rotulo", x[0]); tr.appendChild(td);
@@ -3089,10 +3096,10 @@
         t1.appendChild(el("code", "qa-nombre", c.objeto));
         t1.setAttribute("data-rotulo", "Control");
         var t2 = el("td"); t2.setAttribute("data-rotulo", "Estado"); t2.appendChild(estadoNodo(c.estado));
-        // Coma decimal como en el resto de la página: el detalle viene de format() en SQL («0.33 %»),
-        // que también lee el log del build; se convierte solo al mostrarlo.
-        var t3 = el("td", null, c.detalle.replace(/(\d)\.(\d)/g, "$1,$2")); t3.setAttribute("data-rotulo", "Resultado");
-        t3.title = "Criterio: " + c.umbral;
+        // Coma decimal y espacio duro antes de «%» como en el resto de la página: el detalle viene de
+        // format() en SQL («0.33 %»), que también lee el log del build; se convierte solo al mostrarlo.
+        var t3 = el("td", null, c.detalle.replace(/(\d)\.(\d)/g, "$1,$2").replace(/ %/g, PCT)); t3.setAttribute("data-rotulo", "Resultado");
+        t3.title = "Criterio: " + c.umbral.replace(/ %/g, PCT);
         tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3);
         cuerpo.appendChild(tr);
       });
