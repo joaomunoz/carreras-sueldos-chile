@@ -857,6 +857,30 @@ a.hallazgo__accion { color: var(--tinta); }
 .ficha__subtitulo { margin-top: 0.3rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
 .ficha__explica { margin-top: 0.6rem; max-width: 64ch; font-size: 0.9375rem; }
 .ficha .plegable { margin-top: 0.75rem; }
+/* Resumen de la ficha: el talón de la liquidación (doble regla arriba, simple abajo), con las cifras
+   que todos buscan; el detalle va en las secciones desplegables de abajo. */
+.ficha__resumen { margin-top: 1rem; max-width: 34rem; padding: 0.5rem 0; border-top: 3px double var(--tinta); border-bottom: 1px solid var(--tinta); }
+.ficha__resumen dd { font-weight: 600; }
+/* Secciones desplegables: una línea por tema, con lo que contiene. Toda la fila es el control. */
+.ficha__seccion { border-top: 1px solid var(--regla); }
+.ficha__seccion:first-of-type { margin-top: 1.75rem; }
+.ficha__seccion:last-of-type { border-bottom: 1px solid var(--regla); }
+.ficha__seccion > summary {
+  list-style: none; cursor: pointer; display: grid; grid-template-columns: 1.25rem minmax(0, 1fr);
+  column-gap: 0.4rem; padding: 0.85rem 0.25rem; border-radius: 4px;
+}
+.ficha__seccion > summary::-webkit-details-marker { display: none; }
+.ficha__seccion > summary::before {
+  content: "▸"; grid-row: 1 / span 2; color: var(--tinta-suave); font-size: 1rem; line-height: 1.5rem;
+  transition: transform 0.15s ease;
+}
+.ficha__seccion[open] > summary::before { transform: rotate(90deg); }
+.ficha__seccion > summary:hover { background: color-mix(in srgb, var(--tinta) 5%, transparent); }
+.ficha__seccion-tema { font-family: var(--f-titulo); font-size: 1.25rem; font-weight: 600; line-height: 1.5rem; }
+.ficha__seccion-pista { font-size: var(--t-0); color: var(--tinta-suave); }
+.ficha__seccion-cuerpo { padding-bottom: 1.25rem; }
+.ficha__seccion-cuerpo > .ficha__bloque:first-child { margin-top: 0.25rem; border-top: 0; padding-top: 0; }
+@media (prefers-reduced-motion: reduce) { .ficha__seccion > summary::before { transition: none; } }
 .ficha__pie { margin-top: 2rem; }
 .ficha__pie ul { margin: 0.4rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; font-size: var(--t-0); color: var(--tinta-suave); max-width: 72ch; }
 .ficha__pie a { color: var(--tinta); }

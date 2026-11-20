@@ -235,7 +235,8 @@
     } else {
       accion = el("button", "hallazgo__accion enlace-ficha", t.accion);
       accion.type = "button";
-      accion.addEventListener("click", function () { abrirFicha(t.par, true); });
+      // La tarjeta abre la sección de la ficha donde está su evidencia.
+      accion.addEventListener("click", function () { abrirFicha(t.par, true); if (t.seccion) abrirSeccionFicha(t.seccion); });
     }
     li.appendChild(accion);
     return li;
@@ -305,7 +306,7 @@
           pctSigno(eb.ref_pct_q50), " de la del medio de su grupo (" + grupoEnPalabras(eb.grupo).replace(/^las /, "") +
           "); pero en pesos es ", pesosSigno(eb.p50_delta_1_5),
           (eb.p50_delta_1_5 > eb.ref_delta_q50 ? ", mayor" : ", menor") + " que los ", pesosSigno(eb.ref_delta_q50), " de la del medio."])],
-        accion: "Ver " + eb.nombre + " →", par: pb
+        accion: "Ver " + eb.nombre + " →", par: pb, seccion: "area"
       }));
     }
 
@@ -321,7 +322,7 @@
           fmtEntero.format(c.umbral_pp) + " puntos o más según la institución.",
         nodos: [parrafo([ec.nombre + ": la mitad de las " + TIPO_PLURAL[ec.tipo] + " va de ",
           pct(ec.q1), " a ", pct(ec.q3), "; la cifra nacional es ", pct(ec.nacional), "."])],
-        accion: "Ver " + ec.nombre + " →", par: pc
+        accion: "Ver " + ec.nombre + " →", par: pc, seccion: "institucion"
       }));
     }
 
@@ -340,7 +341,7 @@
           fmtEntero.format(dp.de_cada_100) + ".",
         nodos: [parrafo(["Varía por carrera: ", fmtEntero.format(ej.alto.de_cada_100), " en " + ej.alto.nombre + " (" + ej.alto.tipo + "), ",
           fmtEntero.format(ej.bajo.de_cada_100), " en " + ej.bajo.nombre + " (" + ej.bajo.tipo + ")."])],
-        accion: "Ver " + ej.alto.nombre + " →", par: pAlto
+        accion: "Ver " + ej.alto.nombre + " →", par: pAlto, seccion: "institucion"
       }));
     }
   }
@@ -1461,7 +1462,7 @@
   // y el contexto (criterio McCandless / Google, aprobado por el usuario).
   function bloque(cont, titulo, subtitulo) {
     var b = el("section", "ficha__bloque");
-    b.appendChild(el("h5", "ficha__accion", titulo));
+    if (titulo) b.appendChild(el("h5", "ficha__accion", titulo));
     if (subtitulo) b.appendChild(el("p", "ficha__subtitulo", subtitulo));
     cont.appendChild(b);
     return b;
@@ -2102,6 +2103,49 @@
   // "#carrera" (ficha de ejemplo), para que «Atrás» desde una vecina pueda volver a ella.
   var fichaActual = null;
 
+  // Ficha en dos niveles (pedido del usuario, 19-11-26): un resumen siempre visible (cifras clave,
+  // veredicto y avisos) y el detalle en secciones desplegables, para que quien busca un solo tema no
+  // recorra 5 pantallas (9,6 en celular). Cada sección se construye al abrirla por primera vez: un
+  // gráfico dentro de un <details> cerrado no tiene ancho. Las secciones abiertas se recuerdan al
+  // cambiar de carrera (se compara el mismo tema) y se abren todas para imprimir.
+  var fichaAbiertas = Object.create(null);
+  function seccion(art, id, tema, pista, construir) {
+    var d = el("details", "ficha__seccion");
+    d.setAttribute("data-seccion", id);
+    var s = el("summary");
+    s.appendChild(el("span", "ficha__seccion-tema", tema));
+    s.appendChild(el("span", "ficha__seccion-pista", pista));
+    d.appendChild(s);
+    var cuerpo = el("div", "ficha__seccion-cuerpo");
+    d.appendChild(cuerpo);
+    var hecho = false;
+    d.asegurar = function () { if (!hecho) { hecho = true; construir(cuerpo); } };
+    d.addEventListener("toggle", function () {
+      fichaAbiertas[id] = d.open;
+      if (d.open) d.asegurar();
+    });
+    art.appendChild(d);
+    if (fichaAbiertas[id]) { d.open = true; d.asegurar(); }
+    return d;
+  }
+  function abrirSeccionFicha(id) {
+    fichaAbiertas[id] = true;
+    var d = document.querySelector('.ficha__seccion[data-seccion="' + id + '"]');
+    if (d) { d.asegurar(); d.open = true; }
+  }
+  // Al imprimir se abren todas; después vuelven como estaban (las que estaban cerradas se cierran).
+  var cerradasAntesDeImprimir = [];
+  window.addEventListener("beforeprint", function () {
+    cerradasAntesDeImprimir = [];
+    document.querySelectorAll(".ficha__seccion").forEach(function (d) {
+      if (!d.open) cerradasAntesDeImprimir.push(d);
+      d.asegurar(); d.open = true;
+    });
+  });
+  window.addEventListener("afterprint", function () {
+    cerradasAntesDeImprimir.forEach(function (d) { d.open = false; });
+  });
+
   function pintarFicha(p) {
     fichaActual = p;
     var art = document.getElementById("ficha-contenido");
@@ -2118,6 +2162,25 @@
     var t = el("div", "timbres");
     TIMBRES.forEach(function (def) { if (def.aplica(p)) t.appendChild(timbre(def)); });
     if (t.childNodes.length) art.appendChild(t);
+    var anioTit = ventana("titulados_y_duracion");
+    // Resumen: las cifras que todos buscan, como el talón de una liquidación. Una línea sin dato no
+    // se muestra (antes que un guion). Todas vienen de SQL (datos.pares).
+    var res = el("dl", "liq ficha__resumen");
+    var a1r = p.percentiles.anio_1.p50, a5r = p.percentiles.anio_5.p50;
+    if (a1r != null) liq(res, "Sueldo típico al 1er año", pesos(a1r));
+    if (a5r != null) liq(res, "Sueldo típico al 5° año", pesos(a5r) +
+      (p.percentiles.p50_pct_1_5 != null ? " (" + pctSigno(p.percentiles.p50_pct_1_5) + ")" : ""));
+    if (p.empleabilidad_nacional[0] != null) liq(res, "Empleabilidad al 1er año", pct(p.empleabilidad_nacional[0]));
+    var nIr = p.conteos.n_inst_oferta;
+    // Dos líneas cuando difieren: la tabla de «Por institución» muestra las que MiFuturo publica, y
+    // sin aclararlo 44 arriba y 43 filas abajo parecían un error. No «(43 con datos)»: en 5 carreras
+    // MiFuturo publica más de las que cuenta el SIES (con titulados en ambos períodos; Medicina 21 y 22),
+    // y un paréntesis haría creer que unas son parte de las otras. Sin la sigla «SIES» (lector común).
+    var nPub = (programasPor[claveDe(p)] || []).length;
+    var inst = function (n) { return n === 0 ? "ninguna" : fmtEntero.format(n) + (n === 1 ? " institución" : " instituciones"); };
+    if (nIr != null) liq(res, "La imparten", inst(nIr));
+    if (nIr == null || nPub !== nIr) liq(res, "Con datos por institución", inst(nPub));
+    art.appendChild(res);
     art.appendChild(el("p", "ficha__veredicto", veredicto(p)));
     var avisos = avisosDe(p);
     if (avisos.length) {
@@ -2131,6 +2194,7 @@
     // la posición (analytics.area_ficha). La típica del grupo estadístico, la de los cuadrantes, va
     // aparte como dato, con el motivo si su área no tiene una (18-11-26: antes las franjas eran el
     // grupo estadístico y, sin celda, junto a Ingeniería Comercial salían Fonoaudiología y Traducción).
+    seccion(art, "area", "Frente a su área", "Cómo le va frente a las carreras parecidas", function (cuerpo) {
     var b1, af = p.area_ficha;
     var CIFRAS = [
       { rotulo: "Sueldo típico al 1er año", metrica: "p50_anio_1", valor: function (q) { return q.percentiles.anio_1.p50; }, formato: pesos },
@@ -2144,7 +2208,7 @@
         // solo tipo) dos «10» seguidos parecían el mismo conjunto (evaluación del 19-11-26).
         var delas = (otrasN === 1 ? "la otra carrera " + niv.replace(/es$/, "").replace(/s$/, "") + deArea
                                   : "las otras " + fmtEntero.format(otrasN) + " carreras " + niv + deArea) + ", de todos los tipos de institución";
-        b1 = bloque(art,
+        b1 = bloque(cuerpo,
           af.mas_que === otrasN ? "Entra ganando más que " + delas
             : af.mas_que === 0 ? "Entra ganando menos que " + delas
             : "Entra ganando más que " + fmtEntero.format(af.mas_que) + " de " + delas,
@@ -2173,7 +2237,7 @@
           franjaGrupo(b1, p, delArea, Object.assign({ medio: conMedio ? medioDe(p, cfg.metrica) : null }, cfg), tipGrupo, b1);
         });
       } else {
-        b1 = bloque(art, "Es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") + " del área «" + area + "» de MiFuturo con datos comparables",
+        b1 = bloque(cuerpo, "Es la única carrera " + niv.replace(/es$/, "").replace(/s$/, "") + " del área «" + area + "» de MiFuturo con datos comparables",
           "Sueldo típico (P50) y empleabilidad nacional.");
         var dlS = el("dl", "liq");
         CIFRAS.forEach(function (cfg) { liq(dlS, cfg.rotulo, cfg.formato(cfg.valor(p))); });
@@ -2181,7 +2245,7 @@
       }
       frenteATipica(b1, p, af);
     } else {
-      b1 = bloque(art, "Sueldo típico: " + pesos(p.percentiles.anio_1.p50) + " al 1er año y " + pesos(p.percentiles.anio_5.p50) + " al 5° año",
+      b1 = bloque(cuerpo, "Sueldo típico: " + pesos(p.percentiles.anio_1.p50) + " al 1er año y " + pesos(p.percentiles.anio_5.p50) + " al 5° año",
         "Sueldo típico (P50) y empleabilidad nacional. Sin grupo de comparación: " + veredicto(p).replace(/^Sin comparación con otras carreras: /, ""));
       var dl0 = el("dl", "liq");
       liq(dl0, "Sueldo típico al 1er año", pesos(p.percentiles.anio_1.p50));
@@ -2207,10 +2271,13 @@
       });
     }
 
+    });
+
     // 2. Año a año
+    seccion(art, "sueldo", "Sueldo año a año", "Del 1er al 5° año, con todas las cifras", function (cuerpo) {
     var pc = p.percentiles.p50_pct_1_5;
     // «Es X % mayor/menor», no «sube/baja»: son dos grupos distintos de titulados (evaluación del 19-11-26).
-    var b2 = bloque(art, "Al 5° año, su sueldo típico es " + fmtUno.format(Math.abs(pc)) + " % " + (pc >= 0 ? "mayor" : "menor") + " que al 1er año",
+    var b2 = bloque(cuerpo, "Al 5° año, su sueldo típico es " + fmtUno.format(Math.abs(pc)) + " % " + (pc >= 0 ? "mayor" : "menor") + " que al 1er año",
       "Ingresos " + aniosIngreso("percentiles_anio_1") + " (el promedio, " + aniosIngreso("ingreso_medio_1er_anio") +
         "), en pesos de septiembre de 2025. Cada año es otra cohorte de titulados, no las mismas personas. " +
         "La barra de los años 1 y 5 es la mitad central de los titulados.");
@@ -2244,10 +2311,13 @@
     todas.appendChild(dl);
     b2.appendChild(todas);
 
+    });
+
     // 3. Dónde estudiarla
+    seccion(art, "institucion", "Por institución", "Empleabilidad y rango de ingreso en cada una", function (cuerpo) {
     var progs = (programasPor[claveDe(p)] || []).slice().sort(function (a, b) { return b.emp1 - a.emp1 || colador.compare(a.institucion, b.institucion); });
     var d1 = p.dispersion.emp1, nI = p.conteos.n_inst_oferta;
-    var b3 = bloque(art,
+    var b3 = bloque(cuerpo,
       d1 ? "Según la institución, la empleabilidad al 1er año va de " + pct(d1.min) + " a " + pct(d1.max)
          : progs.length ? "MiFuturo publica " + fmtEntero.format(progs.length) + (progs.length === 1 ? " institución" : " instituciones") + " de esta carrera"
                         : "MiFuturo no publica esta carrera por institución",
@@ -2369,11 +2439,14 @@
         " Siguen estudiando: titulados que al año siguiente siguen estudiando (por ejemplo, de una carrera técnica a una profesional); ayuda a leer una empleabilidad baja."));
     }
 
+    });
+
     // 4. Quiénes la estudian
-    var tt = p.titulados_2024, anioTit = ventana("titulados_y_duracion");
-    // Título neutro siempre: «X % de sus titulados son mujeres» repetía la barra por sexo de abajo
-    // y nombraba un solo lado (pedido del usuario, 19-11-26).
-    var b5 = bloque(art, "Quiénes la estudian y cuánto dura", "Titulados por sexo y edad, y duración de la carrera.");
+    seccion(art, "quienes", "Quiénes la estudian", "Titulados, sexo, edad y duración", function (cuerpo) {
+    var tt = p.titulados_2024;
+    // Sin título propio: la sección ya se llama «Quiénes la estudian». Antes el título decía «X % de
+    // sus titulados son mujeres», que repetía la barra por sexo y nombraba un solo lado (19-11-26).
+    var b5 = bloque(cuerpo, null, "Titulados por sexo y edad, y duración de la carrera.");
     if (tt.total) {
       var dlT = el("dl", "liq");
       liq(dlT, "Titulados " + anioTit, fmtEntero.format(tt.total));
@@ -2393,6 +2466,8 @@
     if (p.duracion.formal != null) liq(dl5, "Duración en semestres", fmtUno.format(p.duracion.formal) + " formal · " +
       (p.duracion.real != null ? fmtUno.format(p.duracion.real) : "—") + " real");
     b5.appendChild(dl5);
+
+    });
 
     // Un solo pie con los años y las definiciones de toda la ficha.
     var pie = el("div", "ficha__pie");
